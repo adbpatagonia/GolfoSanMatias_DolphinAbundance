@@ -24,7 +24,7 @@ library("kableExtra")
 options(scipen = 999)
 options(warn = -1)
 
-# source(paste0(here::here(), "/analysis/2_plot_fits.R"))
+source(paste0(here::here(), "/analysis/1_DuskyDolphin.R"))
 ```
 
 Este es un proyecto liderado por la Dra Silvana Dans .\
@@ -33,4 +33,53 @@ Este es un proyecto liderado por la Dra Silvana Dans .\
 Los analisis se encuentran en [**este repositorio**](https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance).  
 
 
+# Datos    
 
+Las estaciones fueron definidas:    
+
+  * <u>Verano</u>: Enero, Febrero, Marzo   
+  * Otoño: Abril, Mayo, Junio   
+  * Invierno: Julio, Agosto, Septiembre
+  * Primavera: Octubre, Noviembre, Diciembre
+
+# Mapas de censos
+## Delfin oscuro   
+
+```{r maplo, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.lo 
+```
+
+## Delfin común    
+
+```{r mapdd, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.dd
+```
+
+# Variables ambientales   
+## Valores Anuales 
+
+```{r mapdepth, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.depth
+```
+
+```{r mapslope, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.slope
+```
+
+```{r mapgrad, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.grad
+```
+
+## Valores estacionales   
+
+```{r mapsst, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.sst
+```
+
+```{r mapclo, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.clo
+```
+
+```{r mapdistup, fig.width  = 9, fig.height = 9, echo=FALSE, message=FALSE, warning=FALSE}
+p.distup
+```
