@@ -17,7 +17,7 @@ source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
 
 Este es un proyecto liderado por la Dra Silvana Dans (CONICET - CESIMAR, UNPSJB, Fundación Azara).\
 
-Los analisis se encuentran en [**este repositorio**](https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance).
+Los análisis se encuentran en [**este repositorio**](https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance).
 
 
 
