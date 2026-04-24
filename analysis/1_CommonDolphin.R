@@ -11,13 +11,13 @@
 # This is the MAIN file for common dolphins
 
 # source data ----
-source(paste0(here::here(), "/analysis/0_ReadData_Plots.r"))
+source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
 
 # EDA -----
-source(paste0(here::here(), "/analysis/2_CommonDolphin_EDA.R"))
+source(file.path(here::here(), "analysis", "2_CommonDolphin_EDA.R"))
 
 # Detection function -----
-source(paste0(here::here(), "/analysis/3_CommonDolphin_DetectionFunction.R"))
+source(file.path(here::here(), "analysis", "3_CommonDolphin_DetectionFunction.R"))
 
 # DSM ----
-source(paste0(here::here(), "/analysis/4_CommonDolphin_DSM.R"))
+source(file.path(here::here(), "analysis", "4_CommonDolphin_DSM.R"))

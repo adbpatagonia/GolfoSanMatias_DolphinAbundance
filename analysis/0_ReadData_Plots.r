@@ -327,6 +327,48 @@ p.sp <- (p.dd + p.lo.c) +
   )
 
 ## variables maps ----
+
+# need to produce prediction grid
+prediction_grid <- st_make_grid(survey.area, cellsize = c(1500,1500))
+prediction_grid_sf_m <- st_sf(geometry = prediction_grid)
+prediction_grid_sf_m <- st_transform(prediction_grid_sf_m, target_crs)
+
+
+
+# create grid
+seasons <- unique(preddata_sf_m$season)
+
+# base grid
+grid0 <- st_make_grid(survey.area_m, cellsize = c(1500,1500))
+grid0 <- st_sf(geometry = grid0)
+
+# build a grid, and join with preddata (by season), then bind them
+out <- lapply(seasons, function(ss){
+
+  # copy the grid
+  g <- copy(grid0)
+
+  # subset preddata for the season
+  dat_ss <- preddata_sf_m[preddata_sf_m$season == ss, ]
+
+  # join the grid with the seasonal preddata
+  g2 <- st_join(
+    g,
+    dat_ss,
+    join = st_nearest_feature
+  )
+
+  g2
+})
+
+# bind the seasonal grids
+cropped_grid <- do.call(rbind, out)
+
+# crop the seasonal grids to the survey area
+cropped_grid <- st_intersection(cropped_grid, survey.area_m)
+
+
+
 # sst, clo, dist.up vary with time
 # slope, depth, grad are time invariant
 
@@ -335,20 +377,24 @@ vars_with_season <- c("dist.up", "sst", "clo")
 ## depth ----
 var <- "depth"
 
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
+
+# the cropped grid is repeated by season
+# data is identical for the 4 seasons
+# subset only one season
+if(!var %in% vars_with_season){
+  dat <- dat %>%
+    filter(season == "Summer") %>%
+    select(-season)
+}
 
 p.depth <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = -value, fill = -value)) +
+          aes(color = -value, fill = -value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -357,7 +403,7 @@ p.depth <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -365,27 +411,28 @@ p.depth <- ggplot() +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))
-ggsave( filename = paste0(here::here(), '/output/EnvVars/Depth.png'),
-        width = 8,
-        height = 8)
 
 ## slope -----
 var <- "slope"
 
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
+
+# the cropped grid is repeated by season
+# data is identical for the 4 seasons
+# subset only one season
+if(!var %in% vars_with_season){
+  dat <- dat %>%
+    filter(season == "Summer") %>%
+    select(-season)
+}
 
 p.slope <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = value, fill = value)) +
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -394,7 +441,7 @@ p.slope <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -402,27 +449,29 @@ p.slope <- ggplot() +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))
-ggsave( filename = paste0(here::here(), '/output/EnvVars/Slope.png'),
-        width = 8,
-        height = 8)
+
 
 ## grad -----
 var <- "grad"
 
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
+
+# the cropped grid is repeated by season
+# data is identical for the 4 seasons
+# subset only one season
+if(!var %in% vars_with_season){
+  dat <- dat %>%
+    filter(season == "Summer") %>%
+    select(-season)
+}
 
 p.grad <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = value, fill = value)) +
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -431,7 +480,7 @@ p.grad <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -440,28 +489,29 @@ p.grad <- ggplot() +
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))
 
-ggsave( filename = paste0(here::here(), '/output/EnvVars/grad.png'),
-        width = 8,
-        height = 8)
+
 
 ## sst ----
 var <- "sst"
-
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
 dat <- st_as_sf(dat)
 
+# the cropped grid is repeated by season
+# data is identical for the 4 seasons
+# subset only one season
+if(!var %in% vars_with_season){
+  dat <- dat %>%
+    filter(season == "Summer") %>%
+    select(-season)
+}
+
 p.sst <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = value, fill = value)) +
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -470,7 +520,7 @@ p.sst <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -479,22 +529,12 @@ p.sst <- ggplot() +
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ season)
-ggsave( filename = paste0(here::here(), '/output/EnvVars/SST.png'),
-        width = 13,
-        height = 13)
-
-
 
 ## Clorophyll ----
 var <- "clo"
 
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
 dat <- st_as_sf(dat)
@@ -502,7 +542,7 @@ dat <- st_as_sf(dat)
 p.clo <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = value, fill = value)) +
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -511,7 +551,7 @@ p.clo <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -520,20 +560,12 @@ p.clo <- ggplot() +
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ season)
-ggsave( filename = paste0(here::here(), '/output/EnvVars/Clorophyll.png'),
-        width = 13,
-        height = 13)
 
 ## dist.up ----
 var <- "dist.up"
 
-cols <- if (var %in% vars_with_season) {
-  c(var, "season", "geometry")
-} else {
-  c(var, "geometry")
-}
-
-dat <- preddata_sf_m[, c(cols), with = FALSE]
+cols <- c({{var}}, "season", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
 dat <- st_as_sf(dat)
@@ -541,7 +573,7 @@ dat <- st_as_sf(dat)
 p.distup <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
-          aes(color = value, fill = value)) +
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
   coord_sf(
     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
@@ -550,7 +582,7 @@ p.distup <- ggplot() +
     expand = TRUE
   ) +
   scale_fill_viridis_c() +
-  scale_color_viridis_c() +
+  # scale_color_viridis_c() +
   scale_x_continuous(labels = \(x) x / 1000000) +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
@@ -559,14 +591,35 @@ p.distup <- ggplot() +
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ season)
-ggsave( filename = paste0(here::here(), '/output/EnvVars/dist.up.png'),
-        width = 13,
-        height = 13)
-
 
 # output -----
 ggsave(plot = p.sp,
        filename = paste0(here::here(), '/output/SpeciesPlots.png'),
        width = 13,
        height = 5.5)
+
+ggsave(plot = p.depth,
+       filename = paste0(here::here(), '/output/EnvVars/Depth.png'),
+       width = 8,
+       height = 8)
+ggsave(plot = p.slope,
+       filename = paste0(here::here(), '/output/EnvVars/Slope.png'),
+       width = 8,
+       height = 8)
+ggsave(plot = p.grad,
+       filename = paste0(here::here(), '/output/EnvVars/grad.png'),
+       width = 8,
+       height = 8)
+ggsave(plot = p.sst,
+       filename = paste0(here::here(), '/output/EnvVars/SST.png'),
+       width = 13,
+       height = 13)
+ggsave(plot= p.clo,
+       filename = paste0(here::here(), '/output/EnvVars/Clorophyll.png'),
+       width = 13,
+       height = 13)
+ggsave(plot = p.distup,
+       filename = paste0(here::here(), '/output/EnvVars/dist.up.png'),
+       width = 13,
+       height = 13)
 
