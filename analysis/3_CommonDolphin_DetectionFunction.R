@@ -9,3 +9,22 @@
 # 10.1111/2041-210X.12105
 
 # This is the Detection function file for common dolphins
+
+
+# wrangle data ----
+detfun_dat_dd <- copy(distdata_dd)
+## eliminar Beaufort > 4 -----
+detfun_dat_dd <- detfun_dat_dd[beaufort < 5]
+
+## truncate ? -----
+
+
+df.hr <- ds(detfun_dat_dd,
+               max(detfun_dat_dd$distance),
+               key = "hr",
+               adjustment = NULL)
+
+df.hn <- ds(detfun_dat_dd,
+               max(detfun_dat_dd$distance),
+               key = "hn",
+               adjustment = NULL)

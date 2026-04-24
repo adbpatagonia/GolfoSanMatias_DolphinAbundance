@@ -15,8 +15,9 @@ distdata_lo$ship <- as.factor(distdata_lo$ship)
 
 # Effect of ship ----
 ## Distance ----
-# there seems to be some effect of ship on the distance at which dolphins are detected
+# there in an effect of ship on the distance at which dolphins are detected
 # consider including in detection function
+# it may be observer rather than ship but we can't tell as the data does not have observer ID
 p.dist.ship.lo <- ggplot(distdata_lo) +
   geom_histogram(aes(x = distance, fill = ship, color = ship), alpha = 0.5, position = "stack")
 
