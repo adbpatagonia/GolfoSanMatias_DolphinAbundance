@@ -10,7 +10,6 @@
 
 # This is the EDA file for common dolphins
 
-
 distdata_dd$ship <- as.factor(distdata_dd$ship)
 
 
@@ -18,34 +17,34 @@ distdata_dd$ship <- as.factor(distdata_dd$ship)
 ## Distance ----
 # there seems to be some effect of ship on the distance at which dolphins are detected
 # consider including in detection function
-p.dist.ship <- ggplot(distdata_dd) +
+p.dist.ship.dd <- ggplot(distdata_dd) +
   geom_histogram(aes(x = distance, fill = ship, color = ship), alpha = 0.5, position = "stack")
 
-p.dist.ship.dens <- ggplot(distdata_dd) +
+p.dist.ship.dens.dd <- ggplot(distdata_dd) +
   geom_density(aes(x = distance, fill = ship, color = ship), alpha = 0.5)
 
 ## Group size ----
 # it does not seem to affect the group sizes detected
-p.size.ship <- ggplot(distdata_dd) +
+p.size.ship.dd <- ggplot(distdata_dd) +
   geom_histogram(aes(x = size, fill = ship, color = ship), alpha = 0.5, position = "stack")
 
-p.size.ship.dens <-ggplot(distdata_dd) +
+p.size.ship.dens.dd <-ggplot(distdata_dd) +
   geom_density(aes(x = size, fill = ship, color = ship), alpha = 0.5)
 
 # Distance ----
 ## Group size ----
-p.size.dist.ship <- ggplot(distdata_dd) +
+p.size.dist.ship.dd <- ggplot(distdata_dd) +
   geom_point(aes(x = distance, y = size, fill = ship, color = ship), alpha = 0.5) +
   geom_smooth(aes(x = distance, y = size, group = ship, color = ship, fill = ship),
               method = "lm")
 
 ## Beaufort ----
-p.beauf.dist.ship <- ggplot(distdata_dd) +
+p.beauf.dist.ship.dd <- ggplot(distdata_dd) +
   geom_point(aes(x = distance, y = beaufort, fill = ship, color = ship), alpha = 0.5) +
   geom_smooth(aes(x = distance, y = beaufort, group = ship, color = ship, fill = ship),
               method = "lm")
 
-p.size.ship <- ggplot(distdata_dd) +
+p.size.ship.dd <- ggplot(distdata_dd) +
   geom_histogram(aes(x = beaufort, fill = ship, color = ship), alpha = 0.5)
 
 # Spatial covariates -----
