@@ -8,16 +8,16 @@
 # Spatial models for distance sampling data: recent developments and future directions
 # 10.1111/2041-210X.12105
 
-# This is the MAIN file for dusky dolphins
+# This is the MAIN file for common dolphins
 
 # source data ----
 source(paste0(here::here(), "/analysis/0_ReadData_Plots.r"))
 
 # EDA -----
-source(paste0(here::here(), "/analysis/2_DuskyDolphin_EDA.R"))
+source(paste0(here::here(), "/analysis/2_CommonDolphin_EDA.R"))
 
 # Detection function -----
-source(paste0(here::here(), "/analysis/3_DuskyDolphin_DetectionFunction.R"))
+source(paste0(here::here(), "/analysis/3_CommonDolphin_DetectionFunction.R"))
 
 # DSM ----
-source(paste0(here::here(), "/analysis/4_DuskyDolphin_DSM.R"))
+source(paste0(here::here(), "/analysis/4_CommonDolphin_DSM.R"))
