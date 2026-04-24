@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "DelfinesComunes.html#efecto-de-barco",
+    "href": "DelfinesComunes.html#efecto-de-barco",
+    "title": "Delfines Comunes",
+    "section": "Efecto de barco",
+    "text": "Efecto de barco\n\nDistancia\nParece haber efecto del barco sobre la distancia a la que se detectan delfines comunes. Considerar incluir en la funcion de deteccion\n\n\n\n\n\n\n\n\n\n\nTamaño grupal\nBarco no parece tener efecto sobre el tamaño grupal detectado"
+  },
+  {
+    "objectID": "DelfinesComunes.html#estado-del-mar",
+    "href": "DelfinesComunes.html#estado-del-mar",
+    "title": "Delfines Comunes",
+    "section": "Estado del mar",
+    "text": "Estado del mar\n\nBarco\nNo hay diferencias en el estado del mar en el que se hicieron censos, dependiendo del barco\n\n\n\n\n\n\n\nDistancia\nNo hay diferencia entre barcos en la distancia a la que se hicieron observaciones, como funcion del estado del mar\nDescartar observaciones con Beaufort = 5\nConsiderar si descartar Beaufort = 4"
+  },
+  {
+    "objectID": "DelfinesComunes.html#variables-espaciales",
+    "href": "DelfinesComunes.html#variables-espaciales",
+    "title": "Delfines Comunes",
+    "section": "Variables espaciales",
+    "text": "Variables espaciales\n\nEscala: periodo\n\nProfundidad\nParece haber mayor cantidad de detecciones en la zona donde aumenta la profundidad - alrededor de northing 5.47 Mm\n\n\n\n\n\n\n\nPendiente\nLa zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada\n\n\n\n\n\n\n\nGradiente\n(No estoy seguro que es esta variable)\nNo parece infuenciar la deteccion de animales\n\n\n\n\n\n\n\nConclusion escala periodo\nEvaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion\n\n\n\nEscala estacional\nNinguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales\n\nTemperatura sperficial del mar\n\n\n\n\n\n\n\nClorofila\n\n\n\n\n\n\n\ndist.up\n(No estoy seguro que es)"
+  },
+  {
+    "objectID": "DelfinesOscuros.html",
+    "href": "DelfinesOscuros.html",
+    "title": "Delfines Oscuros",
+    "section": "",
+    "text": "Censos"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "Este es un proyecto liderado por la Dra Silvana Dans (CONICET - CESIMAR, UNPSJB, Fundación Azara).\n\nLos analisis se encuentran en este repositorio.\n\nVariables Ambientales\nDelfines Oscuros\nDelfines Comunes\n\nLas estaciones fueron definidas:\n\nVerano: Enero, Febrero, Marzo\n\nOtoño: Abril, Mayo, Junio\n\nInvierno: Julio, Agosto, Septiembre\nPrimavera: Octubre, Noviembre, Diciembre"
+  },
+  {
+    "objectID": "VariablesAmbientales.html",
+    "href": "VariablesAmbientales.html",
+    "title": "Variables ambientales",
+    "section": "",
+    "text": "Las estaciones fueron definidas:\n\nVerano: Enero, Febrero, Marzo\n\nOtoño: Abril, Mayo, Junio\n\nInvierno: Julio, Agosto, Septiembre\nPrimavera: Octubre, Noviembre, Diciembre\n\n\nEscala: período\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEscala estacional"
+  }
+]
