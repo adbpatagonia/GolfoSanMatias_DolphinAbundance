@@ -1,0 +1,73 @@
+---
+  title: "Variables ambientales"
+---
+
+```{r}
+#| include: false
+
+
+library(here)
+
+source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
+```
+
+Las estaciones fueron definidas:
+
+-   <u>Verano</u>: Enero, Febrero, Marzo     
+-   <u>Otoño</u>: Abril, Mayo, Junio     
+-   <u>Invierno</u>: Julio, Agosto, Septiembre
+-   <u>Primavera</u>: Octubre, Noviembre, Diciembre
+
+
+# Escala: período
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.depth
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.slope
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.grad
+```
+
+# Escala estacional
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.sst
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.clo
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.distup
+```
+

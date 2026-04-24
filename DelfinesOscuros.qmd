@@ -1,0 +1,21 @@
+---
+  title: "Delfines Oscuros"
+---
+
+```{r}
+#| include: false
+
+source(file.path(here::here(), "analysis", "1_DuskyDolphin.R"))
+```
+
+
+
+# Censos
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+p.lo
+```
+

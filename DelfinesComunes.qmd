@@ -1,0 +1,187 @@
+
+---
+  title: "Delfines Comunes"
+---
+
+```{r}
+#| include: false
+
+source(file.path(here::here(), "analysis", "1_CommonDolphin.R"))
+```
+
+
+# Censos
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+p.dd
+```
+
+
+# Exploratory Data Analysis 
+
+## Efecto de barco  
+
+### Distancia 
+
+Parece haber efecto del barco sobre la distancia a la que se detectan delfines comunes. Considerar incluir en la funcion de deteccion
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false    
+
+p.dist.ship
+p.dist.ship.dens
+
+```
+
+
+### Tamaño grupal    
+
+Barco no parece tener efecto sobre el tamaño grupal detectado 
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false    
+
+p.size.ship
+p.size.ship.dens
+
+```
+
+## Estado del mar   
+### Barco 
+
+No hay diferencias en el estado del mar en el que se hicieron censos, dependiendo del barco
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false    
+
+p.size.ship
+
+```
+
+### Distancia  
+No hay diferencia entre barcos en la distancia a la que se hicieron observaciones, como funcion del estado del mar    
+Descartar observaciones con Beaufort = 5    
+Considerar si descartar Beaufort = 4
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+p.beauf.dist.ship
+
+```
+
+## Variables espaciales 
+
+### Escala: periodo 
+
+#### Profundidad   
+
+Parece haber mayor cantidad de detecciones en la zona donde aumenta la profundidad - alrededor de northing 5.47 Mm
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 9
+#| fig-height: 6
+
+p.depth.dd
+
+```
+
+#### Pendiente  
+
+La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada  
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 13
+#| fig-height: 11
+
+p.slope.dd
+
+```
+
+#### Gradiente  
+(No estoy seguro que es esta variable)   
+
+No parece infuenciar la deteccion de animales
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 13
+#| fig-height: 9
+ 
+p.grad.dd
+
+```
+
+#### Conclusion escala periodo    
+
+Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion
+
+### Escala estacional 
+
+Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales
+
+#### Temperatura sperficial del mar  
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 15
+#| fig-height: 15
+
+p.sst.dd
+
+```
+
+#### Clorofila
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 13
+#| fig-height: 15
+
+p.clo.dd
+
+```
+
+#### dist.up     
+(No estoy seguro que es)
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+#| fig-width: 11
+#| fig-height: 15
+
+p.distup.dd
+
+```
+
+
+# Funciones de deteccion
+
+# Density surface models

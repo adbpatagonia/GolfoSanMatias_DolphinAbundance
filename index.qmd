@@ -1,0 +1,38 @@
+---
+  title: "Home"
+  author: "Alejandro Buren (CONICET-IAA)"
+  date: today
+  format: html
+---
+```{r}
+#| include: false
+
+
+library("kableExtra")
+library(here)
+library(patchwork)
+
+source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
+```
+
+Este es un proyecto liderado por la Dra Silvana Dans (CONICET - CESIMAR, UNPSJB, Fundación Azara).\
+
+Los analisis se encuentran en [**este repositorio**](https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance).
+
+
+
+- [Variables Ambientales](VariablesAmbientales.qmd)
+- [Delfines Oscuros](DelfinesOscuros.qmd)
+- [Delfines Comunes](DelfinesComunes.qmd)
+
+
+
+
+
+
+Las estaciones fueron definidas:    
+
+* <u>Verano</u>: Enero, Febrero, Marzo   
+* <u>Otoño</u>: Abril, Mayo, Junio   
+* <u>Invierno</u>: Julio, Agosto, Septiembre
+* <u>Primavera</u>: Octubre, Noviembre, Diciembre

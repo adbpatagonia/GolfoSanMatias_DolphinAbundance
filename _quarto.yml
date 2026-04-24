@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Density Surface Models, Golfo San Matias. Delfines Oscuro y Común"
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Variables Ambientales"
+        href: VariablesAmbientales.qmd
+      - text: "Delfines Oscuros"
+        href: DelfinesOscuros.qmd
+      - text: "Delfines Comunes"
+        href: DelfinesComunes.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
