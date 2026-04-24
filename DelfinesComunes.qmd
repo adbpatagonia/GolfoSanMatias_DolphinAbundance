@@ -16,6 +16,9 @@ source(file.path(here::here(), "analysis", "1_CommonDolphin.R"))
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
 p.dd
 ```
 
@@ -95,8 +98,8 @@ Parece haber mayor cantidad de detecciones en la zona donde aumenta la profundid
 #| echo: false   
 #| message: false    
 #| warning: false  
-#| fig-width: 9
-#| fig-height: 6
+#| fig-width: 11
+#| fig-height: 10
 
 p.depth.dd
 
@@ -110,8 +113,8 @@ La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunc
 #| echo: false   
 #| message: false    
 #| warning: false  
-#| fig-width: 13
-#| fig-height: 11
+#| fig-width: 11
+#| fig-height: 10
 
 p.slope.dd
 
@@ -126,8 +129,8 @@ No parece infuenciar la deteccion de animales
 #| echo: false   
 #| message: false    
 #| warning: false  
-#| fig-width: 13
-#| fig-height: 9
+#| fig-width: 11
+#| fig-height: 10
  
 p.grad.dd
 
@@ -147,7 +150,7 @@ Ninguna de las variables ambientales medidas a escala estacional parece tener re
 #| echo: false   
 #| message: false    
 #| warning: false  
-#| fig-width: 15
+#| fig-width: 11
 #| fig-height: 15
 
 p.sst.dd
@@ -160,7 +163,7 @@ p.sst.dd
 #| echo: false   
 #| message: false    
 #| warning: false  
-#| fig-width: 13
+#| fig-width: 11
 #| fig-height: 15
 
 p.clo.dd

@@ -8,14 +8,14 @@
 source(file.path(here::here(), "analysis", "1_DuskyDolphin.R"))
 ```
 
-
-
 # Censos
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
 p.lo
 ```
-
