@@ -19,6 +19,17 @@ Las estaciones fueron definidas:
 -   <u>Primavera</u>: Octubre, Noviembre, Diciembre
 
 
+# Mapa del área en contexto    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+map.area.m
+```
+
+
 # Escala: período
 
 ```{r} 

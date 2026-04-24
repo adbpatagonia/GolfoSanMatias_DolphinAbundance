@@ -30,9 +30,3 @@ Los analisis se encuentran en [**este repositorio**](https://github.com/adbpatag
 
 
 
-Las estaciones fueron definidas:    
-
-* <u>Verano</u>: Enero, Febrero, Marzo   
-* <u>Otoño</u>: Abril, Mayo, Junio   
-* <u>Invierno</u>: Julio, Agosto, Septiembre
-* <u>Primavera</u>: Octubre, Noviembre, Diciembre

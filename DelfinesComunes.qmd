@@ -6,11 +6,15 @@
 ```{r}
 #| include: false
 
+library(kableExtra)
+
 source(file.path(here::here(), "analysis", "1_CommonDolphin.R"))
 ```
 
 
 # Censos
+
+Muchos censos en embarcaciones de oportunidad.  
 
 ```{r}
 #| echo: false
@@ -20,6 +24,82 @@ source(file.path(here::here(), "analysis", "1_CommonDolphin.R"))
 #| fig-height: 10
 
 p.dd
+```
+
+Número de censos por año y estación    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+kable(segdata_traj_m %>%
+        filter(Ano > 2006) %>% 
+        distinct(Ano, season, traj_id) %>% 
+        group_by(Ano, season) %>% 
+        reframe(n.surveys = n()) %>% 
+        pivot_wider(
+          names_from = season,
+          values_from = n.surveys,
+          values_fill = 0
+        ) %>% 
+        group_by(Ano) %>% 
+        mutate(TOTAL = sum(Fall, Spring, Summer, Winter, na.rm = TRUE))) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  )
+```
+
+Presencia a o largo de todo el año 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+distdata_dd_sf_m %>%
+  filter(Ano > 2006) %>% 
+  group_by(season) %>% 
+  reframe(n.delfines = sum(size)) %>% 
+  kable(
+    align = c("c", "c"),
+    caption = "Delfines por estación"
+  ) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em")
+```
+
+Grupos de decenas de individuos, con algunos grupos muy grandes
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+distdata_dd_sf_m %>%
+  filter(Ano > 2006) %>% 
+  ggplot(.) +
+  geom_density(aes( x = size, fill = season, col = season), alpha = 0.3)
+
+
+kable(distdata_dd_sf_m %>%
+       filter(Ano > 2006) %>% 
+  group_by(season) %>% 
+  reframe(min_group = min(size),
+          max_group = max(size),
+          mean_group = round(mean(size), 1),
+          CV_group = round(sd(size)/mean(size), 1)
+            )) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  )
 ```
 
 
@@ -36,11 +116,23 @@ Parece haber efecto del barco sobre la distancia a la que se detectan delfines c
 #| message: false    
 #| warning: false    
 
-p.dist.ship
-p.dist.ship.dens
+p.dist.ship.dd
+p.dist.ship.dens.dd
 
 ```
 
+Tamaño muestral, discrimando por embarcación 
+
+```{r}
+
+kable(distdata_dd %>% 
+        group_by(ship) %>% 
+        tally() ) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  )
+```
 
 ### Tamaño grupal    
 
@@ -52,8 +144,8 @@ Barco no parece tener efecto sobre el tamaño grupal detectado
 #| message: false    
 #| warning: false    
 
-p.size.ship
-p.size.ship.dens
+p.size.ship.dd
+p.size.ship.dens.dd
 
 ```
 
@@ -67,7 +159,7 @@ No hay diferencias en el estado del mar en el que se hicieron censos, dependiend
 #| message: false    
 #| warning: false    
 
-p.size.ship
+p.size.ship.dd
 
 ```
 
@@ -82,7 +174,7 @@ Considerar si descartar Beaufort = 4
 #| message: false    
 #| warning: false  
 
-p.beauf.dist.ship
+p.beauf.dist.ship.dd
 
 ```
 
@@ -144,7 +236,7 @@ Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion -
 
 Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales
 
-#### Temperatura sperficial del mar  
+#### Temperatura superficial del mar  
 
 ```{r}
 #| echo: false   
