@@ -39,10 +39,15 @@ p.size.dist.ship.dd <- ggplot(distdata_dd) +
               method = "lm")
 
 ## Beaufort ----
-p.beauf.dist.ship.dd <- ggplot(distdata_dd) +
-  geom_point(aes(x = distance, y = beaufort, fill = ship, color = ship), alpha = 0.5) +
-  geom_smooth(aes(x = distance, y = beaufort, group = ship, color = ship, fill = ship),
-              method = "lm")
+ p.beauf.dist.ship.dd <-
+  ggplot(distdata_dd) +
+  geom_point(aes(y = distance, x = beaufort, fill = ship, color = ship),
+             alpha = 0.5,
+             position = position_jitterdodge(jitter.width = 0.15,
+                                              dodge.width = 0.3)) +
+  geom_smooth(aes(y = distance, x = beaufort, group = ship, color = ship, fill = ship),
+              method = "lm",
+              position = position_dodge(width = 0.3))
 
 p.size.ship.dd <- ggplot(distdata_dd) +
   geom_histogram(aes(x = beaufort, fill = ship, color = ship), alpha = 0.5)
