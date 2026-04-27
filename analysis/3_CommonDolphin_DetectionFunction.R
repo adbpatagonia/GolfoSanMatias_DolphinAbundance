@@ -66,11 +66,11 @@ detfun_dat_dd %>%
 # truncation at 300 m eliminates ~13% of the data
 nrow(detfun_dat_dd[distance<=300])/nrow(detfun_dat_dd)
 
-trunc.dist.dd <- 300
+trunc.dist_dd <- 300
 
 ## truncated df ----
 dd.df.hr.trun <- ds(data = detfun_dat_dd,
-                    truncation = trunc.dist.dd,
+                    truncation = trunc.dist_dd,
                     key = "hr",
                     adjustment = NULL)
 
@@ -85,22 +85,22 @@ dd.df.hr.trun <- ds(data = detfun_dat_dd,
 # Here, we see favoured distances at 50, 100, 150, 200, 250, 300
 plot(dd.df.hr.trun)
 
-cutpoints.dd <- c(0, 25, 75, 125, 175, 225, 275, 300)
-table(cut(detfun_dat_dd$distance, cutpoints.dd, include.lowest = TRUE))
+cutpoints_dd <- c(0, 25, 75, 125, 175, 225, 275, 300)
+table(cut(detfun_dat_dd$distance, cutpoints_dd, include.lowest = TRUE))
 
 
 ## fit dfs ----
 dd.df.hr.trun.cp <- ds(detfun_dat_dd,
-                       truncation = trunc.dist.dd,
-                       cutpoints = cutpoints.dd,
+                       truncation = trunc.dist_dd,
+                       cutpoints = cutpoints_dd,
                        key = "hr",
                        adjustment = NULL)
 
 plot(dd.df.hr.trun.cp)
 
 dd.df.hn.trun.cp <- ds(detfun_dat_dd,
-                       truncation = trunc.dist.dd,
-                       cutpoints = cutpoints.dd,
+                       truncation = trunc.dist_dd,
+                       cutpoints = cutpoints_dd,
                        key = "hn",
                        adjustment = NULL)
 
@@ -108,16 +108,16 @@ dd.df.hn.trun.cp <- ds(detfun_dat_dd,
 ## cosine ----
 ### hr ----
 dd.df.hr.trun.cp.cos <- ds(detfun_dat_dd,
-                           truncation = trunc.dist.dd,
-                           cutpoints = cutpoints.dd,
+                           truncation = trunc.dist_dd,
+                           cutpoints = cutpoints_dd,
                            key = "hr",
                            adjustment = "cos")
 
 
 ### hn ----
 dd.df.hn.trun.cp.cos <- ds(detfun_dat_dd,
-                           truncation = trunc.dist.dd,
-                           cutpoints = cutpoints.dd,
+                           truncation = trunc.dist_dd,
+                           cutpoints = cutpoints_dd,
                            key = "hn",
                            adjustment = "cos")
 
@@ -125,16 +125,16 @@ dd.df.hn.trun.cp.cos <- ds(detfun_dat_dd,
 ## herm ----
 ### hr ----
 dd.df.hr.trun.cp.herm <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hr",
                             adjustment = "herm")
 
 
 ### hn ----
 dd.df.hn.trun.cp.herm <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hn",
                             adjustment = "herm")
 
@@ -142,15 +142,15 @@ dd.df.hn.trun.cp.herm <- ds(detfun_dat_dd,
 ## poly ----
 ### hr ----
 dd.df.hr.trun.cp.poly <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hr",
                             adjustment = "poly")
 
 ### hn ----
 dd.df.hn.trun.cp.poly <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hn",
                             adjustment = "poly")
 
@@ -181,8 +181,8 @@ plot(dd.df.hr.trun.cp)
 # Covariates ----
 ## ship ----
 dd.df.hr.trun.cp.ship <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hr",
                             adjustment = NULL,
                             formula = ~ship)
@@ -190,8 +190,8 @@ dd.df.hr.trun.cp.ship <- ds(detfun_dat_dd,
 # standardize size
 detfun_dat_dd[, size_sc := scale(size, center = TRUE, scale = TRUE)]
 dd.df.hr.trun.cp.size <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hr",
                             adjustment = NULL,
                             formula = ~size_sc,
@@ -200,16 +200,16 @@ dd.df.hr.trun.cp.size <- ds(detfun_dat_dd,
 
 ## beaufort ----
 dd.df.hr.trun.cp.beauf <- ds(detfun_dat_dd,
-                             truncation = trunc.dist.dd,
-                             cutpoints = cutpoints.dd,
+                             truncation = trunc.dist_dd,
+                             cutpoints = cutpoints_dd,
                              key = "hr",
                              adjustment = NULL,
                              formula = ~beaufort_fct)
 
 ## size + beaufort ----
 dd.df.hr.trun.cp.sizebeauf <- ds(detfun_dat_dd,
-                            truncation = trunc.dist.dd,
-                            cutpoints = cutpoints.dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
                             key = "hr",
                             adjustment = NULL,
                             formula = ~size_sc + beaufort_fct,
@@ -217,8 +217,8 @@ dd.df.hr.trun.cp.sizebeauf <- ds(detfun_dat_dd,
 
 ## size + ship ----
 dd.df.hr.trun.cp.sizeship <- ds(detfun_dat_dd,
-                                 truncation = trunc.dist.dd,
-                                 cutpoints = cutpoints.dd,
+                                 truncation = trunc.dist_dd,
+                                 cutpoints = cutpoints_dd,
                                  key = "hr",
                                  adjustment = NULL,
                                  formula = ~size_sc + ship,
@@ -226,8 +226,8 @@ dd.df.hr.trun.cp.sizeship <- ds(detfun_dat_dd,
 
 ## beaufort + ship ----
 dd.df.hr.trun.cp.shipbeauf <- ds(detfun_dat_dd,
-                                truncation = trunc.dist.dd,
-                                cutpoints = cutpoints.dd,
+                                truncation = trunc.dist_dd,
+                                cutpoints = cutpoints_dd,
                                 key = "hr",
                                 adjustment = NULL,
                                 formula = ~beaufort_fct + ship)
@@ -251,10 +251,10 @@ plot(dd.df.hr.trun.cp.size$ddf,
      main = "Common dolphin",
      showpoints = TRUE)
 
-size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist.dd, .(size_sc)],
+size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
                       probs = c(0.1, 0.5, 0.9),
                       na.rm = TRUE)
-size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist.dd, .(size)],
+size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
                          probs = c(0.1, 0.5, 0.9),
                          na.rm = TRUE)
 
@@ -286,6 +286,13 @@ add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=4), col
 legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 3", "Beaufort 4"),
        col=c("red", "blue", "darkgreen", "purple", "orange"), lwd=2)
 
+# uneven sample size - most samples taken at beaufort 1 to 3
+# patterns for those categories make sense, and the differences among categories are noticeable
+# keep beaufort as covariate
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
+  group_by(beaufort_fct) %>%
+  tally()
+
 
 ### ship ----
 plot(dd.df.hr.trun.cp.ship, main="Common dolphin", showpoints=FALSE)
@@ -304,8 +311,8 @@ ggplot(distdata_dd,
   ylim(0, 20) +
   geom_smooth(method = "lm")
 
-ggplot(distdata_dd[distance <= trunc.dist.dd]) +
-  geom_histogram(aes(x = size), col = 'black', fill = 'gray90', breaks = seq(0, trunc.dist.dd, 10))
+ggplot(distdata_dd[distance <= trunc.dist_dd]) +
+  geom_histogram(aes(x = size), col = 'black', fill = 'gray90', breaks = seq(0, max(detfun_dat_dd$size), 10))
 
 
 
@@ -313,7 +320,7 @@ ggplot(distdata_dd[distance <= trunc.dist.dd]) +
 detfun_dat_dd$sizebin <- cut(detfun_dat_dd$size,
                              breaks = seq(0, max(detfun_dat_dd$size), 10))
 
-detfun_dat_dd[distance <= trunc.dist.dd] %>%
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
   group_by(sizebin) %>%
   tally() %>%
   mutate(prop = n/sum(n))
@@ -321,7 +328,7 @@ detfun_dat_dd[distance <= trunc.dist.dd] %>%
 
 # Final Detection Function ----
 # Truncation at 300 m - discard ~13% of data
-# cutpoints:  cutpoints.dd: c(0, 25, 75, 125, 175, 225, 275, 300)
+# cutpoints:  cutpoints_dd: c(0, 25, 75, 125, 175, 225, 275, 300)
 # Hazard Rate
 # No adjustment
 # Include group size as covariate
