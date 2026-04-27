@@ -48,11 +48,13 @@ detfun_dat_lo$bin <- cut(detfun_dat_lo$p_i, breaks = seq(0, 1, .2))
 detfun_dat_lo %>%
   group_by(bin) %>%
   tally() %>%
-  mutate(prop = n/nrow(detfun_dat_lo))
+  mutate(prop = n/nrow(detfun_dat_lo)) %>%
+  kable()
 
 
-ggplot(detfun_dat_lo) +
-  geom_point(aes(x = distance, y = size))
+ggplot(detfun_dat_lo, aes(x = distance, y = size)) +
+  geom_point() +
+  geom_smooth(method = "lm")
 
 # we need to truncate
 # find distance where probability of detection is estimated to be around 0.15
@@ -68,7 +70,6 @@ detfun_dat_lo %>%
   scale_x_continuous(breaks = seq(0, 1000, 50)) +
   geom_vline(xintercept = 350, col = "red")
 
-# truncation at 300 m eliminates ~12% of the data
 nrow(detfun_dat_lo[distance<=350])/nrow(detfun_dat_lo)
 
 trunc.dist_lo <- 350
@@ -366,4 +367,4 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 
 df.lo <- dd.df.hr.trun.cp
 
-qqplot.ddf(df.lo$ddf)
+qqplot.ddf(df.lo$ddf, plot = TRUE)
