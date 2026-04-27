@@ -343,5 +343,9 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 
 df.dd <- dd.df.hr.trun.cp.sizebeauf
 
+qqdat <- qqplot.ddf(df.dd$ddf, plot = FALSE)
+plot(qqdat$cdf)
+qqplot.ddf(df.dd$ddf, plot = TRUE)
+
 
 

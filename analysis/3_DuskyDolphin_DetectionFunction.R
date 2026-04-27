@@ -365,3 +365,5 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 
 
 df.lo <- dd.df.hr.trun.cp
+
+qqplot.ddf(df.lo$ddf)
