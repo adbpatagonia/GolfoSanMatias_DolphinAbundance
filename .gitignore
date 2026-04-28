@@ -5,9 +5,12 @@
 .DS_Store
 .quarto
 
-
+assets/_quarto_old.yml
+references/distancesampling.bib.sav
 data/DistanceData/
 Transfer/
 analysis/archive/
 /.quarto/
+
+
 

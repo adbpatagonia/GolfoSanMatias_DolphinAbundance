@@ -3,7 +3,12 @@
   author: "Alejandro Buren (CONICET-IAA)"
   date: today
   format: html
+  execute:
+    echo: false
+    message: false
+    warning: false
 ---
+
 ```{r}
 #| include: false
 
@@ -19,14 +24,15 @@ Este es un proyecto liderado por la Dra Silvana Dans (CONICET - CESIMAR, UNPSJB,
 
 Los análisis se encuentran en [**este repositorio**](https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance).
 
+-   [Variables Ambientales](VariablesAmbientales.qmd)
+-   [Delfines Oscuros](DelfinesOscuros.qmd)
+-   [Delfines Comunes](DelfinesComunes.qmd)
+
+Silvana está interesada en analizar 2 preguntas:
+
+1.  la densidad de delfines cambia con la estación del año?
+
+2.  la densidad de delfines cambió con los años?
 
 
-- [Variables Ambientales](VariablesAmbientales.qmd)
-- [Delfines Oscuros](DelfinesOscuros.qmd)
-- [Delfines Comunes](DelfinesComunes.qmd)
-
-
-
-
-
-
+Estas preguntas se aplican por especie

@@ -6,13 +6,13 @@
 #| include: false
 
 library(kableExtra)
-
-source(file.path(here::here(), "analysis", "1_DuskyDolphin.R"))
+# source data ----
+source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
 ```
 
 # Censos
 
-Muchos censos en embarcaciones de oportunidad.  
+Muchos censos en embarcaciones de oportunidad.
 
 ```{r}
 #| echo: false
@@ -24,7 +24,7 @@ Muchos censos en embarcaciones de oportunidad.
 p.lo
 ```
 
-Número de censos por año y estación    
+Número de censos por año y estación
 
 ```{r}
 #| echo: false
@@ -49,8 +49,7 @@ kable(segdata_traj_m %>%
   )
 ```
 
-
-Presencia principalmente en primavera y verano. 
+Presencia principalmente en primavera y verano.
 
 ```{r}
 #| echo: false
@@ -88,22 +87,26 @@ distdata_lo_sf_m %>%
 
 
 kable(distdata_lo_sf_m %>%
-       filter(Ano > 2006) %>% 
-  group_by(season) %>% 
-  reframe(min_group = min(size),
-          max_group = max(size),
-          mean_group = round(mean(size), 1),
-          CV_group = round(sd(size)/mean(size), 1)
-            )) %>% 
+        filter(Ano > 2006) %>% 
+        group_by(season) %>% 
+        reframe(min_group = min(size),
+                max_group = max(size),
+                mean_group = round(mean(size), 1),
+                CV_group = round(sd(size)/mean(size), 1)
+        )) %>% 
   kable_styling(
     bootstrap_options = c("striped", "hover"),
     position = "center", full_width = FALSE
   )
 ```
 
-
-
 # Exploratory Data Analysis
+
+```{r}
+#| include: false
+# EDA -----
+source(file.path(here::here(), "analysis", "2_DuskyDolphin_EDA.R"))
+```
 
 ## Efecto de barco
 
@@ -125,6 +128,9 @@ p.dist.ship.dens.lo
 Tamaño muestral, discrimando por embarcación
 
 ```{r}
+#| echo: false
+#| message: false
+#| warning: false
 
 kable(distdata_lo %>% 
         group_by(ship) %>% 
@@ -170,9 +176,9 @@ p.size.ship.dens.lo
 Hay una observacion en Beaufort 4 - considerar descartarla\
 
 Hay 2 registros en Beaufort 3 (embarcación 1) a mucha distancia.\
-**Silvana**: esto es real? o hay algún problema con los datos?    
+**Silvana**: esto es real? o hay algún problema con los datos?
 
-En caso de incluir Beaufort en la función de detección, probablemente lo mejor sería descartar estos 2 registros 
+En caso de incluir Beaufort en la función de detección, probablemente lo mejor sería descartar estos 2 registros - eliminados al truncar los datos
 
 ```{r}
 #| echo: false   
@@ -229,7 +235,7 @@ No parece infuenciar la deteccion de animales
 #| warning: false  
 #| fig-width: 11
 #| fig-height: 10
- 
+
 p.grad.lo
 
 ```
@@ -283,7 +289,399 @@ p.distup.lo
 
 ```
 
-
 # Funciones de deteccion
 
+```{r}
+#| include: false
+# Detection function -----
+source(file.path(here::here(), "analysis", "3_DuskyDolphin_DetectionFunction.R"))
+```
+
+## Datos
+
+Eliminar una observacion con Beaufort = 4
+
+## Funciones de detección básicas
+
+Ajustamos modelos half-normal y hazard rate
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+
+plot(lo.df.hn, main = "Half normal")
+```
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+
+plot(lo.df.hr, main = "Hazard rate")
+```
+
+## Truncar datos
+
+Los datos tomados a una gran distancia a contribuyen poca información a la estimación de la forma de la función de detección a distancias cortas y puede resultar en un ajuste pobre y con varianza alta. Por ende, es práctica común truncar los datos.
+
+Aquí se grafica el tamaño grupal como función de la distancia a la que fueron registrados. Se detectaron grupos hasta casi 900m de distancia de la trayectoria de la embarcación. Esto es un curioso, dado que los 2 grupos avistados a mas de 850m son de 1 delfín cada uno.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+
+ggplot(detfun_dat_lo, aes(x = distance, y = size)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+Consejo práctico recibido en curso de Distance Sampling: "*consider reducing the truncation distance, w, if more than 5% of the Pa(zi) are \<0.2, or if any are less than 0.1*". Probabilidades (Pa) pequeñas tienen mucha influencia en la estimación de abundancia, porque entran en el denominador del estimador Horvitz-Thompson.
+
+Estas son las proporciones de observaciones con diferentes Pa (estimadas usando una función half-normal. 8% de las observaciones son menores a 0.2, y hay `r nrow(detfun_dat_lo[p_i < 0.1])` observaciones con Pa \< 0.1 (no mostrado en la table). Por ende, truncar los datos
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false 
+
+detfun_dat_lo %>%
+  group_by(bin) %>%
+  tally() %>%
+  mutate(prop = round(n/nrow(detfun_dat_lo), 2)) %>% 
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", 
+    full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em")
+```
+
+@Buckland2001 (p. 16) sugiere truncar donde la probabilidad de detección es \~0.15. Aquí se grafica la función de detección (half-normal). Esta distancia es \~`r trunc.dist_lo`m. Al truncar a esa distancia, se eliminan `r nrow(detfun_dat_lo[distance>450])` datos (\~ `r round(100 - nrow(detfun_dat_lo[distance <= trunc.dist_lo])/nrow(detfun_dat_lo) * 100, 1)`% de los datos).
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+detfun_dat_lo %>%
+  distinct(distance, p_i) %>%
+  ggplot(.) +
+  geom_line(aes(x = distance, y = p_i)) +
+  geom_hline(yintercept = 0.15, col = "red") +
+  scale_x_continuous(breaks = seq(0, 1000, 50)) +
+  geom_vline(xintercept = trunc.dist_lo, col = "red")
+```
+
+Ajustamos los modelos half-normal y hazard rate con los datos truncados. El modelo half-normal es mas parsimonioso.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+AIC(lo.df.hr.trun,
+    lo.df.hn.trun
+    
+) %>%
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+
+```
+
+## Datos agrupados
+
+Idealmente, las distancias transversales desde el trackline deben ser tomadas exactas. Sin embargo, es común que los observadores redondeen las distancias al tomarlas.
+
+Este es un gráfico de las distancias a las que fueron tomadas las observaciones, con la función de detección half-normal (observaciones truncadas a `r trunc.dist_lo`). Se ve que las distancias fueron redondeadas en 0, 100, 200, 300, 400.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun)
+```
+
+@Buckland2015DistanceSampling (p. 68)
+
+> "The Montrave Case Study: Line Transect Sampling" :
+>
+> > \[...\] We see from Fig. 5.4 that there is rounding in the data. Seven distances were each recorded four times or more, and all are divisible by 5: 5, 15, 20, 25, 35, 45, 50 m \[...\]
+>
+> \[...\] To assess model fit, as distinct from revealing rounding in the data, we would like to select cutpoints both for our histogram and for the χ^2^ goodness-of-fit test to avoid these favoured distances. Here, we use the following cutpoints: 0, 12.5, 22.5, 32.5, 42.5, 52.5, 62.5, 77.5, 95 m. Note the use of wider intervals at larger distances, where smaller numbers of birds are detected \[...\]\
+
+Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_lo`.\
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+plot(lo.df.hn.trun.cp)
+```
+
+Ajustamos los modelos half-normal y hazard rate con los datos truncados y aplicando los cutpoints para lidiar con la agrupación de datos. El modelo half-normal es mas parsimonioso.\
+Utilizar el modelo half-normal.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+AIC(lo.df.hr.trun.cp,
+    lo.df.hn.trun.cp
+    
+) %>%
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+
+```
+
+## Términos de ajuste
+
+Distance allows the selection of three types of series (one type per model)
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+data.frame(
+  `Key function` = c("Uniform", "Half normal", "Hazard rate"),
+  `Series adjustment` = c("Cosine", "Hermite polynomial", "Simple polynomial"),
+  check.names = FALSE
+) %>% 
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    full_width = FALSE
+  ) %>% 
+  row_spec(0, background = "#4a9ab5", color = "white") |>
+  column_spec(1, background = "#b8d4e0") |>
+  column_spec(2, background = "#ddeef4")
+```
+
+Aplicamos los terminos de ajuste a los modelos half-normal y hazard rate
+
+Los modelos half-normal, con y sin termino de ajuste, no pueden distinguirse. Retener el modelo más sencillo.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+AIC(lo.df.hr.trun.cp,
+    lo.df.hn.trun.cp,
+    lo.df.hr.trun.cp.poly,
+    lo.df.hn.trun.cp.herm
+) %>%
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+
+```
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun.cp, main = "Half normal - no adjustment")
+
+```
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+
+plot(lo.df.hn.trun.cp.herm, main = "Half normal - Hermite polynomial adjustment")
+```
+
+## Covariables
+
+Analizamos incluir
+
+-   embarcación\
+-   estado del mar (Beaufort)
+
+en las funciones de detección
+
+La función de detección mas parsimoniosa incluye el estado del mar
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+AIC(lo.df.hn.trun.cp,
+    lo.df.hn.trun.cp.beauf,
+    lo.df.hn.trun.cp.ship,
+    lo.df.hn.trun.cp.shipbeauf
+) %>%
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+```
+
+### Efecto del estado del mar
+
+Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.
+
+Nótese que los patrones no siguen el patrón esperado; uno esperaría que con Beaufort 0 la detección a distancia fuese mayor. Sin embargo, es la función con peor detección
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=0), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=1), col='blue', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=2), col= "darkgreen", lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=3), col='purple', lwd=2, lty=1)
+# add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=4), col='orange', lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 3"),
+       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
+
+```
+
+Probablemente sea un problema de tamaño muestral discriminado por estado del mar. Hay pocos registros en Beaufort 0, la mayoría de los registros fueron tomados en Beaufort 1 y 2, y las diferencias entre estas 2 curvas es mínima.\
+Conclusión: no utilizar estado del mar como covariable.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(beaufort_fct) %>%
+  tally() %>% 
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") 
+```
+
+### Efecto de embarcación
+
+No existen diferencias entre las curvas de las dos embarcaciones.\
+Conclusión: no utilizar embarcación como covariable.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun.cp.ship, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.ship, data = data.frame(ship=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.ship, data = data.frame(ship=2), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Ship 1", "Ship 2"),
+       col=c("red",  "darkgreen"), lwd=2)
+
+```
+
+## Conclusión de función de detección
+
+Truncar en `trunc.dist_lo`: `r trunc.dist_lo`m - esto descarta `r nrow(detfun_dat_lo[distance > trunc.dist_lo])` datos (\~ `r round(100 - nrow(detfun_dat_lo[distance <= trunc.dist_lo])/nrow(detfun_dat_lo) * 100, 1)`% de los datos)
+
+cutpoints: `cutpoints_lo`: `r cutpoints_lo`
+
+Half normal\
+No adjustment term\
+No covariate
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+invisible(capture.output(qqplot.ddf(df.lo$ddf, plot = TRUE)))
+```
+
 # Density surface models
+
+@Miller2013SpatialModels:
+
+area of segment *j* is *A~j~ = 2wl~j~*
+
+*l~j~* es la variable `segdata$Effort`     
+
+*w* es la distancia de truncado `trunc.dist_lo`: `r trunc.dist_lo`m 
+
+Los largos de los segmentos *l~j~* en el objeto segdata son: 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+segdata %>% 
+  group_by(Effort) %>% 
+  tally() %>% 
+  rename(`Largo segmento (m)` = Effort) %>% 
+  kable(
+    align = c("c", "c")
+  ) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em")
+```
+
+Por qué hay 6 segmentos de largo menor a 800 m?
+
+
+
+# Referencias

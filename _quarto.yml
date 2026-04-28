@@ -3,20 +3,39 @@ project:
   output-dir: docs
 
 website:
-  title: "Density Surface Models, Golfo San Matias. Delfines Oscuro y Común"
+  title: "Density Surface Models in Golfo San Matías"
+  favicon: assets/favicon.png
   navbar:
+    background: primary
+    search: true
     left:
-      - text: "Home"
+      - text: Home
         href: index.qmd
-      - text: "Variables Ambientales"
+      - text: Variables Ambientales
         href: VariablesAmbientales.qmd
-      - text: "Delfines Comunes"
+      - text: Delfines Comunes
         href: DelfinesComunes.qmd
-      - text: "Delfines Oscuros"
+      - text: Delfines Oscuros
         href: DelfinesOscuros.qmd
+    right:
+      - icon: github
+        href: https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance
+    page-footer:
+      left: "Alejandro Buren"
+
 
 
 format:
   html:
     theme: cosmo
     toc: true
+    toc-location: right
+    smooth-scroll: true
+    number-sections: true
+    code-fold: show
+    code-summary: "Show code"
+    fig-responsive: true
+
+bibliography: references/distancesampling.bib
+csl: https://www.zotero.org/styles/marine-ecology-progress-series
+link-citations: true
