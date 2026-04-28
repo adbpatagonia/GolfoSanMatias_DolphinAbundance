@@ -75,6 +75,10 @@ dd.df.hr.trun <- ds(data = detfun_dat_dd,
                     adjustment = NULL)
 
 
+dd.df.hn.trun <- ds(data = detfun_dat_dd,
+                    truncation = trunc.dist_dd,
+                    key = "hn",
+                    adjustment = NULL)
 # rounding in data -----
 # See p. 68 in Bucklnd et al 2015 - "The Montrave Case Study: Line Transect Sampling"
 # there was evident rounding in distances that increased by 5 meters
@@ -105,32 +109,7 @@ dd.df.hn.trun.cp <- ds(detfun_dat_dd,
                        adjustment = NULL)
 
 # adjustment terms ----
-## cosine ----
-### hr ----
-dd.df.hr.trun.cp.cos <- ds(detfun_dat_dd,
-                           truncation = trunc.dist_dd,
-                           cutpoints = cutpoints_dd,
-                           key = "hr",
-                           adjustment = "cos")
-
-
-### hn ----
-dd.df.hn.trun.cp.cos <- ds(detfun_dat_dd,
-                           truncation = trunc.dist_dd,
-                           cutpoints = cutpoints_dd,
-                           key = "hn",
-                           adjustment = "cos")
-
-
 ## herm ----
-### hr ----
-dd.df.hr.trun.cp.herm <- ds(detfun_dat_dd,
-                            truncation = trunc.dist_dd,
-                            cutpoints = cutpoints_dd,
-                            key = "hr",
-                            adjustment = "herm")
-
-
 ### hn ----
 dd.df.hn.trun.cp.herm <- ds(detfun_dat_dd,
                             truncation = trunc.dist_dd,
@@ -147,25 +126,14 @@ dd.df.hr.trun.cp.poly <- ds(detfun_dat_dd,
                             key = "hr",
                             adjustment = "poly")
 
-### hn ----
-dd.df.hn.trun.cp.poly <- ds(detfun_dat_dd,
-                            truncation = trunc.dist_dd,
-                            cutpoints = cutpoints_dd,
-                            key = "hn",
-                            adjustment = "poly")
 
 
 ## Model selection ------
-# Several models cannot be distinguished from each other -- retain the simplest
 # hazard rate
 # no adjustment terms
 AIC(dd.df.hr.trun.cp,
     dd.df.hn.trun.cp,
-    dd.df.hr.trun.cp.cos,
-    dd.df.hn.trun.cp.cos,
     dd.df.hr.trun.cp.poly,
-    dd.df.hn.trun.cp.poly,
-    dd.df.hr.trun.cp.herm,
     dd.df.hn.trun.cp.herm
 ) %>%
   mutate(deltaAIC = AIC - min(AIC)) %>%

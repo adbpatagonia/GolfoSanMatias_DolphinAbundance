@@ -39,11 +39,11 @@ lo.df.hn <- ds(detfun_dat_lo,
 
 
 # detection probability for each observed distance
-detfun_dat_lo$p_i <- mrds::detfct(distance = detfun_dat_lo$distance, lo.df.hr$ddf$ds$aux$ddfobj)
+detfun_dat_lo$p_i <- mrds::detfct(distance = detfun_dat_lo$distance, lo.df.hn$ddf$ds$aux$ddfobj)
 
 # 10 observations with p_i < 0.1
 detfun_dat_lo[p_i < 0.1]
-# 13% of observations with P_i <=0.2
+# >8% of observations with P_i <=0.2
 detfun_dat_lo$bin <- cut(detfun_dat_lo$p_i, breaks = seq(0, 1, .2))
 detfun_dat_lo %>%
   group_by(bin) %>%
@@ -59,8 +59,8 @@ ggplot(detfun_dat_lo, aes(x = distance, y = size)) +
 # we need to truncate
 # find distance where probability of detection is estimated to be around 0.15
 
-# the distance is probably ~ 350m
-detfun_dat_lo[data.table::between(x = p_i, lower = 0.11, upper = 0.19)]
+# the distance is probably ~ 450m
+detfun_dat_lo[data.table::between(x = p_i, lower = 0.09, upper = 0.25)]
 
 detfun_dat_lo %>%
   distinct(distance, p_i) %>%
@@ -68,13 +68,18 @@ detfun_dat_lo %>%
   geom_line(aes(x = distance, y = p_i)) +
   geom_hline(yintercept = 0.15, col = "red") +
   scale_x_continuous(breaks = seq(0, 1000, 50)) +
-  geom_vline(xintercept = 350, col = "red")
+  geom_vline(xintercept = 450, col = "red")
 
-nrow(detfun_dat_lo[distance<=350])/nrow(detfun_dat_lo)
+nrow(detfun_dat_lo[distance<=450])/nrow(detfun_dat_lo)
 
-trunc.dist_lo <- 350
+trunc.dist_lo <- 450
 
 ## truncated df ----
+lo.df.hn.trun <- ds(data = detfun_dat_lo,
+                    truncation = trunc.dist_lo,
+                    key = "hn",
+                    adjustment = NULL)
+
 lo.df.hr.trun <- ds(data = detfun_dat_lo,
                     truncation = trunc.dist_lo,
                     key = "hr",
@@ -88,12 +93,12 @@ lo.df.hr.trun <- ds(data = detfun_dat_lo,
 # cutpoints: 0, 12.5, 22.5, 32.5, 42.5, 52.5, 62.5, 77.5, 95
 
 # Here, we see favoured distances at 0, 100,  200,  300
-plot(lo.df.hr.trun)
+plot(lo.df.hn.trun)
 
 
-cutpoints_lo <- c(0,  75, 125, 175, 225, 275, 325, 375)
+cutpoints_lo <- c(0,  75, 125, 175, 225, 275, 325, 375, 425)
 # tried different cutpoints here, and this is the one that seems to make most sense
-cutpoints_lo <- c(0, 50, 150, 250, 350)
+cutpoints_lo <- c(0, 50, 150, 250, 350, 450)
 
 table(cut(detfun_dat_lo$distance, cutpoints_lo, include.lowest = TRUE))
 
@@ -115,34 +120,8 @@ lo.df.hn.trun.cp <- ds(detfun_dat_lo,
 plot(lo.df.hn.trun.cp)
 
 # adjustment terms ----
-## cosine ----
-### hr ----
-# Error in model fitting, returning: hazard-rate key function with cosine(2) adjustments
-# Number of parameters to estimate exceed number of distance bins minus 1
-lo.df.hr.trun.cp.cos <- ds(detfun_dat_lo,
-                           truncation = trunc.dist_lo,
-                           cutpoints = cutpoints_lo,
-                           key = "hr",
-                           adjustment = "cos")
-
-
-### hn ----
-lo.df.hn.trun.cp.cos <- ds(detfun_dat_lo,
-                           truncation = trunc.dist_lo,
-                           cutpoints = cutpoints_lo,
-                           key = "hn",
-                           adjustment = "cos")
-
 
 ## herm ----
-### hr ----
-lo.df.hr.trun.cp.herm <- ds(detfun_dat_lo,
-                            truncation = trunc.dist_lo,
-                            cutpoints = cutpoints_lo,
-                            key = "hr",
-                            adjustment = "herm")
-
-
 ### hn ----
 lo.df.hn.trun.cp.herm <- ds(detfun_dat_lo,
                             truncation = trunc.dist_lo,
@@ -161,24 +140,16 @@ lo.df.hr.trun.cp.poly <- ds(detfun_dat_lo,
                             key = "hr",
                             adjustment = "poly")
 
-### hn ----
-lo.df.hn.trun.cp.poly <- ds(detfun_dat_lo,
-                            truncation = trunc.dist_lo,
-                            cutpoints = cutpoints_lo,
-                            key = "hn",
-                            adjustment = "poly")
+
 
 ## Model selection ------
-# Several models cannot be distinguished from each other -- retain the simplest
+# Los modelos half-normal, con y sin termino de ajuste, no pueden distinguirse.
+# Retener el modelo más sencillo.
 # half normal
 # no adjustment terms
 AIC(lo.df.hr.trun.cp,
     lo.df.hn.trun.cp,
-
-    lo.df.hn.trun.cp.cos,
-
-    lo.df.hn.trun.cp.poly,
-    lo.df.hr.trun.cp.herm,
+    lo.df.hr.trun.cp.poly,
     lo.df.hn.trun.cp.herm
 ) %>%
   mutate(deltaAIC = AIC - min(AIC)) %>%
@@ -250,10 +221,10 @@ lo.df.hn.trun.cp.shipbeauf <- ds(detfun_dat_lo,
 # given the small effects of each of the covariates (see below), use the simplest model, i.e. no covariate
 AIC(lo.df.hn.trun.cp,
     lo.df.hn.trun.cp.beauf,
-    lo.df.hn.trun.cp.size,
+    # lo.df.hn.trun.cp.size,
     lo.df.hn.trun.cp.ship,
-    lo.df.hn.trun.cp.sizebeauf,
-    lo.df.hn.trun.cp.sizeship,
+    # lo.df.hn.trun.cp.sizebeauf,
+    # lo.df.hn.trun.cp.sizeship,
     lo.df.hn.trun.cp.shipbeauf
 ) %>%
   mutate(deltaAIC = AIC - min(AIC)) %>%
@@ -365,6 +336,6 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 ## cp: use cutpoints to deal with grouped data
 
 
-df.lo <- dd.df.hr.trun.cp
+df.lo <- lo.df.hn.trun.cp
 
 qqplot.ddf(df.lo$ddf, plot = TRUE)
