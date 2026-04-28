@@ -160,8 +160,8 @@ Distance::gof_ds(lo.df.hn.trun.cp)
 
 
 
-plot(lo.df.hn.trun.cp)
-plot(lo.df.hn.trun.cp.cos)
+# plot(lo.df.hn.trun.cp)
+# plot(lo.df.hn.trun.cp.cos)
 
 # Covariates ----
 ## ship ----

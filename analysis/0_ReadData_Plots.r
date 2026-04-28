@@ -100,17 +100,22 @@ distdata_lo <- distdata_lo %>%
     Mes %in% c("Julio", "Agosto", "Septiembre") ~ "Winter",
     Mes %in% c("Octubre", "Noviembre", "Diciembre") ~ "Spring"))
 
-obsdata_dd <- merge(
-  obsdata_dd,
-  distinct(segdata[,.(Sample.Label, Mes, season)]),
-  by = "Sample.Label",
-  all.x = TRUE)
+obsdata_dd[, Mes := as.integer(substr(Sample.Label, 5, 6))]
+obsdata_dd <-obsdata_dd %>%
+  mutate(season = case_when(
+    Mes < 4 ~ "Summer",
+    Mes %in% c(4, 5, 6) ~ "Fall",
+    Mes %in% c(7, 8, 9) ~ "Winter",
+    Mes > 9 ~ "Spring"))
 
-obsdata_lo <- merge(
-  obsdata_lo,
-  distinct(segdata[,.(Sample.Label, Mes, season)]),
-  by = "Sample.Label",
-  all.x = TRUE)
+obsdata_lo[, Mes := as.integer(substr(Sample.Label, 5, 6))]
+obsdata_lo <-obsdata_lo %>%
+  mutate(season = case_when(
+    Mes < 4 ~ "Summer",
+    Mes %in% c(4, 5, 6) ~ "Fall",
+    Mes %in% c(7, 8, 9) ~ "Winter",
+    Mes > 9 ~ "Spring"))
+
 
 segdata_sf_m  <-  st_as_sf(segdata,
                            coords = c("x","y"),

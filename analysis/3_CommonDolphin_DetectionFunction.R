@@ -143,8 +143,8 @@ AIC(dd.df.hr.trun.cp,
 Distance::gof_ds(dd.df.hr.trun.cp)
 
 
-plot(dd.df.hn.trun.cp.cos)
-plot(dd.df.hr.trun.cp)
+# plot(dd.df.hn.trun.cp.cos)
+# plot(dd.df.hr.trun.cp)
 
 # Covariates ----
 ## ship ----
