@@ -232,9 +232,7 @@ p.slope.dd
 
 ```
 
-#### Gradiente
-
-(No estoy seguro que es esta variable)
+#### Gradiente de temperatura superficial     
 
 No parece infuenciar la deteccion de animales
 
@@ -283,9 +281,7 @@ p.clo.dd
 
 ```
 
-#### dist.up
-
-(No estoy seguro que es)
+#### Distancia a upwellings     
 
 ```{r}
 #| echo: false   
