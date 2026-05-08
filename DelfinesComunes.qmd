@@ -549,7 +549,7 @@ Analizamos incluir
 en las funciones de detección
 
 
-La función de detección mas parsimoniosa incluye el estado del mar
+La función de detección mas parsimoniosa incluye el estado del mar y el tamaño grupal
 
 ```{r}
 #| echo: false   
@@ -558,7 +558,10 @@ La función de detección mas parsimoniosa incluye el estado del mar
 
 AIC(dd.df.hr.trun.cp,
     dd.df.hr.trun.cp.beauf,
+    dd.df.hr.trun.cp.size,
     dd.df.hr.trun.cp.ship,
+    dd.df.hr.trun.cp.sizebeauf,
+    dd.df.hr.trun.cp.sizeship,
     dd.df.hr.trun.cp.shipbeauf
 ) %>%
   mutate(deltaAIC = AIC - min(AIC)) %>%
@@ -575,6 +578,48 @@ AIC(dd.df.hr.trun.cp,
   column_spec(3, width = "8em") %>%
   column_spec(4, width = "8em")
 ```
+
+### Efecto de tamaño grupal   
+
+Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.   
+Las líneas de colores representan la probabilidad de detección de grupos que representan los quantiles 10% (1 delfín), 50% (mediana: 4 delfines), y 90% (20 delfines) de tamaños grupales observados.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(dd.df.hr.trun.cp.size$ddf,
+     main = "Common dolphin",
+     showpoints = TRUE)
+
+size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
+                      probs = c(0.1, 0.5, 0.9),
+                      na.rm = TRUE)
+size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
+                         probs = c(0.1, 0.5, 0.9),
+                         na.rm = TRUE)
+
+
+cols <- c("red", "darkgreen", "blue")
+
+for(i in seq_along(size_vals)) {
+  add_df_covar_line(
+    dd.df.hr.trun.cp.size,
+    data = data.frame(size_sc = size_vals[i]),
+    col = cols[i],
+    lwd = 2,
+    lty = 1
+  )
+}
+
+legend("bottomleft",
+       legend = paste0("Size = ", round(size_vals_or, 1)),
+       col = cols,
+       lwd = 2)
+```
+
+Conclusión:  utilizar tamaño grupal como covariable.
 
 ### Efecto del estado del mar
 
@@ -652,7 +697,7 @@ legend("topright", legend=c("Ship 1", "Ship 2"),
 
 ```
 
-## Conclusión of función de detección
+## Conclusión de función de detección
 
 Truncar en `trunc.dist_dd`: `r trunc.dist_dd`m - esto descarta `r nrow(detfun_dat_dd[distance>450])` datos (\~ `r round(100 - nrow(detfun_dat_dd[distance<=450])/nrow(detfun_dat_dd) * 100, 1)`% de los datos)
 
@@ -660,7 +705,7 @@ cutpoints: `cutpoints_dd`: `r cutpoints_dd`
 
 Hazard rate\     
 No adjustment term\
-Covariate: Beaufort state
+covariables: Beaufort state y tamaño grupal
 
 ```{r}
 #| echo: false
