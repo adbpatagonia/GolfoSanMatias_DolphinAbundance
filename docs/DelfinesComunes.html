@@ -175,7 +175,11 @@ div.csl-indent {
   <li><a href="#efecto-de-tamaño-grupal" id="toc-efecto-de-tamaño-grupal" class="nav-link" data-scroll-target="#efecto-de-tamaño-grupal"><span class="header-section-number">3.6.3</span> Efecto de tamaño grupal</a></li>
   <li><a href="#efecto-de-embarcación" id="toc-efecto-de-embarcación" class="nav-link" data-scroll-target="#efecto-de-embarcación"><span class="header-section-number">3.6.4</span> Efecto de embarcación</a></li>
   </ul></li>
-  <li><a href="#conclusión-de-función-de-detección" id="toc-conclusión-de-función-de-detección" class="nav-link" data-scroll-target="#conclusión-de-función-de-detección"><span class="header-section-number">3.7</span> Conclusión de función de detección</a></li>
+  <li><a href="#conclusión-de-función-de-detección" id="toc-conclusión-de-función-de-detección" class="nav-link" data-scroll-target="#conclusión-de-función-de-detección"><span class="header-section-number">3.7</span> Conclusión de función de detección</a>
+  <ul class="collapse">
+  <li><a href="#qq-plots" id="toc-qq-plots" class="nav-link" data-scroll-target="#qq-plots"><span class="header-section-number">3.7.1</span> QQ plots</a></li>
+  <li><a href="#estimaciones-con-los-2-modelos" id="toc-estimaciones-con-los-2-modelos" class="nav-link" data-scroll-target="#estimaciones-con-los-2-modelos"><span class="header-section-number">3.7.2</span> Estimaciones con los 2 modelos</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#density-surface-models" id="toc-density-surface-models" class="nav-link" data-scroll-target="#density-surface-models"><span class="header-section-number">4</span> Density surface models</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">5</span> Referencias</a></li>
@@ -218,91 +222,99 @@ div.csl-indent {
 <tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">Ano</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Spring</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Summer</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Fall</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Winter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Summer</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">TOTAL</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2007</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">2006</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2008</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2009</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
 <td style="text-align: right;">2010</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: right;">4</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">2013</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2014</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2015</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">2014</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">12</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
 <td style="text-align: right;">2016</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">5</td>
 <td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">17</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">2017</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">11</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;">2018</td>
 <td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 </tbody>
@@ -1084,11 +1096,96 @@ Conclusión: no utilizar embarcación como covariable.</p>
 No adjustment term<br>
 covariables: Beaufort state</p>
 <p>tamaño grupal??</p>
+<section id="qq-plots" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="qq-plots"><span class="header-section-number">3.7.1</span> QQ plots</h3>
+<section id="beaufort-agrupado-tamaño-grupal" class="level4" data-number="3.7.1.1">
+<h4 data-number="3.7.1.1" class="anchored" data-anchor-id="beaufort-agrupado-tamaño-grupal"><span class="header-section-number">3.7.1.1</span> Beaufort (agrupado) + Tamaño grupal</h4>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="beaufort-agrupado" class="level4" data-number="3.7.1.2">
+<h4 data-number="3.7.1.2" class="anchored" data-anchor-id="beaufort-agrupado"><span class="header-section-number">3.7.1.2</span> Beaufort (agrupado)</h4>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="estimaciones-con-los-2-modelos" class="level3" data-number="3.7.2">
+<h3 data-number="3.7.2" class="anchored" data-anchor-id="estimaciones-con-los-2-modelos"><span class="header-section-number">3.7.2</span> Estimaciones con los 2 modelos</h3>
+<section id="beaufort-agrupado-tamaño-grupal-1" class="level4" data-number="3.7.2.1">
+<h4 data-number="3.7.2.1" class="anchored" data-anchor-id="beaufort-agrupado-tamaño-grupal-1"><span class="header-section-number">3.7.2.1</span> Beaufort (agrupado) + Tamaño grupal</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Distance sampling analysis object
+
+Summary for ds object
+Number of observations :  632 
+Distance range         :  0  -  325 
+AIC                    :  2245.716 
+Optimisation           :  mrds (nlminb) 
+
+Detection function:
+ Hazard-rate key function 
+
+Detection function parameters 
+Scale coefficient(s): 
+                estimate        se
+(Intercept)    5.2235525 0.1003703
+size_sc        0.2604435 0.1891211
+beaufort_grp2 -0.3864780 0.1248732
+beaufort_grp3 -0.5717508 0.1332699
+
+Shape coefficient(s):  
+             estimate        se
+(Intercept) 0.8867266 0.1151604
+
+                        Estimate         SE         CV
+Average p              0.5255392  0.0242266 0.04609856
+N in covered region 1202.5744238 64.9564003 0.05401445</code></pre>
+</div>
+</div>
+</section>
+<section id="beaufort-agrupado-1" class="level4" data-number="3.7.2.2">
+<h4 data-number="3.7.2.2" class="anchored" data-anchor-id="beaufort-agrupado-1"><span class="header-section-number">3.7.2.2</span> Beaufort (agrupado)</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Distance sampling analysis object
+
+Summary for ds object
+Number of observations :  632 
+Distance range         :  0  -  325 
+AIC                    :  2253.389 
+Optimisation           :  mrds (nlminb) 
+
+Detection function:
+ Hazard-rate key function 
+
+Detection function parameters 
+Scale coefficient(s): 
+                estimate         se
+(Intercept)    5.2296956 0.09733819
+beaufort_grp2 -0.4187691 0.12595744
+beaufort_grp3 -0.6207951 0.13390909
+
+Shape coefficient(s):  
+            estimate        se
+(Intercept) 0.879054 0.1165229
+
+                        Estimate          SE         CV
+Average p              0.5310562  0.02448186 0.04610031
+N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
+</div>
+</div>
+<p>Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e.&nbsp;1%).</p>
+</section>
+</section>
 </section>
 </section>
 <section id="density-surface-models" class="level1" data-number="4">
