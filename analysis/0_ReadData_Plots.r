@@ -295,7 +295,7 @@ p.dd <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          aes(color = factor(season)),
+          aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   # geom_sf(data = pred.polys_m, color = "lightblue", fill = "transparent", alpha = 0.1) +
@@ -303,7 +303,7 @@ p.dd <- ggplot() +
   geom_sf(data = distdata_dd_sf_m %>%
             filter(Ano > 2006),
           aes(size = size,
-              color = factor(season)),
+              color = season),
           alpha = 0.5
   ) +
   labs(title = "Common Dolphin",
