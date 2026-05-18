@@ -388,7 +388,7 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 ## size: group size as covariate to the detection function
 ## beauf: beaufort sea state as covariate
 
-df.dd <- dd.df.hr.trun.cp.sizebeauf
+df.dd <- dd.df.hr.trun.cp.beaufgrp
 
 qqdat <- qqplot.ddf(df.dd$ddf, plot = FALSE)
 plot(qqdat$cdf)

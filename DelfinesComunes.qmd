@@ -33,7 +33,7 @@ Número de censos por año y estación
 #| warning: false
 
 kable(segdata_traj_m %>%
-        filter(Ano > 2006) %>% 
+        # filter(Ano > 2006) %>% 
         distinct(Ano, season, traj_id) %>% 
         group_by(Ano, season) %>% 
         reframe(n.surveys = n()) %>% 
@@ -58,7 +58,7 @@ Presencia a o largo de todo el año
 #| warning: false
 
 distdata_dd_sf_m %>%
-  filter(Ano > 2006) %>% 
+  # filter(Ano > 2006) %>% 
   group_by(season) %>% 
   reframe(n.delfines = sum(size)) %>% 
   kable(
@@ -774,12 +774,49 @@ covariables: Beaufort state
 
 tamaño grupal?? 
 
+### QQ plots     
+
+#### Beaufort (agrupado) + Tamaño grupal
+
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
-invisible(capture.output(qqplot.ddf(df.dd$ddf, plot = TRUE)))
+invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.sizebeaufgrp$ddf, plot = TRUE)))
 ```
+
+#### Beaufort (agrupado) 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE)))
+```
+
+### Estimaciones con los 2 modelos    
+
+#### Beaufort (agrupado) + Tamaño grupal
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+dd.df.hr.trun.cp.sizebeaufgrp$ddf
+```
+
+#### Beaufort (agrupado) 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+dd.df.hr.trun.cp.beaufgrp$ddf
+```
+
+
+Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e. 1%).   
+
 
 # Density surface models
 
