@@ -339,7 +339,7 @@ ggplot(detfun_dat_lo, aes(x = distance, y = size)) +
 
 Consejo práctico recibido en curso de Distance Sampling: "*consider reducing the truncation distance, w, if more than 5% of the Pa(zi) are \<0.2, or if any are less than 0.1*". Probabilidades (Pa) pequeñas tienen mucha influencia en la estimación de abundancia, porque entran en el denominador del estimador Horvitz-Thompson.
 
-Estas son las proporciones de observaciones con diferentes Pa (estimadas usando una función half-normal. 8% de las observaciones son menores a 0.2, y hay `r nrow(detfun_dat_lo[p_i < 0.1])` observaciones con Pa \< 0.1 (no mostrado en la table). Por ende, truncar los datos
+Estas son las proporciones de observaciones con diferentes Pa (estimadas usando una función half-normal. 8% de las observaciones son menores a 0.2, y hay `r nrow(detfun_dat_lo[p_i < 0.1])` observaciones con Pa \< 0.1 (no mostrado en la tabla). Por ende, truncar los datos
 
 ```{r}
 #| echo: false   
@@ -361,7 +361,7 @@ detfun_dat_lo %>%
   column_spec(3, width = "8em")
 ```
 
-@Buckland2001 (p. 16) sugiere truncar donde la probabilidad de detección es \~0.15. Aquí se grafica la función de detección (half-normal). Esta distancia es \~`r trunc.dist_lo`m. Al truncar a esa distancia, se eliminan `r nrow(detfun_dat_lo[distance>450])` datos (\~ `r round(100 - nrow(detfun_dat_lo[distance <= trunc.dist_lo])/nrow(detfun_dat_lo) * 100, 1)`% de los datos).
+@Buckland2001 (p. 16) sugiere truncar donde la probabilidad de detección es \~0.15. Aquí se grafica la función de detección (half-normal). Esta distancia es \~`r trunc.dist_lo`m. Al truncar a esa distancia, se eliminan `r nrow(detfun_dat_lo[distance>trunc.dist_lo])` datos (\~ `r round(100 - nrow(detfun_dat_lo[distance <= trunc.dist_lo])/nrow(detfun_dat_lo) * 100, 1)`% de los datos).
 
 ```{r}
 #| echo: false   
@@ -536,6 +536,7 @@ plot(lo.df.hn.trun.cp.herm, main = "Half normal - Hermite polynomial adjustment"
 Analizamos incluir
 
 -   embarcación\
+-   tamaño grupal\
 -   estado del mar (Beaufort)
 
 en las funciones de detección
@@ -549,7 +550,10 @@ La función de detección mas parsimoniosa incluye el estado del mar
 
 AIC(lo.df.hn.trun.cp,
     lo.df.hn.trun.cp.beauf,
+    lo.df.hn.trun.cp.size,
     lo.df.hn.trun.cp.ship,
+    lo.df.hn.trun.cp.sizebeauf,
+    lo.df.hn.trun.cp.sizeship,
     lo.df.hn.trun.cp.shipbeauf
 ) %>%
   mutate(deltaAIC = AIC - min(AIC)) %>%
@@ -590,7 +594,6 @@ legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 
 ```
 
 Probablemente sea un problema de tamaño muestral discriminado por estado del mar. Hay pocos registros en Beaufort 0, la mayoría de los registros fueron tomados en Beaufort 1 y 2, y las diferencias entre estas 2 curvas es mínima.\
-Conclusión: no utilizar estado del mar como covariable.
 
 ```{r}
 #| echo: false   
@@ -607,6 +610,63 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
   ) %>% 
   column_spec(1, width = "8em") %>%
   column_spec(2, width = "8em") 
+```
+
+La forma de lidiar con esto es agrupar beaufort 0 y 1 en un grupo y 2 y 3 en un segundo grupo.   
+Ajustamos los modelos nuevamente. El modelo mas parsimonioso no incluye ninguna covariable
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+AIC(lo.df.hn.trun.cp,
+    lo.df.hn.trun.cp.beaufgrp,
+    lo.df.hn.trun.cp.size,
+    lo.df.hn.trun.cp.ship,
+    lo.df.hn.trun.cp.sizebeaufgrp,
+    lo.df.hn.trun.cp.sizeship,
+    lo.df.hn.trun.cp.shipbeaufgrp
+) %>%
+  mutate(ll = c(logLik( lo.df.hn.trun.cp),
+                logLik( lo.df.hn.trun.cp.beaufgrp),
+                logLik( lo.df.hn.trun.cp.size),
+                logLik( lo.df.hn.trun.cp.ship),
+                logLik( lo.df.hn.trun.cp.sizebeaufgrp),
+                logLik( lo.df.hn.trun.cp.sizeship),
+                logLik( lo.df.hn.trun.cp.shipbeaufgrp)) )%>%
+
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  arrange(deltaAIC) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+```
+
+### Efecto de estado del mar, agrupado    
+
+Casi no existen diferencias entre las curvas
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+plot(lo.df.hn.trun.cp.beaufgrp, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.beaufgrp, data = data.frame(beaufort_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beaufgrp, data = data.frame(beaufort_grp=2), col='blue', lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0 & 1", "Beaufort 2 & 3"),
+       col=c("red", "blue"), lwd=2)
+
+
 ```
 
 ### Efecto de embarcación
@@ -626,6 +686,49 @@ legend("topright", legend=c("Ship 1", "Ship 2"),
        col=c("red",  "darkgreen"), lwd=2)
 
 ```
+
+### Efecto de tamaño grupal   
+
+Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.   
+Las líneas de colores representan la probabilidad de detección de grupos que representan los quantiles 10% (1 delfín), 50% (mediana: 3 delfines), y 90% (9 delfines) de tamaños grupales observados.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun.cp.size$ddf,
+     main = "Common dolphin",
+     showpoints = TRUE)
+
+size_vals <- quantile(detfun_dat_lo[distance <= trunc.dist_lo, .(size_sc)],
+                      probs = c(0.1, 0.5, 0.9),
+                      na.rm = TRUE)
+size_vals_or <- quantile(detfun_dat_lo[distance <= trunc.dist_lo, .(size)],
+                         probs = c(0.1, 0.5, 0.9),
+                         na.rm = TRUE)
+
+
+cols <- c("red", "darkgreen", "blue")
+
+for(i in seq_along(size_vals)) {
+  add_df_covar_line(
+    lo.df.hn.trun.cp.size,
+    data = data.frame(size_sc = size_vals[i]),
+    col = cols[i],
+    lwd = 2,
+    lty = 1
+  )
+}
+
+legend("bottomleft",
+       legend = paste0("Size = ", round(size_vals_or, 1)),
+       col = cols,
+       lwd = 2)
+```
+
+
+
 
 ## Conclusión de función de detección
 
@@ -677,7 +780,7 @@ segdata %>%
   column_spec(2, width = "8em")
 ```
 
-Por qué hay 6 segmentos de largo menor a 800 m?
+Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
 
 

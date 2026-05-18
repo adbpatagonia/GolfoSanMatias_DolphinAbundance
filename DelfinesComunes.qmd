@@ -232,7 +232,7 @@ p.slope.dd
 
 ```
 
-#### Gradiente de temperatura superficial     
+#### Gradiente de temperatura superficial
 
 No parece infuenciar la deteccion de animales
 
@@ -281,7 +281,7 @@ p.clo.dd
 
 ```
 
-#### Distancia a upwellings     
+#### Distancia a upwellings
 
 ```{r}
 #| echo: false   
@@ -328,12 +328,11 @@ plot(dd.df.hn, main = "Half normal")
 plot(dd.df.hr, main = "Hazard rate")
 ```
 
-
 ## Truncar datos
 
 Los datos tomados a una gran distancia a contribuyen poca información a la estimación de la forma de la función de detección a distancias cortas y puede resultar en un ajuste pobre y con varianza alta. Por ende, es práctica común truncar los datos.
 
-Aquí se grafica el tamaño grupal como función de la distancia a la que fueron registrados. Se detectaron grupos hasta 2000m de distancia de la trayectoria de la embarcación. 
+Aquí se grafica el tamaño grupal como función de la distancia a la que fueron registrados. Se detectaron grupos hasta 2000m de distancia de la trayectoria de la embarcación.
 
 ```{r}
 #| echo: false
@@ -434,9 +433,7 @@ plot(dd.df.hr.trun)
 >
 > \[...\] To assess model fit, as distinct from revealing rounding in the data, we would like to select cutpoints both for our histogram and for the χ^2^ goodness-of-fit test to avoid these favoured distances. Here, we use the following cutpoints: 0, 12.5, 22.5, 32.5, 42.5, 52.5, 62.5, 77.5, 95 m. Note the use of wider intervals at larger distances, where smaller numbers of birds are detected \[...\]\
 
-Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_dd`.\ El último bin termina en 300, porque la distancia de truncado es `r trunc.dist_dd`m.
-
-
+Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_dd`. El último bin termina en 300, porque la distancia de truncado es `r trunc.dist_dd`m.
 
 ```{r}
 #| echo: false
@@ -445,11 +442,7 @@ Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_d
 plot(dd.df.hn.trun.cp)
 ```
 
-
-
-
-Ajustamos los modelos half-normal y hazard rate con los datos truncados y aplicando los cutpoints para lidiar con la agrupación de datos. El modelo hazard rate es mas parsimonioso.
-Utilizar el modelo hazard rate.
+Ajustamos los modelos half-normal y hazard rate con los datos truncados y aplicando los cutpoints para lidiar con la agrupación de datos. El modelo hazard rate es mas parsimonioso. Utilizar el modelo hazard rate.
 
 ```{r}
 #| echo: false
@@ -474,7 +467,6 @@ AIC(dd.df.hr.trun.cp,
   column_spec(4, width = "8em")
 
 ```
-
 
 ## Términos de ajuste
 
@@ -501,8 +493,7 @@ data.frame(
 
 Aplicamos los terminos de ajuste a los modelos half-normal y hazard rate
 
-
-El modelo más parsimonioso es el modelo hazard rate sin término de ajuste. 
+El modelo más parsimonioso es el modelo hazard rate sin término de ajuste.
 
 ```{r}
 #| echo: false
@@ -529,7 +520,6 @@ AIC(dd.df.hr.trun.cp,
 
 ```
 
-
 ```{r}
 #| echo: false
 #| message: false
@@ -543,11 +533,11 @@ plot(dd.df.hr.trun.cp, main = "Hazard rate - no adjustment")
 
 Analizamos incluir
 
-* embarcación
-* estado del mar (Beaufort)
+-   embarcación
+-   tamaño grupal\
+-   estado del mar (Beaufort)
 
 en las funciones de detección
-
 
 La función de detección mas parsimoniosa incluye el estado del mar y el tamaño grupal
 
@@ -579,48 +569,6 @@ AIC(dd.df.hr.trun.cp,
   column_spec(4, width = "8em")
 ```
 
-### Efecto de tamaño grupal   
-
-Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.   
-Las líneas de colores representan la probabilidad de detección de grupos que representan los quantiles 10% (1 delfín), 50% (mediana: 4 delfines), y 90% (20 delfines) de tamaños grupales observados.
-
-```{r}
-#| echo: false   
-#| message: false    
-#| warning: false
-
-plot(dd.df.hr.trun.cp.size$ddf,
-     main = "Common dolphin",
-     showpoints = TRUE)
-
-size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
-                      probs = c(0.1, 0.5, 0.9),
-                      na.rm = TRUE)
-size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
-                         probs = c(0.1, 0.5, 0.9),
-                         na.rm = TRUE)
-
-
-cols <- c("red", "darkgreen", "blue")
-
-for(i in seq_along(size_vals)) {
-  add_df_covar_line(
-    dd.df.hr.trun.cp.size,
-    data = data.frame(size_sc = size_vals[i]),
-    col = cols[i],
-    lwd = 2,
-    lty = 1
-  )
-}
-
-legend("bottomleft",
-       legend = paste0("Size = ", round(size_vals_or, 1)),
-       col = cols,
-       lwd = 2)
-```
-
-Conclusión:  utilizar tamaño grupal como covariable.
-
 ### Efecto del estado del mar
 
 Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.
@@ -644,7 +592,6 @@ legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 
 
 Probablemente sea un problema de tamaño muestral discriminado por estado del mar. Hay pocos registros en Beaufort 0, la mayoría de los registros fueron tomados en Beaufort 1, 2, y 3.
 
-
 ```{r}
 #| echo: false   
 #| message: false    
@@ -661,27 +608,145 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
   column_spec(1, width = "8em") %>%
   column_spec(2, width = "8em")
 ```
-Este es el mismo gráfico, mostrando solo Beaufort 1 a 3.  
-Los patrones son los esperados, y hay diferencias marcadas entre los valores de Beaufort.
-Conclusión:  utilizar estado del mar como covariable.
+
+La forma de lidiar con esto es agrupar beaufort 0 y 1 en un grupo y 3 y 4 en un segundo grupo.\
+Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de mar y tamaño grupal
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+AIC(dd.df.hr.trun.cp,
+    dd.df.hr.trun.cp.beaufgrp,
+    dd.df.hr.trun.cp.size,
+    dd.df.hr.trun.cp.ship,
+    dd.df.hr.trun.cp.sizebeaufgrp,
+    dd.df.hr.trun.cp.sizeship,
+    dd.df.hr.trun.cp.shipbeaufgrp
+) %>%
+  mutate(ll = c(logLik( dd.df.hr.trun.cp),
+                logLik( dd.df.hr.trun.cp.beaufgrp),
+                logLik( dd.df.hr.trun.cp.size),
+                logLik( dd.df.hr.trun.cp.ship),
+                logLik( dd.df.hr.trun.cp.sizebeaufgrp),
+                logLik( dd.df.hr.trun.cp.sizeship),
+                logLik( dd.df.hr.trun.cp.shipbeaufgrp)) )%>%
+  
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  arrange(deltaAIC) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>% 
+  arrange(deltaAIC) %>%
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>% 
+  column_spec(3, width = "8em") %>% 
+  column_spec(4, width = "8em")
+```
+
+### Efecto del estado del mar, agrupado
+
+Este es el mismo gráfico, mostrando Beaufort agrupado.\
+Los patrones son los esperados, y hay diferencias marcadas entre los valores de Beaufort. Conclusión: utilizar estado del mar como covariable.
 
 ```{r}
 #| echo: false   
 #| message: false    
 #| warning: false
 
-plot(dd.df.hr.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
-add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=1), col='blue', lwd=2, lty=1)
-add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=2), col= "darkgreen", lwd=2, lty=1)
-add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=3), col='purple', lwd=2, lty=1)
-legend("topright", legend=c( "Beaufort 1", "Beaufort 2", "Beaufort 3"),
-       col=c( "blue", "darkgreen", "purple"), lwd=2)
+plot(dd.df.hr.trun.cp.beaufgrp, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=3), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0 & 1", "Beaufort 2", "Beaufort 3 & 4"),
+       col=c("red", "blue", "darkgreen"), lwd=2)
+```
+
+Conclusión: utilizar Beaufort agrupado como covariable en la funcion de deteccion.
+
+Esto significa que hay que producir nuevamente el objeto `segdata`
+
+### Efecto de tamaño grupal
+
+Este es un gráfico de la función de detección considerando el efecto del estado del mar - la línea negra es la función de detección promedio.\
+Las líneas de colores representan la probabilidad de detección de grupos que representan diferentes cuantiles de tamaños grupales observados.\
+La forma de la funcion de deteccion cambia para los cuantiles mas altos, mayores a 96%.
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(dd.df.hr.trun.cp.size$ddf,
+     main = "Common dolphin",
+     showpoints = TRUE)
+
+size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
+                      probs = c(0.1, 0.5, 0.9, 0.95, 0.96, 0.97, 0.99),
+                      na.rm = TRUE)
+size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
+                         probs = c(0.1, 0.5, 0.9, 0.95, 0.96, 0.97,0.99),
+                         na.rm = TRUE)
+
+
+cols <- c("orange",  "yellow","red", "darkgreen", "blue","skyblue",
+          "purple")
+
+for(i in seq_along(size_vals)) {
+  add_df_covar_line(
+    dd.df.hr.trun.cp.size,
+    data = data.frame(size_sc = size_vals[i]),
+    col = cols[i],
+    lwd = 2,
+    lty = 1
+  )
+}
+
+legend("bottomleft",
+       legend = paste0("Size = ", round(size_vals_or, 1), "  -- quantile = ", names(size_vals_or )),
+       col = cols,
+       lwd = 2)
+```
+
+Que el tamaño grupal sea una covariable de la funcion de deteccion termina haciendo el ajuste de density surface models problematico.\
+Al consultar con Len Thomas, me dijo que hay 2 maneras de solucionar este problema:
+
+> 1.  complex bayesian model - he is doing for a paper that they will publish. This woud be the "right way" of doing it
+>
+> ```{=html}
+> <!-- -->
+> ```
+> 2.  treat DD as effectively 2 clusters: 1 for small group sizes, a second one for larger gorup sizes. Find the spot where group size will not impact the detection function very much. Fit DSMs to each of the clusters, and then sum them. This is the "good enough" way
+
+Creo que no estamos en situación de tener que implementar la primera solución (Len me dijo que él no lo haría).\
+Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me gustaria discutir:
+
+1.  ignorar el efecto de tamaño grupal, y entender que las estimaciones de abundancia probablemente esten sesgadas hacia abajo
+
+2.  intentar el ejercicio de tratar a DD como 2 clusters  - quizas tengamos que hacer esto para quedarnos tranquilos nosotros, pero no estoy seguro que valga la pena
+
+Quizas este grafico ayude para tomar una decision. Se ve que los tamaños grupales grandes fueron detectados en todas las estaciones, por lo que si adoptamos la estrategia de ignorar el efecto de tamaño grupal no estariamos sesgando las estimaciones estacionales
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+#| ggplot(detfun_dat_dd\[distance \<= trunc.dist_dd\]) +
+
+geom_jitter(aes(x = distance, y = size), alpha = 0.4) +
+geom_hline(yintercept = 70, col = "skyblue") +
+geom_hline(yintercept = 175, col = "purple") +
+facet_wrap(. ~ season)
 ```
 
 
 ### Efecto de embarcación
 
-Existen diferencias entre las curvas de las dos embarcaciones, pero no lo suficientemente marcadas para ser incluidas en la función de detección.   
+Existen diferencias entre las curvas de las dos embarcaciones, pero no lo suficientemente marcadas para ser incluidas en la función de detección.\
 Conclusión: no utilizar embarcación como covariable.
 
 ```{r}
@@ -699,13 +764,15 @@ legend("topright", legend=c("Ship 1", "Ship 2"),
 
 ## Conclusión de función de detección
 
-Truncar en `trunc.dist_dd`: `r trunc.dist_dd`m - esto descarta `r nrow(detfun_dat_dd[distance>450])` datos (\~ `r round(100 - nrow(detfun_dat_dd[distance<=450])/nrow(detfun_dat_dd) * 100, 1)`% de los datos)
+Truncar en `trunc.dist_dd`: `r trunc.dist_dd`m - esto descarta `r nrow(detfun_dat_dd[distance > trunc.dist_dd])` datos (\~ `r round(100 - nrow(detfun_dat_dd[distance<=trunc.dist_dd])/nrow(detfun_dat_dd) * 100, 1)`% de los datos)
 
 cutpoints: `cutpoints_dd`: `r cutpoints_dd`
 
-Hazard rate\     
+Hazard rate \
 No adjustment term\
-covariables: Beaufort state y tamaño grupal
+covariables: Beaufort state 
+
+tamaño grupal?? 
 
 ```{r}
 #| echo: false
@@ -716,11 +783,11 @@ invisible(capture.output(qqplot.ddf(df.dd$ddf, plot = TRUE)))
 
 # Density surface models
 
-@Miller2013SpatialModels   
+@Miller2013SpatialModels
 
-Necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) en cada segmento, para poder implementar la función de detección. 
+Necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento, para poder implementar la función de detección.
 
-Los largos de los segmentos en el objeto segdata son: 
+Los largos de los segmentos en el objeto segdata son:
 
 ```{r}
 #| echo: false
@@ -743,6 +810,6 @@ segdata %>%
   column_spec(2, width = "8em")
 ```
 
-Por qué hay 6 segmentos de largo menor a 800 m?
+Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
 # Referencias
