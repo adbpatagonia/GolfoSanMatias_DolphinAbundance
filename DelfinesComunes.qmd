@@ -88,13 +88,13 @@ distdata_dd_sf_m %>%
 
 
 kable(distdata_dd_sf_m %>%
-       filter(Ano > 2006) %>% 
-  group_by(season) %>% 
-  reframe(min_group = min(size),
-          max_group = max(size),
-          mean_group = round(mean(size), 1),
-          CV_group = round(sd(size)/mean(size), 1)
-            )) %>% 
+        filter(Ano > 2006) %>% 
+        group_by(season) %>% 
+        reframe(min_group = min(size),
+                max_group = max(size),
+                mean_group = round(mean(size), 1),
+                CV_group = round(sd(size)/mean(size), 1)
+        )) %>% 
   kable_styling(
     bootstrap_options = c("striped", "hover"),
     position = "center", full_width = FALSE
@@ -242,7 +242,7 @@ No parece infuenciar la deteccion de animales
 #| warning: false  
 #| fig-width: 11
 #| fig-height: 10
- 
+
 p.grad.dd
 
 ```
@@ -735,12 +735,12 @@ Quizas este grafico ayude para tomar una decision. Se ve que los tamaños grupal
 #| echo: false   
 #| message: false    
 #| warning: false
-#| ggplot(detfun_dat_dd\[distance \<= trunc.dist_dd\]) +
 
-geom_jitter(aes(x = distance, y = size), alpha = 0.4) +
-geom_hline(yintercept = 70, col = "skyblue") +
-geom_hline(yintercept = 175, col = "purple") +
-facet_wrap(. ~ season)
+ggplot(detfun_dat_dd[distance <= trunc.dist_dd]) +
+  geom_jitter(aes(x = distance, y = size), alpha = 0.4) +
+  geom_hline(yintercept = 70, col = "skyblue") +
+  geom_hline(yintercept = 175, col = "purple") +
+  facet_wrap(. ~ season)
 ```
 
 

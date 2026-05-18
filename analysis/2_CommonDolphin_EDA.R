@@ -57,13 +57,13 @@ p.size.ship.dd <- ggplot(distdata_dd) +
 p.depth.dd <- p.depth +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          aes(color = factor(season)),
+          aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
             filter(Ano > 2006),
           aes(size = size,
-              color = factor(season)),
+              color = season),
           alpha = 0.9
   ) +
   coord_sf(
@@ -79,13 +79,13 @@ p.depth.dd <- p.depth +
 p.slope.dd <- p.slope +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          aes(color = factor(season)),
+          aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
             filter(Ano > 2006),
           aes(size = size,
-              color = factor(season)),
+              color = season),
           alpha = 0.9
   ) +
   coord_sf(
@@ -101,13 +101,13 @@ p.slope.dd <- p.slope +
 p.grad.dd <- p.grad +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          aes(color = factor(season)),
+          aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
             filter(Ano > 2006),
           aes(size = size,
-              color = factor(season)),
+              color = season),
           alpha = 0.9
   ) +
   coord_sf(
@@ -124,7 +124,7 @@ p.grad.dd <- p.grad +
 p.sst.dd <-  p.sst +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          # aes(color = factor(season)),
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
@@ -145,7 +145,7 @@ p.sst.dd <-  p.sst +
 p.clo.dd <-  p.clo +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          # aes(color = factor(season)),
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
@@ -166,7 +166,7 @@ p.clo.dd <-  p.clo +
 p.distup.dd <-  p.distup +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          # aes(color = factor(season)),
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%

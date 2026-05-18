@@ -24,7 +24,7 @@ library(tweedie)
 library(patchwork)
 library(here)
 library(kableExtra)
-
+library(gam.hp)
 
 # plotting options
 ggplot2::theme_set(theme_bw())
@@ -117,6 +117,50 @@ obsdata_lo <-obsdata_lo %>%
     Mes > 9 ~ "Spring"))
 
 
+segdata[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+preddata[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+distdata_dd[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+distdata_lo[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+obsdata_dd[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+obsdata_lo[
+  ,
+  season := factor(
+    season,
+    levels = c("Spring", "Summer", "Fall", "Winter")
+  )
+]
+
+
 segdata_sf_m  <-  st_as_sf(segdata,
                            coords = c("x","y"),
                            crs = crs_m)
@@ -147,6 +191,7 @@ patagonia_m <- st_transform(patagonia, target_crs)
 pred.polys_m <- st_transform(pred.polys, target_crs)
 
 survey.area_m <- st_transform(survey.area, target_crs)
+
 
 
 ## create trajectories ----
@@ -290,7 +335,7 @@ p.lo <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = segdata_traj_m %>%
             filter(Ano > 2006),
-          aes(color = factor(season)),
+          aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   # geom_sf(data = pred.polys_m, color = "lightblue", fill = "transparent", alpha = 0.1) +
@@ -298,7 +343,7 @@ p.lo <- ggplot() +
   geom_sf(data = distdata_lo_sf_m %>%
             filter(Ano > 2006),
           aes(size = size,
-              color = factor(season)),
+              color = season),
           alpha = 0.5
   ) +
   labs(title = "Dusky Dolphin",
