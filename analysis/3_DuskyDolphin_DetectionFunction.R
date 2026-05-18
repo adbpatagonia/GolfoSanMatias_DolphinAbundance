@@ -221,17 +221,103 @@ lo.df.hn.trun.cp.shipbeauf <- ds(detfun_dat_lo,
 # given the small effects of each of the covariates (see below), use the simplest model, i.e. no covariate
 AIC(lo.df.hn.trun.cp,
     lo.df.hn.trun.cp.beauf,
-    # lo.df.hn.trun.cp.size,
+    lo.df.hn.trun.cp.size,
     lo.df.hn.trun.cp.ship,
-    # lo.df.hn.trun.cp.sizebeauf,
-    # lo.df.hn.trun.cp.sizeship,
+    lo.df.hn.trun.cp.sizebeauf,
+    lo.df.hn.trun.cp.sizeship,
     lo.df.hn.trun.cp.shipbeauf
 ) %>%
+  mutate(ll = c(logLik( lo.df.hn.trun.cp),
+                logLik( lo.df.hn.trun.cp.beauf),
+                logLik( lo.df.hn.trun.cp.size),
+                logLik( lo.df.hn.trun.cp.ship),
+                logLik( lo.df.hn.trun.cp.sizebeauf),
+                logLik( lo.df.hn.trun.cp.sizeship),
+                logLik( lo.df.hn.trun.cp.shipbeauf)) )%>%
+
   mutate(deltaAIC = AIC - min(AIC)) %>%
   arrange(deltaAIC) %>%
   kable()
 
 ## plot dfs ----
+
+### beaufort ----
+# this pattern looks really odd - beaufort = 0 should have the best detection function, but it has the worst
+plot(lo.df.hn.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=0), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=1), col='blue', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=2), col= "darkgreen", lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=3), col='purple', lwd=2, lty=1)
+# add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=4), col='orange', lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 3"),
+       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
+
+# uneven sample size - most samples taken at beaufort 1 and 2
+# patterns for those make sense, i.e. 1 is better than 2, but the differences are minimal
+# drop beaufort as covariate
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(beaufort_fct) %>%
+  tally()
+
+## group beaufort 0 and 1, 2 and 3 ----
+detfun_dat_lo <- detfun_dat_lo %>%
+  mutate(beaufort_grp = factor(ifelse(beaufort < 2, 1, 2)))
+
+# refit
+### beaufort ----
+lo.df.hn.trun.cp.beaufgrp <- ds(detfun_dat_lo,
+                             truncation = trunc.dist_lo,
+                             cutpoints = cutpoints_lo,
+                             key = "hn",
+                             adjustment = NULL,
+                             formula = ~beaufort_grp)
+
+### size + beaufort ----
+lo.df.hn.trun.cp.sizebeaufgrp <- ds(detfun_dat_lo,
+                                 truncation = trunc.dist_lo,
+                                 cutpoints = cutpoints_lo,
+                                 key = "hn",
+                                 adjustment = NULL,
+                                 formula = ~size_sc + beaufort_grp,
+                                 initial_values = lo.df.hn.trun.cp$ddf)
+
+## beaufort + ship ----
+lo.df.hn.trun.cp.shipbeaufgrp <- ds(detfun_dat_lo,
+                                 truncation = trunc.dist_lo,
+                                 cutpoints = cutpoints_lo,
+                                 key = "hn",
+                                 adjustment = NULL,
+                                 formula = ~beaufort_grp + ship)
+
+### Model selection -----
+# the most parsimonious model does not include covariates
+AIC(lo.df.hn.trun.cp,
+    lo.df.hn.trun.cp.beaufgrp,
+    lo.df.hn.trun.cp.size,
+    lo.df.hn.trun.cp.ship,
+    lo.df.hn.trun.cp.sizebeaufgrp,
+    lo.df.hn.trun.cp.sizeship,
+    lo.df.hn.trun.cp.shipbeaufgrp
+) %>%
+  mutate(ll = c(logLik( lo.df.hn.trun.cp),
+                logLik( lo.df.hn.trun.cp.beauf),
+                logLik( lo.df.hn.trun.cp.size),
+                logLik( lo.df.hn.trun.cp.ship),
+                logLik( lo.df.hn.trun.cp.sizebeauf),
+                logLik( lo.df.hn.trun.cp.sizeship),
+                logLik( lo.df.hn.trun.cp.shipbeauf)) )%>%
+
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  arrange(deltaAIC) %>%
+  kable()
+
+
+### beaufort ----
+plot(lo.df.hn.trun.cp.beaufgrp, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.beaufgrp, data = data.frame(beaufort_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.beaufgrp, data = data.frame(beaufort_grp=2), col='blue', lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0 & 1", "Beaufort 2 & 3"),
+       col=c("red", "blue"), lwd=2)
 
 ### size ----
 plot(lo.df.hn.trun.cp.size$ddf,
@@ -270,23 +356,6 @@ ggplot(distdata_lo[distance <= trunc.dist_lo]) +
 # do not consider as a covariate
 
 
-### beaufort ----
-# this pattern looks really odd - beaufort = 0 should have the best detection function, but it has the worst
-plot(lo.df.hn.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
-add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=0), col='red', lwd=2, lty=1)
-add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=1), col='blue', lwd=2, lty=1)
-add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=2), col= "darkgreen", lwd=2, lty=1)
-add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=3), col='purple', lwd=2, lty=1)
-# add_df_covar_line(lo.df.hn.trun.cp.beauf, data = data.frame(beaufort_fct=4), col='orange', lwd=2, lty=1)
-legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 3"),
-       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
-
-# uneven sample size - most samples taken at beaufort 1 and 2
-# patterns for those make sense, i.e. 1 is better than 2, but the differences are minimal
-# drop beaufort as covariate
-detfun_dat_lo[distance <= trunc.dist_lo] %>%
-  group_by(beaufort_fct) %>%
-  tally()
 
 ### ship ----
 # no real differences between ships

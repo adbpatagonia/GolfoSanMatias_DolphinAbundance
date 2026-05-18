@@ -63,10 +63,11 @@ detfun_dat_dd %>%
   geom_hline(yintercept = 0.15, col = "red") +
   geom_vline(xintercept = 300, col = "red")
 
-# truncation at 300 m eliminates ~13% of the data
-nrow(detfun_dat_dd[distance<=300])/nrow(detfun_dat_dd)
+# truncation at 300 m eliminates ~12% of the data
+nrow(detfun_dat_dd[distance<=325])/nrow(detfun_dat_dd)
 
-trunc.dist_dd <- 300
+# we truncate at 325, not 300 because we will also adjust because of rounding (next step)
+trunc.dist_dd <- 325
 
 ## truncated df ----
 dd.df.hr.trun <- ds(data = detfun_dat_dd,
@@ -89,7 +90,7 @@ dd.df.hn.trun <- ds(data = detfun_dat_dd,
 # Here, we see favoured distances at 50, 100, 150, 200, 250, 300
 plot(dd.df.hr.trun)
 
-cutpoints_dd <- c(0, 25, 75, 125, 175, 225, 275, 300)
+cutpoints_dd <- c(0, 25, 75, 125, 175, 225, 275, 325)
 table(cut(detfun_dat_dd$distance, cutpoints_dd, include.lowest = TRUE))
 
 
@@ -176,29 +177,29 @@ dd.df.hr.trun.cp.beauf <- ds(detfun_dat_dd,
 
 ## size + beaufort ----
 dd.df.hr.trun.cp.sizebeauf <- ds(detfun_dat_dd,
-                            truncation = trunc.dist_dd,
-                            cutpoints = cutpoints_dd,
-                            key = "hr",
-                            adjustment = NULL,
-                            formula = ~size_sc + beaufort_fct,
-                            initial_values = dd.df.hr.trun.cp$ddf)
-
-## size + ship ----
-dd.df.hr.trun.cp.sizeship <- ds(detfun_dat_dd,
                                  truncation = trunc.dist_dd,
                                  cutpoints = cutpoints_dd,
                                  key = "hr",
                                  adjustment = NULL,
-                                 formula = ~size_sc + ship,
+                                 formula = ~size_sc + beaufort_fct,
                                  initial_values = dd.df.hr.trun.cp$ddf)
 
-## beaufort + ship ----
-dd.df.hr.trun.cp.shipbeauf <- ds(detfun_dat_dd,
+## size + ship ----
+dd.df.hr.trun.cp.sizeship <- ds(detfun_dat_dd,
                                 truncation = trunc.dist_dd,
                                 cutpoints = cutpoints_dd,
                                 key = "hr",
                                 adjustment = NULL,
-                                formula = ~beaufort_fct + ship)
+                                formula = ~size_sc + ship,
+                                initial_values = dd.df.hr.trun.cp$ddf)
+
+## beaufort + ship ----
+dd.df.hr.trun.cp.shipbeauf <- ds(detfun_dat_dd,
+                                 truncation = trunc.dist_dd,
+                                 cutpoints = cutpoints_dd,
+                                 key = "hr",
+                                 adjustment = NULL,
+                                 formula = ~beaufort_fct + ship)
 ## Model selection ------
 AIC(dd.df.hr.trun.cp,
     dd.df.hr.trun.cp.beauf,
@@ -213,37 +214,6 @@ AIC(dd.df.hr.trun.cp,
   kable()
 
 ## plot dfs ----
-
-### size ----
-plot(dd.df.hr.trun.cp.size$ddf,
-     main = "Common dolphin",
-     showpoints = TRUE)
-
-size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
-                      probs = c(0.1, 0.5, 0.9),
-                      na.rm = TRUE)
-size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
-                         probs = c(0.1, 0.5, 0.9),
-                         na.rm = TRUE)
-
-
-cols <- c("red", "darkgreen", "blue")
-
-for(i in seq_along(size_vals)) {
-  add_df_covar_line(
-    dd.df.hr.trun.cp.size,
-    data = data.frame(size_sc = size_vals[i]),
-    col = cols[i],
-    lwd = 2,
-    lty = 1
-  )
-}
-
-legend("bottomleft",
-       legend = paste0("Size = ", round(size_vals_or, 1)),
-       col = cols,
-       lwd = 2)
-
 ### beaufort ----
 plot(dd.df.hr.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
 add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=0), col='red', lwd=2, lty=1)
@@ -260,6 +230,115 @@ legend("topright", legend=c("Beaufort 0", "Beaufort 1", "Beaufort 2", "Beaufort 
 detfun_dat_dd[distance <= trunc.dist_dd] %>%
   group_by(beaufort_fct) %>%
   tally()
+
+## group beaufort 0 and 1, 3 and 4 ----
+detfun_dat_dd <- detfun_dat_dd %>%
+  mutate(beaufort_grp = factor(ifelse(beaufort < 2, 1,
+                                      ifelse(beaufort > 2, 3, 2)))
+  )
+
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
+  group_by(beaufort_grp) %>%
+  tally()
+
+# refit
+### beaufort ----
+dd.df.hr.trun.cp.beaufgrp <- ds(detfun_dat_dd,
+                                truncation = trunc.dist_dd,
+                                cutpoints = cutpoints_dd,
+                                key = "hr",
+                                adjustment = NULL,
+                                formula = ~beaufort_grp)
+
+### size + beaufort ----
+dd.df.hr.trun.cp.sizebeaufgrp <- ds(detfun_dat_dd,
+                                    truncation = trunc.dist_dd,
+                                    cutpoints = cutpoints_dd,
+                                    key = "hr",
+                                    adjustment = NULL,
+                                    formula = ~size_sc + beaufort_grp,
+                                    initial_values = dd.df.hn.trun.cp$ddf)
+
+## beaufort + ship ----
+dd.df.hr.trun.cp.shipbeaufgrp <- ds(detfun_dat_dd,
+                                    truncation = trunc.dist_dd,
+                                    cutpoints = cutpoints_dd,
+                                    key = "hr",
+                                    adjustment = NULL,
+                                    formula = ~beaufort_grp + ship)
+
+
+
+### Model selection -----
+AIC(dd.df.hr.trun.cp,
+    dd.df.hr.trun.cp.beaufgrp,
+    dd.df.hr.trun.cp.size,
+    dd.df.hr.trun.cp.ship,
+    dd.df.hr.trun.cp.sizebeaufgrp,
+    dd.df.hr.trun.cp.sizeship,
+    dd.df.hr.trun.cp.shipbeaufgrp
+) %>%
+  mutate(ll = c(logLik( dd.df.hr.trun.cp),
+                logLik( dd.df.hr.trun.cp.beaufgrp),
+                logLik( dd.df.hr.trun.cp.size),
+                logLik( dd.df.hr.trun.cp.ship),
+                logLik( dd.df.hr.trun.cp.sizebeaufgrp),
+                logLik( dd.df.hr.trun.cp.sizeship),
+                logLik( dd.df.hr.trun.cp.shipbeaufgrp)) )%>%
+
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  arrange(deltaAIC) %>%
+  mutate(AIC = round(AIC, 1),
+         deltaAIC = round(deltaAIC, 2)) %>%
+  arrange(deltaAIC) %>%
+  kable() %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) %>%
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "8em") %>%
+  column_spec(3, width = "8em") %>%
+  column_spec(4, width = "8em")
+
+
+### beaufort, grouped ----
+plot(dd.df.hr.trun.cp.beaufgrp, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.beaufgrp, data = data.frame(beaufort_grp=3), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Beaufort 0 & 1", "Beaufort 2", "Beaufort 3 & 4"),
+       col=c("red", "blue", "darkgreen"), lwd=2)
+
+### size ----
+plot(dd.df.hr.trun.cp.size$ddf,
+     main = "Common dolphin",
+     showpoints = TRUE)
+
+size_vals <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size_sc)],
+                      probs = c(0.1, 0.5, 0.9, 0.95, 0.97, 0.99),
+                      na.rm = TRUE)
+size_vals_or <- quantile(detfun_dat_dd[distance <= trunc.dist_dd, .(size)],
+                         probs = c(0.1, 0.5, 0.9, 0.95,  0.97,0.99),
+                         na.rm = TRUE)
+
+
+cols <- c("orange",  "yellow","red", "darkgreen", "blue", "purple")
+
+for(i in seq_along(size_vals)) {
+  add_df_covar_line(
+    dd.df.hr.trun.cp.size,
+    data = data.frame(size_sc = size_vals[i]),
+    col = cols[i],
+    lwd = 2,
+    lty = 1
+  )
+}
+
+legend("bottomleft",
+       legend = paste0("Size = ", round(size_vals_or, 1), "  -- quantile = ", names(size_vals_or )),
+       col = cols,
+       lwd = 2)
 
 
 ### ship ----
