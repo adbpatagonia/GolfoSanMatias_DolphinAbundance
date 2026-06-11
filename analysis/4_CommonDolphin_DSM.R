@@ -9,41 +9,245 @@
 # 10.1111/2041-210X.12105
 
 # This is the DSM file for common dolphins
-
+# libraries ----
+library(gratia)
 
 # prepare data -----
 obsdata_dd_mod <- copy(obsdata_dd)
-obsdata_dd_mod <-   obsdata_dd_mod[distance <= trunc.dist.dd]
+obsdata_dd_mod <-   obsdata_dd_mod[distance <= trunc.dist_dd]
 
 
-setDT(segdata)
-setDT(detfun_dat_dd)
-setkey(segdata, Sample.Label)
-setkey(detfun_dat_dd, Sample.Label)
+# esto esta en m2
+segdata[, off.set_dd := Effort * trunc.dist_dd]
 
-dd=merge(segdata,
-      unique(detfun_dat_dd[,.(Sample.Label, size_sc, size, beaufort_fct)]),
-      all.x = TRUE)
+off.set_dd <- 800 * trunc.dist_dd
 
+obsdata_dd_mod[, season := relevel(factor(season), ref = "Spring")]
+obsdata_dd_mod[, year_fac := factor(Ano)]
+segdata[, year_fac := factor(Ano)]
 
-segdata
+# correlation among covariates ----
 
 # Simple model ----
 
-dsm.xy  <-  dsm(count~s(x,y),
+dsm.xy  <-  dsm(count ~ s(x,y, bs = "ts"),
                 ddf.obj =  df.dd,
                 segment.data = segdata,
                 observation.data = obsdata_dd_mod,
                 method="REML")
 
-summary(dsm.xy)
+dsm.xy.te  <-  dsm(count ~ te(x,y, bs = "ts"),
+                   ddf.obj =  df.dd,
+                   segment.data = segdata,
+                   observation.data = obsdata_dd_mod,
+                   method="REML")
 
 
+## Tweedie ----
+dsm.xy.tw  <-  dsm(count~s(x,y),
+                   ddf.obj =  df.dd,
+                   segment.data = segdata,
+                   observation.data = obsdata_dd_mod,
+                   family = Tweedie(p = 1.58),
+                   method="REML")
+
+summary(dsm.xy.tw)
+appraise(dsm.xy.tw)
+draw(dsm.xy.tw)
+
+# year ----
+dsm.xy.year  <-  dsm(count ~ s(x,y) +
+                       year_fac,
+                     # s(Ano),
+                     ddf.obj =  df.dd,
+                     segment.data = segdata,
+                     observation.data = obsdata_dd_mod,
+                     family = Tweedie(p = 1.58),
+                     method="REML")
+
+summary(dsm.xy.year)
+
+appraise(dsm.xy.year)
+draw(dsm.xy.year)
+
+# season ----
+dsm.xy.season.tw  <-  dsm(count ~ s(x,y) +
+                            -1 + season + s(Ano),
+                          # s(year_fac, bs = "re"),
+                          ddf.obj =  df.dd,
+                          segment.data = segdata,
+                          observation.data = obsdata_dd_mod,
+                          family = Tweedie(p = 1.58),
+                          method="REML")
+
+summary(dsm.xy.season.tw)
+appraise(dsm.xy.season.tw)
+
+draw(dsm.xy.season.tw, residuals = FALSE)
+
+# slope ----
+dsm.xy.slope  <- dsm(count ~ s(x,y) +
+                       -1 + season + s(Ano)+
+                       s(slope) ,
+                     # s(year_fac, bs = "re"),
+                     ddf.obj =  df.dd,
+                     segment.data = segdata,
+                     observation.data = obsdata_dd_mod,
+                     family = Tweedie(p = 1.58),
+                     method="REML")
+
+summary(dsm.xy.slope)
+appraise(dsm.xy.slope)
+
+draw(dsm.xy.slope, residuals = FALSE)
+
+# grad ----
+dsm.xy.grad  <- dsm(count ~ s(x,y) +
+                      -1 + season + s(Ano)+
+                      s(grad) ,
+                    # s(year_fac, bs = "re"),
+                    ddf.obj =  df.dd,
+                    segment.data = segdata,
+                    observation.data = obsdata_dd_mod,
+                    family = Tweedie(p = 1.58),
+                    method="REML")
+
+summary(dsm.xy.grad)
+appraise(dsm.xy.grad)
+
+draw(dsm.xy.grad, residuals = FALSE)
+
+# depth ----
+# dsm.xy.depthnull  <-  dsm(count ~ s(x,y) +
+#                             -1 + season +
+#                             # s(depth) +
+#                             s(year_fac, bs = "re"),
+#                           ddf.obj =  df.dd,
+#                           segment.data = segdata,
+#                           observation.data = obsdata_dd_mod,
+#                             family = Tweedie(p = 1.58),
+#                           method="REML")
+
+dsm.xy.depth  <-  dsm(count ~ s(x,y) +
+                        -1 + season + s(Ano) +
+                        s(depth) ,
+                      # s(year_fac, bs = "re"),
+                      ddf.obj =  df.dd,
+                      segment.data = segdata,
+                      observation.data = obsdata_dd_mod,
+                      family = Tweedie(p = 1.58),
+                      method="REML")
+
+summary(dsm.xy.depth)
+appraise(dsm.xy.depth)
+
+draw(dsm.xy.depth, residuals = FALSE)
+
+anova(dsm.xy.depthnull, dsm.xy.depth,   test = "F")
+AIC(dsm.xy.depth, dsm.xy.depthnull)
+
+# sst ----
+dsm.xy.sst  <- dsm(count ~ s(x,y) +
+                     -1 + season + s(Ano)+
+                     s(sst) ,
+                   # s(year_fac, bs = "re"),
+                   ddf.obj =  df.dd,
+                   segment.data = segdata,
+                   observation.data = obsdata_dd_mod,
+                   family = Tweedie(p = 1.58),
+                   method="REML")
+
+summary(dsm.xy.sst)
+appraise(dsm.xy.sst)
+
+draw(dsm.xy.sst, residuals = FALSE)
+
+
+# clo ----
+dsm.xy.clo  <- dsm(count ~ s(x,y) +
+                     -1 + season + s(Ano)+
+                     s(clo) ,
+                   # s(year_fac, bs = "re"),
+                   ddf.obj =  df.dd,
+                   segment.data = segdata,
+                   observation.data = obsdata_dd_mod,
+                   family = Tweedie(p = 1.58),
+                   method="REML")
+
+summary(dsm.xy.clo)
+appraise(dsm.xy.clo)
+
+draw(dsm.xy.clo, residuals = FALSE)
+
+# dist.up ----
+dsm.xy.dist.up  <- dsm(count ~ s(x,y) +
+                         -1 + season + s(Ano)+
+                         s(dist.up) ,
+                       # s(year_fac, bs = "re"),
+                       ddf.obj =  df.dd,
+                       segment.data = segdata,
+                       observation.data = obsdata_dd_mod,
+                       family = Tweedie(p = 1.58),
+                       method="REML")
+
+summary(dsm.xy.dist.up)
+appraise(dsm.xy.dist.up)
+
+draw(dsm.xy.dist.up, residuals = FALSE)
+
+# dist.up.grad ----
+dsm.xy.dist.up.grad  <- dsm(count ~ s(x,y) +
+                              -1 + season + s(Ano)+
+                              s(grad) +
+                              s(dist.up) ,
+                            # s(year_fac, bs = "re"),
+                            ddf.obj =  df.dd,
+                            segment.data = segdata,
+                            observation.data = obsdata_dd_mod,
+                            family = Tweedie(p = 1.58),
+                            method="REML")
+
+summary(dsm.xy.dist.up.grad)
+appraise(dsm.xy.dist.up.grad)
+
+draw(dsm.xy.dist.up.grad, residuals = FALSE)
+
+# Model selection -----
+AIC(dsm.xy.tw,
+    dsm.xy.season.tw,
+    dsm.xy.slope,
+    dsm.xy.grad,
+    dsm.xy.sst,
+    dsm.xy.clo,
+    dsm.xy.dist.up,
+    dsm.xy.dist.up.grad,
+    dsm.xy.depth,
+    dsm.xy.year
+) %>%
+  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(Dev = c(
+    round(summary(dsm.xy.tw)$dev.expl, 2),
+    round(summary(dsm.xy.season.tw)$dev.expl, 2),
+    round(summary(dsm.xy.slope)$dev.expl, 2),
+    round(summary(dsm.xy.grad)$dev.expl, 2),
+    round(summary(dsm.xy.sst)$dev.expl, 2),
+    round(summary(dsm.xy.clo)$dev.expl, 2),
+    round(summary(dsm.xy.dist.up)$dev.expl, 2),
+    round(summary(dsm.xy.dist.up.grad)$dev.expl, 2),
+    round(summary(dsm.xy.depth)$dev.expl, 2),
+    round(summary(dsm.xy.year)$dev.expl, 2)
+
+  )) %>%
+  arrange(AIC)
+
+
+
+## extra stuff ------
 dd.gam <- dsm(count ~ s(x ~ y),
-    ddf.obj = dd.df.hr.trun.cp,
-    segment.data = segdata,
-    observation.data = obsdata_dd,
-    method = "REML")
+              ddf.obj = dd.df.hr.trun.cp,
+              segment.data = segdata,
+              observation.data = obsdata_dd,
+              method = "REML")
 
 # try including
 # depth
