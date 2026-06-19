@@ -8,7 +8,7 @@
 # Spatial models for distance sampling data: recent developments and future directions
 # 10.1111/2041-210X.12105
 
-# This is the DSM file for common dolphins
+# This is the DSM file for dusky dolphins
 
 # Choice of value of p parameter for tweedie family
 # analysis/UTIL_FindTweedieP_DuskyDolphin.R

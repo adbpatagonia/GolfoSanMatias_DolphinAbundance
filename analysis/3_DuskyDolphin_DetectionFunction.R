@@ -8,7 +8,7 @@
 # Spatial models for distance sampling data: recent developments and future directions
 # 10.1111/2041-210X.12105
 
-# This is the Detection function file for common dolphins
+# This is the Detection function file for dusky dolphins
 
 
 # wrangle data ----

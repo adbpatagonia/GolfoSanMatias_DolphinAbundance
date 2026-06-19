@@ -29,6 +29,8 @@ output/             Generated figures and model output
   CommonDolphin/
   DuskyDolphin/
   EnvVars/
+assets/             Manuscript draft, reference PDFs, and supplementary materials
+references/         BibTeX bibliography files
 *.qmd               Quarto reports (rendered to docs/)
 docs/               Built website (GitHub Pages)
 ```
@@ -42,7 +44,7 @@ Scripts are sourced in order via the species master script:
 | Step | Script | Description |
 |------|--------|-------------|
 | 0 | `0_ReadData_Plots.r` | Load all data; project to EPSG:22193; map environmental covariates |
-| 1 | `1_CommonDolphin.R` / `1_DuskyDolphin.R` | Master scripts — source steps 2–4 in sequence |
+| 1 | `1_CommonDolphin.R` / `1_DuskyDolphin.R` | Master scripts — source steps 0, 2, and 3 in sequence; step 4 must be run separately |
 | 2 | `2_*_EDA.R` | Exploratory analysis: ship effect, Beaufort filtering, covariate overlays |
 | 3 | `3_*_DetectionFunction.R` | Fit and select detection function (AIC); set truncation distance |
 | 4 | `4_*_DSM.R` | Fit Tweedie DSMs with spatial smooth + season + environmental covariates |
@@ -66,7 +68,7 @@ DSMs use `dsm::dsm()` with a Tweedie family. The power parameter *p* is selected
 
 **Dusky dolphin** (*p* ≈ 1.31–1.33): simpler model set — spatial smooth, season, depth, slope, and year as a random effect.
 
-All models use REML; smooths use thin-plate spline basis (`bs="ts"`). Offset = `segment_length × truncation_distance`.
+All models use REML. Offset = `segment_length × truncation_distance`.
 
 ---
 
