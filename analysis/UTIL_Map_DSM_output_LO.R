@@ -2,13 +2,13 @@
 # 2026-06-30
 #
 # Predicted density maps for dusky dolphins (Lagenorhynchus obscurus)
-# Models: dsm.xy.season.tw  (count ~ s(x,y) + -1 + season + s(year_fac, bs="re"))
+# Models: dsm.xy.season.year.tw  (count ~ s(x,y) + -1 + season + s(year_fac, bs="re"))
 #         dsm.xy.depth       (count ~ s(x,y) + -1 + season + s(depth) + s(year_fac, bs="re"))
 #
 # Assumes the following objects are already in the workspace:
 #   pred.polys_m, survey.area_m, patagonia_m, segdata, segdata_traj_m
 #   obsdata_lo_mod, distdata_lo_sf_m, target_crs
-#   trunc.dist_lo, dsm.xy.season.tw, dsm.xy.depth
+#   trunc.dist_lo, dsm.xy.season.year.tw, dsm.xy.depth
 
 library(dsm)
 library(sf)
@@ -38,7 +38,7 @@ if (!all(c("x", "y") %in% names(pred.polys_m))) {
 }
 
 #----------------------------------------------------------
-# Map 1 — dsm.xy.season.tw
+# Map 1 — dsm.xy.season.year.tw
 # count ~ s(x, y) + -1 + season + s(year_fac, bs = "re")
 #----------------------------------------------------------
 
@@ -54,7 +54,7 @@ pred.polys_season_m <- bind_rows(
   )
 
 pred.polys_season_m$Nhat <- predict(
-  dsm.xy.season.tw,
+  dsm.xy.season.year.tw,
   newdata = pred.polys_season_m,
   off.set = off.set,
   exclude = "s(year_fac)",

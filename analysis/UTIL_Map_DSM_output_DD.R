@@ -2,13 +2,13 @@
 # 2026-06-30
 #
 # Predicted density maps for common dolphins (Delphinus delphis)
-# Models: dsm.xy.season.tw  (count ~ s(x,y) + -1 + season + s(Ano))
-#         dsm.xy.clo        (count ~ s(x,y) + -1 + season + s(Ano) + s(clo))
+# Models: dsm.xy.season.year.tw  (count ~ s(x,y) + -1 + season + s(year, bs = 're'))
+#         dsm.xy.clo        (count ~ s(x,y) + -1 + season + s(year, bs = 're') + s(clo))
 #
 # Assumes the following objects are already in the workspace:
 #   pred.polys_m, survey.area_m, patagonia_m, segdata, segdata_traj_m
 #   obsdata_dd_mod, distdata_dd_sf_m, target_crs
-#   trunc.dist_dd, dsm.xy.season.tw, dsm.xy.clo
+#   trunc.dist_dd, dsm.xy.season.year.tw, dsm.xy.clo
 
 library(dsm)
 library(sf)
@@ -54,12 +54,12 @@ pred.polys_season_m <- bind_rows(
   )
 
 #----------------------------------------------------------
-# Map 1 — dsm.xy.season.tw
+# Map 1 — dsm.xy.season.year.tw
 # count ~ s(x, y) + -1 + season + s(Ano)
 #----------------------------------------------------------
 
 pred.polys_season_m$Nhat <- predict(
-  dsm.xy.season.tw,
+  dsm.xy.season.year.tw,
   newdata = pred.polys_season_m,
   off.set = off.set,
   exclude = "s(year_fac)",
