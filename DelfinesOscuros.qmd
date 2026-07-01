@@ -783,5 +783,47 @@ segdata %>%
 Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
 
+```{r}
+#| include: false
+# Detection function -----
+ source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM.R"))
+```
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+print(table_lo_modselection)
+```
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+ source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_LO.R"))
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.season
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.season.depth
+```
+
+
 
 # Referencias

@@ -818,13 +818,23 @@ dd.df.hr.trun.cp.beaufgrp$ddf
 Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e. 1%).   
 
 
-# Density surface models
+Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento
 
 @Miller2013SpatialModels
 
-Necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento, para poder implementar la función de detección.
+En lo que sigue abajo, no inclui beaufort en la funcion de deteccion     
 
-Los largos de los segmentos en el objeto segdata son:
+
+
+# Density surface models       
+
+area of segment *j* is *A~j~ = 2wl~j~*
+
+*l~j~* es la variable `segdata$Effort`     
+
+*w* es la distancia de truncado `trunc.dist_dd`: `r trunc.dist_dd`m 
+
+Los largos de los segmentos *l~j~* en el objeto segdata son: 
 
 ```{r}
 #| echo: false
@@ -848,5 +858,49 @@ segdata %>%
 ```
 
 Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
+
+
+```{r}
+#| include: false
+# Detection function -----
+ source(file.path(here::here(), "analysis", "4_CommonDolphin_DSM.R"))
+```
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+print(table_dd_modselection)
+```
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+ source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_DD.R"))
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+dd.map.density.season
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+dd.map.density.season.clo
+```
+
+
 
 # Referencias
