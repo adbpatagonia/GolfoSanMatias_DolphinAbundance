@@ -72,24 +72,38 @@ draw(dsm.xy.year)
 
 # season ----
 dsm.xy.season.tw  <-  dsm(count ~ s(x,y) +
-                            -1 + season + s(Ano),
-                          # s(year_fac, bs = "re"),
+                                 -1 + season ,
+                               ddf.obj =  df.dd,
+                               segment.data = segdata,
+                               observation.data = obsdata_dd_mod,
+                               family = Tweedie(p = 1.58),
+                               method="REML")
+
+summary(dsm.xy.season.tw)
+appraise(dsm.xy.season.tw)
+
+draw(dsm.xy.season.tw, residuals = FALSE)
+anova(dsm.xy.season.tw)
+
+# season.year ----
+dsm.xy.season.year.tw  <-  dsm(count ~ s(x,y) +
+                            -1 + season + s(year_fac, bs = "re"),
                           ddf.obj =  df.dd,
                           segment.data = segdata,
                           observation.data = obsdata_dd_mod,
                           family = Tweedie(p = 1.58),
                           method="REML")
 
-summary(dsm.xy.season.tw)
-appraise(dsm.xy.season.tw)
+summary(dsm.xy.season.year.tw)
+appraise(dsm.xy.season.year.tw)
 
-draw(dsm.xy.season.tw, residuals = FALSE)
+draw(dsm.xy.season.year.tw, residuals = FALSE)
+anova(dsm.xy.season.year.tw)
 
 # slope ----
 dsm.xy.slope  <- dsm(count ~ s(x,y) +
-                       -1 + season + s(Ano)+
-                       s(slope) ,
-                     # s(year_fac, bs = "re"),
+                       -1 + season + s(year_fac, bs = "re") +
+                       s(slope),
                      ddf.obj =  df.dd,
                      segment.data = segdata,
                      observation.data = obsdata_dd_mod,
@@ -103,9 +117,8 @@ draw(dsm.xy.slope, residuals = FALSE)
 
 # grad ----
 dsm.xy.grad  <- dsm(count ~ s(x,y) +
-                      -1 + season + s(Ano)+
-                      s(grad) ,
-                    # s(year_fac, bs = "re"),
+                      -1 + season + s(year_fac, bs = "re") +
+                      s(grad),
                     ddf.obj =  df.dd,
                     segment.data = segdata,
                     observation.data = obsdata_dd_mod,
@@ -129,9 +142,8 @@ draw(dsm.xy.grad, residuals = FALSE)
 #                           method="REML")
 
 dsm.xy.depth  <-  dsm(count ~ s(x,y) +
-                        -1 + season + s(Ano) +
-                        s(depth) ,
-                      # s(year_fac, bs = "re"),
+                        -1 + season + s(year_fac, bs = "re") +
+                        s(depth),
                       ddf.obj =  df.dd,
                       segment.data = segdata,
                       observation.data = obsdata_dd_mod,
@@ -143,14 +155,13 @@ appraise(dsm.xy.depth)
 
 draw(dsm.xy.depth, residuals = FALSE)
 
-anova(dsm.xy.depthnull, dsm.xy.depth,   test = "F")
-AIC(dsm.xy.depth, dsm.xy.depthnull)
+# anova(dsm.xy.depthnull, dsm.xy.depth,   test = "F")
+# AIC(dsm.xy.depth, dsm.xy.depthnull)
 
 # sst ----
 dsm.xy.sst  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(Ano)+
-                     s(sst) ,
-                   # s(year_fac, bs = "re"),
+                     -1 + season + s(year_fac, bs = "re") +
+                     s(sst),
                    ddf.obj =  df.dd,
                    segment.data = segdata,
                    observation.data = obsdata_dd_mod,
@@ -165,9 +176,8 @@ draw(dsm.xy.sst, residuals = FALSE)
 
 # clo ----
 dsm.xy.clo  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(Ano)+
-                     s(clo) ,
-                   # s(year_fac, bs = "re"),
+                     -1 + season + s(year_fac, bs = "re") +
+                     s(clo),
                    ddf.obj =  df.dd,
                    segment.data = segdata,
                    observation.data = obsdata_dd_mod,
@@ -181,9 +191,8 @@ draw(dsm.xy.clo, residuals = FALSE)
 
 # dist.up ----
 dsm.xy.dist.up  <- dsm(count ~ s(x,y) +
-                         -1 + season + s(Ano)+
-                         s(dist.up) ,
-                       # s(year_fac, bs = "re"),
+                         -1 + season + s(year_fac, bs = "re") +
+                         s(dist.up),
                        ddf.obj =  df.dd,
                        segment.data = segdata,
                        observation.data = obsdata_dd_mod,
@@ -197,10 +206,9 @@ draw(dsm.xy.dist.up, residuals = FALSE)
 
 # dist.up.grad ----
 dsm.xy.dist.up.grad  <- dsm(count ~ s(x,y) +
-                              -1 + season + s(Ano)+
+                              -1 + season + s(year_fac, bs = "re") +
                               s(grad) +
-                              s(dist.up) ,
-                            # s(year_fac, bs = "re"),
+                              s(dist.up),
                             ddf.obj =  df.dd,
                             segment.data = segdata,
                             observation.data = obsdata_dd_mod,
@@ -213,32 +221,51 @@ appraise(dsm.xy.dist.up.grad)
 draw(dsm.xy.dist.up.grad, residuals = FALSE)
 
 # Model selection -----
-AIC(dsm.xy.tw,
-    dsm.xy.season.tw,
-    dsm.xy.slope,
-    dsm.xy.grad,
-    dsm.xy.sst,
-    dsm.xy.clo,
-    dsm.xy.dist.up,
-    dsm.xy.dist.up.grad,
-    dsm.xy.depth,
-    dsm.xy.year
+table_dd_modselection <- AIC(dsm.xy.tw,
+                             dsm.xy.season.tw,
+                             dsm.xy.season.year.tw,
+                             dsm.xy.slope,
+                             dsm.xy.grad,
+                             dsm.xy.sst,
+                             dsm.xy.clo,
+                             dsm.xy.dist.up,
+                             dsm.xy.depth
+
 ) %>%
-  mutate(deltaAIC = AIC - min(AIC)) %>%
+  mutate(deltaAIC = round(AIC - min(AIC), 2)) %>%
   mutate(Dev = c(
     round(summary(dsm.xy.tw)$dev.expl, 2),
     round(summary(dsm.xy.season.tw)$dev.expl, 2),
+    round(summary(dsm.xy.season.year.tw)$dev.expl, 2),
     round(summary(dsm.xy.slope)$dev.expl, 2),
     round(summary(dsm.xy.grad)$dev.expl, 2),
     round(summary(dsm.xy.sst)$dev.expl, 2),
     round(summary(dsm.xy.clo)$dev.expl, 2),
     round(summary(dsm.xy.dist.up)$dev.expl, 2),
-    round(summary(dsm.xy.dist.up.grad)$dev.expl, 2),
-    round(summary(dsm.xy.depth)$dev.expl, 2),
-    round(summary(dsm.xy.year)$dev.expl, 2)
+    round(summary(dsm.xy.depth)$dev.expl, 2)
 
   )) %>%
-  arrange(AIC)
+  mutate(model = c("count ~ s(x,y)",
+                   "count ~ s(x,y) + season ",
+                   "count ~ s(x,y) + season + s(year, bs = 're')",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(slope)",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(grad)",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(sst)",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(clo)",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(dist.up)",
+                   "count ~ s(x,y) + season + s(year, bs = 're') + s(depth)") ) %>%
+  data.table() %>%
+  mutate(df = round(df, 2)) %>%
+  select(model, df , deltaAIC, Dev) %>%
+  arrange(deltaAIC) %>%
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
 
 
 
