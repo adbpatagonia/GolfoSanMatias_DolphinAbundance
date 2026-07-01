@@ -1,6 +1,14 @@
-#----------------------------------------------------------
-# Predict spatial density from fitted DSM
-#----------------------------------------------------------
+# ADB
+# 2026-06-30
+#
+# Predicted density maps for common dolphins (Delphinus delphis)
+# Models: dsm.xy.season.tw  (count ~ s(x,y) + -1 + season + s(Ano))
+#         dsm.xy.clo        (count ~ s(x,y) + -1 + season + s(Ano) + s(clo))
+#
+# Assumes the following objects are already in the workspace:
+#   pred.polys_m, survey.area_m, patagonia_m, segdata, segdata_traj_m
+#   obsdata_dd_mod, distdata_dd_sf_m, target_crs
+#   trunc.dist_dd, dsm.xy.season.tw, dsm.xy.clo
 
 library(dsm)
 library(sf)
@@ -8,291 +16,198 @@ library(dplyr)
 library(ggplot2)
 library(viridis)
 
-# pred.polys_m = prediction polygons/grid already in projected CRS
-# must contain x,y centroids used by model
-
-# If x,y do not exist:
-pred.polys_m <- pred.polys_m %>%
-  mutate(
-    x = st_coordinates(st_centroid(geometry))[,1],
-    y = st_coordinates(st_centroid(geometry))[,2]
-  )
-
-
-pred.polys_season_m <- copy(pred.polys_m)
-pred.polys_season_m <- bind_rows(pred.polys_season_m %>%
-                                   mutate(season = "Summer"),
-                                 pred.polys_season_m %>%
-                                   mutate(season = "Spring"),
-                                 pred.polys_season_m %>%
-                                   mutate(season = "Winter"),
-                                 pred.polys_season_m %>%
-                                   mutate(season = "Fall")
-)
-pred.polys_season_m <- pred.polys_season_m %>%
-  mutate(
-    year_fac = factor(
-      levels(segdata$year_fac)[8],
-      levels = levels(segdata$year_fac)
-    ),
-    season = factor(season, levels = levels(obsdata_dd_mod$season))
-  )
 #----------------------------------------------------------
-# Predict abundance per cell
+# Helpers
 #----------------------------------------------------------
 
 off.set <- 800 * trunc.dist_dd
 
-pred.polys_m$Nhat <- predict(
-  dsm.xy.tw,
-  newdata = pred.polys_m,
-  off.set
-)
+# Reference year level for s(year_fac, bs = "re") — excluded from prediction
+ref_year_fac <- factor(levels(segdata$year_fac)[8], levels = levels(segdata$year_fac))
 
+bb   <- st_bbox(survey.area_m)
+xpad <- 3000
+ypad <- 3000
+
+# Ensure x,y centroids exist on prediction grid
+if (!all(c("x", "y") %in% names(pred.polys_m))) {
+  pred.polys_m <- pred.polys_m %>%
+    mutate(
+      x = st_coordinates(st_centroid(geometry))[, 1],
+      y = st_coordinates(st_centroid(geometry))[, 2]
+    )
+}
+
+#----------------------------------------------------------
+# Build season prediction grid (shared by both models)
+#----------------------------------------------------------
+
+pred.polys_season_m <- bind_rows(
+  pred.polys_m %>% mutate(season = "Summer"),
+  pred.polys_m %>% mutate(season = "Spring"),
+  pred.polys_m %>% mutate(season = "Winter"),
+  pred.polys_m %>% mutate(season = "Fall")
+) %>%
+  mutate(
+    season   = factor(season, levels = levels(obsdata_dd_mod$season)),
+    year_fac = ref_year_fac
+  )
+
+#----------------------------------------------------------
+# Map 1 — dsm.xy.season.tw
+# count ~ s(x, y) + -1 + season + s(Ano)
+#----------------------------------------------------------
 
 pred.polys_season_m$Nhat <- predict(
   dsm.xy.season.tw,
   newdata = pred.polys_season_m,
   off.set = off.set,
-  exclude   = "s(year_fac)",
-  type      = "response"
+  exclude = "s(year_fac)",
+  type    = "response"
 )
 
-#----------------------------------------------------------
-# Convert to density
-# (animals / km2)
-#----------------------------------------------------------
-
-pred.polys_m$area_m2 <- as.numeric(st_area(pred.polys_m))
-pred.polys_m$density <- pred.polys_m$Nhat / (pred.polys_m$area_m2 / 1e6)
-
-# optional log density for smoother map
-pred.polys_m$ldensity <- log10(pred.polys_m$density + 0.001)
-
-pred.polys_season_m$area_m2 <- as.numeric(st_area(pred.polys_season_m))
-pred.polys_season_m$density <- pred.polys_season_m$Nhat / (pred.polys_season_m$area_m2 / 1e6)
-
-# optional log density for smoother map
+pred.polys_season_m$area_m2  <- as.numeric(st_area(pred.polys_season_m))
+pred.polys_season_m$density  <- pred.polys_season_m$Nhat / (pred.polys_season_m$area_m2 / 1e6)
 pred.polys_season_m$ldensity <- log10(pred.polys_season_m$density + 0.001)
 
-#----------------------------------------------------------
-# Spatial density map
-#----------------------------------------------------------
-
-bb <- st_bbox(survey.area_m)
-
-xpad <- 3000
-ypad <- 3000
-
-
-map.density <- ggplot() +
+dd.map.density.season <- ggplot() +
   geom_sf(data = patagonia_m,
-          fill = "grey85",
+          fill  = "grey85",
           color = "grey40") +
-  geom_sf(data = pred.polys_m,
+  geom_sf(data  = pred.polys_season_m,
           aes(fill = density),
           color = NA) +
-  geom_sf(data = survey.area_m,
-          fill = NA,
-          color = "black",
+  geom_sf(data      = survey.area_m,
+          fill      = NA,
+          color     = "black",
           linewidth = 0.6) +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          # aes(color = factor(season)),
-          size = 0.6,
+  geom_sf(data  = segdata_traj_m %>% filter(Ano > 2006),
+          size  = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data  = distdata_dd_sf_m %>% filter(Ano > 2006),
           aes(size = size),
-          alpha = 0.7
-  ) +
+          alpha = 0.7) +
   scale_fill_viridis_c(
     option = "turbo",
-    # trans = "sqrt",
-    name = expression("Dolphins km"^-2)
+    name   = expression("Dolphins km"^-2)
   ) +
   labs(
-    title = "Predicted spatial density of dusky dolphins",
-    caption = "model: count ~ s(x, y)",
+    title   = "Predicted spatial density of common dolphins",
+    caption = "model: count ~ s(x, y) + season + s(Ano)",
     x = "Easting (Mm)",
     y = "Northing (Mm)"
   ) +
   theme_minimal(base_size = 13) +
   theme(
-    legend.position = "right",
+    legend.position  = "right",
     panel.grid.minor = element_blank()
   ) +
   scale_x_continuous(labels = \(x) x / 1e6) +
   scale_y_continuous(labels = \(x) x / 1e6) +
   coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    xlim        = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim        = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
     default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = FALSE
-  )
-
-
-map.density
-
-## season ----
-
-map.density.season <- ggplot() +
-  geom_sf(data = patagonia_m,
-          fill = "grey85",
-          color = "grey40") +
-  geom_sf(data = pred.polys_season_m,
-          aes(fill = density),
-          color = NA) +
-  geom_sf(data = survey.area_m,
-          fill = NA,
-          color = "black",
-          linewidth = 0.6) +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          # aes(color = factor(season)),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
-          aes(size = size),
-          alpha = 0.7
-  ) +
-  scale_fill_viridis_c(
-    option = "turbo",
-    # trans = "sqrt",
-    name = expression("Dolphins km"^-2)
-  ) +
-  labs(
-    title = "Predicted spatial density of dusky dolphins",
-    caption = 'model: count ~ s(x, y) + season + s(year, bs = "re" ) ',
-    x = "Easting (Mm)",
-    y = "Northing (Mm)"
-  ) +
-  theme_minimal(base_size = 13) +
-  theme(
-    legend.position = "right",
-    panel.grid.minor = element_blank()
-  ) +
-  scale_x_continuous(labels = \(x) x / 1e6) +
-  scale_y_continuous(labels = \(x) x / 1e6) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = FALSE
+    datum       = target_crs,
+    expand      = FALSE
   ) +
   facet_wrap(. ~ season)
 
-map.density.season
+dd.map.density.season
 
-
-# model with depth -----
-# convert segdata to sf points
-segdata_sf <- st_as_sf(
-  segdata,
-  coords = c("x", "y"),
-  crs = st_crs(pred.polys_m),
-  remove = FALSE
+ggsave(
+  filename = "output/CommonDolphin/DSM/DD_DSM_Season.png",
+  plot     = dd.map.density.season,
+  width    = 13,
+  height   = 13
 )
 
-# nearest segdata row for each prediction polygon
-idx <- st_nearest_feature(pred.polys_m, segdata_sf)
+#----------------------------------------------------------
+# Map 2 — dsm.xy.clo
+# count ~ s(x, y) + -1 + season + s(Ano) + s(clo)
+#
+# clo is available at every prediction cell in pred.polys_m
+#----------------------------------------------------------
 
-# copy depth
-#' @ADB this may fail - I thikn pred.polys_m was modified above
-#' double chekc
-pred.polys_season_d_m <- copy(pred.polys_m)
-pred.polys_season_d_m$depth <- segdata_sf$depth[idx]
+segdata_sf <- st_as_sf(segdata, coords = c("x", "y"),
+                       crs = st_crs(pred.polys_m), remove = FALSE)
 
-pred.polys_season_d_m <- bind_rows(pred.polys_season_d_m %>%
-                                     mutate(season = "Summer"),
-                                   pred.polys_season_d_m %>%
-                                     mutate(season = "Spring"),
-                                   pred.polys_season_d_m %>%
-                                     mutate(season = "Winter"),
-                                   pred.polys_season_d_m %>%
-                                     mutate(season = "Fall")
+pred.polys_season_clo_m <- bind_rows(
+  lapply(levels(obsdata_dd_mod$season), function(s) {
+    seg_s <- segdata_sf[segdata_sf$season == s, ]
+    idx   <- st_nearest_feature(pred.polys_m, seg_s)
+    pred.polys_m %>%
+      mutate(season   = factor(s, levels = levels(obsdata_dd_mod$season)),
+             year_fac = ref_year_fac,
+             clo      = seg_s$clo[idx])
+  })
 )
-pred.polys_season_d_m <- pred.polys_season_d_m %>%
-  mutate(
-    year_fac = factor(
-      levels(segdata$year_fac)[8],
-      levels = levels(segdata$year_fac)
-    ),
-    season = factor(season, levels = levels(obsdata_dd_mod$season))
-  )
 
+# cap clo at 95th percentile of training data to avoid the high-uncertainty tail
+clo_cap <- quantile(segdata$clo, 0.95)
+pred.polys_season_clo_m <- pred.polys_season_clo_m %>%
+  mutate(clo = pmin(clo, clo_cap))
 
-pred.polys_season_d_m$Nhat <- predict(
-  dsm.xy.season.tw,
-  newdata = pred.polys_season_d_m,
+pred.polys_season_clo_m$Nhat <- predict(
+  dsm.xy.clo,
+  newdata = pred.polys_season_clo_m,
   off.set = off.set,
-  exclude   = "s(year_fac)",
-  type      = "response"
+  exclude = "s(year_fac)",
+  type    = "response"
 )
 
-pred.polys_season_d_m$area_m2 <- as.numeric(st_area(pred.polys_season_d_m))
-pred.polys_season_d_m$density <- pred.polys_season_d_m$Nhat / (pred.polys_season_d_m$area_m2 / 1e6)
+pred.polys_season_clo_m$area_m2  <- as.numeric(st_area(pred.polys_season_clo_m))
+pred.polys_season_clo_m$density  <- pred.polys_season_clo_m$Nhat / (pred.polys_season_clo_m$area_m2 / 1e6)
+pred.polys_season_clo_m$ldensity <- log10(pred.polys_season_clo_m$density + 0.001)
 
-# optional log density for smoother map
-pred.polys_season_d_m$ldensity <- log10(pred.polys_season_d_m$density + 0.001)
-
-
-
-
-map.density.season.depth <- ggplot() +
+dd.map.density.season.clo <- ggplot() +
   geom_sf(data = patagonia_m,
-          fill = "grey85",
+          fill  = "grey85",
           color = "grey40") +
-  geom_sf(data = pred.polys_season_d_m,
+  geom_sf(data  = pred.polys_season_clo_m,
           aes(fill = density),
           color = NA) +
-  geom_sf(data = survey.area_m,
-          fill = NA,
-          color = "black",
+  geom_sf(data      = survey.area_m,
+          fill      = NA,
+          color     = "black",
           linewidth = 0.6) +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          # aes(color = factor(season)),
-          size = 0.6,
+  geom_sf(data  = segdata_traj_m %>% filter(Ano > 2006),
+          size  = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data  = distdata_dd_sf_m %>% filter(Ano > 2006),
           aes(size = size),
-          alpha = 0.7
-  ) +
+          alpha = 0.7) +
   scale_fill_viridis_c(
     option = "turbo",
-    # trans = "sqrt",
-    name = expression("Dolphins km"^-2)
+    name   = expression("Dolphins km"^-2)
   ) +
   labs(
-    title = "Predicted spatial density of dusky dolphins",
-    caption = 'model: count ~ s(x, y) + season + s(depth) + s(year, bs = "re" ) ',
+    title   = "Predicted spatial density of common dolphins",
+    caption = "model: count ~ s(x, y) + season + s(Ano) + s(clo)",
     x = "Easting (Mm)",
     y = "Northing (Mm)"
   ) +
   theme_minimal(base_size = 13) +
   theme(
-    legend.position = "right",
+    legend.position  = "right",
     panel.grid.minor = element_blank()
   ) +
   scale_x_continuous(labels = \(x) x / 1e6) +
   scale_y_continuous(labels = \(x) x / 1e6) +
   coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    xlim        = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim        = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
     default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = FALSE
+    datum       = target_crs,
+    expand      = FALSE
   ) +
   facet_wrap(. ~ season)
 
-map.density.season.depth
+dd.map.density.season.clo
 
-
-
-ggsave(filename = "output/DuskyDolphin/DSM/DD_DSM_Season_depth.png",
-       width = 13, height = 13)
+ggsave(
+  filename = "output/CommonDolphin/DSM/DD_DSM_Season_clo.png",
+  plot     = dd.map.density.season.clo,
+  width    = 13,
+  height   = 13
+)
