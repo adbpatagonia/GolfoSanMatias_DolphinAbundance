@@ -17,3 +17,5 @@ analysis/archive/
 .positai
 
 .claude/
+
+**/*.quarto_ipynb
