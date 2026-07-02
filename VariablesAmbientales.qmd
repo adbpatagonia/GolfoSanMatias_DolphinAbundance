@@ -8,7 +8,9 @@
 
 library(here)
 
-source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
+# source data (cached across pages) ----
+source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
+load_or_build_readdata()
 ```
 
 Las estaciones fueron definidas:

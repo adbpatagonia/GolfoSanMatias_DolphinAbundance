@@ -6,8 +6,9 @@
 #| include: false
 
 library(kableExtra)
-# source data ----
-source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
+# source data (cached across pages) ----
+source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
+load_or_build_readdata()
 ```
 
 # Censos
@@ -793,7 +794,15 @@ Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los l
 #| echo: false   
 #| message: false    
 #| warning: false
-print(table_lo_modselection)
+table_lo_modselection %>%
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
 ```
 
 
