@@ -292,7 +292,11 @@ p.distup.lo
 ```{r}
 #| include: false
 # Detection function -----
-source(file.path(here::here(), "analysis", "3_DuskyDolphin_DetectionFunction.R"))
+cache_source(
+  "3_DuskyDolphin_DetectionFunction.R",
+  deps  = "2_DuskyDolphin_EDA.R",
+  label = "DetFun (dusky)"
+)
 ```
 
 ## Datos
@@ -787,7 +791,12 @@ Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los l
 ```{r}
 #| include: false
 # Detection function -----
- source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM.R"))
+cache_source(
+  "4_DuskyDolphin_DSM.R",
+  deps            = c("2_DuskyDolphin_EDA.R", "3_DuskyDolphin_DetectionFunction.R"),
+  capture_globals = "segdata",
+  label           = "DSM (dusky)"
+)
 ```
 
 ```{r}
