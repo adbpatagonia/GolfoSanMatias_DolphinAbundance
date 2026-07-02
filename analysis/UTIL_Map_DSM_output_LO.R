@@ -2,13 +2,13 @@
 # 2026-06-30
 #
 # Predicted density maps for dusky dolphins (Lagenorhynchus obscurus)
-# Models: dsm.xy.season.year.tw  (count ~ s(x,y) + -1 + season + s(year_fac, bs="re"))
-#         dsm.xy.depth       (count ~ s(x,y) + -1 + season + s(depth) + s(year_fac, bs="re"))
+# Models: lo.dsm.xy.season.year        (count ~ s(x,y) + -1 + season + s(Ano))
+#         lo.dsm.xy.year.season.depth  (count ~ s(x,y) + -1 + season + s(Ano) + s(depth))
 #
 # Assumes the following objects are already in the workspace:
 #   pred.polys_m, survey.area_m, patagonia_m, segdata, segdata_traj_m
 #   obsdata_lo_mod, distdata_lo_sf_m, target_crs
-#   trunc.dist_lo, dsm.xy.season.year.tw, dsm.xy.depth
+#   trunc.dist_lo, lo.dsm.xy.season.year, lo.dsm.xy.year.season.depth
 
 library(dsm)
 library(sf)
@@ -22,7 +22,8 @@ library(viridis)
 
 off.set <- 800 * trunc.dist_lo
 
-ref_year_fac <- factor(levels(segdata$year_fac)[8], levels = levels(segdata$year_fac))
+# Reference year for s(Ano) — evaluated at the median survey year
+ref_ano <- as.integer(round(median(segdata$Ano)))
 
 bb   <- st_bbox(survey.area_m)
 xpad <- 3000
@@ -38,8 +39,8 @@ if (!all(c("x", "y") %in% names(pred.polys_m))) {
 }
 
 #----------------------------------------------------------
-# Map 1 — dsm.xy.season.year.tw
-# count ~ s(x, y) + -1 + season + s(year_fac, bs = "re")
+# Map 1 — lo.dsm.xy.season.year
+# count ~ s(x, y) + -1 + season + s(Ano)
 #----------------------------------------------------------
 
 pred.polys_season_m <- bind_rows(
@@ -49,15 +50,14 @@ pred.polys_season_m <- bind_rows(
   pred.polys_m %>% mutate(season = "Fall")
 ) %>%
   mutate(
-    season   = factor(season, levels = levels(obsdata_lo_mod$season)),
-    year_fac = ref_year_fac
+    season = factor(season, levels = levels(obsdata_lo_mod$season)),
+    Ano    = ref_ano
   )
 
 pred.polys_season_m$Nhat <- predict(
-  dsm.xy.season.year.tw,
+  lo.dsm.xy.season.year,
   newdata = pred.polys_season_m,
   off.set = off.set,
-  exclude = "s(year_fac)",
   type    = "response"
 )
 
@@ -88,7 +88,7 @@ lo.map.density.season <- ggplot() +
   ) +
   labs(
     title   = "Predicted spatial density of dusky dolphins",
-    caption = "model: count ~ s(x, y) + season + s(year_fac, bs='re')",
+    caption = "model: count ~ s(x, y) + season + s(Ano)",
     x = "Easting (Mm)",
     y = "Northing (Mm)"
   ) +
@@ -118,8 +118,8 @@ ggsave(
 )
 
 #----------------------------------------------------------
-# Map 2 — dsm.xy.depth
-# count ~ s(x, y) + -1 + season + s(depth) + s(year_fac, bs = "re")
+# Map 2 — lo.dsm.xy.year.season.depth
+# count ~ s(x, y) + -1 + season + s(Ano) + s(depth)
 #
 # depth has no seasonal variation: assign from nearest segdata point,
 # then stack by season
@@ -138,16 +138,15 @@ pred.polys_season_depth_m <- bind_rows(
   pred.polys_m %>% mutate(season = "Fall")
 ) %>%
   mutate(
-    season   = factor(season, levels = levels(obsdata_lo_mod$season)),
-    year_fac = ref_year_fac,
-    depth    = segdata_sf$depth[rep(idx_depth, 4)]
+    season = factor(season, levels = levels(obsdata_lo_mod$season)),
+    Ano    = ref_ano,
+    depth  = segdata_sf$depth[rep(idx_depth, 4)]
   )
 
 pred.polys_season_depth_m$Nhat <- predict(
-  dsm.xy.depth,
+  lo.dsm.xy.year.season.depth,
   newdata = pred.polys_season_depth_m,
   off.set = off.set,
-  exclude = "s(year_fac)",
   type    = "response"
 )
 
@@ -178,7 +177,7 @@ lo.map.density.season.depth <- ggplot() +
   ) +
   labs(
     title   = "Predicted spatial density of dusky dolphins",
-    caption = "model: count ~ s(x, y) + season + s(depth) + s(year_fac, bs='re')",
+    caption = "model: count ~ s(x, y) + season + s(Ano) + s(depth)",
     x = "Easting (Mm)",
     y = "Northing (Mm)"
   ) +

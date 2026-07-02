@@ -2,13 +2,13 @@
 # 2026-06-30
 #
 # Predicted density maps for common dolphins (Delphinus delphis)
-# Models: dsm.xy.season.year.tw  (count ~ s(x,y) + -1 + season + s(year, bs = 're'))
-#         dsm.xy.clo        (count ~ s(x,y) + -1 + season + s(year, bs = 're') + s(clo))
+# Models: dd.dsm.xy.season.year        (count ~ s(x,y) + -1 + season + s(Ano))
+#         dd.dsm.xy.year.season.clo    (count ~ s(x,y) + -1 + season + s(Ano) + s(clo))
 #
 # Assumes the following objects are already in the workspace:
 #   pred.polys_m, survey.area_m, patagonia_m, segdata, segdata_traj_m
 #   obsdata_dd_mod, distdata_dd_sf_m, target_crs
-#   trunc.dist_dd, dsm.xy.season.year.tw, dsm.xy.clo
+#   trunc.dist_dd, dd.dsm.xy.season.year, dd.dsm.xy.year.season.clo
 
 library(dsm)
 library(sf)
@@ -22,8 +22,8 @@ library(viridis)
 
 off.set <- 800 * trunc.dist_dd
 
-# Reference year level for s(year_fac, bs = "re") — excluded from prediction
-ref_year_fac <- factor(levels(segdata$year_fac)[8], levels = levels(segdata$year_fac))
+# Reference year for s(Ano) — evaluated at the median survey year
+ref_ano <- as.integer(round(median(segdata$Ano)))
 
 bb   <- st_bbox(survey.area_m)
 xpad <- 3000
@@ -49,20 +49,19 @@ pred.polys_season_m <- bind_rows(
   pred.polys_m %>% mutate(season = "Fall")
 ) %>%
   mutate(
-    season   = factor(season, levels = levels(obsdata_dd_mod$season)),
-    year_fac = ref_year_fac
+    season = factor(season, levels = levels(obsdata_dd_mod$season)),
+    Ano    = ref_ano
   )
 
 #----------------------------------------------------------
-# Map 1 — dsm.xy.season.year.tw
+# Map 1 — dd.dsm.xy.season.year
 # count ~ s(x, y) + -1 + season + s(Ano)
 #----------------------------------------------------------
 
 pred.polys_season_m$Nhat <- predict(
-  dsm.xy.season.year.tw,
+  dd.dsm.xy.season.year,
   newdata = pred.polys_season_m,
   off.set = off.set,
-  exclude = "s(year_fac)",
   type    = "response"
 )
 
@@ -123,7 +122,7 @@ ggsave(
 )
 
 #----------------------------------------------------------
-# Map 2 — dsm.xy.clo
+# Map 2 — dd.dsm.xy.year.season.clo
 # count ~ s(x, y) + -1 + season + s(Ano) + s(clo)
 #
 # clo is available at every prediction cell in pred.polys_m
@@ -137,9 +136,9 @@ pred.polys_season_clo_m <- bind_rows(
     seg_s <- segdata_sf[segdata_sf$season == s, ]
     idx   <- st_nearest_feature(pred.polys_m, seg_s)
     pred.polys_m %>%
-      mutate(season   = factor(s, levels = levels(obsdata_dd_mod$season)),
-             year_fac = ref_year_fac,
-             clo      = seg_s$clo[idx])
+      mutate(season = factor(s, levels = levels(obsdata_dd_mod$season)),
+             Ano    = ref_ano,
+             clo    = seg_s$clo[idx])
   })
 )
 
@@ -149,10 +148,9 @@ pred.polys_season_clo_m <- pred.polys_season_clo_m %>%
   mutate(clo = pmin(clo, clo_cap))
 
 pred.polys_season_clo_m$Nhat <- predict(
-  dsm.xy.clo,
+  dd.dsm.xy.year.season.clo,
   newdata = pred.polys_season_clo_m,
   off.set = off.set,
-  exclude = "s(year_fac)",
   type    = "response"
 )
 

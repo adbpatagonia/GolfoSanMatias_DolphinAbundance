@@ -20,5 +20,7 @@ source(file.path(here::here(), "analysis", "2_DuskyDolphin_EDA.R"))
 source(file.path(here::here(), "analysis", "3_DuskyDolphin_DetectionFunction.R"))
 
 # DSM ----
-# source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM.R"))
+source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM.R"))
 
+# Map expected densities -----
+source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_LO.R"))
