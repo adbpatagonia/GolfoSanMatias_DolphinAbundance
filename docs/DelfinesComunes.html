@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Density Surface Models in Golfo San Matías - Delfines Comunes</title>
+<title>Delfines Comunes – Density Surface Models in Golfo San Matías</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -24,6 +27,7 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -50,22 +54,29 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -74,62 +85,65 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Density Surface Models in Golfo San Matías</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./VariablesAmbientales.html" rel="" target="">
- <span class="menu-text">Variables Ambientales</span></a>
+    <a class="nav-link" href="./VariablesAmbientales.html"> 
+<span class="menu-text">Variables Ambientales</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./DelfinesComunes.html" rel="" target="" aria-current="page">
- <span class="menu-text">Delfines Comunes</span></a>
+    <a class="nav-link active" href="./DelfinesComunes.html" aria-current="page"> 
+<span class="menu-text">Delfines Comunes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./DelfinesOscuros.html" rel="" target="">
- <span class="menu-text">Delfines Oscuros</span></a>
+    <a class="nav-link" href="./DelfinesOscuros.html"> 
+<span class="menu-text">Delfines Oscuros</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -204,20 +218,26 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <section id="censos" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Censos</h1>
 <p>Muchos censos en embarcaciones de oportunidad.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Número de censos por año y estación</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">Ano</th>
@@ -319,14 +339,12 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>Presencia a o largo de todo el año</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <caption>Delfines por estación</caption>
 <thead>
 <tr class="header">
@@ -353,17 +371,19 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>Grupos de decenas de individuos, con algunos grupos muy grandes</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">season</th>
@@ -404,8 +424,6 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </section>
@@ -418,16 +436,24 @@ div.csl-indent {
 <p>Parece haber efecto del barco sobre la distancia a la que se detectan delfines comunes. Considerar incluir en la funcion de deteccion</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Tamaño muestral, discrimando por embarcación</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">Ano</th>
@@ -488,8 +514,6 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </section>
@@ -498,10 +522,18 @@ div.csl-indent {
 <p>Barco no parece tener efecto sobre el tamaño grupal detectado</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -513,7 +545,11 @@ div.csl-indent {
 <p>No hay diferencias en el estado del mar en el que se hicieron censos, dependiendo del barco</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -524,7 +560,11 @@ Descartar observaciones con Beaufort = 5<br>
 Considerar si descartar Beaufort = 4</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -538,7 +578,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>Parece haber mayor cantidad de detecciones en la zona donde aumenta la profundidad - alrededor de northing 5.47 Mm</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -547,7 +591,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -556,7 +604,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>No parece infuenciar la deteccion de animales</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -572,7 +624,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.1" class="anchored" data-anchor-id="temperatura-superficial-del-mar"><span class="header-section-number">2.3.2.1</span> Temperatura superficial del mar</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -580,7 +636,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.2" class="anchored" data-anchor-id="clorofila"><span class="header-section-number">2.3.2.2</span> Clorofila</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -588,7 +648,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.3" class="anchored" data-anchor-id="distancia-a-upwellings"><span class="header-section-number">2.3.2.3</span> Distancia a upwellings</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -606,12 +670,20 @@ Considerar si descartar Beaufort = 4</p>
 <p>Ajustamos modelos half-normal y hazard rate</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -621,14 +693,18 @@ Considerar si descartar Beaufort = 4</p>
 <p>Aquí se grafica el tamaño grupal como función de la distancia a la que fueron registrados. Se detectaron grupos hasta 2000m de distancia de la trayectoria de la embarcación.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Consejo práctico recibido en curso de Distance Sampling: “<em>consider reducing the truncation distance, w, if more than 5% of the Pa(zi) are &lt;0.2, or if any are less than 0.1</em>”. Probabilidades (Pa) pequeñas tienen mucha influencia en la estimación de abundancia, porque entran en el denominador del estimador Horvitz-Thompson.</p>
 <p>Estas son las proporciones de observaciones con diferentes Pa (estimadas usando una función half-normal. 17% de las observaciones son menores a 0.2, y hay 81 observaciones con Pa &lt; 0.1 (no mostrado en la tabla). Por ende, truncar los datos</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">bin</th>
@@ -664,20 +740,22 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p><span class="citation" data-cites="Buckland2001">Buckland et al. (<a href="#ref-Buckland2001" role="doc-biblioref">2001</a>)</span> (p.&nbsp;16) sugiere truncar donde la probabilidad de detección es ~0.15. Aquí se grafica la función de detección (half-normal). Esta distancia es ~325m. Al truncar a esa distancia, se eliminan 49 datos (~ 11.9% de los datos).</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Ajustamos los modelos half-normal y hazard rate con los datos truncados. El modelo hazard rate es mas parsimonioso.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -701,8 +779,6 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </section>
@@ -712,7 +788,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>Este es un gráfico de las distancias a las que fueron tomadas las observaciones, con la función de detección hazard rate (observaciones truncadas a 325). Se ve que las distancias fueron redondeadas en 0, 50, 100, 150, 200, 250, 300.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><span class="citation" data-cites="Buckland2015DistanceSampling">Buckland et al. (<a href="#ref-Buckland2015DistanceSampling" role="doc-biblioref">2015</a>)</span> (p.&nbsp;68)</p>
@@ -727,13 +807,17 @@ Considerar si descartar Beaufort = 4</p>
 <p>Aquí utilizamos una estrategia similar; elegimos puntos de corte 0, 25, 75, 125, 175, 225, 275, 325.&nbsp;El último bin termina en 300, porque la distancia de truncado es 325m.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Ajustamos los modelos half-normal y hazard rate con los datos truncados y aplicando los cutpoints para lidiar con la agrupación de datos. El modelo hazard rate es mas parsimonioso. Utilizar el modelo hazard rate.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -757,8 +841,6 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </section>
@@ -767,7 +849,7 @@ Considerar si descartar Beaufort = 4</p>
 <p>Distance allows the selection of three types of series (one type per model)</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 255) !important;">Key function</th>
@@ -789,15 +871,13 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>Aplicamos los terminos de ajuste a los modelos half-normal y hazard rate</p>
 <p>El modelo más parsimonioso es el modelo hazard rate sin término de ajuste.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -833,13 +913,15 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -856,7 +938,7 @@ Considerar si descartar Beaufort = 4</p>
 <p>La función de detección mas parsimoniosa incluye el estado del mar y el tamaño grupal</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -910,8 +992,6 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <section id="efecto-del-estado-del-mar" class="level3" data-number="3.6.1">
@@ -920,13 +1000,17 @@ Considerar si descartar Beaufort = 4</p>
 <p>Nótese que los patrones no siguen el patrón esperado; uno esperaría que con Beaufort 0 la detección a distancia fuese mayor, y que con Beaufort 4 la detección fuese menor. Sin embargo, no es así</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Probablemente sea un problema de tamaño muestral discriminado por estado del mar. Hay pocos registros en Beaufort 0, la mayoría de los registros fueron tomados en Beaufort 1, 2, y 3.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">beaufort_fct</th>
@@ -956,15 +1040,13 @@ Considerar si descartar Beaufort = 4</p>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>La forma de lidiar con esto es agrupar beaufort 0 y 1 en un grupo y 3 y 4 en un segundo grupo.<br>
 Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de mar y tamaño grupal</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -1026,8 +1108,6 @@ Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de m
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </section>
@@ -1037,7 +1117,11 @@ Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de m
 Los patrones son los esperados, y hay diferencias marcadas entre los valores de Beaufort. Conclusión: utilizar estado del mar como covariable.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Conclusión: utilizar Beaufort agrupado como covariable en la funcion de deteccion.</p>
@@ -1050,7 +1134,11 @@ Las líneas de colores representan la probabilidad de detección de grupos que r
 La forma de la funcion de deteccion cambia para los cuantiles mas altos, mayores a 96%.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Que el tamaño grupal sea una covariable de la funcion de deteccion termina haciendo el ajuste de density surface models problematico.<br>
@@ -1073,7 +1161,11 @@ Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me 
 <p>Quizas este grafico ayude para tomar una decision. Se ve que los tamaños grupales grandes fueron detectados en todas las estaciones, por lo que si adoptamos la estrategia de ignorar el efecto de tamaño grupal no estariamos sesgando las estimaciones estacionales</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1083,7 +1175,11 @@ Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me 
 Conclusión: no utilizar embarcación como covariable.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1102,7 +1198,11 @@ covariables: Beaufort state</p>
 <h4 data-number="3.7.1.1" class="anchored" data-anchor-id="beaufort-agrupado-tamaño-grupal"><span class="header-section-number">3.7.1.1</span> Beaufort (agrupado) + Tamaño grupal</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1110,7 +1210,11 @@ covariables: Beaufort state</p>
 <h4 data-number="3.7.1.2" class="anchored" data-anchor-id="beaufort-agrupado"><span class="header-section-number">3.7.1.2</span> Beaufort (agrupado)</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1184,18 +1288,22 @@ N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
 </div>
 </div>
 <p>Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e.&nbsp;1%).</p>
+<p>Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento</p>
+<p><span class="citation" data-cites="Miller2013SpatialModels">Miller et al. (<a href="#ref-Miller2013SpatialModels" role="doc-biblioref">2013</a>)</span></p>
+<p>En lo que sigue abajo, no inclui beaufort en la funcion de deteccion</p>
 </section>
 </section>
 </section>
 </section>
 <section id="density-surface-models" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Density surface models</h1>
-<p><span class="citation" data-cites="Miller2013SpatialModels">Miller et al. (<a href="#ref-Miller2013SpatialModels" role="doc-biblioref">2013</a>)</span></p>
-<p>Necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento, para poder implementar la función de detección.</p>
-<p>Los largos de los segmentos en el objeto segdata son:</p>
+<p>area of segment <em>j</em> is <em>A<sub>j</sub> = 2wl<sub>j</sub></em></p>
+<p><em>l<sub>j</sub></em> es la variable <code>segdata$Effort</code></p>
+<p><em>w</em> es la distancia de truncado <code>trunc.dist_dd</code>: 325m</p>
+<p>Los largos de los segmentos <em>l<sub>j</sub></em> en el objeto segdata son:</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
 <th style="text-align: center;" data-quarto-table-cell-role="th">Largo segmento (m)</th>
@@ -1229,11 +1337,97 @@ N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 <p>Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(clo)</td>
+<td style="text-align: center;">43.09</td>
+<td style="text-align: center;">0.00</td>
+<td style="text-align: center;">0.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(sst)</td>
+<td style="text-align: center;">43.64</td>
+<td style="text-align: center;">15.52</td>
+<td style="text-align: center;">0.24</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(dist.up)</td>
+<td style="text-align: center;">40.21</td>
+<td style="text-align: center;">20.58</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(slope)</td>
+<td style="text-align: center;">42.58</td>
+<td style="text-align: center;">22.24</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(grad)</td>
+<td style="text-align: center;">40.01</td>
+<td style="text-align: center;">30.31</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're')</td>
+<td style="text-align: center;">36.89</td>
+<td style="text-align: center;">37.75</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(year, bs = 're') + s(depth)</td>
+<td style="text-align: center;">39.31</td>
+<td style="text-align: center;">38.90</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season</td>
+<td style="text-align: center;">29.99</td>
+<td style="text-align: center;">58.87</td>
+<td style="text-align: center;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y)</td>
+<td style="text-align: center;">26.92</td>
+<td style="text-align: center;">69.80</td>
+<td style="text-align: center;">0.18</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="referencias" class="level1" data-number="5">
 
@@ -1242,7 +1436,7 @@ N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">5 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">5 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-Buckland2001" class="csl-entry" role="listitem">
 Buckland ST, Anderson DR, Burnham KP, Laake JL, Borchers DL, Thomas L (2001) Introduction to distance sampling: Estimating abundance of biological populations. Oxford University Press, Oxford.
 </div>
@@ -1254,43 +1448,58 @@ Miller DL, Burt ML, Rexstad EA, Thomas L (2013) <a href="https://doi.org/10.1111
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -1298,195 +1507,348 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
       return codeEl.innerText;
     }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
-    };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 
