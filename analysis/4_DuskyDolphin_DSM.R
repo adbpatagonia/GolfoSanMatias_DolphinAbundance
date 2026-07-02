@@ -30,13 +30,13 @@ segdata[, year_fac := factor(Ano)]
 
 # Simple model ----
 
-dsm.xy  <-  dsm(count ~ s(x,y, bs = "ts"),
+lo.dsm.xy.ts  <-  dsm(count ~ s(x,y, bs = "ts"),
                 ddf.obj =  df.lo,
                 segment.data = segdata,
                 observation.data = obsdata_lo_mod,
                 method="REML")
 
-dsm.xy.te  <-  dsm(count ~ te(x,y, bs = "ts"),
+lo.dsm.xy.te  <-  dsm(count ~ te(x,y, bs = "ts"),
                    ddf.obj =  df.lo,
                    segment.data = segdata,
                    observation.data = obsdata_lo_mod,
@@ -44,34 +44,33 @@ dsm.xy.te  <-  dsm(count ~ te(x,y, bs = "ts"),
 
 
 ## Tweedie ----
-dsm.xy.tw  <-  dsm(count~s(x,y),
+lo.dsm.xy  <-  dsm(count~s(x,y),
                    ddf.obj =  df.lo,
                    segment.data = segdata,
                    observation.data = obsdata_lo_mod,
                    family = Tweedie(p = 1.31),
                    method="REML")
 
-summary(dsm.xy.tw)
-appraise(dsm.xy.tw)
-draw(dsm.xy.tw)
+# summary(lo.dsm.xy)
+# appraise(lo.dsm.xy)
+# draw(lo.dsm.xy)
 
 # year ----
-dsm.xy.year  <-  dsm(count ~ s(x,y) +
-                       year_fac,
-                     # s(Ano),
+lo.dsm.xy.year  <-  dsm(count ~ s(x,y) +
+                        s(Ano),
                      ddf.obj =  df.lo,
                      segment.data = segdata,
                      observation.data = obsdata_lo_mod,
                      family = Tweedie(p = 1.31),
                      method="REML")
 
-summary(dsm.xy.year)
+# summary(lo.dsm.xy.year)
 
-appraise(dsm.xy.year)
-draw(dsm.xy.year)
+# appraise(lo.dsm.xy.year)
+# draw(lo.dsm.xy.year)
 
 # season ----
-dsm.xy.season.tw  <-  dsm(count ~ s(x,y) +
+lo.dsm.xy.season  <-  dsm(count ~ s(x,y) +
                             -1 + season ,
                           ddf.obj =  df.lo,
                           segment.data = segdata,
@@ -79,30 +78,31 @@ dsm.xy.season.tw  <-  dsm(count ~ s(x,y) +
                           family = Tweedie(p = 1.31),
                           method="REML")
 
-summary(dsm.xy.season.tw)
-appraise(dsm.xy.season.tw)
+# summary(lo.dsm.xy.season)
+# appraise(lo.dsm.xy.season)
 
-draw(dsm.xy.season.tw, residuals = FALSE)
-anova(dsm.xy.season.tw)
+# draw(lo.dsm.xy.season, residuals = FALSE)
+# anova(lo.dsm.xy.season)
 
 # season.year ----
-dsm.xy.season.year.tw  <-  dsm(count ~ s(x,y) +
-                                 -1 + season + s(year_fac, bs = "re"),
+lo.dsm.xy.season.year  <-  dsm(count ~ s(x,y) +
+                                 -1 + season + s(Ano),
                                ddf.obj =  df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
                                family = Tweedie(p = 1.31),
                                method="REML")
 
-summary(dsm.xy.season.year.tw)
-appraise(dsm.xy.season.year.tw)
+# summary(lo.dsm.xy.season.year)
+# appraise(lo.dsm.xy.season.year)
 
-draw(dsm.xy.season.year.tw, residuals = FALSE)
-anova(dsm.xy.season.year.tw)
+# draw(lo.dsm.xy.season.year, residuals = FALSE)
+# anova(lo.dsm.xy.season.year)
 
-# slope ----
-dsm.xy.slope  <- dsm(count ~ s(x,y) +
-                       -1 + season + s(year_fac, bs = "re") +
+# Set: environmental variable + season + year ---------
+## slope ----
+lo.dsm.xy.year.season.slope  <- dsm(count ~ s(x,y) +
+                       -1 + season + s(Ano) +
                        s(slope),
                      ddf.obj =  df.lo,
                      segment.data = segdata,
@@ -110,14 +110,14 @@ dsm.xy.slope  <- dsm(count ~ s(x,y) +
                      family = Tweedie(p = 1.31),
                      method="REML")
 
-summary(dsm.xy.slope)
-appraise(dsm.xy.slope)
+# summary(lo.dsm.xy.year.season.slope)
+# appraise(lo.dsm.xy.year.season.slope)
 
-draw(dsm.xy.slope, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.slope, residuals = FALSE)
 
-# grad ----
-dsm.xy.grad  <- dsm(count ~ s(x,y) +
-                      -1 + season + s(year_fac, bs = "re") +
+## grad ----
+lo.dsm.xy.year.season.grad  <- dsm(count ~ s(x,y) +
+                      -1 + season + s(Ano) +
                       s(grad),
                     ddf.obj =  df.lo,
                     segment.data = segdata,
@@ -125,24 +125,14 @@ dsm.xy.grad  <- dsm(count ~ s(x,y) +
                     family = Tweedie(p = 1.31),
                     method="REML")
 
-summary(dsm.xy.grad)
-appraise(dsm.xy.grad)
+# summary(lo.dsm.xy.year.season.grad)
+# appraise(lo.dsm.xy.year.season.grad)
 
-draw(dsm.xy.grad, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.grad, residuals = FALSE)
 
-# depth ----
-# dsm.xy.depthnull  <-  dsm(count ~ s(x,y) +
-#                             -1 + season +
-#                             # s(depth) +
-#                             s(year_fac, bs = "re"),
-#                           ddf.obj =  df.lo,
-#                           segment.data = segdata,
-#                           observation.data = obsdata_lo_mod,
-#                             family = Tweedie(p = 1.31),
-#                           method="REML")
-
-dsm.xy.depth  <-  dsm(count ~ s(x,y) +
-                        -1 + season + s(year_fac, bs = "re") +
+## depth ----
+lo.dsm.xy.year.season.depth  <-  dsm(count ~ s(x,y) +
+                        -1 + season + s(Ano) +
                         s(depth),
                       ddf.obj =  df.lo,
                       segment.data = segdata,
@@ -150,17 +140,15 @@ dsm.xy.depth  <-  dsm(count ~ s(x,y) +
                       family = Tweedie(p = 1.31),
                       method="REML")
 
-summary(dsm.xy.depth)
-appraise(dsm.xy.depth)
+# summary(lo.dsm.xy.year.season.depth)
+# appraise(lo.dsm.xy.year.season.depth)
 
-draw(dsm.xy.depth, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.depth, residuals = FALSE)
 
-# anova(dsm.xy.depthnull, dsm.xy.depth,   test = "F")
-# AIC(dsm.xy.depth, dsm.xy.depthnull)
 
-# sst ----
-dsm.xy.sst  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(year_fac, bs = "re") +
+## sst ----
+lo.dsm.xy.year.season.sst  <- dsm(count ~ s(x,y) +
+                     -1 + season + s(Ano) +
                      s(sst),
                    ddf.obj =  df.lo,
                    segment.data = segdata,
@@ -168,15 +156,15 @@ dsm.xy.sst  <- dsm(count ~ s(x,y) +
                    family = Tweedie(p = 1.31),
                    method="REML")
 
-summary(dsm.xy.sst)
-appraise(dsm.xy.sst)
+# summary(lo.dsm.xy.year.season.sst)
+# appraise(lo.dsm.xy.year.season.sst)
 
-draw(dsm.xy.sst, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.sst, residuals = FALSE)
 
 
-# clo ----
-dsm.xy.clo  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(year_fac, bs = "re") +
+## clo ----
+lo.dsm.xy.year.season.clo  <- dsm(count ~ s(x,y) +
+                     -1 + season + s(Ano) +
                      s(clo),
                    ddf.obj =  df.lo,
                    segment.data = segdata,
@@ -184,14 +172,14 @@ dsm.xy.clo  <- dsm(count ~ s(x,y) +
                    family = Tweedie(p = 1.31),
                    method="REML")
 
-summary(dsm.xy.clo)
-appraise(dsm.xy.clo)
+# summary(lo.dsm.xy.year.season.clo)
+# appraise(lo.dsm.xy.year.season.clo)
 
-draw(dsm.xy.clo, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.clo, residuals = FALSE)
 
-# dist.up ----
-dsm.xy.dist.up  <- dsm(count ~ s(x,y) +
-                         -1 + season + s(year_fac, bs = "re") +
+## dist.up ----
+lo.dsm.xy.year.season.dist.up  <- dsm(count ~ s(x,y) +
+                         -1 + season + s(Ano) +
                          s(dist.up),
                        ddf.obj =  df.lo,
                        segment.data = segdata,
@@ -199,14 +187,14 @@ dsm.xy.dist.up  <- dsm(count ~ s(x,y) +
                        family = Tweedie(p = 1.31),
                        method="REML")
 
-summary(dsm.xy.dist.up)
-appraise(dsm.xy.dist.up)
+# summary(lo.dsm.xy.year.season.dist.up)
+# appraise(lo.dsm.xy.year.season.dist.up)
 
-draw(dsm.xy.dist.up, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.dist.up, residuals = FALSE)
 
-# dist.up.grad ----
-dsm.xy.dist.up.grad  <- dsm(count ~ s(x,y) +
-                              -1 + season + s(year_fac, bs = "re") +
+## dist.up.grad ----
+lo.dsm.xy.year.season.dist.up.grad  <- dsm(count ~ s(x,y) +
+                              -1 + season + s(Ano) +
                               s(grad) +
                               s(dist.up),
                             ddf.obj =  df.lo,
@@ -215,54 +203,258 @@ dsm.xy.dist.up.grad  <- dsm(count ~ s(x,y) +
                             family = Tweedie(p = 1.31),
                             method="REML")
 
-summary(dsm.xy.dist.up.grad)
-appraise(dsm.xy.dist.up.grad)
+# summary(lo.dsm.xy.year.season.dist.up.grad)
+# appraise(lo.dsm.xy.year.season.dist.up.grad)
 
-draw(dsm.xy.dist.up.grad, residuals = FALSE)
+# draw(lo.dsm.xy.year.season.dist.up.grad, residuals = FALSE)
+
+
+# Set: environmental variable + season (no year) ---------
+#   count ~ s(x,y) + -1 + season + s(env)
+## season + slope ----
+lo.dsm.xy.season.slope  <- dsm(count ~ s(x,y) +
+                              -1 + season +
+                              s(slope),
+                            ddf.obj =  df.lo,
+                            segment.data = segdata,
+                            observation.data = obsdata_lo_mod,
+                            family = Tweedie(p = 1.31),
+                            method="REML")
+
+# summary(lo.dsm.xy.season.slope)
+# appraise(lo.dsm.xy.season.slope)
+# draw(lo.dsm.xy.season.slope, residuals = FALSE)
+
+## season + grad ----
+lo.dsm.xy.season.grad  <- dsm(count ~ s(x,y) +
+                             -1 + season +
+                             s(grad),
+                           ddf.obj =  df.lo,
+                           segment.data = segdata,
+                           observation.data = obsdata_lo_mod,
+                           family = Tweedie(p = 1.31),
+                           method="REML")
+
+# summary(lo.dsm.xy.season.grad)
+# appraise(lo.dsm.xy.season.grad)
+# draw(lo.dsm.xy.season.grad, residuals = FALSE)
+
+## season + sst ----
+lo.dsm.xy.season.sst  <- dsm(count ~ s(x,y) +
+                            -1 + season +
+                            s(sst),
+                          ddf.obj =  df.lo,
+                          segment.data = segdata,
+                          observation.data = obsdata_lo_mod,
+                          family = Tweedie(p = 1.31),
+                          method="REML")
+
+# summary(lo.dsm.xy.season.sst)
+# appraise(lo.dsm.xy.season.sst)
+# draw(lo.dsm.xy.season.sst, residuals = FALSE)
+
+## season + clo ----
+lo.dsm.xy.season.clo  <- dsm(count ~ s(x,y) +
+                            -1 + season +
+                            s(clo),
+                          ddf.obj =  df.lo,
+                          segment.data = segdata,
+                          observation.data = obsdata_lo_mod,
+                          family = Tweedie(p = 1.31),
+                          method="REML")
+
+# summary(lo.dsm.xy.season.clo)
+# appraise(lo.dsm.xy.season.clo)
+# draw(lo.dsm.xy.season.clo, residuals = FALSE)
+
+## season + dist.up ----
+lo.dsm.xy.season.dist.up  <- dsm(count ~ s(x,y) +
+                                -1 + season +
+                                s(dist.up),
+                              ddf.obj =  df.lo,
+                              segment.data = segdata,
+                              observation.data = obsdata_lo_mod,
+                              family = Tweedie(p = 1.31),
+                              method="REML")
+
+# summary(lo.dsm.xy.season.dist.up)
+# appraise(lo.dsm.xy.season.dist.up)
+# draw(lo.dsm.xy.season.dist.up, residuals = FALSE)
+
+## season + depth ----
+lo.dsm.xy.season.depth  <- dsm(count ~ s(x,y) +
+                              -1 + season +
+                              s(depth),
+                            ddf.obj =  df.lo,
+                            segment.data = segdata,
+                            observation.data = obsdata_lo_mod,
+                            family = Tweedie(p = 1.31),
+                            method="REML")
+
+# summary(lo.dsm.xy.season.depth)
+# appraise(lo.dsm.xy.season.depth)
+# draw(lo.dsm.xy.season.depth, residuals = FALSE)
+
+# Set: environmental variable + s(Ano) (no season) ------
+#   count ~ s(x,y) + s(Ano) + s(env)
+## year + slope ----
+lo.dsm.xy.year.slope  <- dsm(count ~ s(x,y) +
+                           s(Ano) +
+                           s(slope),
+                         ddf.obj =  df.lo,
+                         segment.data = segdata,
+                         observation.data = obsdata_lo_mod,
+                         family = Tweedie(p = 1.31),
+                         method="REML")
+
+# summary(lo.dsm.xy.year.slope)
+# appraise(lo.dsm.xy.year.slope)
+# draw(lo.dsm.xy.year.slope, residuals = FALSE)
+
+## year + grad ----
+lo.dsm.xy.year.grad  <- dsm(count ~ s(x,y) +
+                          s(Ano) +
+                          s(grad),
+                        ddf.obj =  df.lo,
+                        segment.data = segdata,
+                        observation.data = obsdata_lo_mod,
+                        family = Tweedie(p = 1.31),
+                        method="REML")
+
+# summary(lo.dsm.xy.year.grad)
+# appraise(lo.dsm.xy.year.grad)
+# draw(lo.dsm.xy.year.grad, residuals = FALSE)
+
+## year + sst ----
+lo.dsm.xy.year.sst  <- dsm(count ~ s(x,y) +
+                         s(Ano) +
+                         s(sst),
+                       ddf.obj =  df.lo,
+                       segment.data = segdata,
+                       observation.data = obsdata_lo_mod,
+                       family = Tweedie(p = 1.31),
+                       method="REML")
+
+# summary(lo.dsm.xy.year.sst)
+# appraise(lo.dsm.xy.year.sst)
+# draw(lo.dsm.xy.year.sst, residuals = FALSE)
+
+## year + clo ----
+lo.dsm.xy.year.clo  <- dsm(count ~ s(x,y) +
+                         s(Ano) +
+                         s(clo),
+                       ddf.obj =  df.lo,
+                       segment.data = segdata,
+                       observation.data = obsdata_lo_mod,
+                       family = Tweedie(p = 1.31),
+                       method="REML")
+
+# summary(lo.dsm.xy.year.clo)
+# appraise(lo.dsm.xy.year.clo)
+# draw(lo.dsm.xy.year.clo, residuals = FALSE)
+
+## year + dist.up ----
+lo.dsm.xy.year.dist.up  <- dsm(count ~ s(x,y) +
+                             s(Ano) +
+                             s(dist.up),
+                           ddf.obj =  df.lo,
+                           segment.data = segdata,
+                           observation.data = obsdata_lo_mod,
+                           family = Tweedie(p = 1.31),
+                           method="REML")
+
+# summary(lo.dsm.xy.year.dist.up)
+# appraise(lo.dsm.xy.year.dist.up)
+# draw(lo.dsm.xy.year.dist.up, residuals = FALSE)
+
+## year + depth ----
+lo.dsm.xy.year.depth  <- dsm(count ~ s(x,y) +
+                           s(Ano) +
+                           s(depth),
+                         ddf.obj =  df.lo,
+                         segment.data = segdata,
+                         observation.data = obsdata_lo_mod,
+                         family = Tweedie(p = 1.31),
+                         method="REML")
+
+# summary(lo.dsm.xy.year.depth)
+# appraise(lo.dsm.xy.year.depth)
+# draw(lo.dsm.xy.year.depth, residuals = FALSE)
 
 # Model selection -----
-table_lo_modselection <- AIC(dsm.xy.tw,
-                             dsm.xy.season.tw,
-                             dsm.xy.season.year.tw,
-                             dsm.xy.slope,
-                             dsm.xy.grad,
-                             dsm.xy.sst,
-                             dsm.xy.clo,
-                             dsm.xy.dist.up,
-                             dsm.xy.depth
+table_lo_modselection <- AIC(lo.dsm.xy,
+                             lo.dsm.xy.season,
+                             lo.dsm.xy.season.year,
+                             lo.dsm.xy.year.season.slope,
+                             lo.dsm.xy.year.season.grad,
+                             lo.dsm.xy.year.season.sst,
+                             lo.dsm.xy.year.season.clo,
+                             lo.dsm.xy.year.season.dist.up,
+                             lo.dsm.xy.year.season.depth,
+                             lo.dsm.xy.year,
+                             lo.dsm.xy.season.slope,
+                             lo.dsm.xy.season.grad,
+                             lo.dsm.xy.season.sst,
+                             lo.dsm.xy.season.clo,
+                             lo.dsm.xy.season.dist.up,
+                             lo.dsm.xy.season.depth,
+                             lo.dsm.xy.year.slope,
+                             lo.dsm.xy.year.grad,
+                             lo.dsm.xy.year.sst,
+                             lo.dsm.xy.year.clo,
+                             lo.dsm.xy.year.dist.up,
+                             lo.dsm.xy.year.depth
 
 ) %>%
   mutate(deltaAIC = round(AIC - min(AIC), 2)) %>%
   mutate(Dev = c(
-    round(summary(dsm.xy.tw)$dev.expl, 2),
-    round(summary(dsm.xy.season.tw)$dev.expl, 2),
-    round(summary(dsm.xy.season.year.tw)$dev.expl, 2),
-    round(summary(dsm.xy.slope)$dev.expl, 2),
-    round(summary(dsm.xy.grad)$dev.expl, 2),
-    round(summary(dsm.xy.sst)$dev.expl, 2),
-    round(summary(dsm.xy.clo)$dev.expl, 2),
-    round(summary(dsm.xy.dist.up)$dev.expl, 2),
-    round(summary(dsm.xy.depth)$dev.expl, 2)
+    round(summary(lo.dsm.xy)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.year)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.slope)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.grad)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.sst)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.clo)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.dist.up)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.season.depth)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.slope)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.grad)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.sst)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.clo)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.dist.up)$dev.expl, 2),
+    round(summary(lo.dsm.xy.season.depth)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.slope)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.grad)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.sst)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.clo)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.dist.up)$dev.expl, 2),
+    round(summary(lo.dsm.xy.year.depth)$dev.expl, 2)
 
   )) %>%
   mutate(model = c("count ~ s(x,y)",
                    "count ~ s(x,y) + season ",
-                   "count ~ s(x,y) + season + s(year, bs = 're')",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(slope)",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(grad)",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(sst)",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(clo)",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(dist.up)",
-                   "count ~ s(x,y) + season + s(year, bs = 're') + s(depth)") ) %>%
+                   "count ~ s(x,y) + season + s(Ano)",
+                   "count ~ s(x,y) + season + s(Ano) + s(slope)",
+                   "count ~ s(x,y) + season + s(Ano) + s(grad)",
+                   "count ~ s(x,y) + season + s(Ano) + s(sst)",
+                   "count ~ s(x,y) + season + s(Ano) + s(clo)",
+                   "count ~ s(x,y) + season + s(Ano) + s(dist.up)",
+                   "count ~ s(x,y) + season + s(Ano) + s(depth)",
+                   "count ~ s(x,y) + s(Ano)",
+                   "count ~ s(x,y) + season + s(slope)",
+                   "count ~ s(x,y) + season + s(grad)",
+                   "count ~ s(x,y) + season + s(sst)",
+                   "count ~ s(x,y) + season + s(clo)",
+                   "count ~ s(x,y) + season + s(dist.up)",
+                   "count ~ s(x,y) + season + s(depth)",
+                   "count ~ s(x,y) + s(Ano) + s(slope)",
+                   "count ~ s(x,y) + s(Ano) + s(grad)",
+                   "count ~ s(x,y) + s(Ano) + s(sst)",
+                   "count ~ s(x,y) + s(Ano) + s(clo)",
+                   "count ~ s(x,y) + s(Ano) + s(dist.up)",
+                   "count ~ s(x,y) + s(Ano) + s(depth)") ) %>%
   data.table() %>%
   mutate(df = round(df, 2)) %>%
   select(model, df , deltaAIC, Dev) %>%
-  arrange(deltaAIC) %>%
-  kable(
-    align = c("l", "c","c", "c")
-  ) %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover"),
-    position = "center",
-    full_width = FALSE
-  )
+  arrange(deltaAIC)
