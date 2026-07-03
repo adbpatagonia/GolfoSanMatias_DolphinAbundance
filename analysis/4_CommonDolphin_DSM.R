@@ -71,7 +71,7 @@ dd.dsm.xy.year  <-  dsm(count ~ s(x,y) +
 
 # season ----
 dd.dsm.xy.season  <-  dsm(count ~ s(x,y) +
-                            -1 + season ,
+                             season ,
                           ddf.obj =  df.dd,
                           segment.data = segdata,
                           observation.data = obsdata_dd_mod,
@@ -86,7 +86,7 @@ dd.dsm.xy.season  <-  dsm(count ~ s(x,y) +
 
 # season.year ----
 dd.dsm.xy.season.year  <-  dsm(count ~ s(x,y) +
-                                 -1 + season + s(Ano),
+                                  season + s(Ano),
                                ddf.obj =  df.dd,
                                segment.data = segdata,
                                observation.data = obsdata_dd_mod,
@@ -102,7 +102,7 @@ dd.dsm.xy.season.year  <-  dsm(count ~ s(x,y) +
 # Set: environmental variable + season + year ---------
 ## slope ----
 dd.dsm.xy.year.season.slope  <- dsm(count ~ s(x,y) +
-                       -1 + season + s(Ano) +
+                        season + s(Ano) +
                        s(slope),
                      ddf.obj =  df.dd,
                      segment.data = segdata,
@@ -117,7 +117,7 @@ dd.dsm.xy.year.season.slope  <- dsm(count ~ s(x,y) +
 
 ## grad ----
 dd.dsm.xy.year.season.grad  <- dsm(count ~ s(x,y) +
-                      -1 + season + s(Ano) +
+                       season + s(Ano) +
                       s(grad),
                     ddf.obj =  df.dd,
                     segment.data = segdata,
@@ -132,7 +132,7 @@ dd.dsm.xy.year.season.grad  <- dsm(count ~ s(x,y) +
 
 ## depth ----
 dd.dsm.xy.year.season.depth  <-  dsm(count ~ s(x,y) +
-                        -1 + season + s(Ano) +
+                         season + s(Ano) +
                         s(depth),
                       ddf.obj =  df.dd,
                       segment.data = segdata,
@@ -148,7 +148,7 @@ dd.dsm.xy.year.season.depth  <-  dsm(count ~ s(x,y) +
 
 ## sst ----
 dd.dsm.xy.year.season.sst  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(Ano) +
+                      season + s(Ano) +
                      s(sst),
                    ddf.obj =  df.dd,
                    segment.data = segdata,
@@ -164,7 +164,7 @@ dd.dsm.xy.year.season.sst  <- dsm(count ~ s(x,y) +
 
 ## clo ----
 dd.dsm.xy.year.season.clo  <- dsm(count ~ s(x,y) +
-                     -1 + season + s(Ano) +
+                      season + s(Ano) +
                      s(clo),
                    ddf.obj =  df.dd,
                    segment.data = segdata,
@@ -179,7 +179,7 @@ dd.dsm.xy.year.season.clo  <- dsm(count ~ s(x,y) +
 
 ## dist.up ----
 dd.dsm.xy.year.season.dist.up  <- dsm(count ~ s(x,y) +
-                         -1 + season + s(Ano) +
+                          season + s(Ano) +
                          s(dist.up),
                        ddf.obj =  df.dd,
                        segment.data = segdata,
@@ -194,7 +194,7 @@ dd.dsm.xy.year.season.dist.up  <- dsm(count ~ s(x,y) +
 
 ## dist.up.grad ----
 dd.dsm.xy.year.season.dist.up.grad  <- dsm(count ~ s(x,y) +
-                              -1 + season + s(Ano) +
+                               season + s(Ano) +
                               s(grad) +
                               s(dist.up),
                             ddf.obj =  df.dd,
@@ -210,10 +210,10 @@ dd.dsm.xy.year.season.dist.up.grad  <- dsm(count ~ s(x,y) +
 
 
 # Set: environmental variable + season (no year) ---------
-#   count ~ s(x,y) + -1 + season + s(env)
+#   count ~ s(x,y) +  season + s(env)
 ## season + slope ----
 dd.dsm.xy.season.slope  <- dsm(count ~ s(x,y) +
-                              -1 + season +
+                               season +
                               s(slope),
                             ddf.obj =  df.dd,
                             segment.data = segdata,
@@ -227,7 +227,7 @@ dd.dsm.xy.season.slope  <- dsm(count ~ s(x,y) +
 
 ## season + grad ----
 dd.dsm.xy.season.grad  <- dsm(count ~ s(x,y) +
-                             -1 + season +
+                              season +
                              s(grad),
                            ddf.obj =  df.dd,
                            segment.data = segdata,
@@ -241,7 +241,7 @@ dd.dsm.xy.season.grad  <- dsm(count ~ s(x,y) +
 
 ## season + sst ----
 dd.dsm.xy.season.sst  <- dsm(count ~ s(x,y) +
-                            -1 + season +
+                             season +
                             s(sst),
                           ddf.obj =  df.dd,
                           segment.data = segdata,
@@ -255,7 +255,7 @@ dd.dsm.xy.season.sst  <- dsm(count ~ s(x,y) +
 
 ## season + clo ----
 dd.dsm.xy.season.clo  <- dsm(count ~ s(x,y) +
-                            -1 + season +
+                             season +
                             s(clo),
                           ddf.obj =  df.dd,
                           segment.data = segdata,
@@ -269,7 +269,7 @@ dd.dsm.xy.season.clo  <- dsm(count ~ s(x,y) +
 
 ## season + dist.up ----
 dd.dsm.xy.season.dist.up  <- dsm(count ~ s(x,y) +
-                                -1 + season +
+                                 season +
                                 s(dist.up),
                               ddf.obj =  df.dd,
                               segment.data = segdata,
@@ -283,7 +283,7 @@ dd.dsm.xy.season.dist.up  <- dsm(count ~ s(x,y) +
 
 ## season + depth ----
 dd.dsm.xy.season.depth  <- dsm(count ~ s(x,y) +
-                              -1 + season +
+                               season +
                               s(depth),
                             ddf.obj =  df.dd,
                             segment.data = segdata,
