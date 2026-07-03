@@ -49,7 +49,7 @@ Scripts are sourced in order via the species master script:
 | 3 | `3_*_DetectionFunction.R` | Fit and select detection function (AIC); set truncation distance |
 | 4 | `4_*_DSM.R` | Fit Tweedie DSMs with spatial smooth + season + environmental covariates |
 | — | `UTIL_FindTweedieP_*.R` | Grid search for Tweedie *p* parameter (run before step 4) |
-| — | `UTIL_Map_DSM_output_*.R` | Generate predicted density maps from fitted DSMs |
+| — | `UTIL_Map_DSM_output_*.R` | Four maps per species: season-faceted and year-faceted versions of the base model (`s(x,y) + season + s(Ano)`) and the top env-covariate model (clo for common dolphin, depth for dusky); `s(Ano)` evaluated at the median survey year for season maps, season fixed at Spring for year maps |
 
 ### Detection functions
 
@@ -62,13 +62,21 @@ Distance bins are defined with cutpoints to account for rounding heaping at favo
 
 ### Density surface models
 
-DSMs use `dsm::dsm()` with a Tweedie family. The power parameter *p* is selected by AIC grid search (`UTIL_FindTweedieP_*.R`) before model fitting.
+DSMs use `dsm::dsm()` with a Tweedie family. The power parameter *p* is selected by AIC grid search (`UTIL_FindTweedieP_*.R`) before model fitting (common dolphin *p* = 1.58; dusky dolphin *p* = 1.31).
 
-**Common dolphin** (*p* ≈ 1.58): candidate models include spatial smooth `s(x,y)`, season, year, and environmental covariates (depth, slope, gradient, SST, chlorophyll, distance-to-upwelling).
+Both species use the same 22-model candidate set, organised into systematic groups:
 
-**Dusky dolphin** (*p* ≈ 1.31–1.33): simpler model set — spatial smooth, season, depth, slope, and year as a random effect.
+| Group | Formula structure |
+|-------|-------------------|
+| Spatial | `s(x,y)` |
+| Spatial + Season | `s(x,y) + season` |
+| Spatial + Year | `s(x,y) + s(Ano)` |
+| Spatial + Season + Year | `s(x,y) + season + s(Ano)` |
+| Spatial + Season + Year + env | `s(x,y) + season + s(Ano) + s(env)` — each of 6 covariates |
+| Spatial + Season + env | `s(x,y) + season + s(env)` — each of 6 covariates |
+| Spatial + Year + env | `s(x,y) + s(Ano) + s(env)` — each of 6 covariates |
 
-All models use REML. Offset = `segment_length × truncation_distance`.
+Year enters as a continuous thin-plate spline `s(Ano)`. Model selection is by AIC; deviance explained is reported for all candidates. All models use REML. Offset = `segment_length × truncation_distance`.
 
 ---
 
