@@ -799,6 +799,11 @@ cache_source(
 )
 ```
 
+## Model selection    
+
+La columna `Dev` es la proporcion de deviance explicado por el modelo.    
+Notese que el modelo que tiene solo posicion + estacion explica el 32% del deviance. La inclusion de año mejora un poco capacidad del modelo, pero la mejora al incorporar las variables ambientales es marginal.     
+
 ```{r}
 #| echo: false   
 #| message: false    
@@ -814,6 +819,67 @@ table_lo_modselection %>%
   )
 ```
 
+## Efectos parciales de estacion y año     
+
+
+Estos son los efectos parciales del modelo que incluye posicion, estacion y año.    
+
+### Estacion    
+
+Hay un claro patrón: la densidad es máxima en primavera, y disminuye a lo largo del año    
+
+primavera > verano > otoño > invierno
+
+El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+gratia::draw(gratia::parametric_effects(lo.dsm.xy.season.year, term = "season")) +
+  theme_bw()
+
+
+```
+
+### Año    
+
+No hay una tendencia clara, el efecto parcial sube y baja. Probablemente lo mas importante es que el intervalo de confianza siempre incluye cero, lo que indica que el efecto no es estadisticamente significativo. EL termino parece capturar fluctuaciones alrededor de una media
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+gratia::draw(lo.dsm.xy.season.year, select = "s(Ano)") +
+  theme_bw()
+```
+
+Tabla de ANOVA de este modelo. 
+El termino de posicion tiene pvalue 0.25, el de ano  0.075, y el de estacion es muy pequeno
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+anova(lo.dsm.xy.season.year)
+```
+
+## Predicciones de densidad     
+
+Estos son mapas de predicciones de densidad en base a 2 modelos:    
+
+  1. `count ~ s(x,y) + season + s(Ano)`     
+  2. `count ~ s(x,y) + season + s(Ano) + s(depth)` - el modelo mas parsimonioso    
+  
+  
+### Estación variable    
+
+Aqui grafico las predicciones a lo largo de las estaciones, usando 2015 como año de referencia 
+
+No veo gran diferencia entre las predicciones de los modelos.    
+Es muy claro el patron estacional.   
+Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica    
 
 ```{r}
 #| echo: false   
@@ -842,6 +908,36 @@ lo.map.density.season
 lo.map.density.season.depth
 ```
 
+### Año variable    
 
+Aqui grafico las predicciones a lo largo de los años, usando primavera como estacion de referencia - se pueden producir mapas estacionales + anuales    
+
+Se nota el efecto del año, con las intensidades subiendo y bajando a medida que pasan los años
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.year
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.year.clo
+```
+
+### Notas   
+
+    1. Los modelos ajustados son aditivos (no hay interaccion entre posicion y año o estación). Por ednde, todos los paneles muestran el mismo patron espacial. Se pueden ajustar modelos DSM con interacciones (e.g. te(x, y, Ano) or s(x, y, by = year_fac)) para que los patrones espaciales tengan variabilidad temporal. No lo hice porque creo que no era parte de los objetivos del paper, pero si fuera algo que te interesa, lo podriamos hacer.    
+    2. No prepare mapas de la varianza de las estimaciones, pero en caso de querer presentar mapas, es algo que deberiamos hacer. Es sencillo, pero no quiero largarme a hacer mil mapas sin antes discutir que queremos presentar
 
 # Referencias
