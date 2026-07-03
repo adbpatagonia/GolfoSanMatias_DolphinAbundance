@@ -1,0 +1,27 @@
+/* Force the table of contents to stay fully unfolded.
+ *
+ * Two reasons this is needed:
+ * 1. Quarto 1.0.37 ships quarto.js as <script type="module">, which browsers
+ *    block under the file:// protocol. Every TOC <ul> carries Bootstrap's
+ *    "collapse" class (display:none) and is revealed only by that script, so
+ *    opening the rendered .html directly (file://) shows just the "On this
+ *    page" title with no entries. This override makes the TOC visible without
+ *    relying on the module script.
+ * 2. It keeps the outline permanently expanded (the desired behaviour) instead
+ *    of the floating TOC's default scroll-driven collapse.
+ */
+#TOC .collapse,
+#TOC ul.collapse {
+  display: block !important;
+}
+
+/* Show section numbers in the sidebar TOC.
+ * With number-sections: true the numbers are emitted into the TOC HTML
+ * (<span class="header-section-number">4.1</span>) but Quarto's theme hides
+ * them there by default via:
+ *   .sidebar nav[role=doc-toc] .header-section-number { display: none }
+ * Re-enable so TOC entries read "4.1 Model selection" like the body headings.
+ */
+.sidebar nav[role=doc-toc] .header-section-number {
+  display: inline !important;
+}

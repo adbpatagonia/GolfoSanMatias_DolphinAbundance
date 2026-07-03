@@ -28,8 +28,11 @@ website:
 format:
   html:
     theme: cosmo
+    css: assets/custom.css
     toc: true
     toc-location: right
+    toc-depth: 2
+    toc-expand: true
     smooth-scroll: true
     number-sections: true
     code-fold: show
