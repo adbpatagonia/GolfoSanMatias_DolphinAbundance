@@ -22,5 +22,8 @@ source(file.path(here::here(), "analysis", "2_CommonDolphin_EDA.R"))
 # DSM ----
 source(file.path(here::here(), "analysis", "4_CommonDolphin_DSM.R"))
 
+# Create abundance estimates ----
+source(file.path(here::here(), "analysis", "5_CommonDolphin_Abundance.R"))
+
 # Map expected densities -----
 source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_DD.R"))
