@@ -216,7 +216,80 @@ p.dd.N.sy <- ggplot(dd_abund, aes(x = sy)) +
         legend.position = "bottom",
         axis.minor.ticks.length.x = rel(0.65))
 
-p.dd.N.sy
+p.dd.N.sy.noci <- ggplot(dd_abund, aes(x = sy)) +
+  geom_ribbon(aes(ymin = N_lo95, ymax = N_hi95), alpha = 0.2) +
+  geom_line(aes(y = N_hat)) +
+  geom_point(aes(y = N_hat, colour = "Density surface model"), size = 2) +
+  # geom_linerange(aes(ymin = N_obs_lo, ymax = N_obs_hi,
+  #                    colour = "design-based Horvitz–Thompson estimate"),
+  #                alpha = 0.6, na.rm = TRUE) +
+  geom_point(aes(y = N_obs, colour = "design-based Horvitz–Thompson estimate"),
+             size = 2.6, shape = 17, na.rm = TRUE) +
+  scale_colour_manual(name = NULL, values = fit_cols) +
+  scale_x_continuous(breaks = 2006:2018,
+                     minor_breaks = seq(2006.1, 2018.1, 0.25),
+                     guide = guide_axis(minor.ticks = TRUE)) +
+  labs(
+    # title    = "Common dolphin abundance — model fit",
+    subtitle = "count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)",
+    x        = "",
+    y        = expression(hat(N))
+  ) +
+  theme_bw(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        legend.position = "bottom",
+        axis.minor.ticks.length.x = rel(0.65))
+
+
+ply.dd.N.sy <- plot_ly() %>%
+  # 95% CI ribbon (lognormal)
+  add_ribbons(data = dd_abund,
+              x = ~sy, ymin = ~N_lo95, ymax = ~N_hi95,
+              color = I("black"), opacity = 0.2,
+              line = list(color = 'transparent'),
+              showlegend = FALSE) %>%
+  # DSM line + dots
+  add_trace(data = dd_abund, x = ~sy, y = ~N_hat,
+            type = 'scatter', mode = 'lines+markers',
+            line = list(color = 'black', width = 1.5),
+            marker = list(color = 'black', size = 6),
+            name = 'Density surface model') %>%
+  # HT linerange (invisible markers anchor error_y)
+  add_trace(data = dd_abund %>% filter(!is.na(N_obs)),
+            x = ~sy, y = ~N_obs,
+            type = 'scatter', mode = 'markers',
+            marker = list(color = 'firebrick', size = 0, opacity = 0),
+            error_y = list(type = "data", symmetric = FALSE,
+                           arrayminus = ~(N_obs - N_obs_lo),
+                           array = ~(N_obs_hi - N_obs),
+                           color = 'firebrick', width = 0, thickness = 1.5,
+                           opacity = 0.6),
+            showlegend = FALSE, hoverinfo = 'skip') %>%
+  # HT triangles
+  add_trace(data = dd_abund %>% filter(!is.na(N_obs)),
+            x = ~sy, y = ~N_obs,
+            type = 'scatter', mode = 'markers',
+            marker = list(color = 'firebrick', size = 8,
+                          symbol = 'triangle-down'),
+            name = 'design-based Horvitz–Thompson estimate') %>%
+  layout(
+    title = list(
+      text = 'count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)',
+      font = list(size = 11), xref = 'paper', x = 0.05
+    ),
+    xaxis = list(
+      title = '',
+      tickvals = 2006:2018,
+      minor = list(tickvals = seq(2006.1, 2018.1, 0.25),
+                   ticklen = 4, tickcolor = '#333'),
+      showminor = TRUE, showgrid = TRUE, gridcolor = '#eee'
+    ),
+    yaxis = list(title = list(text = 'N̂')),
+    legend = list(orientation = 'h', xanchor = 'center',
+                  x = 0.5, y = -0.15),
+    margin = list(b = 80, t = 40),
+    font = list(size = 13)
+  )
 
 
 
