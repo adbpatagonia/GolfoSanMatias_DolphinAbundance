@@ -1,0 +1,17 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.quarto$
+^\.positai$
+^\.claude$
+^\.gitignore$
+^_quarto\.yml$
+^.*\.qmd$
+^analysis$
+^assets$
+^data$
+^data-raw$
+^docs$
+^output$
+^output-formatted-tables$
+^references$
+^Transfer$

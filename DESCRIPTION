@@ -1,0 +1,21 @@
+Package: gsmdolphins
+Title: Density Surface Model Abundance Estimation for San Matias Gulf Dolphins
+Version: 0.0.0.9000
+Authors@R:
+    person("Alejandro", "Buren", , "aburen@conicet.gov.ar",
+           role = c("aut", "cre"))
+Description: Helper functions and analysis code for estimating the abundance
+    and density of common (Delphinus delphis) and dusky (Lagenorhynchus
+    obscurus) dolphins in the San Matias Gulf, Argentina, from line-transect
+    distance sampling and density surface models. Provides utilities used by
+    the analysis pipeline, including lognormal confidence intervals for
+    abundance estimates.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = FALSE)
+RoxygenNote: 7.3.2
+Imports:
+    stats
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
