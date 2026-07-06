@@ -91,7 +91,6 @@ results_lo <- lapply(seq_len(nrow(sy_combos)),
                      })
 
 lo_abund <- rbindlist(results_lo)
-print(lo_abund)
 
 # plots -----
 lo_abund <- lo_abund %>%

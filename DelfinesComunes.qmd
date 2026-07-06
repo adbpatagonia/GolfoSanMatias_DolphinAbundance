@@ -4,7 +4,7 @@
 
 ```{r}
 #| include: false
-
+library(plotly)
 library(kableExtra)
 
 # source data (cached across pages) ----
@@ -538,9 +538,9 @@ plot(dd.df.hr.trun.cp, main = "Hazard rate - no adjustment")
 
 Analizamos incluir
 
--   embarcación
--   tamaño grupal\
--   estado del mar (Beaufort)
+- embarcación
+- tamaño grupal\
+- estado del mar (Beaufort)
 
 en las funciones de detección
 
@@ -722,9 +722,8 @@ Al consultar con Len Thomas, me dijo que hay 2 maneras de solucionar este proble
 
 > 1.  complex bayesian model - he is doing for a paper that they will publish. This woud be the "right way" of doing it
 >
-> ```{=html}
 > <!-- -->
-> ```
+>
 > 2.  treat DD as effectively 2 clusters: 1 for small group sizes, a second one for larger gorup sizes. Find the spot where group size will not impact the detection function very much. Fit DSMs to each of the clusters, and then sum them. This is the "good enough" way
 
 Creo que no estamos en situación de tener que implementar la primera solución (Len me dijo que él no lo haría).\
@@ -732,7 +731,7 @@ Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me 
 
 1.  ignorar el efecto de tamaño grupal, y entender que las estimaciones de abundancia probablemente esten sesgadas hacia abajo
 
-2.  intentar el ejercicio de tratar a DD como 2 clusters  - quizas tengamos que hacer esto para quedarnos tranquilos nosotros, pero no estoy seguro que valga la pena
+2.  intentar el ejercicio de tratar a DD como 2 clusters - quizas tengamos que hacer esto para quedarnos tranquilos nosotros, pero no estoy seguro que valga la pena
 
 Quizas este grafico ayude para tomar una decision. Se ve que los tamaños grupales grandes fueron detectados en todas las estaciones, por lo que si adoptamos la estrategia de ignorar el efecto de tamaño grupal no estariamos sesgando las estimaciones estacionales
 
@@ -747,7 +746,6 @@ ggplot(detfun_dat_dd[distance <= trunc.dist_dd]) +
   geom_hline(yintercept = 175, col = "purple") +
   facet_wrap(. ~ season)
 ```
-
 
 ### Efecto de embarcación
 
@@ -775,11 +773,11 @@ cutpoints: `cutpoints_dd`: `r cutpoints_dd`
 
 Hazard rate \
 No adjustment term\
-covariables: Beaufort state 
+covariables: Beaufort state
 
-tamaño grupal?? 
+tamaño grupal??
 
-### QQ plots     
+### QQ plots
 
 #### Beaufort (agrupado) + Tamaño grupal
 
@@ -790,7 +788,7 @@ tamaño grupal??
 invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.sizebeaufgrp$ddf, plot = TRUE)))
 ```
 
-#### Beaufort (agrupado) 
+#### Beaufort (agrupado)
 
 ```{r}
 #| echo: false
@@ -799,7 +797,7 @@ invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.sizebeaufgrp$ddf, plot = TR
 invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE)))
 ```
 
-### Estimaciones con los 2 modelos    
+### Estimaciones con los 2 modelos
 
 #### Beaufort (agrupado) + Tamaño grupal
 
@@ -810,7 +808,7 @@ invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE))
 dd.df.hr.trun.cp.sizebeaufgrp$ddf
 ```
 
-#### Beaufort (agrupado) 
+#### Beaufort (agrupado)
 
 ```{r}
 #| echo: false
@@ -819,27 +817,23 @@ dd.df.hr.trun.cp.sizebeaufgrp$ddf
 dd.df.hr.trun.cp.beaufgrp$ddf
 ```
 
-
-Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e. 1%).   
-
+Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e. 1%).
 
 Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento
 
 @Miller2013SpatialModels
 
-En lo que sigue abajo, no inclui beaufort en la funcion de deteccion     
+En lo que sigue abajo, no inclui beaufort en la funcion de deteccion
 
-
-
-# Density surface models       
+# Density surface models
 
 area of segment *j* is *A~j~ = 2wl~j~*
 
-*l~j~* es la variable `segdata$Effort`     
+*l~j~* es la variable `segdata$Effort`
 
-*w* es la distancia de truncado `trunc.dist_dd`: `r trunc.dist_dd`m 
+*w* es la distancia de truncado `trunc.dist_dd`: `r trunc.dist_dd`m
 
-Los largos de los segmentos *l~j~* en el objeto segdata son: 
+Los largos de los segmentos *l~j~* en el objeto segdata son:
 
 ```{r}
 #| echo: false
@@ -864,7 +858,6 @@ segdata %>%
 
 Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
-
 ```{r}
 #| include: false
 # Detection function -----
@@ -876,11 +869,10 @@ cache_source(
 )
 ```
 
-## Model selection    
+## Model selection
 
-La columna `Dev` es la proporcion de deviance explicado por el modelo.    
-Notese que el modelo que tiene solo posicion + estacion + año explica el 20% del deviance. La mejora al incorporar las variables ambientales es marginal.  
-
+La columna `Dev` es la proporcion de deviance explicado por el modelo.\
+Notese que el modelo que tiene solo posicion + estacion + año explica el 20% del deviance. La mejora al incorporar las variables ambientales es marginal.
 
 ```{r}
 #| echo: false   
@@ -896,14 +888,14 @@ table_dd_modselection %>%
     full_width = FALSE
   )
 ```
-## Efectos parciales de estacion y año     
 
+## Efectos parciales de estacion y año
 
-Estos son los efectos parciales del modelo que incluye posicion, estacion y año.    
+Estos son los efectos parciales del modelo que incluye posicion, estacion y año.
 
-### Estacion    
+### Estacion
 
-La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI 
+La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI
 
 ```{r}
 #| echo: false
@@ -916,9 +908,9 @@ gratia::draw(gratia::parametric_effects(dd.dsm.xy.season.year, term = "season"))
 
 ```
 
-### Año    
+### Año
 
-Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio    
+Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio
 
 ```{r}
 #| echo: false
@@ -929,8 +921,7 @@ gratia::draw(dd.dsm.xy.season.year, select = "s(Ano)") +
   theme_bw()
 ```
 
-Tabla de ANOVA de este modelo. 
-El termino de posicion tiene pvalue muy pequeno, el de ano  0.038, y el de estacion 0.047
+Tabla de ANOVA de este modelo. El termino de posicion tiene pvalue muy pequeno, el de ano 0.038, y el de estacion 0.047
 
 ```{r}
 #| echo: false
@@ -939,21 +930,19 @@ El termino de posicion tiene pvalue muy pequeno, el de ano  0.038, y el de estac
 anova(dd.dsm.xy.season.year)
 ```
 
-## Predicciones de densidad     
+## Predicciones de densidad
 
-Estos son mapas de predicciones de densidad en base a 2 modelos:    
+Estos son mapas de predicciones de densidad en base a 2 modelos:
 
-  1. `count ~ s(x,y) + season + s(Ano)`     
-  2. `count ~ s(x,y) + season + s(Ano) + s(clo)` - el modelo mas parsimonioso    
-  
-  
-### Año variable    
+1.  `count ~ s(x,y) + season + s(Ano)`\
+2.  `count ~ s(x,y) + season + s(Ano) + s(clo)` - el modelo mas parsimonioso
 
-Aqui grafico las predicciones a lo largo de los años, usando primavera como estacion de referencia - se pueden producir mapas estacionales + anuales  
+### Año variable
 
-No veo gran diferencia entre las predicciones de los modelos.    
-Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica   
+Aqui grafico las predicciones a lo largo de los años, usando primavera como estacion de referencia - se pueden producir mapas estacionales + anuales
 
+No veo gran diferencia entre las predicciones de los modelos.\
+Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica
 
 ```{r}
 #| echo: false   
@@ -982,9 +971,9 @@ dd.map.density.year
 dd.map.density.year.clo
 ```
 
-### Estación variable    
+### Estación variable
 
-Aqui grafico las predicciones a lo largo de las estaciones, usando 2015 como año de referencia 
+Aqui grafico las predicciones a lo largo de las estaciones, usando 2015 como año de referencia
 
 ```{r}
 #| echo: false
@@ -1006,10 +995,40 @@ dd.map.density.season
 dd.map.density.season.clo
 ```
 
-### Notas   
+### Notas
 
 1.  Los modelos ajustados son aditivos (no hay interaccion entre posicion y año o estación). Por ednde, todos los paneles muestran el mismo patron espacial. Se pueden ajustar modelos DSM con interacciones (e.g. te(x, y, Ano) or s(x, y, by = year_fac)) para que los patrones espaciales tengan variabilidad temporal. No lo hice porque creo que no era parte de los objetivos del paper, pero si fuera algo que te interesa, lo podriamos hacer.
 
 2.  No prepare mapas de la varianza de las estimaciones, pero en caso de querer presentar mapas, es algo que deberiamos hacer. Es sencillo, pero no quiero largarme a hacer mil mapas sin antes discutir que queremos presentar
+
+# Estimaciones de abundancia
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+ source(file.path(here::here(), "analysis", "5_CommonDolphin_Abundance.R"))
+```
+
+Aqui presento estimaciones de abundancia estimadas usando density surface models (negro) y distance clásico (rojo). Los dos métodos utilizan la misma función de detección.
+
+Nótese que las estimaciones hechas sin el componente espacial son mucho mas variables. Las 2 diferencias entre los modelos son:
+
+- Componente espacial incluido en DSM\
+- Efecto de año incluido como una funcion smooth
+
+Los ticks menores en el eje *x* representan las estaciones, en orden: verano, otoño, invierno, primavera.   
+Se notan claramente los efectos de temporada y año. El efecto de año no parece muy grande, pero es debido a la escala del eje *y*. Haciendo zoom, se ve claramente que la abundancia promedio de delfines previo a 2012 es <5000, mientras después de 2013 es >8500. 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+ply.dd.N.sy
+```
+
 
 # Referencias

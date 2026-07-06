@@ -6,6 +6,7 @@
 #| include: false
 
 library(kableExtra)
+library(plotly)
 # source data (cached across pages) ----
 source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
 load_or_build_readdata()
@@ -931,5 +932,38 @@ lo.map.density.year.depth
 1.  Los modelos ajustados son aditivos (no hay interaccion entre posicion y año o estación). Por ednde, todos los paneles muestran el mismo patron espacial. Se pueden ajustar modelos DSM con interacciones (e.g. te(x, y, Ano) or s(x, y, by = year_fac)) para que los patrones espaciales tengan variabilidad temporal. No lo hice porque creo que no era parte de los objetivos del paper, pero si fuera algo que te interesa, lo podriamos hacer.
 
 2.  No prepare mapas de la varianza de las estimaciones, pero en caso de querer presentar mapas, es algo que deberiamos hacer. Es sencillo, pero no quiero largarme a hacer mil mapas sin antes discutir que queremos presentar
+
+# Estimaciones de abundancia
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+ source(file.path(here::here(), "analysis", "5_DuskyDolphin_Abundance.R"))
+```
+
+Aqui presento estimaciones de abundancia estimadas usando density surface models (negro) y distance clásico (rojo). Los dos métodos utilizan la misma función de detección.
+
+Nótese que las estimaciones hechas sin el componente espacial son mucho mas variables. Las 2 diferencias entre los modelos son:
+
+- Componente espacial incluido en DSM\
+- Efecto de año incluido como una funcion smooth
+
+Los ticks menores en el eje *x* representan las estaciones, en orden: verano, otoño, invierno, primavera.   
+Se notan claramente los efectos de    
+   -  temporada: primavera \> verano \> otoño \> invierno    
+   - Año: oscilaciones, por ej. abundancias mas altas en 2010 y 2017 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+ply.lo.N.sy
+```
+
+
 
 # Referencias
