@@ -2,24 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.37">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Density Surface Models in Golfo San Matías - Delfines Comunes</title>
+<title>Delfines Comunes – Density Surface Models in Golfo San Matías</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -33,8 +43,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -45,22 +54,29 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./assets/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -69,55 +85,84 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
 
 
 <link rel="stylesheet" href="assets/custom.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <a class="navbar-brand" href="./index.html">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Density Surface Models in Golfo San Matías</span>
-  </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html">Home</a>
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./VariablesAmbientales.html">Variables Ambientales</a>
+    <a class="nav-link" href="./VariablesAmbientales.html"> 
+<span class="menu-text">Variables Ambientales</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./DelfinesOscuros.html">Delfines Oscuros</a>
+    <a class="nav-link" href="./DelfinesOscuros.html"> 
+<span class="menu-text">Delfines Oscuros</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./DelfinesComunes.html" aria-current="page">Delfines Comunes</a>
+    <a class="nav-link active" href="./DelfinesComunes.html" aria-current="page"> 
+<span class="menu-text">Delfines Comunes</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance"> <i class="bi bi-github" role="img">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -126,34 +171,35 @@ div.csl-indent {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#censos" id="toc-censos" class="nav-link active" data-scroll-target="#censos"> <span class="header-section-number">1</span> Censos</a></li>
-  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"> <span class="header-section-number">2</span> Exploratory Data Analysis</a>
   <ul class="collapse">
-  <li><a href="#efecto-de-barco" id="toc-efecto-de-barco" class="nav-link" data-scroll-target="#efecto-de-barco"> <span class="header-section-number">2.1</span> Efecto de barco</a></li>
-  <li><a href="#estado-del-mar" id="toc-estado-del-mar" class="nav-link" data-scroll-target="#estado-del-mar"> <span class="header-section-number">2.2</span> Estado del mar</a></li>
-  <li><a href="#variables-espaciales" id="toc-variables-espaciales" class="nav-link" data-scroll-target="#variables-espaciales"> <span class="header-section-number">2.3</span> Variables espaciales</a></li>
-  </ul></li>
-  <li><a href="#funciones-de-deteccion" id="toc-funciones-de-deteccion" class="nav-link" data-scroll-target="#funciones-de-deteccion"> <span class="header-section-number">3</span> Funciones de deteccion</a>
+  <li><a href="#censos" id="toc-censos" class="nav-link active" data-scroll-target="#censos"><span class="header-section-number">1</span> Censos</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">2</span> Exploratory Data Analysis</a>
   <ul class="collapse">
-  <li><a href="#datos" id="toc-datos" class="nav-link" data-scroll-target="#datos"> <span class="header-section-number">3.1</span> Datos</a></li>
-  <li><a href="#funciones-de-detección-básicas" id="toc-funciones-de-detección-básicas" class="nav-link" data-scroll-target="#funciones-de-detección-básicas"> <span class="header-section-number">3.2</span> Funciones de detección básicas</a></li>
-  <li><a href="#truncar-datos" id="toc-truncar-datos" class="nav-link" data-scroll-target="#truncar-datos"> <span class="header-section-number">3.3</span> Truncar datos</a></li>
-  <li><a href="#datos-agrupados" id="toc-datos-agrupados" class="nav-link" data-scroll-target="#datos-agrupados"> <span class="header-section-number">3.4</span> Datos agrupados</a></li>
-  <li><a href="#términos-de-ajuste" id="toc-términos-de-ajuste" class="nav-link" data-scroll-target="#términos-de-ajuste"> <span class="header-section-number">3.5</span> Términos de ajuste</a></li>
-  <li><a href="#covariables" id="toc-covariables" class="nav-link" data-scroll-target="#covariables"> <span class="header-section-number">3.6</span> Covariables</a></li>
-  <li><a href="#conclusión-de-función-de-detección" id="toc-conclusión-de-función-de-detección" class="nav-link" data-scroll-target="#conclusión-de-función-de-detección"> <span class="header-section-number">3.7</span> Conclusión de función de detección</a></li>
+  <li><a href="#efecto-de-barco" id="toc-efecto-de-barco" class="nav-link" data-scroll-target="#efecto-de-barco"><span class="header-section-number">2.1</span> Efecto de barco</a></li>
+  <li><a href="#estado-del-mar" id="toc-estado-del-mar" class="nav-link" data-scroll-target="#estado-del-mar"><span class="header-section-number">2.2</span> Estado del mar</a></li>
+  <li><a href="#variables-espaciales" id="toc-variables-espaciales" class="nav-link" data-scroll-target="#variables-espaciales"><span class="header-section-number">2.3</span> Variables espaciales</a></li>
   </ul></li>
-  <li><a href="#density-surface-models" id="toc-density-surface-models" class="nav-link" data-scroll-target="#density-surface-models"> <span class="header-section-number">4</span> Density surface models</a>
+  <li><a href="#funciones-de-deteccion" id="toc-funciones-de-deteccion" class="nav-link" data-scroll-target="#funciones-de-deteccion"><span class="header-section-number">3</span> Funciones de deteccion</a>
   <ul class="collapse">
-  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection"> <span class="header-section-number">4.1</span> Model selection</a></li>
-  <li><a href="#efectos-parciales-de-estacion-y-año" id="toc-efectos-parciales-de-estacion-y-año" class="nav-link" data-scroll-target="#efectos-parciales-de-estacion-y-año"> <span class="header-section-number">4.2</span> Efectos parciales de estacion y año</a></li>
-  <li><a href="#predicciones-de-densidad" id="toc-predicciones-de-densidad" class="nav-link" data-scroll-target="#predicciones-de-densidad"> <span class="header-section-number">4.3</span> Predicciones de densidad</a></li>
+  <li><a href="#datos" id="toc-datos" class="nav-link" data-scroll-target="#datos"><span class="header-section-number">3.1</span> Datos</a></li>
+  <li><a href="#funciones-de-detección-básicas" id="toc-funciones-de-detección-básicas" class="nav-link" data-scroll-target="#funciones-de-detección-básicas"><span class="header-section-number">3.2</span> Funciones de detección básicas</a></li>
+  <li><a href="#truncar-datos" id="toc-truncar-datos" class="nav-link" data-scroll-target="#truncar-datos"><span class="header-section-number">3.3</span> Truncar datos</a></li>
+  <li><a href="#datos-agrupados" id="toc-datos-agrupados" class="nav-link" data-scroll-target="#datos-agrupados"><span class="header-section-number">3.4</span> Datos agrupados</a></li>
+  <li><a href="#términos-de-ajuste" id="toc-términos-de-ajuste" class="nav-link" data-scroll-target="#términos-de-ajuste"><span class="header-section-number">3.5</span> Términos de ajuste</a></li>
+  <li><a href="#covariables" id="toc-covariables" class="nav-link" data-scroll-target="#covariables"><span class="header-section-number">3.6</span> Covariables</a></li>
+  <li><a href="#conclusión-de-función-de-detección" id="toc-conclusión-de-función-de-detección" class="nav-link" data-scroll-target="#conclusión-de-función-de-detección"><span class="header-section-number">3.7</span> Conclusión de función de detección</a></li>
   </ul></li>
-  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"> <span class="header-section-number">5</span> Referencias</a></li>
+  <li><a href="#density-surface-models" id="toc-density-surface-models" class="nav-link" data-scroll-target="#density-surface-models"><span class="header-section-number">4</span> Density surface models</a>
+  <ul class="collapse">
+  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection"><span class="header-section-number">4.1</span> Model selection</a></li>
+  <li><a href="#efectos-parciales-de-estacion-y-año" id="toc-efectos-parciales-de-estacion-y-año" class="nav-link" data-scroll-target="#efectos-parciales-de-estacion-y-año"><span class="header-section-number">4.2</span> Efectos parciales de estacion y año</a></li>
+  <li><a href="#predicciones-de-densidad" id="toc-predicciones-de-densidad" class="nav-link" data-scroll-target="#predicciones-de-densidad"><span class="header-section-number">4.3</span> Predicciones de densidad</a></li>
+  </ul></li>
+  <li><a href="#estimaciones-de-abundancia" id="toc-estimaciones-de-abundancia" class="nav-link" data-scroll-target="#estimaciones-de-abundancia"><span class="header-section-number">5</span> Estimaciones de abundancia</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">6</span> Referencias</a></li>
   </ul>
 </nav>
     </div>
@@ -170,212 +216,217 @@ div.csl-indent {
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
+
 </header>
+
 
 <section id="censos" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Censos</h1>
 <p>Muchos censos en embarcaciones de oportunidad.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Número de censos por año y estación</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:right;"> Ano </th>
-   <th style="text-align:right;"> Spring </th>
-   <th style="text-align:right;"> Fall </th>
-   <th style="text-align:right;"> Winter </th>
-   <th style="text-align:right;"> Summer </th>
-   <th style="text-align:right;"> TOTAL </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ano</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Spring</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Fall</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Winter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Summer</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">TOTAL</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 2006 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2007 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2008 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2009 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 6 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2010 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 4 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2013 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2014 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 5 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2015 </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 6 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 12 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2016 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 17 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2017 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 11 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 2018 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p>Presencia a o largo de todo el año</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover caption-top table-sm small">
 <caption>Delfines por estación</caption>
- <thead>
-  <tr>
-   <th style="text-align:center;"> season </th>
-   <th style="text-align:center;"> n.delfines </th>
-  </tr>
- </thead>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">season</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">n.delfines</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:center;width: 8em; "> Spring </td>
-   <td style="text-align:center;width: 8em; "> 2648 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> Summer </td>
-   <td style="text-align:center;width: 8em; "> 1880 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> Fall </td>
-   <td style="text-align:center;width: 8em; "> 2841 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> Winter </td>
-   <td style="text-align:center;width: 8em; "> 1346 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">Spring</td>
+<td style="text-align: center; width: 8em;">2648</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">Summer</td>
+<td style="text-align: center; width: 8em;">1880</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">Fall</td>
+<td style="text-align: center; width: 8em;">2841</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">Winter</td>
+<td style="text-align: center; width: 8em;">1346</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p>Grupos de decenas de individuos, con algunos grupos muy grandes</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> season </th>
-   <th style="text-align:right;"> min_group </th>
-   <th style="text-align:right;"> max_group </th>
-   <th style="text-align:right;"> mean_group </th>
-   <th style="text-align:right;"> CV_group </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">season</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">min_group</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">max_group</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mean_group</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CV_group</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> Spring </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 250 </td>
-   <td style="text-align:right;"> 10.0 </td>
-   <td style="text-align:right;"> 2.5 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Summer </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 175 </td>
-   <td style="text-align:right;"> 8.6 </td>
-   <td style="text-align:right;"> 1.9 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Fall </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 450 </td>
-   <td style="text-align:right;"> 19.5 </td>
-   <td style="text-align:right;"> 2.8 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Winter </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 200 </td>
-   <td style="text-align:right;"> 15.3 </td>
-   <td style="text-align:right;"> 2.4 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">2.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">8.6</td>
+<td style="text-align: right;">1.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">19.5</td>
+<td style="text-align: right;">2.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">15.3</td>
+<td style="text-align: right;">2.4</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -388,78 +439,84 @@ div.csl-indent {
 <p>Parece haber efecto del barco sobre la distancia a la que se detectan delfines comunes. Considerar incluir en la funcion de deteccion</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Tamaño muestral, discrimando por embarcación</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:center;"> Ano </th>
-   <th style="text-align:center;"> 1 </th>
-   <th style="text-align:center;"> 2 </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Ano</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">1</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">2</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2007 </td>
-   <td style="text-align:center;width: 8em; "> 23 </td>
-   <td style="text-align:center;width: 8em; "> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2008 </td>
-   <td style="text-align:center;width: 8em; "> 15 </td>
-   <td style="text-align:center;width: 8em; "> 4 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2009 </td>
-   <td style="text-align:center;width: 8em; "> 0 </td>
-   <td style="text-align:center;width: 8em; "> 10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2010 </td>
-   <td style="text-align:center;width: 8em; "> 0 </td>
-   <td style="text-align:center;width: 8em; "> 16 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2013 </td>
-   <td style="text-align:center;width: 8em; "> 9 </td>
-   <td style="text-align:center;width: 8em; "> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2014 </td>
-   <td style="text-align:center;width: 8em; "> 35 </td>
-   <td style="text-align:center;width: 8em; "> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2015 </td>
-   <td style="text-align:center;width: 8em; "> 118 </td>
-   <td style="text-align:center;width: 8em; "> 40 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2016 </td>
-   <td style="text-align:center;width: 8em; "> 90 </td>
-   <td style="text-align:center;width: 8em; "> 105 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2017 </td>
-   <td style="text-align:center;width: 8em; "> 69 </td>
-   <td style="text-align:center;width: 8em; "> 120 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 2018 </td>
-   <td style="text-align:center;width: 8em; "> 0 </td>
-   <td style="text-align:center;width: 8em; "> 56 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">2007</td>
+<td style="text-align: center; width: 8em;">23</td>
+<td style="text-align: center; width: 8em;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">2008</td>
+<td style="text-align: center; width: 8em;">15</td>
+<td style="text-align: center; width: 8em;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">2009</td>
+<td style="text-align: center; width: 8em;">0</td>
+<td style="text-align: center; width: 8em;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">2010</td>
+<td style="text-align: center; width: 8em;">0</td>
+<td style="text-align: center; width: 8em;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">2013</td>
+<td style="text-align: center; width: 8em;">9</td>
+<td style="text-align: center; width: 8em;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">2014</td>
+<td style="text-align: center; width: 8em;">35</td>
+<td style="text-align: center; width: 8em;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">2015</td>
+<td style="text-align: center; width: 8em;">118</td>
+<td style="text-align: center; width: 8em;">40</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">2016</td>
+<td style="text-align: center; width: 8em;">90</td>
+<td style="text-align: center; width: 8em;">105</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">2017</td>
+<td style="text-align: center; width: 8em;">69</td>
+<td style="text-align: center; width: 8em;">120</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">2018</td>
+<td style="text-align: center; width: 8em;">0</td>
+<td style="text-align: center; width: 8em;">56</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -468,10 +525,18 @@ div.csl-indent {
 <p>Barco no parece tener efecto sobre el tamaño grupal detectado</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -483,7 +548,11 @@ div.csl-indent {
 <p>No hay diferencias en el estado del mar en el que se hicieron censos, dependiendo del barco</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -494,7 +563,11 @@ Descartar observaciones con Beaufort = 5<br>
 Considerar si descartar Beaufort = 4</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -508,7 +581,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>Parece haber mayor cantidad de detecciones en la zona donde aumenta la profundidad - alrededor de northing 5.47 Mm</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -517,7 +594,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -526,7 +607,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>No parece infuenciar la deteccion de animales</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -542,7 +627,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.1" class="anchored" data-anchor-id="temperatura-superficial-del-mar"><span class="header-section-number">2.3.2.1</span> Temperatura superficial del mar</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -550,7 +639,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.2" class="anchored" data-anchor-id="clorofila"><span class="header-section-number">2.3.2.2</span> Clorofila</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -558,7 +651,11 @@ Considerar si descartar Beaufort = 4</p>
 <h4 data-number="2.3.2.3" class="anchored" data-anchor-id="distancia-a-upwellings"><span class="header-section-number">2.3.2.3</span> Distancia a upwellings</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -576,12 +673,20 @@ Considerar si descartar Beaufort = 4</p>
 <p>Ajustamos modelos half-normal y hazard rate</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -591,88 +696,92 @@ Considerar si descartar Beaufort = 4</p>
 <p>Aquí se grafica el tamaño grupal como función de la distancia a la que fueron registrados. Se detectaron grupos hasta 2000m de distancia de la trayectoria de la embarcación.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Consejo práctico recibido en curso de Distance Sampling: “<em>consider reducing the truncation distance, w, if more than 5% of the Pa(zi) are &lt;0.2, or if any are less than 0.1</em>”. Probabilidades (Pa) pequeñas tienen mucha influencia en la estimación de abundancia, porque entran en el denominador del estimador Horvitz-Thompson.</p>
 <p>Estas son las proporciones de observaciones con diferentes Pa (estimadas usando una función half-normal. 17% de las observaciones son menores a 0.2, y hay 81 observaciones con Pa &lt; 0.1 (no mostrado en la tabla). Por ende, truncar los datos</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> bin </th>
-   <th style="text-align:right;"> n </th>
-   <th style="text-align:right;"> prop </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">bin</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prop</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> (0,0.2] </td>
-   <td style="text-align:right;width: 8em; "> 121 </td>
-   <td style="text-align:right;width: 8em; "> 0.17 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> (0.2,0.4] </td>
-   <td style="text-align:right;width: 8em; "> 97 </td>
-   <td style="text-align:right;width: 8em; "> 0.14 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> (0.4,0.6] </td>
-   <td style="text-align:right;width: 8em; "> 61 </td>
-   <td style="text-align:right;width: 8em; "> 0.09 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> (0.6,0.8] </td>
-   <td style="text-align:right;width: 8em; "> 15 </td>
-   <td style="text-align:right;width: 8em; "> 0.02 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> (0.8,1] </td>
-   <td style="text-align:right;width: 8em; "> 423 </td>
-   <td style="text-align:right;width: 8em; "> 0.59 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">(0,0.2]</td>
+<td style="text-align: right; width: 8em;">121</td>
+<td style="text-align: right; width: 8em;">0.17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">(0.2,0.4]</td>
+<td style="text-align: right; width: 8em;">97</td>
+<td style="text-align: right; width: 8em;">0.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">(0.4,0.6]</td>
+<td style="text-align: right; width: 8em;">61</td>
+<td style="text-align: right; width: 8em;">0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">(0.6,0.8]</td>
+<td style="text-align: right; width: 8em;">15</td>
+<td style="text-align: right; width: 8em;">0.02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">(0.8,1]</td>
+<td style="text-align: right; width: 8em;">423</td>
+<td style="text-align: right; width: 8em;">0.59</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p><span class="citation" data-cites="Buckland2001">Buckland et al. (<a href="#ref-Buckland2001" role="doc-biblioref">2001</a>)</span> (p.&nbsp;16) sugiere truncar donde la probabilidad de detección es ~0.15. Aquí se grafica la función de detección (half-normal). Esta distancia es ~325m. Al truncar a esa distancia, se eliminan 49 datos (~ 11.9% de los datos).</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Ajustamos los modelos half-normal y hazard rate con los datos truncados. El modelo hazard rate es mas parsimonioso.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> deltaAIC </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deltaAIC</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 7060.6 </td>
-   <td style="text-align:right;width: 8em; "> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hn.trun </td>
-   <td style="text-align:right;width: 8em; "> 1 </td>
-   <td style="text-align:right;width: 8em; "> 7063.8 </td>
-   <td style="text-align:right;width: 8em; "> 3.22 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">7060.6</td>
+<td style="text-align: right; width: 8em;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hn.trun</td>
+<td style="text-align: right; width: 8em;">1</td>
+<td style="text-align: right; width: 8em;">7063.8</td>
+<td style="text-align: right; width: 8em;">3.22</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -682,7 +791,11 @@ Considerar si descartar Beaufort = 4</p>
 <p>Este es un gráfico de las distancias a las que fueron tomadas las observaciones, con la función de detección hazard rate (observaciones truncadas a 325). Se ve que las distancias fueron redondeadas en 0, 50, 100, 150, 200, 250, 300.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><span class="citation" data-cites="Buckland2015DistanceSampling">Buckland et al. (<a href="#ref-Buckland2015DistanceSampling" role="doc-biblioref">2015</a>)</span> (p.&nbsp;68)</p>
@@ -697,38 +810,40 @@ Considerar si descartar Beaufort = 4</p>
 <p>Aquí utilizamos una estrategia similar; elegimos puntos de corte 0, 25, 75, 125, 175, 225, 275, 325.&nbsp;El último bin termina en 300, porque la distancia de truncado es 325m.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Ajustamos los modelos half-normal y hazard rate con los datos truncados y aplicando los cutpoints para lidiar con la agrupación de datos. El modelo hazard rate es mas parsimonioso. Utilizar el modelo hazard rate.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> deltaAIC </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deltaAIC</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 2273.3 </td>
-   <td style="text-align:right;width: 8em; "> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hn.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 1 </td>
-   <td style="text-align:right;width: 8em; "> 2275.8 </td>
-   <td style="text-align:right;width: 8em; "> 2.49 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">2273.3</td>
+<td style="text-align: right; width: 8em;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hn.trun.cp</td>
+<td style="text-align: right; width: 8em;">1</td>
+<td style="text-align: right; width: 8em;">2275.8</td>
+<td style="text-align: right; width: 8em;">2.49</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -737,79 +852,79 @@ Considerar si descartar Beaufort = 4</p>
 <p>Distance allows the selection of three types of series (one type per model)</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;color: white !important;background-color: rgba(74, 154, 181, 255) !important;"> Key function </th>
-   <th style="text-align:left;color: white !important;background-color: rgba(74, 154, 181, 255) !important;"> Series adjustment </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 255) !important;">Key function</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 255) !important;">Series adjustment</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;background-color: rgba(184, 212, 224, 255) !important;"> Uniform </td>
-   <td style="text-align:left;background-color: rgba(221, 238, 244, 255) !important;"> Cosine </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;background-color: rgba(184, 212, 224, 255) !important;"> Half normal </td>
-   <td style="text-align:left;background-color: rgba(221, 238, 244, 255) !important;"> Hermite polynomial </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;background-color: rgba(184, 212, 224, 255) !important;"> Hazard rate </td>
-   <td style="text-align:left;background-color: rgba(221, 238, 244, 255) !important;"> Simple polynomial </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Uniform</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Cosine</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Half normal</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Hermite polynomial</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Hazard rate</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Simple polynomial</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p>Aplicamos los terminos de ajuste a los modelos half-normal y hazard rate</p>
 <p>El modelo más parsimonioso es el modelo hazard rate sin término de ajuste.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> deltaAIC </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deltaAIC</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 2273.3 </td>
-   <td style="text-align:right;width: 8em; "> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.poly </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 2273.3 </td>
-   <td style="text-align:right;width: 8em; "> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hn.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 1 </td>
-   <td style="text-align:right;width: 8em; "> 2275.8 </td>
-   <td style="text-align:right;width: 8em; "> 2.49 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hn.trun.cp.herm </td>
-   <td style="text-align:right;width: 8em; "> 1 </td>
-   <td style="text-align:right;width: 8em; "> 2275.8 </td>
-   <td style="text-align:right;width: 8em; "> 2.49 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">2273.3</td>
+<td style="text-align: right; width: 8em;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.poly</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">2273.3</td>
+<td style="text-align: right; width: 8em;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hn.trun.cp</td>
+<td style="text-align: right; width: 8em;">1</td>
+<td style="text-align: right; width: 8em;">2275.8</td>
+<td style="text-align: right; width: 8em;">2.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hn.trun.cp.herm</td>
+<td style="text-align: right; width: 8em;">1</td>
+<td style="text-align: right; width: 8em;">2275.8</td>
+<td style="text-align: right; width: 8em;">2.49</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -826,62 +941,60 @@ Considerar si descartar Beaufort = 4</p>
 <p>La función de detección mas parsimoniosa incluye el estado del mar y el tamaño grupal</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> deltaAIC </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deltaAIC</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.sizebeauf </td>
-   <td style="text-align:right;width: 8em; "> 7 </td>
-   <td style="text-align:right;width: 8em; "> 2245.6 </td>
-   <td style="text-align:right;width: 8em; "> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.beauf </td>
-   <td style="text-align:right;width: 8em; "> 6 </td>
-   <td style="text-align:right;width: 8em; "> 2254.7 </td>
-   <td style="text-align:right;width: 8em; "> 9.10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.shipbeauf </td>
-   <td style="text-align:right;width: 8em; "> 7 </td>
-   <td style="text-align:right;width: 8em; "> 2256.4 </td>
-   <td style="text-align:right;width: 8em; "> 10.80 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.size </td>
-   <td style="text-align:right;width: 8em; "> 3 </td>
-   <td style="text-align:right;width: 8em; "> 2260.8 </td>
-   <td style="text-align:right;width: 8em; "> 15.18 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.sizeship </td>
-   <td style="text-align:right;width: 8em; "> 4 </td>
-   <td style="text-align:right;width: 8em; "> 2261.0 </td>
-   <td style="text-align:right;width: 8em; "> 15.47 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 2273.3 </td>
-   <td style="text-align:right;width: 8em; "> 27.75 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.ship </td>
-   <td style="text-align:right;width: 8em; "> 3 </td>
-   <td style="text-align:right;width: 8em; "> 2273.5 </td>
-   <td style="text-align:right;width: 8em; "> 27.94 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.sizebeauf</td>
+<td style="text-align: right; width: 8em;">7</td>
+<td style="text-align: right; width: 8em;">2245.6</td>
+<td style="text-align: right; width: 8em;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.beauf</td>
+<td style="text-align: right; width: 8em;">6</td>
+<td style="text-align: right; width: 8em;">2254.7</td>
+<td style="text-align: right; width: 8em;">9.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.shipbeauf</td>
+<td style="text-align: right; width: 8em;">7</td>
+<td style="text-align: right; width: 8em;">2256.4</td>
+<td style="text-align: right; width: 8em;">10.80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.size</td>
+<td style="text-align: right; width: 8em;">3</td>
+<td style="text-align: right; width: 8em;">2260.8</td>
+<td style="text-align: right; width: 8em;">15.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.sizeship</td>
+<td style="text-align: right; width: 8em;">4</td>
+<td style="text-align: right; width: 8em;">2261.0</td>
+<td style="text-align: right; width: 8em;">15.47</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">2273.3</td>
+<td style="text-align: right; width: 8em;">27.75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.ship</td>
+<td style="text-align: right; width: 8em;">3</td>
+<td style="text-align: right; width: 8em;">2273.5</td>
+<td style="text-align: right; width: 8em;">27.94</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <section id="efecto-del-estado-del-mar" class="level3" data-number="3.6.1">
@@ -890,114 +1003,114 @@ Considerar si descartar Beaufort = 4</p>
 <p>Nótese que los patrones no siguen el patrón esperado; uno esperaría que con Beaufort 0 la detección a distancia fuese mayor, y que con Beaufort 4 la detección fuese menor. Sin embargo, no es así</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Probablemente sea un problema de tamaño muestral discriminado por estado del mar. Hay pocos registros en Beaufort 0, la mayoría de los registros fueron tomados en Beaufort 1, 2, y 3.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> beaufort_fct </th>
-   <th style="text-align:right;"> n </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">beaufort_fct</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> 0 </td>
-   <td style="text-align:right;width: 8em; "> 62 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> 1 </td>
-   <td style="text-align:right;width: 8em; "> 155 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 238 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> 3 </td>
-   <td style="text-align:right;width: 8em; "> 141 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> 4 </td>
-   <td style="text-align:right;width: 8em; "> 36 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">0</td>
+<td style="text-align: right; width: 8em;">62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">1</td>
+<td style="text-align: right; width: 8em;">155</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">238</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">3</td>
+<td style="text-align: right; width: 8em;">141</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">4</td>
+<td style="text-align: right; width: 8em;">36</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p>La forma de lidiar con esto es agrupar beaufort 0 y 1 en un grupo y 3 y 4 en un segundo grupo.<br>
 Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de mar y tamaño grupal</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> ll </th>
-   <th style="text-align:right;"> deltaAIC </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ll</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deltaAIC</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.sizebeaufgrp </td>
-   <td style="text-align:right;width: 8em; "> 5 </td>
-   <td style="text-align:right;width: 8em; "> 2245.7 </td>
-   <td style="text-align:right;width: 8em; "> -1117.858 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.beaufgrp </td>
-   <td style="text-align:right;width: 8em; "> 4 </td>
-   <td style="text-align:right;width: 8em; "> 2253.4 </td>
-   <td style="text-align:right;width: 8em; "> -1122.694 </td>
-   <td style="text-align:right;"> 7.67 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.shipbeaufgrp </td>
-   <td style="text-align:right;width: 8em; "> 5 </td>
-   <td style="text-align:right;width: 8em; "> 2255.3 </td>
-   <td style="text-align:right;width: 8em; "> -1122.632 </td>
-   <td style="text-align:right;"> 9.55 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.size </td>
-   <td style="text-align:right;width: 8em; "> 3 </td>
-   <td style="text-align:right;width: 8em; "> 2260.8 </td>
-   <td style="text-align:right;width: 8em; "> -1127.377 </td>
-   <td style="text-align:right;"> 15.04 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.sizeship </td>
-   <td style="text-align:right;width: 8em; "> 4 </td>
-   <td style="text-align:right;width: 8em; "> 2261.0 </td>
-   <td style="text-align:right;width: 8em; "> -1126.520 </td>
-   <td style="text-align:right;"> 15.32 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp </td>
-   <td style="text-align:right;width: 8em; "> 2 </td>
-   <td style="text-align:right;width: 8em; "> 2273.3 </td>
-   <td style="text-align:right;width: 8em; "> -1134.661 </td>
-   <td style="text-align:right;"> 27.61 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;width: 8em; "> dd.df.hr.trun.cp.ship </td>
-   <td style="text-align:right;width: 8em; "> 3 </td>
-   <td style="text-align:right;width: 8em; "> 2273.5 </td>
-   <td style="text-align:right;width: 8em; "> -1133.755 </td>
-   <td style="text-align:right;"> 27.79 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.sizebeaufgrp</td>
+<td style="text-align: right; width: 8em;">5</td>
+<td style="text-align: right; width: 8em;">2245.7</td>
+<td style="text-align: right; width: 8em;">-1117.858</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.beaufgrp</td>
+<td style="text-align: right; width: 8em;">4</td>
+<td style="text-align: right; width: 8em;">2253.4</td>
+<td style="text-align: right; width: 8em;">-1122.694</td>
+<td style="text-align: right;">7.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.shipbeaufgrp</td>
+<td style="text-align: right; width: 8em;">5</td>
+<td style="text-align: right; width: 8em;">2255.3</td>
+<td style="text-align: right; width: 8em;">-1122.632</td>
+<td style="text-align: right;">9.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.size</td>
+<td style="text-align: right; width: 8em;">3</td>
+<td style="text-align: right; width: 8em;">2260.8</td>
+<td style="text-align: right; width: 8em;">-1127.377</td>
+<td style="text-align: right;">15.04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.sizeship</td>
+<td style="text-align: right; width: 8em;">4</td>
+<td style="text-align: right; width: 8em;">2261.0</td>
+<td style="text-align: right; width: 8em;">-1126.520</td>
+<td style="text-align: right;">15.32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp</td>
+<td style="text-align: right; width: 8em;">2</td>
+<td style="text-align: right; width: 8em;">2273.3</td>
+<td style="text-align: right; width: 8em;">-1134.661</td>
+<td style="text-align: right;">27.61</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">dd.df.hr.trun.cp.ship</td>
+<td style="text-align: right; width: 8em;">3</td>
+<td style="text-align: right; width: 8em;">2273.5</td>
+<td style="text-align: right; width: 8em;">-1133.755</td>
+<td style="text-align: right;">27.79</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -1007,7 +1120,11 @@ Ajustamos los modelos nuevamente. El modelo mas parsimonioso incluye estado de m
 Los patrones son los esperados, y hay diferencias marcadas entre los valores de Beaufort. Conclusión: utilizar estado del mar como covariable.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Conclusión: utilizar Beaufort agrupado como covariable en la funcion de deteccion.</p>
@@ -1020,7 +1137,11 @@ Las líneas de colores representan la probabilidad de detección de grupos que r
 La forma de la funcion de deteccion cambia para los cuantiles mas altos, mayores a 96%.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Que el tamaño grupal sea una covariable de la funcion de deteccion termina haciendo el ajuste de density surface models problematico.<br>
@@ -1043,7 +1164,11 @@ Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me 
 <p>Quizas este grafico ayude para tomar una decision. Se ve que los tamaños grupales grandes fueron detectados en todas las estaciones, por lo que si adoptamos la estrategia de ignorar el efecto de tamaño grupal no estariamos sesgando las estimaciones estacionales</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1053,7 +1178,11 @@ Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me 
 Conclusión: no utilizar embarcación como covariable.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1072,7 +1201,11 @@ covariables: Beaufort state</p>
 <h4 data-number="3.7.1.1" class="anchored" data-anchor-id="beaufort-agrupado-tamaño-grupal"><span class="header-section-number">3.7.1.1</span> Beaufort (agrupado) + Tamaño grupal</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1080,7 +1213,11 @@ covariables: Beaufort state</p>
 <h4 data-number="3.7.1.2" class="anchored" data-anchor-id="beaufort-agrupado"><span class="header-section-number">3.7.1.2</span> Beaufort (agrupado)</h4>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1169,42 +1306,40 @@ N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
 <p>Los largos de los segmentos <em>l<sub>j</sub></em> en el objeto segdata son:</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:center;"> Largo segmento (m) </th>
-   <th style="text-align:center;"> n </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Largo segmento (m)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">n</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 774 </td>
-   <td style="text-align:center;width: 8em; "> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 790 </td>
-   <td style="text-align:center;width: 8em; "> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 792 </td>
-   <td style="text-align:center;width: 8em; "> 2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 798 </td>
-   <td style="text-align:center;width: 8em; "> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 799 </td>
-   <td style="text-align:center;width: 8em; "> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;width: 8em; "> 800 </td>
-   <td style="text-align:center;width: 8em; "> 6282 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">774</td>
+<td style="text-align: center; width: 8em;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">790</td>
+<td style="text-align: center; width: 8em;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">792</td>
+<td style="text-align: center; width: 8em;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">798</td>
+<td style="text-align: center; width: 8em;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 8em;">799</td>
+<td style="text-align: center; width: 8em;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 8em;">800</td>
+<td style="text-align: center; width: 8em;">6282</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 <p>Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos</p>
@@ -1214,152 +1349,150 @@ N in covered region 1190.0811406 64.08894194 0.05385258</code></pre>
 Notese que el modelo que tiene solo posicion + estacion + año explica el 20% del deviance. La mejora al incorporar las variables ambientales es marginal.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> model </th>
-   <th style="text-align:center;"> df </th>
-   <th style="text-align:center;"> deltaAIC </th>
-   <th style="text-align:center;"> Dev </th>
-  </tr>
- </thead>
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(clo) </td>
-   <td style="text-align:center;"> 39.49 </td>
-   <td style="text-align:center;"> 0.00 </td>
-   <td style="text-align:center;"> 0.24 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(clo) </td>
-   <td style="text-align:center;"> 36.89 </td>
-   <td style="text-align:center;"> 5.63 </td>
-   <td style="text-align:center;"> 0.23 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(clo) </td>
-   <td style="text-align:center;"> 36.90 </td>
-   <td style="text-align:center;"> 13.38 </td>
-   <td style="text-align:center;"> 0.23 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(sst) </td>
-   <td style="text-align:center;"> 38.04 </td>
-   <td style="text-align:center;"> 14.37 </td>
-   <td style="text-align:center;"> 0.23 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(sst) </td>
-   <td style="text-align:center;"> 35.16 </td>
-   <td style="text-align:center;"> 18.43 </td>
-   <td style="text-align:center;"> 0.22 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(sst) </td>
-   <td style="text-align:center;"> 37.32 </td>
-   <td style="text-align:center;"> 23.13 </td>
-   <td style="text-align:center;"> 0.22 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(dist.up) </td>
-   <td style="text-align:center;"> 33.94 </td>
-   <td style="text-align:center;"> 25.60 </td>
-   <td style="text-align:center;"> 0.22 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(slope) </td>
-   <td style="text-align:center;"> 36.63 </td>
-   <td style="text-align:center;"> 28.52 </td>
-   <td style="text-align:center;"> 0.22 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(grad) </td>
-   <td style="text-align:center;"> 34.46 </td>
-   <td style="text-align:center;"> 33.50 </td>
-   <td style="text-align:center;"> 0.21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(dist.up) </td>
-   <td style="text-align:center;"> 32.94 </td>
-   <td style="text-align:center;"> 34.29 </td>
-   <td style="text-align:center;"> 0.21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(slope) </td>
-   <td style="text-align:center;"> 35.09 </td>
-   <td style="text-align:center;"> 39.44 </td>
-   <td style="text-align:center;"> 0.21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(grad) </td>
-   <td style="text-align:center;"> 33.70 </td>
-   <td style="text-align:center;"> 39.51 </td>
-   <td style="text-align:center;"> 0.21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(slope) </td>
-   <td style="text-align:center;"> 35.32 </td>
-   <td style="text-align:center;"> 41.32 </td>
-   <td style="text-align:center;"> 0.21 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) </td>
-   <td style="text-align:center;"> 31.08 </td>
-   <td style="text-align:center;"> 42.14 </td>
-   <td style="text-align:center;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(Ano) + s(depth) </td>
-   <td style="text-align:center;"> 33.52 </td>
-   <td style="text-align:center;"> 44.86 </td>
-   <td style="text-align:center;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(grad) </td>
-   <td style="text-align:center;"> 33.15 </td>
-   <td style="text-align:center;"> 45.03 </td>
-   <td style="text-align:center;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(dist.up) </td>
-   <td style="text-align:center;"> 31.15 </td>
-   <td style="text-align:center;"> 46.84 </td>
-   <td style="text-align:center;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season </td>
-   <td style="text-align:center;"> 29.99 </td>
-   <td style="text-align:center;"> 51.19 </td>
-   <td style="text-align:center;"> 0.19 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + season + s(depth) </td>
-   <td style="text-align:center;"> 32.75 </td>
-   <td style="text-align:center;"> 53.26 </td>
-   <td style="text-align:center;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) </td>
-   <td style="text-align:center;"> 29.59 </td>
-   <td style="text-align:center;"> 55.54 </td>
-   <td style="text-align:center;"> 0.19 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) + s(Ano) + s(depth) </td>
-   <td style="text-align:center;"> 32.31 </td>
-   <td style="text-align:center;"> 56.43 </td>
-   <td style="text-align:center;"> 0.19 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> count ~ s(x,y) </td>
-   <td style="text-align:center;"> 26.92 </td>
-   <td style="text-align:center;"> 62.11 </td>
-   <td style="text-align:center;"> 0.18 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(clo)</td>
+<td style="text-align: center;">39.49</td>
+<td style="text-align: center;">0.00</td>
+<td style="text-align: center;">0.24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(clo)</td>
+<td style="text-align: center;">36.89</td>
+<td style="text-align: center;">5.63</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(clo)</td>
+<td style="text-align: center;">36.90</td>
+<td style="text-align: center;">13.38</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(sst)</td>
+<td style="text-align: center;">38.04</td>
+<td style="text-align: center;">14.37</td>
+<td style="text-align: center;">0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(sst)</td>
+<td style="text-align: center;">35.16</td>
+<td style="text-align: center;">18.43</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(sst)</td>
+<td style="text-align: center;">37.32</td>
+<td style="text-align: center;">23.13</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">33.94</td>
+<td style="text-align: center;">25.60</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(slope)</td>
+<td style="text-align: center;">36.63</td>
+<td style="text-align: center;">28.52</td>
+<td style="text-align: center;">0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(grad)</td>
+<td style="text-align: center;">34.46</td>
+<td style="text-align: center;">33.50</td>
+<td style="text-align: center;">0.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(dist.up)</td>
+<td style="text-align: center;">32.94</td>
+<td style="text-align: center;">34.29</td>
+<td style="text-align: center;">0.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(slope)</td>
+<td style="text-align: center;">35.09</td>
+<td style="text-align: center;">39.44</td>
+<td style="text-align: center;">0.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(grad)</td>
+<td style="text-align: center;">33.70</td>
+<td style="text-align: center;">39.51</td>
+<td style="text-align: center;">0.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(slope)</td>
+<td style="text-align: center;">35.32</td>
+<td style="text-align: center;">41.32</td>
+<td style="text-align: center;">0.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano)</td>
+<td style="text-align: center;">31.08</td>
+<td style="text-align: center;">42.14</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(depth)</td>
+<td style="text-align: center;">33.52</td>
+<td style="text-align: center;">44.86</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(grad)</td>
+<td style="text-align: center;">33.15</td>
+<td style="text-align: center;">45.03</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">31.15</td>
+<td style="text-align: center;">46.84</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season</td>
+<td style="text-align: center;">29.99</td>
+<td style="text-align: center;">51.19</td>
+<td style="text-align: center;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(depth)</td>
+<td style="text-align: center;">32.75</td>
+<td style="text-align: center;">53.26</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
+<td style="text-align: center;">29.59</td>
+<td style="text-align: center;">55.54</td>
+<td style="text-align: center;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(depth)</td>
+<td style="text-align: center;">32.31</td>
+<td style="text-align: center;">56.43</td>
+<td style="text-align: center;">0.19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y)</td>
+<td style="text-align: center;">26.92</td>
+<td style="text-align: center;">62.11</td>
+<td style="text-align: center;">0.18</td>
+</tr>
 </tbody>
 </table>
-
 </div>
 </div>
 </section>
@@ -1371,7 +1504,11 @@ Notese que el modelo que tiene solo posicion + estacion + año explica el 20% de
 <p>La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1380,7 +1517,11 @@ Notese que el modelo que tiene solo posicion + estacion + año explica el 20% de
 <p>Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Tabla de ANOVA de este modelo. El termino de posicion tiene pvalue muy pequeno, el de ano 0.038, y el de estacion 0.047</p>
@@ -1419,16 +1560,21 @@ s(Ano)  1.006  1.013 4.263  0.0383</code></pre>
 <p>No veo gran diferencia entre las predicciones de los modelos.<br>
 Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica</p>
 <div class="cell">
-
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
 </div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="1056"></p>
 </div>
 </div>
 </section>
@@ -1437,12 +1583,20 @@ Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta
 <p>Aqui grafico las predicciones a lo largo de las estaciones, usando 2015 como año de referencia</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="1056"></p>
+<div>
+<figure class="figure">
+<p><img src="DelfinesComunes_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1455,122 +1609,444 @@ Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta
 </section>
 </section>
 </section>
-<section id="referencias" class="level1" data-number="5">
+<section id="estimaciones-de-abundancia" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Estimaciones de abundancia</h1>
+<p>Aqui presento estimaciones de abundancia estimadas usando density surface models (negro) y distance clásico (rojo). Los dos métodos utilizan la misma función de detección.</p>
+<p>Nótese que las estimaciones hechas sin el componente espacial son mucho mas variables. Las 2 diferencias entre los modelos son:</p>
+<ul>
+<li>Componente espacial incluido en DSM<br>
+</li>
+<li>Efecto de año incluido como una funcion smooth</li>
+</ul>
+<p>Los ticks menores en el eje <em>x</em> representan las estaciones, en orden: verano, otoño, invierno, primavera.<br>
+Se notan claramente los efectos de temporada y año. El efecto de año no parece muy grande, pero es debido a la escala del eje <em>y</em>. Haciendo zoom, se ve claramente que la abundancia promedio de delfines previo a 2012 es &lt;5000, mientras después de 2013 es &gt;8500.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-ea99d74c81dd358f845a" style="width:100%;height:590px;"></div>
+<script type="application/json" data-for="htmlwidget-ea99d74c81dd358f845a">{"x":{"visdat":{"996829003052":["function () ","plotlyVisDat"],"99687f147f80":["function () ","data"],"99685b35690d":["function () ","data"],"9968db375f6":["function () ","data"],"9968c881b71":["function () ","data"]},"cur_data":"9968c881b71","attrs":{"99687f147f80":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"99685b35690d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"9968db375f6":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"9968c881b71":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[2083,771,1999,1875,2337,862,2241,2094,2611,960,2500,2329,1063,2773,2578,3209,1172,3370,4475,1630,4188,4769,1741,4441,4134,5044,1847,4674,4362,5297,1947,4886,4572,4572,16373,16037,7335,17333,14806,14464,6672,15705,13479,13137,6109,14336,12024,5632,13190,10636,4354,10224,8953,8719,4146,8557,8354,3967,9373,8219,8048,3814,9044,7930,7790,3681,8761],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[4272,1685,3946,3856,4597,1813,4247,4149,4947,1951,4570,4465,2100,4917,4804,5728,2259,5987,7682,3030,7097,8269,3261,7638,7465,8901,3511,8222,8036,9582,3779,8851,8652],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,19606.839848923624,0,10375.30371988634,2989.6745273396341,10613.475239648673,0,531.42863219862522,10644.904966002245,611.28060283986895,0,8043.8970237337317,7386.5768083904113,2403.2383700537816,6890.4037183360115,3627.5296151755219,819.28580797287998,11518.743035008782,2300.3024608469332,9776.4176989761436,9846.5317382178437,4618.7924744779821,5999.3468776046129,2846.1541716179463,6627.9301319154329,14201.642068916984,24669.605995627848,6001.1821208477659,9644.4455473083817,11378.969555178897],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,11323.108352847848,null,6887.7716517465697,2236.1781115590288,7303.4190546011741,null,null,6493.062589287505,394.9903058439678,null,null,null,2031.2266569777937,null,null,616.7349207955258,8510.5581797989726,1236.6753581232895,5862.784221653541,6220.9927303503719,2285.0641690391799,4387.0018834975035,1853.5000691824384,4548.4579757512811,6942.3048211359383,16946.679262372498,3635.9880914540554,3784.3783312269816,null],"array":[null,null,null,null,26800.768732239736,null,20490.914905970072,8872.5634239367992,23417.927964771254,null,null,16647.557380528866,1116.3233655219424,null,null,null,13121.957370541166,null,null,2494.5937039842524,32588.068046356544,2674.5532924793233,14645.476578727426,16895.474639686057,4522.478971978263,16323.520182094417,5314.3858883517632,14497.362507052116,13581.422771510703,54133.35057767453,9225.5546288702681,6228.2955809402101,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,19606.839848923624,0,10375.30371988634,2989.6745273396341,10613.475239648673,0,531.42863219862522,10644.904966002245,611.28060283986895,0,8043.8970237337317,7386.5768083904113,2403.2383700537816,6890.4037183360115,3627.5296151755219,819.28580797287998,11518.743035008782,2300.3024608469332,9776.4176989761436,9846.5317382178437,4618.7924744779821,5999.3468776046129,2846.1541716179463,6627.9301319154329,14201.642068916984,24669.605995627848,6001.1821208477659,9644.4455473083817,11378.969555178897],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="referencias" class="level1" data-number="6">
 
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">5 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-Buckland2001" class="csl-entry" role="doc-biblioentry">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Buckland2001" class="csl-entry" role="listitem">
 Buckland ST, Anderson DR, Burnham KP, Laake JL, Borchers DL, Thomas L (2001) Introduction to distance sampling: Estimating abundance of biological populations. Oxford University Press, Oxford.
 </div>
-<div id="ref-Buckland2015DistanceSampling" class="csl-entry" role="doc-biblioentry">
+<div id="ref-Buckland2015DistanceSampling" class="csl-entry" role="listitem">
 Buckland ST, Rexstad EA, Marques TA, Oedekoven CS (2015) <a href="https://doi.org/10.1007/978-3-319-19219-2">Distance sampling: Methods and applications</a>. Springer, Cham.
 </div>
-<div id="ref-Miller2013SpatialModels" class="csl-entry" role="doc-biblioentry">
+<div id="ref-Miller2013SpatialModels" class="csl-entry" role="listitem">
 Miller DL, Burt ML, Rexstad EA, Thomas L (2013) <a href="https://doi.org/10.1111/2041-210X.12105">Spatial Models for Distance Sampling Data: Recent Developments and Future Directions</a>. Methods in Ecology and Evolution 4:1001–1010.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    setTimeout(function() {
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-        popup.appendChild(citeDiv);
-      });
-      return popup.innerHTML;
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-});
-</script>
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 
