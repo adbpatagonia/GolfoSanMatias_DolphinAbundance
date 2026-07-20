@@ -309,7 +309,6 @@ cache_source(
 
 ## Datos
 
-Eliminar una observacion con Beaufort = 4
 
 ## Funciones de detección básicas
 
@@ -797,7 +796,16 @@ invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.sizebeaufgrp$ddf, plot = TR
 invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE)))
 ```
 
-### Estimaciones con los 2 modelos
+### Estimaciones de distanc clasico   
+
+Discutiendo con Silvana, decidimos que necesitamos responder 2 preguntas para saber como continuar:    
+
+ 1. Vale la pena incluir Beaufort en la funcion de deteccion?     
+  1. Vale la pena incluir tamaño grupal en la funcion de deteccion?     
+  
+Vamos a comparar las estimaciones obtenidas con distance clásico para tener una idea de que tan distintas serían las estimaciones con y sin estas variables en la funcion de deteccion.   
+
+Nota, de la pagina de ayuda `?ds`: `Note that if the data contains a column named size, cluster size will be estimated and density/abundance will be based on a clustered analysis of the data`. El objeto `detfun_dat_dd` tiene una columna `size`, asi que esto aplica
 
 #### Beaufort (agrupado) + Tamaño grupal
 
@@ -817,13 +825,70 @@ dd.df.hr.trun.cp.sizebeaufgrp$ddf
 dd.df.hr.trun.cp.beaufgrp$ddf
 ```
 
-Las estimaciones con los 2 modelos difieren myu poco; la diferencia en el numero de animales es de 12 (i.e. 1%).
+#### Tamaño grupal   
 
-Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+dd.df.hr.trun.cp.size$ddf
+```
+
+
+#### Sin covariables   
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+dd.df.hr.trun.cp$ddf
+```
+
+#### Resumen 
+
+El modelo mas parsimonioso fue el que incluye las 2 variables (esto ya lo sabiamos). Las ultimas 2 columnas presentan las diferencias en terminos porcentuales de abundancia entre cada modelo y el modelo que incluye las 2 covariables   
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+kable(data.table(
+  AIC(dd.df.hr.trun.cp,
+      dd.df.hr.trun.cp.size,
+      dd.df.hr.trun.cp.beaufgrp,
+      dd.df.hr.trun.cp.sizebeaufgrp),
+  keep.rownames = TRUE) %>% 
+    rename(model = rn) %>% 
+    mutate(deltaAIC = AIC - min(AIC)) %>% 
+    mutate(abundance = c(
+      1189, 1216, 1190, 1202
+    )) %>% 
+    mutate(CV = c(
+      0.056, 0.056, 0.054, 0.054
+    )) %>% 
+    arrange(AIC) %>% 
+    mutate(diff_abun_perc = improv(new = abundance, old = abundance[1])) %>% 
+    mutate(diff_CV_perc = improv(new = CV, old = CV[1])) )%>% 
+  
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  )
+```
+
+Las diferencias entre los modelos son muy pequeñas. Esto indica que introducir las 2 covariables en la función de deteccion aportaria muy poco. Incluirlas representa un esfuerzo que parece ser excesivo con respecto a lo que obtendriamos: 
+
+   * como incluir el tamaño grupal fue discutido antes, donde explico como lo consulté con Len Thomas
+   * Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento    
+   
+
+Personalmente (ADB), considero que no vale la pena el esfuerzo para incluir las covariables
+
 
 @Miller2013SpatialModels
 
-En lo que sigue abajo, no inclui beaufort en la funcion de deteccion
+En lo que sigue abajo, no inclui covariables en la funcion de deteccion
 
 # Density surface models
 
