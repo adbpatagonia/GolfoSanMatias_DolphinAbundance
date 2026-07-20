@@ -2,4 +2,8 @@
 
 export(improv)
 export(lnorm_ci)
+export(year_partial_effect)
+importFrom(stats,coef)
+importFrom(stats,predict)
 importFrom(stats,qnorm)
+importFrom(stats,vcov)
