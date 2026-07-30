@@ -5,11 +5,36 @@
 ```{r}
 #| include: false
 
+library(dsm)
+library(Distance)
+library(mrds)
+library(scales)
+library(terra)
+library(sf)
+library(data.table)
+library(tidyverse)
+library(tweedie)
+library(patchwork)
+library(here)
 library(kableExtra)
+library(gam.hp)
 library(plotly)
+source(file.path(here::here(), "R", "improv.r"))
+
+# plotting options
+ggplot2::theme_set(theme_bw())
+gg.opts  <-  theme(panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.background = element_blank())
+
+
 # source data (cached across pages) ----
-source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
-load_or_build_readdata()
+# source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
+# load_or_build_readdata()
+
+# load workspace 
+load(file.path(here::here(), "output", "DuskyDolphin", "lo_output.RData"))
+
 ```
 
 # Censos
@@ -104,11 +129,6 @@ kable(distdata_lo_sf_m %>%
 
 # Exploratory Data Analysis
 
-```{r}
-#| include: false
-# EDA -----
-source(file.path(here::here(), "analysis", "2_DuskyDolphin_EDA.R"))
-```
 
 ## Efecto de barco
 
@@ -288,16 +308,6 @@ p.distup.lo
 ```
 
 # Funciones de deteccion
-
-```{r}
-#| include: false
-# Detection function -----
-cache_source(
-  "3_DuskyDolphin_DetectionFunction.R",
-  deps  = "2_DuskyDolphin_EDA.R",
-  label = "DetFun (dusky)"
-)
-```
 
 ## Datos
 
@@ -784,17 +794,6 @@ segdata %>%
 
 Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
-```{r}
-#| include: false
-# Detection function -----
-cache_source(
-  "4_DuskyDolphin_DSM.R",
-  deps            = c("2_DuskyDolphin_EDA.R", "3_DuskyDolphin_DetectionFunction.R"),
-  capture_globals = "segdata",
-  label           = "DSM (dusky)"
-)
-```
-
 ## Model selection
 
 La columna `Dev` es la proporcion de deviance explicado por el modelo.\
@@ -874,12 +873,6 @@ No veo gran diferencia entre las predicciones de los modelos.\
 Es muy claro el patron estacional.\
 Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica
 
-```{r}
-#| echo: false   
-#| message: false    
-#| warning: false
- source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_LO.R"))
-```
 
 ```{r}
 #| echo: false
@@ -935,12 +928,6 @@ lo.map.density.year.depth
 
 # Estimaciones de abundancia
 
-```{r}
-#| echo: false   
-#| message: false    
-#| warning: false
- source(file.path(here::here(), "analysis", "5_DuskyDolphin_Abundance.R"))
-```
 
 Aqui presento estimaciones de abundancia estimadas usando density surface models (negro) y distance clásico (rojo). Los dos métodos utilizan la misma función de detección.
 

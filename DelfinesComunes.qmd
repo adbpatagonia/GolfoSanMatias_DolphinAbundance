@@ -4,13 +4,35 @@
 
 ```{r}
 #| include: false
-library(plotly)
+library(dsm)
+library(Distance)
+library(mrds)
+library(scales)
+library(terra)
+library(sf)
+library(data.table)
+library(tidyverse)
+library(tweedie)
+library(patchwork)
+library(here)
 library(kableExtra)
+library(gam.hp)
+library(plotly)
 source(file.path(here::here(), "R", "improv.r"))
 
+# plotting options
+ggplot2::theme_set(theme_bw())
+gg.opts  <-  theme(panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.background = element_blank())
+
+
 # source data (cached across pages) ----
-source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
-load_or_build_readdata()
+# source(file.path(here::here(), "analysis", "CACHE_ReadData_Plots.R"))
+# load_or_build_readdata()
+
+# load workspace 
+load(file.path(here::here(), "output", "CommonDolphin", "dd_output.RData"))
 ```
 
 # Censos
@@ -298,15 +320,6 @@ p.distup.dd
 
 # Funciones de deteccion
 
-```{r}
-#| include: false
-# Detection function -----
-cache_source(
-  "3_CommonDolphin_DetectionFunction.R",
-  deps  = "2_CommonDolphin_EDA.R",
-  label = "DetFun (common)"
-)
-```
 
 ## Datos
 
@@ -924,16 +937,6 @@ segdata %>%
 
 Asumo que los segmentos menores a 800 m son los segmentos que llegan hasta los limites del area de estudio. Para simplificar, y dado que las diferencias son minimas, usare 800 m en todos los segmentos
 
-```{r}
-#| include: false
-# Detection function -----
-cache_source(
-  "4_CommonDolphin_DSM.R",
-  deps            = c("2_CommonDolphin_EDA.R", "3_CommonDolphin_DetectionFunction.R"),
-  capture_globals = "segdata",
-  label           = "DSM (common)"
-)
-```
 
 ## Model selection
 
@@ -1010,12 +1013,7 @@ Aqui grafico las predicciones a lo largo de los años, usando primavera como est
 No veo gran diferencia entre las predicciones de los modelos.\
 Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica
 
-```{r}
-#| echo: false   
-#| message: false    
-#| warning: false
- source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_DD.R"))
-```
+
 
 ```{r}
 #| echo: false
@@ -1068,13 +1066,6 @@ dd.map.density.season.clo
 2.  No prepare mapas de la varianza de las estimaciones, pero en caso de querer presentar mapas, es algo que deberiamos hacer. Es sencillo, pero no quiero largarme a hacer mil mapas sin antes discutir que queremos presentar
 
 # Estimaciones de abundancia
-
-```{r}
-#| echo: false   
-#| message: false    
-#| warning: false
- source(file.path(here::here(), "analysis", "5_CommonDolphin_Abundance.R"))
-```
 
 Aqui presento estimaciones de abundancia estimadas usando density surface models (negro) y distance clásico (rojo). Los dos métodos utilizan la misma función de detección.
 

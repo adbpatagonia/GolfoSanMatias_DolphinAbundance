@@ -61,7 +61,6 @@ CSV files are **semicolon-delimited** (`;`); some column headers contain trailin
 | File | Used for | Key columns |
 |------|----------|-------------|
 | `distdata_ddwholesample.csv` | Common dolphin distance data (sightings) | object, Effort, distance, size, beaufort, ship, latitude, longitude, x, y, Dia, Mes, Ano, Sample.Label |
-| `distdata_dd_todos2.csv` | Common dolphin — alternative ("option 2") distance data; loaded but pending review (see note below) | same as above |
 | `distdata_lowholesample.csv` | Dusky dolphin distance data (sightings) | same as above |
 | `obsdata_dd.csv` | Common dolphin observation table (links sightings to segments) | object, Sample.Label, size, distance, Effort, latitude, longitude, x, y, Ano |
 | `obsdata_lo.csv` | Dusky dolphin observation table | same as above |
@@ -77,8 +76,6 @@ Each layer is an ESRI shapefile; keep all sidecar files (`.shp`, `.shx`, `.dbf`,
 | `survey.area.*` | Survey-area polygon (defines the region and total area) |
 | `gridproy41.1.*` | Prediction-grid polygons (~1.10–1.17 km² cells; not equal-area) |
 | `Patagonia_Completa.*` | Coastline/landmass polygon for maps |
-
-> **Note:** `0_ReadData_Plots.r` loads both `distdata_ddwholesample.csv` and `distdata_dd_todos2.csv` for the common dolphin; the script flags the second as an open question for Silvana. It is currently loaded but never used. Only one should feed the analysis once that is resolved.
 
 ---
 
@@ -100,7 +97,7 @@ Scripts are sourced in order via the species master script:
 | — | `UTIL_Map_DSM_output_CV_*.R` | Per-cell coefficient-of-variation map, following Fig. 5 of Miller et al. (2013) — see *Uncertainty mapping* below |
 | — | `UTIL_*_EdgeEffects.R` | Edge-effect diagnostics and mitigation: (1) `exclude.too.far()` masking of the `fs` per-year maps; (2) the soap-film boundary/knot construction reused by `4_*_DSM_soap.R` |
 
-> **Note:** the full pipeline (`1_CommonDolphin.R` / `1_DuskyDolphin.R`, i.e. everything above) takes **hours** to run per species — most of that time is the `4_*_DSM.R` / `4_*_DSM_soap.R` model-fitting steps (72 models per species combined). Each master script ends with `save.image()`, writing the **entire workspace** for that species to `output/<Species>/<species>_output.RData` (`output/CommonDolphin/dd_output.RData`, `output/DuskyDolphin/lo_output.RData`). These files are too large for git to track (`*.RData` is in `.gitignore`) and are regenerated locally by re-running the pipeline. The Quarto reports (`*.qmd`) are intended to `load()` these `.RData` files to build the HTML report without re-running the pipeline each time — as of writing, that `load()` call still needs to be added to the `.qmd` files.
+> **Note:** the full pipeline (`1_CommonDolphin.R` / `1_DuskyDolphin.R`, i.e. everything above) takes **hours** to run per species — most of that time is the `4_*_DSM.R` / `4_*_DSM_soap.R` model-fitting steps (72 models per species combined). Each master script ends with `save.image()`, writing the **entire workspace** for that species to `output/<Species>/<species>_output.RData` (`output/CommonDolphin/dd_output.RData`, `output/DuskyDolphin/lo_output.RData`). These files are too large for git to track (`*.RData` is in `.gitignore`) and are regenerated locally by re-running the pipeline. The Quarto reports (`*.qmd`) `load()` these `.RData` files to build the HTML report without re-running the pipeline each time.
 
 ### Models fitted per species
 
@@ -117,8 +114,8 @@ Scripts are sourced in order via the species master script:
 
 | # | Model | Facet |
 |---|-------|-------|
-| 1–2 | `season.year`, `year.season.depth` | season (at reference year) |
-| 3–4 | `season.year`, `year.season.depth` | year (season = Spring) |
+| 1–2 | `season.year`, `year.season.clo` (`dd`) / `year.season.depth` (`lo`) | season (at reference year) |
+| 3–4 | `season.year`, `year.season.clo` (`dd`) / `year.season.depth` (`lo`) | year (season = Spring) |
 | 5–6 | `fsyear.season` | season (at reference year) / year (per-year surface) |
 | 7–8 | `byyear.season` | season (at reference year) / year (per-year surface) |
 | 9–10 | `soap.season.year` | season (at reference year) / year (shared surface) |

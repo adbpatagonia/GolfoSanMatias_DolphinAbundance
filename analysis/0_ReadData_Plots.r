@@ -43,6 +43,8 @@ crs_latlon <- "EPSG:4326"
 distdata_dd <- fread(paste0(here::here(), "/data/DistanceData/distdata_ddwholesample.csv"))
 
 #' @ADB: ask Silvana about this
+#' Silvana confirmed this file should not be used  for analysis
+#' NOT USED
 distdata_ddoption2 <- fread(paste0(here::here(), "/data/DistanceData/distdata_dd_todos2.csv"))
 
 
