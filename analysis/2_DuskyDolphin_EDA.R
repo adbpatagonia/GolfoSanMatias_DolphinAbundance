@@ -213,10 +213,10 @@ ggsave(plot = p.grad.lo,
        height = 10)
 # -----
 
-titlab <- "EDA - Common Dolphin"
+titlab <- "EDA - Dusky Dolphin"
 
 png(
-  filename = paste0(here::here(), "/output/DuskyDolphin/EDA/EDA_Common_Dolphin.png"),
+  filename = paste0(here::here(), "/output/DuskyDolphin/EDA/EDA_Dusky_Dolphin.png"),
   width = 1600,
   height = 1200,
   res = 150

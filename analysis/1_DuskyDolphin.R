@@ -22,8 +22,17 @@ source(file.path(here::here(), "analysis", "3_DuskyDolphin_DetectionFunction.R")
 # DSM ----
 source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM.R"))
 
+# DSM soap ----
+source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM_soap.R"))
+
 # Create abundance estimates ----
 source(file.path(here::here(), "analysis", "5_DuskyDolphin_Abundance.R"))
 
 # Map expected densities -----
 source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_LO.R"))
+
+# Map CV -----
+source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_CV_LO.R"))
+
+# save image -----
+save.image(file = "output/DuskyDolphin/lo_output.RData")
