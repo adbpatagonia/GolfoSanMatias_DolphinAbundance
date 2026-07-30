@@ -14,7 +14,7 @@ analysis/.cache/
 /.quarto/
 
 
-
+*.RData
 .positai
 
 .claude/
