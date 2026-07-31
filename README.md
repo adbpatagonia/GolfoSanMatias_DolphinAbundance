@@ -95,7 +95,6 @@ Scripts are sourced in order via the species master script:
 | — | `UTIL_FindTweedieP_*.R` | Grid search for Tweedie *p* parameter (run before step 4) |
 | — | `UTIL_Map_DSM_output_*.R` | 12 density maps per species (see *Maps* below) |
 | — | `UTIL_Map_DSM_output_CV_*.R` | Per-cell coefficient-of-variation map, following Fig. 5 of Miller et al. (2013) — see *Uncertainty mapping* below |
-| — | `UTIL_*_EdgeEffects.R` | Edge-effect diagnostics and mitigation: (1) `exclude.too.far()` masking of the `fs` per-year maps; (2) the soap-film boundary/knot construction reused by `4_*_DSM_soap.R` |
 
 > **Note:** the full pipeline (`1_CommonDolphin.R` / `1_DuskyDolphin.R`, i.e. everything above) takes **hours** to run per species — most of that time is the `4_*_DSM.R` / `4_*_DSM_soap.R` model-fitting steps (72 models per species combined). Each master script ends with `save.image()`, writing the **entire workspace** for that species to `output/<Species>/<species>_output.RData` (`output/CommonDolphin/dd_output.RData`, `output/DuskyDolphin/lo_output.RData`). These files are too large for git to track (`*.RData` is in `.gitignore`) and are regenerated locally by re-running the pipeline. The Quarto reports (`*.qmd`) `load()` these `.RData` files to build the HTML report without re-running the pipeline each time.
 
@@ -106,7 +105,7 @@ Scripts are sourced in order via the species master script:
 | `*.dsm.xy.season.year` | `count ~ s(x,y) + season + s(Ano)` | shared thin-plate surface; **primary** model |
 | `*.dsm.xy.fsyear.season` | `count ~ s(x,y,year_fac,bs="fs") + season` | year-varying, **shrunk** (factor-smooth; one shared smoothing parameter across years) |
 | `*.dsm.xy.byyear.season` | `count ~ s(x,y,by=year_fac) + year_fac + season` | year-varying, **unshrunk** (independent surface per year) |
-| `*.dsm.soap.season.year` | `count ~ s(x,y,bs="so") + season + s(Ano)` | shared soap-film surface, edge-effect controlled |
+| `*.dsm.soap.season.year` | `count ~ s(x,y,bs="so") + season + s(Ano)` | shared soap-film surface, coastline/boundary-respecting (does not smooth across land) |
 
 `*` = `dd` (common dolphin) or `lo` (dusky dolphin). All four are fitted and compared against the same design-based estimate in step 5 and mapped in `UTIL_Map_DSM_output_*.R`.
 
@@ -174,7 +173,7 @@ Soap setup is the most fragile and slowest part of the pipeline: the boundary is
 
 ### Known modelling issues to keep in mind
 
-- **Year-varying spatial models can extrapolate into unsurveyed regions.** A season × year combination with zero effort can still show an implausible high-density "blob" in `fs`/`by`-year maps, purely from basis-function extrapolation, not a real signal — diagnosed for common dolphin (2015, south edge) and dusky dolphin (2009, west edge). Map 12 blanks any panel with zero survey effort for that combination; `UTIL_*_EdgeEffects.R` Part 1 additionally masks by distance-to-nearest-segment (`exclude.too.far()`) within a panel.
+- **Year-varying spatial models can extrapolate into unsurveyed regions.** A season × year combination with zero effort can still show an implausible high-density "blob" in `fs`/`by`-year maps, purely from basis-function extrapolation, not a real signal — diagnosed for common dolphin (2015, south edge) and dusky dolphin (2009, west edge). Map 12 blanks any panel with zero survey effort for that combination.
 - **A shared spatial term (thin-plate, soap) is legitimately informed by every season and year of data**; a year-varying term (`fs`, `by`) is legitimately informed by every *season* within its own year, but **not** by other years. Overlay tracks/sightings on each map must be filtered consistently with this, or an observation from an irrelevant year/season can appear to "explain" a feature it had nothing to do with.
 
 ---
