@@ -810,7 +810,7 @@ invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.sizebeaufgrp$ddf, plot = TR
 invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE)))
 ```
 
-### Estimaciones de distanc clasico   
+### Estimaciones de distance clasico {#sec-funcdetecdd}   
 
 Discutiendo con Silvana, decidimos que necesitamos responder 2 preguntas para saber como continuar:    
 
@@ -1093,7 +1093,19 @@ ply.dd.N.sy
 
 # Progreso luego de la reunion con Silvana     
 
-En julio 2026 me reuni con Silvana, y acordamos que seria bueno abordar la nota en @sec-notasdd. Esta nota la habia incluido inicialmente por que en los mapas @fig-dsmddyear y @fig-dsmddseason se ven 3 focos de densidad que son estaticos (*i.e.* el efecto espacial no es variable a lo largo de los años o estaciones), y dos de esos focos esta en la fronteras sur y este del area de estudio  - sugiriendo que esto puede ser un *edge effect*.     
+En julio 2026 me reuni con Silvana, y acordamos que seria bueno:  
+
+  1. evaluar si es necesario incluir Beaufort y tamaño grupal en la funcion de detección, y    
+  2. abordar la nota en @sec-notasdd sobre patrones espaciales estáticos
+
+## Funciones de deteccion      
+
+Esta evaluacion esta en @sec-funcdetecdd    
+Conclusion personal de ADB: considero que no vale la pena el esfuerzo para incluir las covariables    
+
+## Patrones espaciales estáticos    
+
+La nota @sec-notasdd la habia incluido inicialmente por que en los mapas @fig-dsmddyear y @fig-dsmddseason se ven 3 focos de densidad que son estaticos (*i.e.* el efecto espacial no es variable a lo largo de los años o estaciones), y dos de esos focos esta en la fronteras sur y este del area de estudio  - sugiriendo que esto puede ser un *edge effect*.     
 Considerando esto, ajuste 4 sets de modelos completos (*i.e.* equivalente a tabla @tbl-modelselectiondd). Estos 4 modelos se pueden agrupar en: 
 
 1. Superficie estática   
@@ -1105,7 +1117,7 @@ b. Superficies con informacion compartida entre años (modelos fs, factor smooth
 
 *A priori*, el modelo **1.b Superficie estática soap film** parece ser el que se ajusta más a la situación (*edge effect*). 
 
-## Model selection    
+### Model selection    
 
 esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)    
 
@@ -1157,9 +1169,9 @@ Similar al caso @tbl-modelselectiondd, añadir covariables ambientales implica u
 En lo que continua, persentare los resultados del modelo que excluye variables ambientales.   
 
 
-## Efectos parciales de estacion, año y efecto espacial     
+### Efectos parciales de estacion, año y efecto espacial     
 
-### Estacion
+#### Estacion
 
 La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI
 
@@ -1173,7 +1185,7 @@ gratia::draw(gratia::parametric_effects(dd_soap_models$dd.dsm.soap.season.year, 
   theme_bw()
 ```
 
-### Año
+#### Año
 
 Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio   
 
@@ -1186,9 +1198,9 @@ gratia::draw(dd_soap_models$dd.dsm.soap.season.year, select = "s(Ano)") +
 ```
 
 
-## Predicciones de densidad    
+### Predicciones de densidad    
 
-### Año variable
+#### Año variable
 
 ```{r}
 #| echo: false
@@ -1200,7 +1212,7 @@ gratia::draw(dd_soap_models$dd.dsm.soap.season.year, select = "s(Ano)") +
 dd.map.density.year.soap
 ```
 
-### Estacion variable
+#### Estacion variable
 
 ```{r}
 #| echo: false
@@ -1212,7 +1224,7 @@ dd.map.density.year.soap
 dd.map.density.season.soap
 ```
 
-## Estimaciones de abundancia    
+### Estimaciones de abundancia    
 
 ```{r}
 #| echo: false
@@ -1224,7 +1236,7 @@ dd.map.density.season.soap
 ply.dd.N.sy.soap
 ```
 
-## Mapas de coeficiente de variacion (CV)    
+### Mapas de coeficiente de variacion (CV)    
 
 Aqui grafico el mapa de las estimaciones de CV=SD/mean, analogo al mapa 5 presentado en @Miller2013SpatialModels  
 La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde no hubo cobertura de surveys 
