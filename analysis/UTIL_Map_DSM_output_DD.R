@@ -778,7 +778,7 @@ dd.map.density.season.soap <- ggplot() +
   ) +
   labs(
     title   = "Predicted spatial density of common dolphins (soap-film)",
-    caption = "model: count ~ s(x, y, bs = \"so\") + season + s(Ano)",
+    caption = "model: count ~ s(x, y, bs = \"so\") + season + s(Ano). Ref year: 2015",
     x = "Easting (Mm)",
     y = "Northing (Mm)"
   ) +

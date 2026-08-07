@@ -913,6 +913,7 @@ table_lo_modselection <- AIC(lo.dsm.xy,
                    "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(depth)") ) %>%
   data.table() %>%
   mutate(df = round(df, 2)) %>%
-  select(model, df , deltaAIC, Dev) %>%
+  mutate(AIC = round(AIC, 2)) %>%
+  select(model, df, AIC, deltaAIC, Dev) %>%
   arrange(deltaAIC)
 

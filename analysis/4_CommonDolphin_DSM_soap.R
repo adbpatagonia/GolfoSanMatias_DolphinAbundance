@@ -175,14 +175,14 @@ list2env(dd_soap_models, envir = .GlobalEnv)
 table_dd_soap_modselection <- data.frame(stringsAsFactors = FALSE,
   model = spec$label,
   df    = vapply(dd_soap_models, function(m) round(attr(logLik(m), "df"), 2), numeric(1)),
-  AIC   = vapply(dd_soap_models, AIC, numeric(1)),
+  AIC   = round(vapply(dd_soap_models, AIC, numeric(1)), 2),
   Dev   = vapply(dd_soap_models, function(m) round(summary(m)$dev.expl, 2), numeric(1))
 )
 table_dd_soap_modselection$deltaAIC <-
   round(table_dd_soap_modselection$AIC - min(table_dd_soap_modselection$AIC), 2)
 table_dd_soap_modselection <-
   table_dd_soap_modselection[order(table_dd_soap_modselection$deltaAIC),
-                             c("model", "df", "deltaAIC", "Dev")]
+                             c("model", "df", "AIC", "deltaAIC", "Dev")]
 rownames(table_dd_soap_modselection) <- NULL
 
 print(table_dd_soap_modselection)
@@ -244,7 +244,7 @@ if (length(.tp_names) == 0) {
             min(table_dd_combined_modselection$AIC), 2)
   table_dd_combined_modselection <-
     table_dd_combined_modselection[order(table_dd_combined_modselection$deltaAIC),
-                                   c("basis", "model", "df", "deltaAIC", "Dev")]
+                                   c("basis", "model", "df", "AIC", "deltaAIC", "Dev")]
   rownames(table_dd_combined_modselection) <- NULL
 }
 
