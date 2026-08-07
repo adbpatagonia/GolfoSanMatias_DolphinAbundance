@@ -201,11 +201,8 @@ div.csl-indent {
   <li><a href="#estimaciones-de-abundancia" id="toc-estimaciones-de-abundancia" class="nav-link" data-scroll-target="#estimaciones-de-abundancia"><span class="header-section-number">5</span> Estimaciones de abundancia</a></li>
   <li><a href="#progreso-luego-de-la-reunion-con-silvana" id="toc-progreso-luego-de-la-reunion-con-silvana" class="nav-link" data-scroll-target="#progreso-luego-de-la-reunion-con-silvana"><span class="header-section-number">6</span> Progreso luego de la reunion con Silvana</a>
   <ul class="collapse">
-  <li><a href="#model-selection-1" id="toc-model-selection-1" class="nav-link" data-scroll-target="#model-selection-1"><span class="header-section-number">6.1</span> Model selection</a></li>
-  <li><a href="#efectos-parciales-de-estacion-año-y-efecto-espacial" id="toc-efectos-parciales-de-estacion-año-y-efecto-espacial" class="nav-link" data-scroll-target="#efectos-parciales-de-estacion-año-y-efecto-espacial"><span class="header-section-number">6.2</span> Efectos parciales de estacion, año y efecto espacial</a></li>
-  <li><a href="#predicciones-de-densidad-1" id="toc-predicciones-de-densidad-1" class="nav-link" data-scroll-target="#predicciones-de-densidad-1"><span class="header-section-number">6.3</span> Predicciones de densidad</a></li>
-  <li><a href="#estimaciones-de-abundancia-1" id="toc-estimaciones-de-abundancia-1" class="nav-link" data-scroll-target="#estimaciones-de-abundancia-1"><span class="header-section-number">6.4</span> Estimaciones de abundancia</a></li>
-  <li><a href="#mapas-de-coeficiente-de-variacion-cv" id="toc-mapas-de-coeficiente-de-variacion-cv" class="nav-link" data-scroll-target="#mapas-de-coeficiente-de-variacion-cv"><span class="header-section-number">6.5</span> Mapas de coeficiente de variacion (CV)</a></li>
+  <li><a href="#funciones-de-deteccion-1" id="toc-funciones-de-deteccion-1" class="nav-link" data-scroll-target="#funciones-de-deteccion-1"><span class="header-section-number">6.1</span> Funciones de deteccion</a></li>
+  <li><a href="#patrones-espaciales-estáticos" id="toc-patrones-espaciales-estáticos" class="nav-link" data-scroll-target="#patrones-espaciales-estáticos"><span class="header-section-number">6.2</span> Patrones espaciales estáticos</a></li>
   </ul></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">7</span> Referencias</a></li>
   </ul>
@@ -1229,8 +1226,8 @@ covariables: Beaufort state</p>
 </div>
 </section>
 </section>
-<section id="estimaciones-de-distanc-clasico" class="level3" data-number="3.7.2">
-<h3 data-number="3.7.2" class="anchored" data-anchor-id="estimaciones-de-distanc-clasico"><span class="header-section-number">3.7.2</span> Estimaciones de distanc clasico</h3>
+<section id="sec-funcdetecdd" class="level3" data-number="3.7.2">
+<h3 data-number="3.7.2" class="anchored" data-anchor-id="sec-funcdetecdd"><span class="header-section-number">3.7.2</span> Estimaciones de distance clasico</h3>
 <p>Discutiendo con Silvana, decidimos que necesitamos responder 2 preguntas para saber como continuar:</p>
 <ol type="1">
 <li>Vale la pena incluir Beaufort en la funcion de deteccion?<br>
@@ -1794,7 +1791,20 @@ Se notan claramente los efectos de temporada y año. El efecto de año no parece
 </section>
 <section id="progreso-luego-de-la-reunion-con-silvana" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Progreso luego de la reunion con Silvana</h1>
-<p>En julio 2026 me reuni con Silvana, y acordamos que seria bueno abordar la nota en <a href="#sec-notasdd" class="quarto-xref">Section&nbsp;4.3.3</a>. Esta nota la habia incluido inicialmente por que en los mapas <a href="#fig-dsmddyear" class="quarto-xref">Figure&nbsp;1</a> y <a href="#fig-dsmddseason" class="quarto-xref">Figure&nbsp;2</a> se ven 3 focos de densidad que son estaticos (<em>i.e.</em> el efecto espacial no es variable a lo largo de los años o estaciones), y dos de esos focos esta en la fronteras sur y este del area de estudio - sugiriendo que esto puede ser un <em>edge effect</em>.<br>
+<p>En julio 2026 me reuni con Silvana, y acordamos que seria bueno:</p>
+<ol type="1">
+<li>evaluar si es necesario incluir Beaufort y tamaño grupal en la funcion de detección, y<br>
+</li>
+<li>abordar la nota en <a href="#sec-notasdd" class="quarto-xref">Section&nbsp;4.3.3</a> sobre patrones espaciales estáticos</li>
+</ol>
+<section id="funciones-de-deteccion-1" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="funciones-de-deteccion-1"><span class="header-section-number">6.1</span> Funciones de deteccion</h2>
+<p>Esta evaluacion esta en <a href="#sec-funcdetecdd" class="quarto-xref">Section&nbsp;3.7.2</a><br>
+Conclusion personal de ADB: considero que no vale la pena el esfuerzo para incluir las covariables</p>
+</section>
+<section id="patrones-espaciales-estáticos" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="patrones-espaciales-estáticos"><span class="header-section-number">6.2</span> Patrones espaciales estáticos</h2>
+<p>La nota <a href="#sec-notasdd" class="quarto-xref">Section&nbsp;4.3.3</a> la habia incluido inicialmente por que en los mapas <a href="#fig-dsmddyear" class="quarto-xref">Figure&nbsp;1</a> y <a href="#fig-dsmddseason" class="quarto-xref">Figure&nbsp;2</a> se ven 3 focos de densidad que son estaticos (<em>i.e.</em> el efecto espacial no es variable a lo largo de los años o estaciones), y dos de esos focos esta en la fronteras sur y este del area de estudio - sugiriendo que esto puede ser un <em>edge effect</em>.<br>
 Considerando esto, ajuste 4 sets de modelos completos (<em>i.e.</em> equivalente a tabla <a href="#tbl-modelselectiondd" class="quarto-xref">Table&nbsp;1</a>). Estos 4 modelos se pueden agrupar en:</p>
 <ol type="1">
 <li>Superficie estática<br>
@@ -1816,8 +1826,8 @@ Considerando esto, ajuste 4 sets de modelos completos (<em>i.e.</em> equivalente
 <li>Superficies con informacion compartida entre años (modelos fs, factor smooth). <em>Shrunk</em>. La información de todos los años es usada en la estimación de la superficie, pero ésta varía por año. Se permite que la superficie espacial varíe según el año mediante una base de suavizado por factores, la cual trata a <code>year_fac</code> como un factor de agrupación análogo a un efecto aleatorio en un modelo mixto: la desviación espacial de cada año se penaliza hacia un patrón común compartido, utilizando un único parámetro de suavizado para todos los años.</li>
 </ol>
 <p><em>A priori</em>, el modelo <strong>1.b Superficie estática soap film</strong> parece ser el que se ajusta más a la situación (<em>edge effect</em>).</p>
-<section id="model-selection-1" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="model-selection-1"><span class="header-section-number">6.1</span> Model selection</h2>
+<section id="model-selection-1" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="model-selection-1"><span class="header-section-number">6.2.1</span> Model selection</h3>
 <p>esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)</p>
 <div class="cell">
 <div id="tbl-completemodelselectiondd" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -2512,10 +2522,10 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines comunes: los cuat
 <p>Similar al caso <a href="#tbl-modelselectiondd" class="quarto-xref">Table&nbsp;1</a>, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 26% explicada por el modelo mas parsimonioso (incluye clorofila) contra 22% explicada por el modelo que incluye solo año y estación.<br>
 En lo que continua, persentare los resultados del modelo que excluye variables ambientales.</p>
 </section>
-<section id="efectos-parciales-de-estacion-año-y-efecto-espacial" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="efectos-parciales-de-estacion-año-y-efecto-espacial"><span class="header-section-number">6.2</span> Efectos parciales de estacion, año y efecto espacial</h2>
-<section id="estacion-1" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="estacion-1"><span class="header-section-number">6.2.1</span> Estacion</h3>
+<section id="efectos-parciales-de-estacion-año-y-efecto-espacial" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="efectos-parciales-de-estacion-año-y-efecto-espacial"><span class="header-section-number">6.2.2</span> Efectos parciales de estacion, año y efecto espacial</h3>
+<section id="estacion-1" class="level4" data-number="6.2.2.1">
+<h4 data-number="6.2.2.1" class="anchored" data-anchor-id="estacion-1"><span class="header-section-number">6.2.2.1</span> Estacion</h4>
 <p>La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -2527,8 +2537,8 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 </div>
 </div>
 </section>
-<section id="año-1" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="año-1"><span class="header-section-number">6.2.2</span> Año</h3>
+<section id="año-1" class="level4" data-number="6.2.2.2">
+<h4 data-number="6.2.2.2" class="anchored" data-anchor-id="año-1"><span class="header-section-number">6.2.2.2</span> Año</h4>
 <p>Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -2541,10 +2551,10 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 </div>
 </section>
 </section>
-<section id="predicciones-de-densidad-1" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="predicciones-de-densidad-1"><span class="header-section-number">6.3</span> Predicciones de densidad</h2>
-<section id="año-variable-1" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="año-variable-1"><span class="header-section-number">6.3.1</span> Año variable</h3>
+<section id="predicciones-de-densidad-1" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="predicciones-de-densidad-1"><span class="header-section-number">6.2.3</span> Predicciones de densidad</h3>
+<section id="año-variable-1" class="level4" data-number="6.2.3.1">
+<h4 data-number="6.2.3.1" class="anchored" data-anchor-id="año-variable-1"><span class="header-section-number">6.2.3.1</span> Año variable</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -2555,8 +2565,8 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 </div>
 </div>
 </section>
-<section id="estacion-variable" class="level3" data-number="6.3.2">
-<h3 data-number="6.3.2" class="anchored" data-anchor-id="estacion-variable"><span class="header-section-number">6.3.2</span> Estacion variable</h3>
+<section id="estacion-variable" class="level4" data-number="6.2.3.2">
+<h4 data-number="6.2.3.2" class="anchored" data-anchor-id="estacion-variable"><span class="header-section-number">6.2.3.2</span> Estacion variable</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -2568,8 +2578,8 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 </div>
 </section>
 </section>
-<section id="estimaciones-de-abundancia-1" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="estimaciones-de-abundancia-1"><span class="header-section-number">6.4</span> Estimaciones de abundancia</h2>
+<section id="estimaciones-de-abundancia-1" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="estimaciones-de-abundancia-1"><span class="header-section-number">6.2.4</span> Estimaciones de abundancia</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item" id="htmlwidget-85a646e46fc2c99ff669" style="width:100%;height:590px;"></div>
@@ -2577,8 +2587,8 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 </div>
 </div>
 </section>
-<section id="mapas-de-coeficiente-de-variacion-cv" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="mapas-de-coeficiente-de-variacion-cv"><span class="header-section-number">6.5</span> Mapas de coeficiente de variacion (CV)</h2>
+<section id="mapas-de-coeficiente-de-variacion-cv" class="level3" data-number="6.2.5">
+<h3 data-number="6.2.5" class="anchored" data-anchor-id="mapas-de-coeficiente-de-variacion-cv"><span class="header-section-number">6.2.5</span> Mapas de coeficiente de variacion (CV)</h3>
 <p>Aqui grafico el mapa de las estimaciones de CV=SD/mean, analogo al mapa 5 presentado en <span class="citation" data-cites="Miller2013SpatialModels">Miller et al. (<a href="#ref-Miller2013SpatialModels" role="doc-biblioref">2013</a>)</span><br>
 La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde no hubo cobertura de surveys</p>
 <div class="cell">
@@ -2590,6 +2600,7 @@ La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="referencias" class="level1" data-number="7">
