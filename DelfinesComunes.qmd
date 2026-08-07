@@ -814,9 +814,9 @@ invisible(capture.output(qqplot.ddf(dd.df.hr.trun.cp.beaufgrp$ddf, plot = TRUE))
 
 Discutiendo con Silvana, decidimos que necesitamos responder 2 preguntas para saber como continuar:    
 
- 1. Vale la pena incluir Beaufort en la funcion de deteccion?     
-  1. Vale la pena incluir tamaño grupal en la funcion de deteccion?     
-  
+1. Vale la pena incluir Beaufort en la funcion de deteccion?     
+1. Vale la pena incluir tamaño grupal en la funcion de deteccion?     
+
 Vamos a comparar las estimaciones obtenidas con distance clásico para tener una idea de que tan distintas serían las estimaciones con y sin estas variables en la funcion de deteccion.   
 
 Nota, de la pagina de ayuda `?ds`: `Note that if the data contains a column named size, cluster size will be estimated and density/abundance will be based on a clustered analysis of the data`. El objeto `detfun_dat_dd` tiene una columna `size`, asi que esto aplica
@@ -893,9 +893,9 @@ kable(data.table(
 
 Las diferencias entre los modelos son muy pequeñas. Esto indica que introducir las 2 covariables en la función de deteccion aportaria muy poco. Incluirlas representa un esfuerzo que parece ser excesivo con respecto a lo que obtendriamos: 
 
-   * como incluir el tamaño grupal fue discutido antes, donde explico como lo consulté con Len Thomas
-   * Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento    
-   
+* como incluir el tamaño grupal fue discutido antes, donde explico como lo consulté con Len Thomas
+* Para utilizar Beaufort en la funcion de deteccion, necesitamos reconstruir el objeto segdata para delfines comunes. Este objeto debe contener el estado del mar (beaufort) agrupado en cada segmento    
+
 
 Personalmente (ADB), considero que no vale la pena el esfuerzo para incluir las covariables
 
@@ -947,7 +947,9 @@ Notese que el modelo que tiene solo posicion + estacion + año explica el 20% de
 #| echo: false   
 #| message: false    
 #| warning: false
-table_dd_modselection %>%
+#| label: tbl-modelselectiondd
+#| tbl-cap: "Selección de modelos DSM para delfines comunes (superficie estática thin plate)."
+table_dd_modselection[!grepl(pattern = "year_fac", x = model)] %>%
   kable(
     align = c("l", "c","c", "c")
   ) %>%
@@ -1013,9 +1015,9 @@ Aqui grafico las predicciones a lo largo de los años, usando primavera como est
 No veo gran diferencia entre las predicciones de los modelos.\
 Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica
 
-
-
 ```{r}
+#| label: fig-dsmddyear
+#| fig-cap: "Predicciones de densidad de delfines comunes a lo largo de los años (estación de referencia: primavera)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1040,6 +1042,8 @@ dd.map.density.year.clo
 Aqui grafico las predicciones a lo largo de las estaciones, usando 2015 como año de referencia
 
 ```{r}
+#| label: fig-dsmddseason
+#| fig-cap: "Predicciones de densidad de delfines comunes a lo largo de las estaciones (año de referencia: 2015)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -1059,7 +1063,7 @@ dd.map.density.season
 dd.map.density.season.clo
 ```
 
-### Notas
+### Notas {#sec-notasdd}
 
 1.  Los modelos ajustados son aditivos (no hay interaccion entre posicion y año o estación). Por ednde, todos los paneles muestran el mismo patron espacial. Se pueden ajustar modelos DSM con interacciones (e.g. te(x, y, Ano) or s(x, y, by = year_fac)) para que los patrones espaciales tengan variabilidad temporal. No lo hice porque creo que no era parte de los objetivos del paper, pero si fuera algo que te interesa, lo podriamos hacer.
 
@@ -1086,6 +1090,157 @@ Se notan claramente los efectos de temporada y año. El efecto de año no parece
 
 ply.dd.N.sy
 ```
+
+# Progreso luego de la reunion con Silvana     
+
+En julio 2026 me reuni con Silvana, y acordamos que seria bueno abordar la nota en @sec-notasdd. Esta nota la habia incluido inicialmente por que en los mapas @fig-dsmddyear y @fig-dsmddseason se ven 3 focos de densidad que son estaticos (*i.e.* el efecto espacial no es variable a lo largo de los años o estaciones), y dos de esos focos esta en la fronteras sur y este del area de estudio  - sugiriendo que esto puede ser un *edge effect*.     
+Considerando esto, ajuste 4 sets de modelos completos (*i.e.* equivalente a tabla @tbl-modelselectiondd). Estos 4 modelos se pueden agrupar en: 
+
+1. Superficie estática   
+a. thin plate: modelos presentados mas arriba     
+b. soap film: Estos modelos respetan los limites y costas con formas irregulares   
+2. Superficies variables en el tiempo    
+a. Superficies independientes por año (modelos by-year). *Unshrunk*. Esta es la opción más flexible, no asume estructura espacial compartida entre años. En años con pocos datos, se estiman superficies poco realistas    
+b. Superficies con informacion compartida entre años (modelos fs, factor smooth). *Shrunk*. La información de todos los años es usada en la estimación de la superficie, pero ésta varía por año. Se permite que la superficie espacial varíe según el año mediante una base de suavizado por factores, la cual trata a `year_fac` como un factor de agrupación análogo a un efecto aleatorio en un modelo mixto: la desviación espacial de cada año se penaliza hacia un patrón común compartido, utilizando un único parámetro de suavizado para todos los años.   
+
+*A priori*, el modelo **1.b Superficie estática soap film** parece ser el que se ajusta más a la situación (*edge effect*). 
+
+## Model selection    
+
+esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)    
+
+```{r}
+#| label: tbl-completemodelselectiondd
+#| tbl-cap: "Selección de modelos DSM completa para delfines comunes: los cuatro tipos de superficie (72 modelos)."
+#| echo: false
+#| message: false
+#| warning: false
+table_dd_combined_modselection %>%
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
+```
+
+Los modelos mas parsimoniosos son los modelos **2 Superficies variables en el tiempo**, pero estos modelos produjeron estimaciones de abundancia que no son realistas:     
+
+* **2.a Superficies independientes por año (modelos by-year)** produjeron abundancias > 80 mil millones de delfines en el verano de 2010     
+* **2.b. Superficies con informacion compartida entre años**    
+* cerca de 24 mil delfines en el otoño de 2015    
+* varias estimaciones > 15 mil delfines    
+
+De los modelos **1. Superficie estática**, los modelos **1.b soap film** son los mas parsimoniosos
+
+Esta es la tabla de model selection considerando solamente los modelos **1.b soap film** . La proporción del deviance explicada es menor que para delfines oscuros (>20%)   
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+table_dd_soap_modselection %>%
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
+```
+
+
+Similar al caso @tbl-modelselectiondd, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 26% explicada por el modelo mas parsimonioso (incluye clorofila) contra 22% explicada por el modelo que incluye solo año y estación.   
+En lo que continua, persentare los resultados del modelo que excluye variables ambientales.   
+
+
+## Efectos parciales de estacion, año y efecto espacial     
+
+### Estacion
+
+La densidad de delfines comunes es mas baja en invierno que en el resto de las estaciones. No parece haber diferencias entre el resto de las estaciones. El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+gratia::draw(gratia::parametric_effects(dd_soap_models$dd.dsm.soap.season.year, term = "season")) +
+  theme_bw()
+```
+
+### Año
+
+Hay una clara tendencia positiva (lineal) en la densidad de delfines comnues en el área de estudio   
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+gratia::draw(dd_soap_models$dd.dsm.soap.season.year, select = "s(Ano)") +
+  theme_bw()
+```
+
+
+## Predicciones de densidad    
+
+### Año variable
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+dd.map.density.year.soap
+```
+
+### Estacion variable
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+dd.map.density.season.soap
+```
+
+## Estimaciones de abundancia    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+ply.dd.N.sy.soap
+```
+
+## Mapas de coeficiente de variacion (CV)    
+
+Aqui grafico el mapa de las estimaciones de CV=SD/mean, analogo al mapa 5 presentado en @Miller2013SpatialModels  
+La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde no hubo cobertura de surveys 
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+dd.map.cv.season.soap
+```
+
+
 
 
 # Referencias

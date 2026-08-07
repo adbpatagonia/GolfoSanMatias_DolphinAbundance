@@ -800,10 +800,12 @@ La columna `Dev` es la proporcion de deviance explicado por el modelo.\
 Notese que el modelo que tiene solo posicion + estacion explica el 32% del deviance. La inclusion de año mejora un poco capacidad del modelo, pero la mejora al incorporar las variables ambientales es marginal.
 
 ```{r}
+#| label: tbl-modelselectionlo
+#| tbl-cap: "Selección de modelos DSM para delfines oscuros (superficie estática thin plate)."
 #| echo: false   
 #| message: false    
 #| warning: false
-table_lo_modselection %>%
+table_lo_modselection[!grepl(pattern = "year_fac", x = model)]  %>%
   kable(
     align = c("l", "c","c", "c")
   ) %>%
@@ -873,8 +875,9 @@ No veo gran diferencia entre las predicciones de los modelos.\
 Es muy claro el patron estacional.\
 Hay 3 focos de densidad de delfines en el area. La disposición espacial de alta densidad de delfines es similar entre las 2 especies, pero no identica
 
-
 ```{r}
+#| label: fig-dsmloseason
+#| fig-cap: "Predicciones de densidad de delfines oscuros a lo largo de las estaciones (año de referencia: 2015)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -901,6 +904,8 @@ Aqui grafico las predicciones a lo largo de los años, usando primavera como est
 Se nota el efecto del año, con las intensidades subiendo y bajando a medida que pasan los años
 
 ```{r}
+#| label: fig-dsmloyear
+#| fig-cap: "Predicciones de densidad de delfines oscuros a lo largo de los años (estación de referencia: primavera)."
 #| echo: false
 #| message: false
 #| warning: false
@@ -920,7 +925,7 @@ lo.map.density.year
 lo.map.density.year.depth
 ```
 
-### Notas   
+### Notas {#sec-notaslo}
 
 1.  Los modelos ajustados son aditivos (no hay interaccion entre posicion y año o estación). Por ednde, todos los paneles muestran el mismo patron espacial. Se pueden ajustar modelos DSM con interacciones (e.g. te(x, y, Ano) or s(x, y, by = year_fac)) para que los patrones espaciales tengan variabilidad temporal. No lo hice porque creo que no era parte de los objetivos del paper, pero si fuera algo que te interesa, lo podriamos hacer.
 
@@ -951,6 +956,165 @@ Se notan claramente los efectos de
 ply.lo.N.sy
 ```
 
+# Progreso luego de la reunion con Silvana     
+
+En julio 2026 me reuni con Silvana, y acordamos que seria bueno abordar la nota en @sec-notaslo. Esta nota la habia incluido inicialmente por que en los mapas @fig-dsmloyear y @fig-dsmloseason se ven 3 focos de densidad que son estaticos (*i.e.* el efecto espacial no es variable a lo largo de los años o estaciones), y uno de esos focos esta en la frontera sur del area de estudio  - sugiriendo que esto puede ser un *edge effect*. Es notable en @fig-dsmloyear que no se observaron delfines en todos los focos todos los años. Silvana comentó que en el Golfo Nuevo es común que los delfines oscuros cambien la zona donde se concentran dependiendo del año (trabajo de Garaffo et al.).    
+Considerando esto, ajuste 4 sets de modelos completos (*i.e.* equivalente a tabla @tbl-modelselectionlo). Estos 4 modelos se pueden agrupar en: 
+
+   1. Superficie estática   
+     a. thin plate: modelos presentados mas arriba     
+     b. soap film: Estos modelos respetan los limites y costas con formas irregulares   
+   2. Superficies variables en el tiempo    
+     a. Superficies independientes por año (modelos by-year). *Unshrunk*. Esta es la opción más flexible, no asume estructura espacial compartida entre años. En años con pocos datos, se estiman superficies poco realistas    
+     b. Superficies con informacion compartida entre años (modelos fs, factor smooth). *Shrunk*. La información de todos los años es usada en la estimación de la superficie, pero ésta varía por año. Se permite que la superficie espacial varíe según el año mediante una base de suavizado por factores, la cual trata a `year_fac` como un factor de agrupación análogo a un efecto aleatorio en un modelo mixto: la desviación espacial de cada año se penaliza hacia un patrón común compartido, utilizando un único parámetro de suavizado para todos los años.   
+     
+*A priori*, los modelos **2 Superficies variables en el tiempo** parecen ser los que se ajustan más a la descripción de Silvana. 
+
+## Model selection    
+
+esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)    
+
+```{r}
+#| label: tbl-completemodelselectionlo
+#| tbl-cap: "Selección de modelos DSM completa para delfines oscuros: los cuatro tipos de superficie (72 modelos)."
+#| echo: false   
+#| message: false    
+#| warning: false
+table_lo_combined_modselection %>%
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
+```
+
+Los modelos mas parsimoniosos son los modelos **2.b. Superficies con informacion compartida entre años**    
+Los modelos **2.a. Superficies independientes por año (modelos by-year)** produjeron superficies muy poco realistas comparadas con los avistajes de delfines.     
+
+Esta es la tabla de model selection considerando solamente los modelos **2.b. Superficies con informacion compartida entre años** . La proporción del deviance explicada por estos modelos es alta (>50%)
+```{r}
+#| label: tbl-completemodelselectionfslo
+#| tbl-cap: "Selección de modelos DSM para delfines oscuros: superficies factor smooth (modelos 2.b)."
+#| echo: false   
+#| message: false    
+#| warning: false
+table_lo_combined_modselection %>%
+  filter(grepl(pattern = 'bs = "fs"', model)) %>% 
+  kable(
+    align = c("l", "c","c", "c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  )
+```
+
+
+Similar al caso @tbl-modelselectionlo, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 58% explicada por el modelo mas parsimonioso (incluye profundidad) contra 56% explicada por el modelo que incluye solo la superficie espacial variable por año y estación.   
+En lo que continua, persentare los resultados del modelo que excluye variables ambientales.   
+
+
+## Efectos parciales de estacion, año y efecto espacial     
+
+### Estacion
+
+Hay un claro patrón: la densidad es máxima en primavera, y disminuye a lo largo del año
+
+primavera \> verano \> otoño \> invierno
+
+El modelo toma a primavera como baseline, por eso la estimacion del parametro no tiene CI
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+gratia::draw(gratia::parametric_effects(lo.dsm.xy.fsyear.season, term = "season")) +
+  theme_bw()
+```
+
+### Año
+
+Estos modelos no tienen termino año como variable, si no que computa diferentes superficies espacials por año. Para obtener un equivalente de effecto parcial de año, se evalua la contribucion parcial de la superficie smooth para un set de locaciones y luego se obtiene un promedio anual - en aquellos años que tienen pocos datos el efecto de año es atraido fuertemente hacia la gran media (*shrunk*)  
+
+Es claro que no hay tendencia en la abundancia de delfines oscuros en el area de estudio   
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+p.lo.year.pe
+```
+
+### Espacio    
+
+Este efecto parcial muestra como los focos de densidad cambiaron a lo largo de los años    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+draw.fs
+```
+
+## Predicciones de densidad    
+
+### Año variable
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.year.fs
+```
+
+### Estacion variable
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.season.fs
+```
+
+## Estimaciones de abundancia    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+ply.lo.N.sy.fs
+```
+
+## Mapas de coeficiente de variacion (CV)    
+
+Aqui grafico el mapa de las estimaciones de CV=SD/mean, analogo al mapa 5 presentado en @Miller2013SpatialModels  
+La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde no hubo cobertura de surveys 
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.cv.year.fs
+```
 
 
 # Referencias
