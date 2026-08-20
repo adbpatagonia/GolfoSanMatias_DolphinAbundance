@@ -59,7 +59,7 @@ p.slope
 p.grad
 ```
 
-# Escala estacional
+# Escala: estacional
 
 ```{r} 
 #| echo: false
@@ -85,3 +85,14 @@ p.clo
 p.distup
 ```
 
+
+
+# Escala: mensual
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+
+p.velvert
+```

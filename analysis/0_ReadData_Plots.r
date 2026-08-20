@@ -57,6 +57,10 @@ obsdata_lo <- fread(paste0(here::here(), "/data/DistanceData/obsdata_lo.csv"))
 ### segment and prediction grid ----
 segdata <-  fread(paste0(here::here(), "/data/DistanceData/segdata.csv"))
 preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddata.csv"))
+preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddataVV.csv"))
+
+setnames(preddata, old = c("dist_coast", "dist_up"), new = c("dist.coast", "dist.up"))
+
 
 ## map data ----
 patagonia  <-  st_read(paste0(here::here(), "/data/shp/Patagonia_Completa.shp"), quiet = TRUE)
@@ -396,6 +400,7 @@ seasons <- unique(preddata_sf_m$season)
 
 # base grid
 grid0 <- st_make_grid(survey.area_m, cellsize = c(1500,1500))
+grid0 <- st_make_grid(survey.area_m, cellsize = c(800,800))
 grid0 <- st_sf(geometry = grid0)
 
 # build a grid, and join with preddata (by season), then bind them
@@ -648,6 +653,73 @@ p.distup <- ggplot() +
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ season)
 
+## VelVert ----
+### monthly grid ----
+# VelVert was provided at a monthly scale
+# create grid
+months <- unique(preddata_sf_m$Mes_n)
+
+# base grid
+grid0 <- st_make_grid(survey.area_m, cellsize = c(800,  800))
+grid0 <- st_sf(geometry = grid0)
+
+# build a grid, and join with preddata (by season), then bind them
+out <- lapply(months, function(mh){
+
+  # copy the grid
+  g <- copy(grid0)
+
+  # subset preddata for the season
+  dat_ss <- preddata_sf_m[preddata_sf_m$Mes_n == mh, ]
+
+  # join the grid with the seasonal preddata
+  g2 <- st_join(
+    g,
+    dat_ss,
+    join = st_nearest_feature
+  )
+
+  g2
+})
+
+# bind the monthly grids
+cropped_grid <- do.call(rbind, out)
+
+# crop the monthly grids to the survey area
+cropped_grid <- st_intersection(cropped_grid, survey.area_m)
+
+### plot ----
+
+var <- "VelVert"
+
+cols <- c({{var}}, "Mes_n", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
+setDT(dat)
+setnames(dat, {{var}}, "value")
+dat <- st_as_sf(dat)
+
+p.velvert <- ggplot() +
+  geom_sf(data = patagonia_m) +
+  geom_sf(data = dat,
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
+  coord_sf(
+    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    default_crs = st_crs(target_crs),
+    datum = target_crs,
+    expand = TRUE
+  ) +
+  scale_fill_viridis_c() +
+  # scale_color_viridis_c() +
+  scale_x_continuous(labels = \(x) x / 1000000) +
+  scale_y_continuous(labels = \(x) x / 1000000) +
+  labs(title = {{var}},
+       x = "Easting (Mm)", y = "Northing (Mm)") +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(hjust = 0.5))  +
+  facet_wrap(. ~ Mes_n)
+
 # output -----
 ggsave(plot = p.sp,
        filename = paste0(here::here(), '/output/SpeciesPlots.png'),
@@ -679,3 +751,7 @@ ggsave(plot = p.distup,
        width = 13,
        height = 13)
 
+ggsave(plot = p.velvert,
+       filename = paste0(here::here(), '/output/EnvVars/VelVert.png'),
+       width = 16,
+       height = 16)
