@@ -166,6 +166,45 @@ obsdata_lo[
   )
 ]
 
+## VelVert onto the segments ----
+# Unlike the other six environmental covariates, VelVert is NOT a column of
+# segdata.csv — it arrives only on the prediction grid (preddataVV.csv). To fit
+# s(VelVert) in a DSM it has to be attached to the segments, so each segment
+# takes the VelVert of the nearest prediction cell WITHIN ITS OWN MONTH (the
+# same per-stratum nearest-neighbour logic used for the seasonal clo field in
+# the density maps).
+#
+# CAVEAT for model selection: preddataVV.csv carries Mes_n but no Ano, i.e. a
+# 12-month CLIMATOLOGY, whereas segdata's clo/sst/etc. are per-date values
+# (~500 distinct clo values within a single month across years). s(VelVert)
+# therefore carries within-month spatial and seasonal signal but NO
+# interannual variation, and is handicapped relative to the other covariates
+# when the two are ranked side by side on AIC.
+#
+# VelVert spans roughly -2.8e-4 to 2.2e-4. mgcv scales each smooth's penalty
+# internally so the tiny magnitude is not itself a problem, but if s(VelVert)
+# ever collapses to near-linear or misbehaves, rescale before reading anything
+# into it.
+.seg_sf_vv  <- st_as_sf(segdata,  coords = c("x", "y"), crs = crs_m, remove = FALSE)
+.pred_sf_vv <- st_as_sf(preddata, coords = c("x", "y"), crs = crs_m, remove = FALSE)
+
+.vv <- rep(NA_real_, nrow(segdata))
+for (.mh in sort(unique(segdata$Mes_n))) {
+  .i_seg  <- which(segdata$Mes_n == .mh)
+  .pred_m <- .pred_sf_vv[.pred_sf_vv$Mes_n == .mh, ]
+  if (length(.i_seg) == 0L || nrow(.pred_m) == 0L) next
+  .idx <- st_nearest_feature(.seg_sf_vv[.i_seg, ], .pred_m)
+  .vv[.i_seg] <- .pred_m$VelVert[.idx]
+}
+segdata$VelVert <- .vv
+
+# A single NA here would silently drop those segments from every s(VelVert)
+# model, making their AIC incomparable with every other row of the model
+# selection tables. Fail loudly instead.
+stopifnot(!anyNA(segdata$VelVert))
+
+rm(.seg_sf_vv, .pred_sf_vv, .vv, .mh, .i_seg, .pred_m, .idx)
+
 
 segdata_sf_m  <-  st_as_sf(segdata,
                            coords = c("x","y"),
@@ -389,28 +428,27 @@ p.sp <- (p.dd + p.lo.c) +
 ## variables maps ----
 
 # need to produce prediction grid
-prediction_grid <- st_make_grid(survey.area, cellsize = c(1500,1500))
+prediction_grid <- st_make_grid(survey.area, cellsize = c(800,800))
 prediction_grid_sf_m <- st_sf(geometry = prediction_grid)
 prediction_grid_sf_m <- st_transform(prediction_grid_sf_m, target_crs)
 
-
-
 # create grid
-seasons <- unique(preddata_sf_m$season)
+months <- unique(preddata_sf_m$Mes_n)
 
 # base grid
-grid0 <- st_make_grid(survey.area_m, cellsize = c(1500,1500))
 grid0 <- st_make_grid(survey.area_m, cellsize = c(800,800))
 grid0 <- st_sf(geometry = grid0)
 
-# build a grid, and join with preddata (by season), then bind them
-out <- lapply(seasons, function(ss){
+# build a grid, and join with preddata (by month), then bind them
+out <- lapply(months, function(mh){
 
   # copy the grid
   g <- copy(grid0)
 
   # subset preddata for the season
-  dat_ss <- preddata_sf_m[preddata_sf_m$season == ss, ]
+  dat_ss <- preddata_sf_m[preddata_sf_m$Mes_n == mh, ]
+  dat_ss <- dat_ss %>%
+    select(-season)
 
   # join the grid with the seasonal preddata
   g2 <- st_join(
@@ -422,35 +460,31 @@ out <- lapply(seasons, function(ss){
   g2
 })
 
-# bind the seasonal grids
+# bind the monthly grids
 cropped_grid <- do.call(rbind, out)
 
-# crop the seasonal grids to the survey area
+# crop the monthly grids to the survey area
 cropped_grid <- st_intersection(cropped_grid, survey.area_m)
 
 
-
-# sst, clo, dist.up vary with time
-# slope, depth, grad are time invariant
-
-vars_with_season <- c("dist.up", "sst", "clo")
+# sst, clo, dist.up, grad, VelVert vary with time
+# slope and depth,  are time invariant
 
 ## depth ----
 var <- "depth"
 
-cols <- c({{var}}, "season", "geometry")
+cols <- c({{var}}, "Mes_n", "geometry")
 dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
 
-# the cropped grid is repeated by season
-# data is identical for the 4 seasons
-# subset only one season
-if(!var %in% vars_with_season){
-  dat <- dat %>%
-    filter(season == "Summer") %>%
-    select(-season)
-}
+# the cropped grid is repeated by month
+# data is identical for the 12 months
+# subset only one month
+dat <- dat %>%
+  filter(Mes_n == "1") %>%
+  select(-Mes_n)
+
 
 p.depth <- ggplot() +
   geom_sf(data = patagonia_m) +
@@ -476,19 +510,17 @@ p.depth <- ggplot() +
 ## slope -----
 var <- "slope"
 
-cols <- c({{var}}, "season", "geometry")
+cols <- c({{var}}, "Mes_n", "geometry")
 dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
 
-# the cropped grid is repeated by season
-# data is identical for the 4 seasons
-# subset only one season
-if(!var %in% vars_with_season){
-  dat <- dat %>%
-    filter(season == "Summer") %>%
-    select(-season)
-}
+# the cropped grid is repeated by month
+# data is identical for the 12 months
+# subset only one month
+dat <- dat %>%
+  filter(Mes_n == "1") %>%
+  select(-Mes_n)
 
 p.slope <- ggplot() +
   geom_sf(data = patagonia_m) +
@@ -512,89 +544,11 @@ p.slope <- ggplot() +
         plot.title = element_text(hjust = 0.5))
 
 
-## grad -----
-var <- "grad"
 
-cols <- c({{var}}, "season", "geometry")
-dat <- cropped_grid[, c(cols), with = FALSE]
-setDT(dat)
-setnames(dat, {{var}}, "value");  dat <- st_as_sf(dat)
-
-# the cropped grid is repeated by season
-# data is identical for the 4 seasons
-# subset only one season
-if(!var %in% vars_with_season){
-  dat <- dat %>%
-    filter(season == "Summer") %>%
-    select(-season)
-}
-
-p.grad <- ggplot() +
-  geom_sf(data = patagonia_m) +
-  geom_sf(data = dat,
-          aes(color = value, fill = value), col = NA, alpha = 0.5) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  scale_fill_viridis_c() +
-  # scale_color_viridis_c() +
-  scale_x_continuous(labels = \(x) x / 1000000) +
-  scale_y_continuous(labels = \(x) x / 1000000) +
-  labs(title = {{var}},
-       x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(),
-        plot.title = element_text(hjust = 0.5))
-
-
-
-## sst ----
-var <- "sst"
-cols <- c({{var}}, "season", "geometry")
-dat <- cropped_grid[, c(cols), with = FALSE]
-setDT(dat)
-setnames(dat, {{var}}, "value")
-dat <- st_as_sf(dat)
-
-# the cropped grid is repeated by season
-# data is identical for the 4 seasons
-# subset only one season
-if(!var %in% vars_with_season){
-  dat <- dat %>%
-    filter(season == "Summer") %>%
-    select(-season)
-}
-
-p.sst <- ggplot() +
-  geom_sf(data = patagonia_m) +
-  geom_sf(data = dat,
-          aes(color = value, fill = value), col = NA, alpha = 0.5) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  scale_fill_viridis_c() +
-  # scale_color_viridis_c() +
-  scale_x_continuous(labels = \(x) x / 1000000) +
-  scale_y_continuous(labels = \(x) x / 1000000) +
-  labs(title = {{var}},
-       x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(),
-        plot.title = element_text(hjust = 0.5))  +
-  facet_wrap(. ~ season)
-
-## Clorophyll ----
+## clo ----
 var <- "clo"
 
-cols <- c({{var}}, "season", "geometry")
+cols <- c({{var}}, "Mes_n", "geometry")
 dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
@@ -620,12 +574,76 @@ p.clo <- ggplot() +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
-  facet_wrap(. ~ season)
+  facet_wrap(. ~ Mes_n, ncol = 3)
+
+## sst ----
+var <- "sst"
+
+cols <- c({{var}}, "Mes_n", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
+setDT(dat)
+setnames(dat, {{var}}, "value")
+dat <- st_as_sf(dat)
+
+p.sst <- ggplot() +
+  geom_sf(data = patagonia_m) +
+  geom_sf(data = dat,
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
+  coord_sf(
+    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    default_crs = st_crs(target_crs),
+    datum = target_crs,
+    expand = TRUE
+  ) +
+  scale_fill_viridis_c() +
+  # scale_color_viridis_c() +
+  scale_x_continuous(labels = \(x) x / 1000000) +
+  scale_y_continuous(labels = \(x) x / 1000000) +
+  labs(title = {{var}},
+       x = "Easting (Mm)", y = "Northing (Mm)") +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(hjust = 0.5))  +
+  facet_wrap(. ~ Mes_n, ncol = 3)
+
+## grad ----
+# gradiente de temperatura superficial
+var <- "grad"
+
+cols <- c({{var}}, "Mes_n", "geometry")
+dat <- cropped_grid[, c(cols), with = FALSE]
+setDT(dat)
+setnames(dat, {{var}}, "value")
+dat <- st_as_sf(dat)
+
+p.grad <- ggplot() +
+  geom_sf(data = patagonia_m) +
+  geom_sf(data = dat,
+          aes(color = value, fill = value), col = NA, alpha = 0.5) +
+  coord_sf(
+    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    default_crs = st_crs(target_crs),
+    datum = target_crs,
+    expand = TRUE
+  ) +
+  scale_fill_viridis_c() +
+  # scale_color_viridis_c() +
+  scale_x_continuous(labels = \(x) x / 1000000) +
+  scale_y_continuous(labels = \(x) x / 1000000) +
+  labs(title = {{var}},
+       x = "Easting (Mm)", y = "Northing (Mm)") +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(hjust = 0.5))  +
+  facet_wrap(. ~ Mes_n, ncol = 3)
+
 
 ## dist.up ----
 var <- "dist.up"
 
-cols <- c({{var}}, "season", "geometry")
+cols <- c({{var}}, "Mes_n", "geometry")
 dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
@@ -651,45 +669,10 @@ p.distup <- ggplot() +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
-  facet_wrap(. ~ season)
+  facet_wrap(. ~ Mes_n, ncol = 3)
 
-## VelVert ----
-### monthly grid ----
-# VelVert was provided at a monthly scale
-# create grid
-months <- unique(preddata_sf_m$Mes_n)
 
-# base grid
-grid0 <- st_make_grid(survey.area_m, cellsize = c(800,  800))
-grid0 <- st_sf(geometry = grid0)
-
-# build a grid, and join with preddata (by season), then bind them
-out <- lapply(months, function(mh){
-
-  # copy the grid
-  g <- copy(grid0)
-
-  # subset preddata for the season
-  dat_ss <- preddata_sf_m[preddata_sf_m$Mes_n == mh, ]
-
-  # join the grid with the seasonal preddata
-  g2 <- st_join(
-    g,
-    dat_ss,
-    join = st_nearest_feature
-  )
-
-  g2
-})
-
-# bind the monthly grids
-cropped_grid <- do.call(rbind, out)
-
-# crop the monthly grids to the survey area
-cropped_grid <- st_intersection(cropped_grid, survey.area_m)
-
-### plot ----
-
+## VelVert -----
 var <- "VelVert"
 
 cols <- c({{var}}, "Mes_n", "geometry")
@@ -697,7 +680,6 @@ dat <- cropped_grid[, c(cols), with = FALSE]
 setDT(dat)
 setnames(dat, {{var}}, "value")
 dat <- st_as_sf(dat)
-
 p.velvert <- ggplot() +
   geom_sf(data = patagonia_m) +
   geom_sf(data = dat,
@@ -718,7 +700,8 @@ p.velvert <- ggplot() +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
-  facet_wrap(. ~ Mes_n)
+  facet_wrap(. ~ Mes_n, ncol = 3)
+
 
 # output -----
 ggsave(plot = p.sp,
@@ -734,24 +717,24 @@ ggsave(plot = p.slope,
        filename = paste0(here::here(), '/output/EnvVars/Slope.png'),
        width = 8,
        height = 8)
-ggsave(plot = p.grad,
-       filename = paste0(here::here(), '/output/EnvVars/grad.png'),
-       width = 8,
-       height = 8)
-ggsave(plot = p.sst,
-       filename = paste0(here::here(), '/output/EnvVars/SST.png'),
-       width = 13,
-       height = 13)
-ggsave(plot= p.clo,
-       filename = paste0(here::here(), '/output/EnvVars/Clorophyll.png'),
-       width = 13,
-       height = 13)
-ggsave(plot = p.distup,
-       filename = paste0(here::here(), '/output/EnvVars/dist.up.png'),
-       width = 13,
-       height = 13)
 
 ggsave(plot = p.velvert,
        filename = paste0(here::here(), '/output/EnvVars/VelVert.png'),
+       width = 16,
+       height = 16)
+ggsave(plot = p.clo,
+       filename = paste0(here::here(), '/output/EnvVars/Clorophyll.png'),
+       width = 16,
+       height = 16)
+ggsave(plot = p.sst,
+       filename = paste0(here::here(), '/output/EnvVars/SST.png'),
+       width = 16,
+       height = 16)
+ggsave(plot = p.grad,
+       filename = paste0(here::here(), '/output/EnvVars/grad.png'),
+       width = 16,
+       height = 16)
+ggsave(plot = p.distup,
+       filename = paste0(here::here(), '/output/EnvVars/dist.up.png'),
        width = 16,
        height = 16)

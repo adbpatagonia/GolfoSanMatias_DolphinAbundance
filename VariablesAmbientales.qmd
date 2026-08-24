@@ -33,7 +33,7 @@ map.area.m
 ```
 
 
-# Escala: período
+# Constante
 
 ```{r} 
 #| echo: false
@@ -51,40 +51,6 @@ p.depth
 p.slope
 ```
 
-```{r} 
-#| echo: false
-#| message: false
-#| warning: false
-
-p.grad
-```
-
-# Escala: estacional
-
-```{r} 
-#| echo: false
-#| message: false
-#| warning: false
-
-p.sst
-```
-
-```{r} 
-#| echo: false
-#| message: false
-#| warning: false
-
-p.clo
-```
-
-```{r} 
-#| echo: false
-#| message: false
-#| warning: false
-
-p.distup
-```
-
 
 
 # Escala: mensual
@@ -93,6 +59,45 @@ p.distup
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-width: 11
+#| fig-height: 10
 
+p.grad
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+p.sst
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+p.clo
+```
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+p.distup
+```
+
+
+```{r} 
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
 p.velvert
 ```
