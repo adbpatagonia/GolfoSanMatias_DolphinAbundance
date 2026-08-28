@@ -26,7 +26,10 @@ library(here)
 library(kableExtra)
 library(gam.hp)
 
-# plotting options
+# functions  -----
+source(file.path(here::here(), "R", "make_surveyID.R"))
+
+# plotting options -----
 ggplot2::theme_set(theme_bw())
 gg.opts  <-  theme(panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(),
@@ -56,10 +59,14 @@ obsdata_lo <- fread(paste0(here::here(), "/data/DistanceData/obsdata_lo.csv"))
 
 ### segment and prediction grid ----
 segdata <-  fread(paste0(here::here(), "/data/DistanceData/segdata.csv"))
+segdata <-  fread(paste0(here::here(), "/data/DistanceData/segdata_vana.csv"))
 preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddata.csv"))
 preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddataVV.csv"))
 
 setnames(preddata, old = c("dist_coast", "dist_up"), new = c("dist.coast", "dist.up"))
+
+segdata[, `n obs` := NULL]
+# setnames(segdata, old = c("N_obsVana"), new = c("n_obs"))
 
 
 ## map data ----
@@ -72,6 +79,67 @@ pred.polys <- st_read(paste0(here::here(), "/data/shp/gridproy41.1.shp"))
 
 
 # wrangle data ----
+## effective observers -----
+setnames(segdata, old = c("N_obsVana"), new = c("n_obs"))
+segdata[is.na(n_obs), n_obs := N_obsGui]
+
+### canonical survey ID -----
+#' Sample.Label is not written the same way in every file:
+#'   segdata / obsdata : "20060512_15", "201704Hidro_10", "2014_12_13_18"
+#'   distdata          : "20071017_3",  "2017_hidro_oto_2", "20141213_5"
+#' `sub("_.*", "", Sample.Label)` therefore collapsed
+#' "2017_hidro_pri_2" -> "2017", "2018_hidro_ver_1" -> "2018" and
+#' "2014_12_13_18"    -> "2014", none of which match anything on the other
+#' side of the n_obs join (those surveys silently got n_obs = NA).
+#' Instead: drop the trailing segment number, then strip separators and case.
+#' The four hydroacoustic surveys are named by season in distdata and by
+#' year-month in segdata, so they need an explicit recode. The mapping below
+#' was verified against the Dia/Mes/Ano columns of the distdata files.
+hidro_lkp <- c(
+  "2017hidrooto" = "201704hidro",   # Abril 2017
+  "2017hidroinv" = "201707hidro",   # Julio - Agosto 2017
+  "2017hidropri" = "201712hidro",   # Diciembre 2017
+  "2018hidrover" = "201802hidro"    # Febrero 2018
+)
+
+## n_obs lookup table -----
+lkp_nobs <- segdata %>%
+  mutate(surveyID = make_surveyID(Sample.Label)) %>%
+  distinct(Ano, surveyID, n_obs) %>%
+  filter(!is.na(n_obs)) %>%
+  select(-Ano)
+
+setkey(lkp_nobs, surveyID)
+
+#' guard against a many-to-one lookup silently duplicating distdata rows
+stopifnot(!anyDuplicated(lkp_nobs$surveyID))
+
+## add n_obs to distdata -----
+distdata_dd <- distdata_dd %>%
+  mutate(surveyID = make_surveyID(Sample.Label))
+distdata_lo <- distdata_lo %>%
+  mutate(surveyID = make_surveyID(Sample.Label))
+
+#' surveys present in distdata but absent from the segdata lookup
+#' (as of 2026-08: only 20140709, a date that reads as a typo for segdata's 20140729)
+invisible(lapply(list(dd = distdata_dd, lo = distdata_lo), function(d) {
+  miss <- setdiff(unique(d$surveyID), lkp_nobs$surveyID)
+  if (length(miss)) warning("surveyID without n_obs: ", paste(miss, collapse = ", "))
+}))
+
+# the survey happened on July 29 (present in distdata_dd)
+distdata_dd[surveyID == "20140709"]
+distdata_lo[surveyID == "20140709"]
+# fix surveyID
+distdata_dd[surveyID == "20140709", surveyID := "20140729"]
+
+setkey(distdata_dd, surveyID)
+setkey(distdata_lo, surveyID)
+
+distdata_lo <- merge(distdata_lo, lkp_nobs, all.x = TRUE)
+distdata_dd <- merge(distdata_dd, lkp_nobs, all.x = TRUE)
+
+## assign seasons ----
 segdata <- segdata %>%
   mutate(season = case_when(
     between(Mes_n, 1, 3) ~ "Summer",
@@ -174,12 +242,30 @@ obsdata_lo[
 # same per-stratum nearest-neighbour logic used for the seasonal clo field in
 # the density maps).
 #
-# CAVEAT for model selection: preddataVV.csv carries Mes_n but no Ano, i.e. a
-# 12-month CLIMATOLOGY, whereas segdata's clo/sst/etc. are per-date values
-# (~500 distinct clo values within a single month across years). s(VelVert)
-# therefore carries within-month spatial and seasonal signal but NO
-# interannual variation, and is handicapped relative to the other covariates
-# when the two are ranked side by side on AIC.
+# SCALE: VelVert is a CLIMATOLOGICAL MONTHLY field — one field per calendar
+# month (Mes_n 1-12, no Ano), i.e. a long-term monthly average rather than the
+# conditions on any particular survey date. So are sst, grad, clo and dist.up;
+# depth and slope are static. None of the seven varies between years, so no
+# environmental covariate can explain interannual change in abundance — that is
+# carried by the temporal terms (s(Ano), year_fac) alone, and the covariates
+# account for spatial and seasonal structure only. See the "Environmental
+# covariates" section of README.md.
+#
+# The one respect in which VelVert really is disadvantaged is SPATIAL, not
+# temporal: it is the only covariate attached by this nearest-cell join (median
+# displacement 443 m, max 2581 m), whereas the other six were sampled at the
+# segment centroids. That covariate measurement error attenuates s(VelVert)
+# toward flat, so it is mildly handicapped for that reason.
+#
+# One open data-quality item on this field's neighbours is recorded in README.md
+# and is NOT worked around here: segdata's sst/clo/grad columns empirically vary
+# between years, which is inconsistent with a climatology.
+#
+# (A second item is resolved: an earlier preddataVV.csv had VelVert for April
+# byte-identical to May in all 1353 cells, giving only 11 distinct monthly
+# fields. The dataset received 2026-08-25 fixes that — no month pair is
+# systematically identical any more. Workspaces saved before then hold the old
+# field and must be regenerated.)
 #
 # VelVert spans roughly -2.8e-4 to 2.2e-4. mgcv scales each smooth's penalty
 # internally so the tiny magnitude is not itself a problem, but if s(VelVert)
