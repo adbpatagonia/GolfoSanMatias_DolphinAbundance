@@ -1,3 +1,11 @@
+# RETIRED 2026-08-24 - kept for provenance only, not part of the pipeline.
+#
+# This grid search chose a single Tweedie p per species by AIC. It has been
+# superseded by family = tw(link = "log") in 4_DuskyDolphin_DSM.R, which
+# estimates p inside each fit at a cost of 1 df. The grid search was a profile
+# likelihood over p that paid NO df for the p it selected, and it forced every
+# model in the table to share one hand-picked p.
+#
 p_grid <- seq(1.1, 1.9, by = 0.2)
 
 # p_grid <- c(1.0001, 1.9999, p_grid,  1.225, 1.250, 1.275, 1.325, 1.350, 1.375, 1.31, 1.32, 1.33, 1.34)
