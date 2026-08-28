@@ -106,7 +106,7 @@ hidro_lkp <- c(
 lkp_nobs <- segdata %>%
   mutate(surveyID = make_surveyID(Sample.Label)) %>%
   distinct(Ano, surveyID, n_obs) %>%
-  filter(!is.na(n_obs)) %>%
+  # filter(!is.na(n_obs)) %>%
   select(-Ano)
 
 setkey(lkp_nobs, surveyID)
