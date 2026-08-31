@@ -53,13 +53,11 @@ p.size.ship.dens.lo <- ggplot(distdata_lo) +
 # Spatial covariates -----
 ## Depth ----
 p.depth.lo <- p.depth +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = segdata_sf_m ,
           aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_lo_sf_m ,
           aes(size = size,
               color = season),
           alpha = 0.9
@@ -75,9 +73,8 @@ p.depth.lo <- p.depth +
 
 ## Slope ----
 p.slope.lo <- p.slope +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          aes(color = season),
+  geom_sf(data = segdata_sf_m ,
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_lo_sf_m %>%
@@ -97,15 +94,12 @@ p.slope.lo <- p.slope +
 
 ## grad ----
 p.grad.lo <- p.grad +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          aes(color = season),
+  geom_sf(data = segdata_traj_m_month ,
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m %>%
-            filter(Ano > 2006),
-          aes(size = size,
-              color = season),
+  geom_sf(data = distdata_lo_sf_m ,
+          aes(size = size),
           alpha = 0.9
   ) +
   coord_sf(
@@ -115,18 +109,16 @@ p.grad.lo <- p.grad +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_wrap(.~Ano)
+  facet_grid(Mes_n ~ Ano)
 
 
 ## sst ----
-p.sst.lo <-  p.sst +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.sst.lo <- p.sst +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_lo_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -137,17 +129,15 @@ p.sst.lo <-  p.sst +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
 
 ## clorophyll ----
-p.clo.lo <-  p.clo +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.clo.lo <- p.clo +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_lo_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -158,17 +148,15 @@ p.clo.lo <-  p.clo +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
 
 ## dist.up ----
-p.distup.lo <-  p.distup +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.distup.lo <- p.distup +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_lo_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -179,7 +167,27 @@ p.distup.lo <-  p.distup +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
+
+## VelVert ----
+p.velvert.lo <- p.velvert +
+  geom_sf(data = segdata_traj_m_month ,
+          # aes(color = season),
+          size = 0.6,
+          alpha = 0.25) +
+  geom_sf(data = distdata_lo_sf_m ,
+          aes(size = size),
+          alpha = 0.9
+  ) +
+  coord_sf(
+    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    default_crs = st_crs(target_crs),
+    datum = target_crs,
+    expand = TRUE
+  ) +
+  facet_grid(Mes_n ~ Ano)
+
 
 # output ----
 ggsave(plot = p.distup.lo,

@@ -55,13 +55,11 @@ p.size.ship.dd <- ggplot(distdata_dd) +
 # Spatial covariates -----
 ## Depth ----
 p.depth.dd <- p.depth +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = segdata_sf_m ,
           aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_dd_sf_m ,
           aes(size = size,
               color = season),
           alpha = 0.9
@@ -77,9 +75,8 @@ p.depth.dd <- p.depth +
 
 ## Slope ----
 p.slope.dd <- p.slope +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          aes(color = season),
+  geom_sf(data = segdata_sf_m ,
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
   geom_sf(data = distdata_dd_sf_m %>%
@@ -99,15 +96,12 @@ p.slope.dd <- p.slope +
 
 ## grad ----
 p.grad.dd <- p.grad +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
-          aes(color = season),
+  geom_sf(data = segdata_traj_m_month ,
+          # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
-          aes(size = size,
-              color = season),
+  geom_sf(data = distdata_dd_sf_m ,
+          aes(size = size),
           alpha = 0.9
   ) +
   coord_sf(
@@ -117,18 +111,16 @@ p.grad.dd <- p.grad +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_wrap(.~Ano)
+  facet_grid(Mes_n ~ Ano)
 
 
 ## sst ----
-p.sst.dd <-  p.sst +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.sst.dd <- p.sst +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_dd_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -139,17 +131,15 @@ p.sst.dd <-  p.sst +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
 
 ## clorophyll ----
-p.clo.dd <-  p.clo +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.clo.dd <- p.clo +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_dd_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -160,17 +150,15 @@ p.clo.dd <-  p.clo +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
 
 ## dist.up ----
-p.distup.dd <-  p.distup +
-  geom_sf(data = segdata_traj_m %>%
-            filter(Ano > 2006),
+p.distup.dd <- p.distup +
+  geom_sf(data = segdata_traj_m_month ,
           # aes(color = season),
           size = 0.6,
           alpha = 0.25) +
-  geom_sf(data = distdata_dd_sf_m %>%
-            filter(Ano > 2006),
+  geom_sf(data = distdata_dd_sf_m ,
           aes(size = size),
           alpha = 0.9
   ) +
@@ -181,9 +169,34 @@ p.distup.dd <-  p.distup +
     datum = target_crs,
     expand = TRUE
   ) +
-  facet_grid(Ano ~ season)
+  facet_grid(Mes_n ~ Ano)
+
+## VelVert ----
+p.velvert.dd <- p.velvert +
+  geom_sf(data = segdata_traj_m_month ,
+          # aes(color = season),
+          size = 0.6,
+          alpha = 0.25) +
+  geom_sf(data = distdata_dd_sf_m ,
+          aes(size = size),
+          alpha = 0.9
+  ) +
+  coord_sf(
+    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+    default_crs = st_crs(target_crs),
+    datum = target_crs,
+    expand = TRUE
+  ) +
+  facet_grid(Mes_n ~ Ano)
+
 
 # output ----
+ggsave(plot = p.velvert.dd,
+       filename = paste0(here::here(), '/output/CommonDolphin/EDA/Survey_VelVert.png'),
+       width = 10,
+       height = 13)
+
 ggsave(plot = p.distup.dd,
        filename = paste0(here::here(), '/output/CommonDolphin/EDA/Survey_Distup.png'),
        width = 10,
