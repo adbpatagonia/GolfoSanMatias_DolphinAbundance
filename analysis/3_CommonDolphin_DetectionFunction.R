@@ -148,6 +148,15 @@ Distance::gof_ds(dd.df.hr.trun.cp)
 # plot(dd.df.hr.trun.cp)
 
 # Covariates ----
+## Effective observers ----
+detfun_dat_dd$n_obs <- as.factor(detfun_dat_dd$n_obs)
+dd.df.hr.trun.cp.nobs <- ds(detfun_dat_dd,
+                            truncation = trunc.dist_dd,
+                            cutpoints = cutpoints_dd,
+                            key = "hr",
+                            adjustment = NULL,
+                            formula = ~n_obs)
+
 ## ship ----
 dd.df.hr.trun.cp.ship <- ds(detfun_dat_dd,
                             truncation = trunc.dist_dd,
@@ -203,6 +212,7 @@ dd.df.hr.trun.cp.shipbeauf <- ds(detfun_dat_dd,
 ## Model selection ------
 AIC(dd.df.hr.trun.cp,
     dd.df.hr.trun.cp.beauf,
+    dd.df.hr.trun.cp.nobs,
     dd.df.hr.trun.cp.size,
     dd.df.hr.trun.cp.ship,
     dd.df.hr.trun.cp.sizebeauf,
@@ -214,6 +224,70 @@ AIC(dd.df.hr.trun.cp,
   kable()
 
 ## plot dfs ----
+### Effective observers ----
+plot(dd.df.hr.trun.cp.nobs, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(dd.df.hr.trun.cp.nobs, data = data.frame(n_obs=1), col='red', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobs, data = data.frame(n_obs=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobs, data = data.frame(n_obs=3), col= "darkgreen", lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobs, data = data.frame(n_obs=4), col='purple', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3", "Effective observers 4"),
+       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
+
+# uneven sample size
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
+  group_by(n_obs) %>%
+  tally()
+
+#### group n_obs 3 and 4 ----
+detfun_dat_dd <- detfun_dat_dd %>%
+  mutate(nobs_grp = factor(ifelse(n_obs == 4, 3, n_obs)))
+
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
+  group_by(nobs_grp) %>%
+  tally()
+
+dd.df.hr.trun.cp.nobsgrp34 <- ds(detfun_dat_dd,
+                                truncation = trunc.dist_dd,
+                                cutpoints = cutpoints_dd,
+                                key = "hr",
+                                adjustment = NULL,
+                                formula = ~nobs_grp)
+
+
+# The blue and green lines do not really make sense
+# n_obs is really separating observations with 1 observer from
+# observations with more observers
+# REPEAT
+plot(dd.df.hr.trun.cp.nobsgrp34, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(dd.df.hr.trun.cp.nobsgrp34, data = data.frame(nobs_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobsgrp34, data = data.frame(nobs_grp=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobsgrp34, data = data.frame(nobs_grp=3), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3 & 4"),
+       col=c("red", "blue", "darkgreen"), lwd=2)
+
+
+detfun_dat_dd <- detfun_dat_dd %>%
+  mutate(nobs_grp = factor(ifelse(n_obs == 1, 1, "> 1")))
+
+detfun_dat_dd[distance <= trunc.dist_dd] %>%
+  group_by(nobs_grp) %>%
+  tally()
+
+dd.df.hr.trun.cp.nobsgrp <- ds(detfun_dat_dd,
+                               truncation = trunc.dist_dd,
+                               cutpoints = cutpoints_dd,
+                               key = "hr",
+                               adjustment = NULL,
+                               formula = ~nobs_grp)
+
+
+# These curves make more sense
+plot(dd.df.hr.trun.cp.nobsgrp, main="Common dolphin", showpoints=FALSE)
+add_df_covar_line(dd.df.hr.trun.cp.nobsgrp, data = data.frame(nobs_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(dd.df.hr.trun.cp.nobsgrp, data = data.frame(nobs_grp= "> 1"), col='darkgreen', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers > 1"),
+       col=c("red",  "darkgreen"), lwd=2)
+
 ### beaufort ----
 plot(dd.df.hr.trun.cp.beauf, main="Common dolphin", showpoints=FALSE)
 add_df_covar_line(dd.df.hr.trun.cp.beauf, data = data.frame(beaufort_fct=0), col='red', lwd=2, lty=1)
@@ -272,6 +346,7 @@ dd.df.hr.trun.cp.shipbeaufgrp <- ds(detfun_dat_dd,
 ### Model selection -----
 AIC(dd.df.hr.trun.cp,
     dd.df.hr.trun.cp.beaufgrp,
+    dd.df.hr.trun.cp.nobsgrp,
     dd.df.hr.trun.cp.size,
     dd.df.hr.trun.cp.ship,
     dd.df.hr.trun.cp.sizebeaufgrp,
@@ -280,6 +355,7 @@ AIC(dd.df.hr.trun.cp,
 ) %>%
   mutate(ll = c(logLik( dd.df.hr.trun.cp),
                 logLik( dd.df.hr.trun.cp.beaufgrp),
+                logLik( dd.df.hr.trun.cp.nobsgrp),
                 logLik( dd.df.hr.trun.cp.size),
                 logLik( dd.df.hr.trun.cp.ship),
                 logLik( dd.df.hr.trun.cp.sizebeaufgrp),
@@ -380,6 +456,8 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 # No adjustment
 # Include group size as covariate
 
+# Include nobs_grp as covariate
+
 ## dd: delphinus delphi
 ## df: detection function
 ## hr: hazard rate
@@ -390,6 +468,7 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 
 df.dd <- dd.df.hr.trun.cp.sizebeaufgrp
 df.dd <- dd.df.hr.trun.cp
+df.dd <- dd.df.hr.trun.cp.nobsgrp
 
 qqdat <- qqplot.ddf(df.dd$ddf, plot = FALSE)
 plot(qqdat$cdf)

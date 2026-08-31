@@ -164,6 +164,15 @@ Distance::gof_ds(lo.df.hn.trun.cp)
 # plot(lo.df.hn.trun.cp.cos)
 
 # Covariates ----
+## Effective observers ----
+detfun_dat_lo$n_obs <- as.factor(detfun_dat_lo$n_obs)
+lo.df.hn.trun.cp.nobs <- ds(detfun_dat_lo,
+                            truncation = trunc.dist_lo,
+                            cutpoints = cutpoints_lo,
+                            key = "hn",
+                            adjustment = NULL,
+                            formula = ~n_obs)
+
 ## ship ----
 lo.df.hn.trun.cp.ship <- ds(detfun_dat_lo,
                             truncation = trunc.dist_lo,
@@ -221,6 +230,7 @@ lo.df.hn.trun.cp.shipbeauf <- ds(detfun_dat_lo,
 # given the small effects of each of the covariates (see below), use the simplest model, i.e. no covariate
 AIC(lo.df.hn.trun.cp,
     lo.df.hn.trun.cp.beauf,
+    lo.df.hn.trun.cp.nobs,
     lo.df.hn.trun.cp.size,
     lo.df.hn.trun.cp.ship,
     lo.df.hn.trun.cp.sizebeauf,
@@ -229,6 +239,7 @@ AIC(lo.df.hn.trun.cp,
 ) %>%
   mutate(ll = c(logLik( lo.df.hn.trun.cp),
                 logLik( lo.df.hn.trun.cp.beauf),
+                logLik( lo.df.hn.trun.cp.nobs),
                 logLik( lo.df.hn.trun.cp.size),
                 logLik( lo.df.hn.trun.cp.ship),
                 logLik( lo.df.hn.trun.cp.sizebeauf),
@@ -240,6 +251,74 @@ AIC(lo.df.hn.trun.cp,
   kable()
 
 ## plot dfs ----
+### Effective observers ----
+plot(lo.df.hn.trun.cp.nobs, main="Dusky dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=3), col= "darkgreen", lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=4), col='purple', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3", "Effective observers 4"),
+       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
+
+# uneven sample size
+# patterns for those categories make sense, and the differences among categories are noticeable
+# keep beaufort as covariate
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(n_obs) %>%
+  tally()
+
+#### group n_obs 3 and 4 ----
+detfun_dat_lo <- detfun_dat_lo %>%
+  mutate(nobs_grp34 = factor(ifelse(n_obs == 4, 3, n_obs)))
+
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(nobs_grp34) %>%
+  tally()
+
+lo.df.hn.trun.cp.nobsgrp34 <- ds(detfun_dat_lo,
+                                 truncation = trunc.dist_lo,
+                                 cutpoints = cutpoints_lo,
+                                 key = "hn",
+                                 adjustment = NULL,
+                                 formula = ~nobs_grp34)
+
+
+# The blue and green lines make sense
+# But it really looks like n_obs  separating observations with 1 observer from
+# observations with more observers
+# this is the approach implemented in common dolphin
+# repeat here
+plot(lo.df.hn.trun.cp.nobsgrp34, main="Common dolphin", showpoints=FALSE)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=1), col='red', lwd=2, lty=1)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=2), col='blue', lwd=2, lty=1)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=3), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3 & 4"),
+       col=c("red", "blue", "darkgreen"), lwd=2)
+
+
+
+detfun_dat_lo <- detfun_dat_lo %>%
+  mutate(nobs_grp = factor(ifelse(n_obs == 1, 1, "> 1")))
+
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(nobs_grp) %>%
+  tally()
+
+lo.df.hn.trun.cp.nobsgrp <- ds(detfun_dat_lo,
+                               truncation = trunc.dist_lo,
+                               cutpoints = cutpoints_lo,
+                               key = "hn",
+                               adjustment = NULL,
+                               formula = ~nobs_grp)
+
+
+# These curves make more sense
+plot(lo.df.hn.trun.cp.nobsgrp, main="Dusky dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.nobsgrp, data = data.frame(nobs_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobsgrp, data = data.frame(nobs_grp= "> 1"), col='darkgreen', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers > 1"),
+       col=c("red",  "darkgreen"), lwd=2)
+
 
 ### beaufort ----
 # this pattern looks really odd - beaufort = 0 should have the best detection function, but it has the worst
@@ -292,6 +371,7 @@ lo.df.hn.trun.cp.shipbeaufgrp <- ds(detfun_dat_lo,
 ### Model selection -----
 # the most parsimonious model does not include covariates
 AIC(lo.df.hn.trun.cp,
+    lo.df.hn.trun.cp.nobsgrp,
     lo.df.hn.trun.cp.beaufgrp,
     lo.df.hn.trun.cp.size,
     lo.df.hn.trun.cp.ship,
@@ -300,6 +380,7 @@ AIC(lo.df.hn.trun.cp,
     lo.df.hn.trun.cp.shipbeaufgrp
 ) %>%
   mutate(ll = c(logLik( lo.df.hn.trun.cp),
+                logLik(lo.df.hn.trun.cp.nobsgrp),
                 logLik( lo.df.hn.trun.cp.beauf),
                 logLik( lo.df.hn.trun.cp.size),
                 logLik( lo.df.hn.trun.cp.ship),
@@ -396,7 +477,7 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 # cutpoints:  cutpoints_lo: c(0, 50, 150, 250, 350)
 # Half normal
 # No adjustment
-# No covariate
+# n_obsgrp as covariate
 
 ## lo: lagenorynchus obscurus
 ## df: detection function
@@ -406,5 +487,6 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 
 
 df.lo <- lo.df.hn.trun.cp
+df.lo <- lo.df.hn.trun.cp.nobsgrp
 
 qqplot.ddf(df.lo$ddf, plot = TRUE)
