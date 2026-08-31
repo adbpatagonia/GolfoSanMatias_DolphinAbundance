@@ -16,9 +16,11 @@
 #
 # This script:
 #   1. load()s the full dusky-dolphin workspace (output/DuskyDolphin/lo_output.RData)
-#   2. defines biological_year / bioyear_fac on segdata and obsdata_lo_mod
-#   3. re-profiles the Tweedie p parameter (logic of UTIL_FindTweedieP_DuskyDolphin.R)
-#   4. fits the full fs model set (14 models, mirroring the fsyear block of
+#   2. defines biological_year / bioyear_fac on segdata and obsdata_lo_mod,
+#      and re-applies the VelVert join if the loaded workspace predates it
+#   3. (Tweedie p is no longer profiled - every model uses tw(), which estimates it)
+#   4. fits the full fs model set (16 models: season / no-season crossed with
+#      each of the 7 environmental covariates, mirroring the fsyear block of
 #      4_DuskyDolphin_DSM.R) using bioyear_fac in place of year_fac
 #   5. builds a model-selection table (table_lo_bioyear_modselection)
 #   6. appends those candidates to table_lo_combined_modselection
@@ -51,217 +53,111 @@ obsdata_lo_mod[, biological_year := ifelse(season == "Spring", Ano, Ano - 1)]
 segdata[, bioyear_fac := factor(biological_year)]
 obsdata_lo_mod[, bioyear_fac := factor(biological_year)]
 
-# 3. Tweedie p profiling (adapted from UTIL_FindTweedieP_DuskyDolphin.R) --------
-# The profiled formula (count ~ s(x,y) + season) does not involve year at all,
-# so switching from calendar to biological year cannot change the optimal p —
-# this re-run exists to CONFIRM that empirically, not because a different
-# answer is expected.
-p_grid <- seq(1.1, 1.9, by = 0.2)
-p_grid <- c(p_grid, 1.225, 1.250, 1.275, 1.325, 1.350, 1.375, 1.31, 1.32, 1.33, 1.34)
+## VelVert on the loaded segdata ----
+# The .RData loaded above was written by a pipeline run that predates the
+# VelVert join added to 0_ReadData_Plots.r, so segdata in an OLD workspace has
+# no VelVert column and the s(VelVert) models below would fail on a workspace
+# that otherwise looks fine. Re-apply the same per-month nearest-neighbour join
+# here if it is missing. (Once the full pipeline has been re-run, this is a
+# no-op.)
+if (!"VelVert" %in% names(segdata)) {
+  message("segdata in the loaded workspace has no VelVert — re-applying the ",
+          "per-month nearest-neighbour join from 0_ReadData_Plots.r.")
 
-tw_profile_bioyear <- data.table(
-  p    = p_grid,
-  AIC  = NA_real_,
-  REML = NA_real_
-)
+  .seg_sf_vv  <- st_as_sf(segdata,  coords = c("x", "y"), crs = st_crs(target_crs), remove = FALSE)
+  .pred_sf_vv <- st_as_sf(preddata, coords = c("x", "y"), crs = st_crs(target_crs), remove = FALSE)
 
-for (i in seq_along(p_grid)) {
-  fit <- tryCatch(
-    dsm(count ~ s(x, y) + season,
-        ddf.obj          = df.lo,
-        segment.data     = segdata,
-        observation.data = obsdata_lo_mod,
-        family           = Tweedie(p = p_grid[i]),
-        method           = "REML"),
-    error = function(e) NULL
-  )
-
-  if (!is.null(fit)) {
-    tw_profile_bioyear[i, AIC  := AIC(fit)]
-    tw_profile_bioyear[i, REML := fit$gcv.ubre]
+  .vv <- rep(NA_real_, nrow(segdata))
+  for (.mh in sort(unique(segdata$Mes_n))) {
+    .i_seg  <- which(segdata$Mes_n == .mh)
+    .pred_m <- .pred_sf_vv[.pred_sf_vv$Mes_n == .mh, ]
+    if (length(.i_seg) == 0L || nrow(.pred_m) == 0L) next
+    .idx <- st_nearest_feature(.seg_sf_vv[.i_seg, ], .pred_m)
+    .vv[.i_seg] <- .pred_m$VelVert[.idx]
   }
+  segdata$VelVert <- .vv
+  stopifnot(!anyNA(segdata$VelVert))
+  rm(.seg_sf_vv, .pred_sf_vv, .vv, .mh, .i_seg, .pred_m, .idx)
 }
 
-tw_profile_bioyear$deltaAIC <- tw_profile_bioyear$AIC - min(tw_profile_bioyear$AIC, na.rm = TRUE)
-print(tw_profile_bioyear[order(AIC)])
-
-best_p_bioyear <- tw_profile_bioyear[which.min(AIC), p]
-cat(sprintf("Optimal Tweedie p (biological-year model set): %.4f\n", best_p_bioyear))
+# 3. Tweedie family --------------------------------------------------------------
+# The Tweedie p grid search that used to live here (adapted from
+# UTIL_FindTweedieP_DuskyDolphin.R) has been retired along with that script.
+# Every model below uses family = tw(link = "log"), which estimates p inside
+# each fit at a cost of 1 df, so there is no longer a single p to profile and
+# no need to check that this script's p matches the one used by
+# 4_DuskyDolphin_DSM.R -- the estimated p is reported per row as p_hat.
 
 # 4. Fit the fs model set (bioyear_fac in place of year_fac) --------------------
-lo.dsm.xy.fsbioyear.season <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                    season,
-                                  ddf.obj = df.lo,
-                                  segment.data = segdata,
-                                  observation.data = obsdata_lo_mod,
-                                  family = Tweedie(p = best_p_bioyear),
-                                  method = "REML")
+# Same 16-model fs set as the calendar-year block of 4_DuskyDolphin_DSM.R
+# (season / no-season, crossed with each of the seven environmental
+# covariates), with bioyear_fac substituted for year_fac. Fitted from a spec so
+# the formulas, the object names and the selection-table labels all come from
+# one place.
+.env7 <- c("slope", "grad", "sst", "clo", "dist.up", "depth", "VelVert")
 
-lo.dsm.xy.fsbioyear <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs"),
-                          ddf.obj = df.lo,
-                          segment.data = segdata,
-                          observation.data = obsdata_lo_mod,
-                          family = Tweedie(p = best_p_bioyear),
-                          method = "REML")
+.sp_fsbio <- 's(x, y, bioyear_fac, bs = "fs")'
 
-lo.dsm.xy.fsbioyear.season.slope <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                          season + s(slope),
-                                        ddf.obj = df.lo,
-                                        segment.data = segdata,
-                                        observation.data = obsdata_lo_mod,
-                                        family = Tweedie(p = best_p_bioyear),
-                                        method = "REML")
+.spec_bio <- rbind(
+  data.frame(stringsAsFactors = FALSE,
+             name  = c("lo.dsm.xy.fsbioyear.season", "lo.dsm.xy.fsbioyear"),
+             rhs   = c(paste(.sp_fsbio, "+ season"), .sp_fsbio),
+             label = c("count ~ s(x,y,bioyear_fac,bs=fs) + season",
+                       "count ~ s(x,y,bioyear_fac,bs=fs)")),
+  data.frame(stringsAsFactors = FALSE,
+             name  = sprintf("lo.dsm.xy.fsbioyear.season.%s", .env7),
+             rhs   = sprintf("%s + season + s(%s)", .sp_fsbio, .env7),
+             label = sprintf("count ~ s(x,y,bioyear_fac,bs=fs) + season + s(%s)", .env7)),
+  data.frame(stringsAsFactors = FALSE,
+             name  = sprintf("lo.dsm.xy.fsbioyear.%s", .env7),
+             rhs   = sprintf("%s + s(%s)", .sp_fsbio, .env7),
+             label = sprintf("count ~ s(x,y,bioyear_fac,bs=fs) + s(%s)", .env7))
+)
 
-lo.dsm.xy.fsbioyear.season.grad <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                         season + s(grad),
-                                       ddf.obj = df.lo,
-                                       segment.data = segdata,
-                                       observation.data = obsdata_lo_mod,
-                                       family = Tweedie(p = best_p_bioyear),
-                                       method = "REML")
+.fit_bio <- function(rhs) {
+  f <- as.formula(paste("count ~", rhs))
+  environment(f) <- globalenv()
+  dsm(f,
+      ddf.obj          = df.lo,
+      segment.data     = segdata,
+      observation.data = obsdata_lo_mod,
+      family           = tw(link = "log"),
+      method           = "REML")
+}
 
-lo.dsm.xy.fsbioyear.season.sst <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                        season + s(sst),
-                                      ddf.obj = df.lo,
-                                      segment.data = segdata,
-                                      observation.data = obsdata_lo_mod,
-                                      family = Tweedie(p = best_p_bioyear),
-                                      method = "REML")
-
-lo.dsm.xy.fsbioyear.season.clo <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                        season + s(clo),
-                                      ddf.obj = df.lo,
-                                      segment.data = segdata,
-                                      observation.data = obsdata_lo_mod,
-                                      family = Tweedie(p = best_p_bioyear),
-                                      method = "REML")
-
-lo.dsm.xy.fsbioyear.season.dist.up <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                            season + s(dist.up),
-                                          ddf.obj = df.lo,
-                                          segment.data = segdata,
-                                          observation.data = obsdata_lo_mod,
-                                          family = Tweedie(p = best_p_bioyear),
-                                          method = "REML")
-
-lo.dsm.xy.fsbioyear.season.depth <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                          season + s(depth),
-                                        ddf.obj = df.lo,
-                                        segment.data = segdata,
-                                        observation.data = obsdata_lo_mod,
-                                        family = Tweedie(p = best_p_bioyear),
-                                        method = "REML")
-
-lo.dsm.xy.fsbioyear.slope <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                   s(slope),
-                                 ddf.obj = df.lo,
-                                 segment.data = segdata,
-                                 observation.data = obsdata_lo_mod,
-                                 family = Tweedie(p = best_p_bioyear),
-                                 method = "REML")
-
-lo.dsm.xy.fsbioyear.grad <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                  s(grad),
-                                ddf.obj = df.lo,
-                                segment.data = segdata,
-                                observation.data = obsdata_lo_mod,
-                                family = Tweedie(p = best_p_bioyear),
-                                method = "REML")
-
-lo.dsm.xy.fsbioyear.sst <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                 s(sst),
-                               ddf.obj = df.lo,
-                               segment.data = segdata,
-                               observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = best_p_bioyear),
-                               method = "REML")
-
-lo.dsm.xy.fsbioyear.clo <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                 s(clo),
-                               ddf.obj = df.lo,
-                               segment.data = segdata,
-                               observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = best_p_bioyear),
-                               method = "REML")
-
-lo.dsm.xy.fsbioyear.dist.up <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                     s(dist.up),
-                                   ddf.obj = df.lo,
-                                   segment.data = segdata,
-                                   observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = best_p_bioyear),
-                                   method = "REML")
-
-lo.dsm.xy.fsbioyear.depth <- dsm(count ~ s(x, y, bioyear_fac, bs = "fs") +
-                                   s(depth),
-                                 ddf.obj = df.lo,
-                                 segment.data = segdata,
-                                 observation.data = obsdata_lo_mod,
-                                 family = Tweedie(p = best_p_bioyear),
-                                 method = "REML")
+lo_bioyear_models <- lapply(.spec_bio$rhs, .fit_bio)
+names(lo_bioyear_models) <- .spec_bio$name
+list2env(lo_bioyear_models, envir = .GlobalEnv)
 
 # 5. Model-selection table -------------------------------------------------------
-table_lo_bioyear_modselection <- AIC(
-  lo.dsm.xy.fsbioyear.season,
-  lo.dsm.xy.fsbioyear,
-  lo.dsm.xy.fsbioyear.season.slope,
-  lo.dsm.xy.fsbioyear.season.grad,
-  lo.dsm.xy.fsbioyear.season.sst,
-  lo.dsm.xy.fsbioyear.season.clo,
-  lo.dsm.xy.fsbioyear.season.dist.up,
-  lo.dsm.xy.fsbioyear.season.depth,
-  lo.dsm.xy.fsbioyear.slope,
-  lo.dsm.xy.fsbioyear.grad,
-  lo.dsm.xy.fsbioyear.sst,
-  lo.dsm.xy.fsbioyear.clo,
-  lo.dsm.xy.fsbioyear.dist.up,
-  lo.dsm.xy.fsbioyear.depth
-) %>%
-  mutate(deltaAIC = round(AIC - min(AIC), 2)) %>%
-  mutate(Dev = c(
-    round(summary(lo.dsm.xy.fsbioyear.season)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.season.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsbioyear.depth)$dev.expl, 2)
-  )) %>%
-  mutate(model = c(
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season",
-    "count ~ s(x,y,bioyear_fac,bs=fs)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(slope)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(grad)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(sst)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(clo)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(dist.up)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(depth)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(slope)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(grad)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(sst)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(clo)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(dist.up)",
-    "count ~ s(x,y,bioyear_fac,bs=fs) + s(depth)"
-  )) %>%
-  data.table() %>%
-  mutate(df = round(df, 2), AIC = round(AIC, 2)) %>%
-  select(model, df, AIC, deltaAIC, Dev) %>%
-  arrange(deltaAIC)
+# Built from the same spec, so labels cannot drift from the fitted models.
+# p_hat is the Tweedie power estimated by tw() for that model - see the long
+# explanation above .p_hat() in 4_DuskyDolphin_DSM.R. Watch the SPREAD: models
+# on a similar p are competing on mean structure, an outlying p is competing on
+# dispersion.
+.p_hat_m <- function(m)
+  if (is.null(m$family$getTheta)) NA_real_ else round(m$family$getTheta(TRUE), 4)
+
+table_lo_bioyear_modselection <- local({
+  aic <- vapply(lo_bioyear_models, AIC, numeric(1))
+  out <- data.table(
+    model    = .spec_bio$label,
+    df       = vapply(lo_bioyear_models, function(m) round(attr(logLik(m), "df"), 2), numeric(1)),
+    AIC      = round(aic, 2),
+    deltaAIC = round(aic - min(aic), 2),
+    Dev      = vapply(lo_bioyear_models, function(m) round(summary(m)$dev.expl, 2), numeric(1)),
+    p_hat    = vapply(lo_bioyear_models, .p_hat_m, numeric(1))
+  )
+  out[order(deltaAIC)]
+})
 
 print(table_lo_bioyear_modselection)
 
 # 6. Append to the combined selection table --------------------------------------
-# table_lo_combined_modselection (columns: basis, model, df, AIC, deltaAIC, Dev)
-# already exists in the workspace (built by 4_DuskyDolphin_DSM_soap.R). Older
-# saved workspaces may predate the AIC column (only deltaAIC was kept) — if so,
-# recover the absolute scale using lo.dsm.xy.fsyear.season as an anchor (it is
+# table_lo_combined_modselection (basis, model, df, AIC, deltaAIC, Dev) already
+# exists in the workspace (built by 4_DuskyDolphin_DSM_soap.R). Older saved
+# workspaces predate the AIC column (only deltaAIC was kept) — if so, recover
+# the absolute scale using lo.dsm.xy.fsyear.season as an anchor (it is
 # guaranteed to be both in the workspace and a row of that table).
 if (!"AIC" %in% names(table_lo_combined_modselection)) {
   .anchor_label <- paste(deparse(formula(lo.dsm.xy.fsyear.season), width.cutoff = 200),
@@ -275,41 +171,17 @@ if (!"AIC" %in% names(table_lo_combined_modselection)) {
     table_lo_combined_modselection$deltaAIC + .aic_min_old
 }
 
-.bioyear_models <- list(
-  lo.dsm.xy.fsbioyear.season, lo.dsm.xy.fsbioyear,
-  lo.dsm.xy.fsbioyear.season.slope, lo.dsm.xy.fsbioyear.season.grad,
-  lo.dsm.xy.fsbioyear.season.sst, lo.dsm.xy.fsbioyear.season.clo,
-  lo.dsm.xy.fsbioyear.season.dist.up, lo.dsm.xy.fsbioyear.season.depth,
-  lo.dsm.xy.fsbioyear.slope, lo.dsm.xy.fsbioyear.grad, lo.dsm.xy.fsbioyear.sst,
-  lo.dsm.xy.fsbioyear.clo, lo.dsm.xy.fsbioyear.dist.up, lo.dsm.xy.fsbioyear.depth
-)
-.bioyear_labels <- c(
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season",
-  "count ~ s(x,y,bioyear_fac,bs=fs)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(slope)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(grad)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(sst)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(clo)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(dist.up)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + season + s(depth)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(slope)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(grad)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(sst)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(clo)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(dist.up)",
-  "count ~ s(x,y,bioyear_fac,bs=fs) + s(depth)"
-)
-
 .bioyear_rows <- do.call(rbind, Map(function(m, lab)
-  data.frame(basis = "thin-plate", model = lab,
+  data.frame(basis = "thin-plate (biological year)", model = lab,
              df    = round(attr(logLik(m), "df"), 2),
              AIC   = round(AIC(m), 2),
              Dev   = round(summary(m)$dev.expl, 2),
+             p_hat = .p_hat_m(m),
              stringsAsFactors = FALSE),
-  .bioyear_models, .bioyear_labels))
+  lo_bioyear_models, .spec_bio$label))
 
 table_lo_combined_modselection <- rbind(
-  table_lo_combined_modselection[, c("basis", "model", "df", "AIC", "Dev")],
+  table_lo_combined_modselection[, c("basis", "model", "df", "AIC", "Dev", "p_hat")],
   .bioyear_rows
 )
 table_lo_combined_modselection$deltaAIC <-
@@ -317,7 +189,7 @@ table_lo_combined_modselection$deltaAIC <-
           min(table_lo_combined_modselection$AIC), 2)
 table_lo_combined_modselection <-
   table_lo_combined_modselection[order(table_lo_combined_modselection$deltaAIC),
-                                 c("basis", "model", "df", "AIC", "deltaAIC", "Dev")]
+                                 c("basis", "model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
 rownames(table_lo_combined_modselection) <- NULL
 
 print(table_lo_combined_modselection)

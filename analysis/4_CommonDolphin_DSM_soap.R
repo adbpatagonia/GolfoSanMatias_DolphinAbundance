@@ -4,17 +4,17 @@
 # Soap-film DSM candidate set + model-selection table — COMMON dolphins.
 # Mirrors the candidate set in 4_CommonDolphin_DSM.R, but the spatial term is a
 # SOAP-FILM smoother  s(x, y, bs = "so")  (edge-effect control) instead of the
-# thin-plate s(x, y).  Temporal term = s(Ano); covariates = the 6 environmental
+# thin-plate s(x, y).  Temporal term = s(Ano); covariates = the 7 environmental
 # smooths.  The fs year-varying model is NOT included — soap films cannot be used
 # as a factor-smooth ("fs") marginal.
 #
-# WARNING: this fits ~22 soap-film GAMs over all segments. Soap films are SLOW;
+# WARNING: this fits 25 soap-film GAMs over all segments. Soap films are SLOW;
 # expect minutes to tens of minutes. Confirm the base soap fit works (no
 # 'NA/NaN/Inf in soap.basis') before running the whole set — if a knot trips the
 # PDE grid, coarsen knot_ngrid / raise knot_buffer / hand-place knots.
 #
 # Assumes in the workspace:
-#   df.dd, segdata (x, y, Ano + env covars depth/slope/grad/sst/clo/dist.up),
+#   df.dd, segdata (x, y, Ano + env covars depth/slope/grad/sst/clo/dist.up/VelVert),
 #   obsdata_dd_mod, trunc.dist_dd, survey.area_m, target_crs
 
 library(dsm)
@@ -87,82 +87,39 @@ fit_soap <- function(extra = "") {
       ddf.obj          = df.dd,
       segment.data     = segdata,
       observation.data = obsdata_dd_mod,
-      family           = Tweedie(p = 1.58),
+      family           = tw(link = "log"),
       method           = "REML",
       knots            = knots)
 }
 
-# name / extra terms / label — mirrors the 4_CommonDolphin_DSM.R set, soap spatial
-spec <- data.frame(stringsAsFactors = FALSE,
-  name = c(
-    "dd.dsm.soap",
-    "dd.dsm.soap.season",
-    "dd.dsm.soap.season.year",
-    "dd.dsm.soap.year.season.slope",
-    "dd.dsm.soap.year.season.grad",
-    "dd.dsm.soap.year.season.sst",
-    "dd.dsm.soap.year.season.clo",
-    "dd.dsm.soap.year.season.dist.up",
-    "dd.dsm.soap.year.season.depth",
-    "dd.dsm.soap.year",
-    "dd.dsm.soap.season.slope",
-    "dd.dsm.soap.season.grad",
-    "dd.dsm.soap.season.sst",
-    "dd.dsm.soap.season.clo",
-    "dd.dsm.soap.season.dist.up",
-    "dd.dsm.soap.season.depth",
-    "dd.dsm.soap.year.slope",
-    "dd.dsm.soap.year.grad",
-    "dd.dsm.soap.year.sst",
-    "dd.dsm.soap.year.clo",
-    "dd.dsm.soap.year.dist.up",
-    "dd.dsm.soap.year.depth"),
-  extra = c(
-    "",
-    "season",
-    "season + s(Ano)",
-    "season + s(Ano) + s(slope)",
-    "season + s(Ano) + s(grad)",
-    "season + s(Ano) + s(sst)",
-    "season + s(Ano) + s(clo)",
-    "season + s(Ano) + s(dist.up)",
-    "season + s(Ano) + s(depth)",
-    "s(Ano)",
-    "season + s(slope)",
-    "season + s(grad)",
-    "season + s(sst)",
-    "season + s(clo)",
-    "season + s(dist.up)",
-    "season + s(depth)",
-    "s(Ano) + s(slope)",
-    "s(Ano) + s(grad)",
-    "s(Ano) + s(sst)",
-    "s(Ano) + s(clo)",
-    "s(Ano) + s(dist.up)",
-    "s(Ano) + s(depth)"),
-  label = c(
-    "count ~ s(x,y,so)",
-    "count ~ s(x,y,so) + season",
-    "count ~ s(x,y,so) + season + s(Ano)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(slope)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(grad)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(sst)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(clo)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(dist.up)",
-    "count ~ s(x,y,so) + season + s(Ano) + s(depth)",
-    "count ~ s(x,y,so) + s(Ano)",
-    "count ~ s(x,y,so) + season + s(slope)",
-    "count ~ s(x,y,so) + season + s(grad)",
-    "count ~ s(x,y,so) + season + s(sst)",
-    "count ~ s(x,y,so) + season + s(clo)",
-    "count ~ s(x,y,so) + season + s(dist.up)",
-    "count ~ s(x,y,so) + season + s(depth)",
-    "count ~ s(x,y,so) + s(Ano) + s(slope)",
-    "count ~ s(x,y,so) + s(Ano) + s(grad)",
-    "count ~ s(x,y,so) + s(Ano) + s(sst)",
-    "count ~ s(x,y,so) + s(Ano) + s(clo)",
-    "count ~ s(x,y,so) + s(Ano) + s(dist.up)",
-    "count ~ s(x,y,so) + s(Ano) + s(depth)"))
+# name / extra terms / label — mirrors the 4_CommonDolphin_DSM.R set, soap spatial.
+# GENERATED rather than three hand-maintained parallel vectors: previously a
+# covariate could only be added by editing name/extra/label in three places, and
+# a single omission silently paired one model's formula with another's label.
+.env7 <- c("slope", "grad", "sst", "clo", "dist.up", "depth", "VelVert")
+
+.sp <- function(name, extra, label)
+  data.frame(name = name, extra = extra, label = label, stringsAsFactors = FALSE)
+
+spec <- do.call(rbind, c(
+  list(
+    .sp("dd.dsm.soap",             "",                "count ~ s(x,y,so)"),
+    .sp("dd.dsm.soap.season",      "season",          "count ~ s(x,y,so) + season"),
+    .sp("dd.dsm.soap.season.year", "season + s(Ano)", "count ~ s(x,y,so) + season + s(Ano)")
+  ),
+  lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.year.season.%s", e),
+                         sprintf("season + s(Ano) + s(%s)", e),
+                         sprintf("count ~ s(x,y,so) + season + s(Ano) + s(%s)", e))),
+  list(
+    .sp("dd.dsm.soap.year", "s(Ano)", "count ~ s(x,y,so) + s(Ano)")
+  ),
+  lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.season.%s", e),
+                         sprintf("season + s(%s)", e),
+                         sprintf("count ~ s(x,y,so) + season + s(%s)", e))),
+  lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.year.%s", e),
+                         sprintf("s(Ano) + s(%s)", e),
+                         sprintf("count ~ s(x,y,so) + s(Ano) + s(%s)", e)))
+))
 
 # fit all (slow!) and expose each as a named object
 dd_soap_models <- lapply(spec$extra, fit_soap)
@@ -172,17 +129,22 @@ list2env(dd_soap_models, envir = .GlobalEnv)
 # ============================================================
 # Model-selection table (analogous to table_dd_modselection)
 # ============================================================
+# Tweedie p estimated by tw(); NA for any model fitted with a fixed-p family
+.p_hat_m <- function(m)
+  if (is.null(m$family$getTheta)) NA_real_ else round(m$family$getTheta(TRUE), 4)
+
 table_dd_soap_modselection <- data.frame(stringsAsFactors = FALSE,
   model = spec$label,
   df    = vapply(dd_soap_models, function(m) round(attr(logLik(m), "df"), 2), numeric(1)),
   AIC   = round(vapply(dd_soap_models, AIC, numeric(1)), 2),
-  Dev   = vapply(dd_soap_models, function(m) round(summary(m)$dev.expl, 2), numeric(1))
+  Dev   = vapply(dd_soap_models, function(m) round(summary(m)$dev.expl, 2), numeric(1)),
+  p_hat = vapply(dd_soap_models, .p_hat_m, numeric(1))
 )
 table_dd_soap_modselection$deltaAIC <-
   round(table_dd_soap_modselection$AIC - min(table_dd_soap_modselection$AIC), 2)
 table_dd_soap_modselection <-
   table_dd_soap_modselection[order(table_dd_soap_modselection$deltaAIC),
-                             c("model", "df", "AIC", "deltaAIC", "Dev")]
+                             c("model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
 rownames(table_dd_soap_modselection) <- NULL
 
 print(table_dd_soap_modselection)
@@ -197,54 +159,35 @@ print(table_dd_soap_modselection)
              df    = round(attr(logLik(m), "df"), 2),
              AIC   = round(AIC(m), 2),
              Dev   = round(summary(m)$dev.expl, 2),
+             p_hat = .p_hat_m(m),
              stringsAsFactors = FALSE)
 
 # soap candidates (fitted above; concise labels from `spec`)
 .soap_rows <- do.call(rbind, Map(function(m, lab) .msrow(m, lab, "soap"),
                                  dd_soap_models, spec$label))
 
-# thin-plate candidates (from 4_CommonDolphin_DSM.R); labels from the formulas
-.tp_names <- c(
-  "dd.dsm.xy", "dd.dsm.xy.season", "dd.dsm.xy.season.year",
-  "dd.dsm.xy.year.season.slope", "dd.dsm.xy.year.season.grad",
-  "dd.dsm.xy.year.season.sst", "dd.dsm.xy.year.season.clo",
-  "dd.dsm.xy.year.season.dist.up", "dd.dsm.xy.year.season.depth",
-  "dd.dsm.xy.year", "dd.dsm.xy.season.slope", "dd.dsm.xy.season.grad",
-  "dd.dsm.xy.season.sst", "dd.dsm.xy.season.clo", "dd.dsm.xy.season.dist.up",
-  "dd.dsm.xy.season.depth", "dd.dsm.xy.year.slope", "dd.dsm.xy.year.grad",
-  "dd.dsm.xy.year.sst", "dd.dsm.xy.year.clo", "dd.dsm.xy.year.dist.up",
-  "dd.dsm.xy.year.depth", "dd.dsm.xy.fsyear.season",
-  "dd.dsm.xy.fsyear",
-  "dd.dsm.xy.fsyear.season.slope", "dd.dsm.xy.fsyear.season.grad",
-  "dd.dsm.xy.fsyear.season.sst", "dd.dsm.xy.fsyear.season.clo",
-  "dd.dsm.xy.fsyear.season.dist.up", "dd.dsm.xy.fsyear.season.depth",
-  "dd.dsm.xy.fsyear.slope", "dd.dsm.xy.fsyear.grad", "dd.dsm.xy.fsyear.sst",
-  "dd.dsm.xy.fsyear.clo", "dd.dsm.xy.fsyear.dist.up", "dd.dsm.xy.fsyear.depth",
-  "dd.dsm.xy.byyear", "dd.dsm.xy.byyear.season",
-  "dd.dsm.xy.byyear.season.slope", "dd.dsm.xy.byyear.season.grad",
-  "dd.dsm.xy.byyear.season.sst", "dd.dsm.xy.byyear.season.clo",
-  "dd.dsm.xy.byyear.season.dist.up", "dd.dsm.xy.byyear.season.depth",
-  "dd.dsm.xy.byyear.slope", "dd.dsm.xy.byyear.grad", "dd.dsm.xy.byyear.sst",
-  "dd.dsm.xy.byyear.clo", "dd.dsm.xy.byyear.dist.up", "dd.dsm.xy.byyear.depth")
-.tp_names <- .tp_names[vapply(.tp_names, exists, logical(1))]
+# thin-plate candidates (from 4_CommonDolphin_DSM.R). The name list and the pretty
+# labels are both taken from .dd_labels, built there, so this table cannot
+# disagree with table_dd_modselection and picks up the VelVert models
+# automatically instead of needing a second hand-maintained name list.
+.tp_names <- character(0)
+if (exists(".dd_labels"))
+  .tp_names <- names(.dd_labels)[vapply(names(.dd_labels), exists, logical(1))]
 
 if (length(.tp_names) == 0) {
   warning("No thin-plate models in the workspace — run 4_CommonDolphin_DSM.R ",
           "first; showing the soap table only.")
   table_dd_combined_modselection <- table_dd_soap_modselection
 } else {
-  .tp_rows <- do.call(rbind, lapply(.tp_names, function(nm) {
-    m <- get(nm)
-    .msrow(m, paste(deparse(formula(m), width.cutoff = 200), collapse = " "),
-           "thin-plate")
-  }))
+  .tp_rows <- do.call(rbind, lapply(.tp_names, function(nm)
+    .msrow(get(nm), unname(.dd_labels[nm]), "thin-plate")))
   table_dd_combined_modselection <- rbind(.tp_rows, .soap_rows)
   table_dd_combined_modselection$deltaAIC <-
     round(table_dd_combined_modselection$AIC -
             min(table_dd_combined_modselection$AIC), 2)
   table_dd_combined_modselection <-
     table_dd_combined_modselection[order(table_dd_combined_modselection$deltaAIC),
-                                   c("basis", "model", "df", "AIC", "deltaAIC", "Dev")]
+                                   c("basis", "model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
   rownames(table_dd_combined_modselection) <- NULL
 }
 

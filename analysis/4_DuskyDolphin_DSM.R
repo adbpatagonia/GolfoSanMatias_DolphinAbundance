@@ -26,6 +26,25 @@ obsdata_lo_mod[, season := relevel(factor(season), ref = "Spring")]
 obsdata_lo_mod[, year_fac := factor(Ano)]
 segdata[, year_fac := factor(Ano)]
 
+# Family and fitting engine ----
+# FAMILY: tw(link = "log") estimates the Tweedie power p as part of each fit,
+# replacing the fixed Tweedie(p = 1.31) that UTIL_FindTweedieP_DuskyDolphin.R
+# used to pick by AIC grid search. That grid search was a profile likelihood
+# over p that paid NO degrees of freedom for the p it chose, and models fitted
+# at different fixed p are not rankable against one another. tw() costs exactly
+# 1 df (n.theta = 1), so the selection table is internally consistent. On the
+# real dusky data tw() estimates p = 1.29-1.32 depending on structure, so the
+# old 1.31 was a good choice — this changes the bookkeeping, not the fits.
+#
+# ENGINE: every model here is fitted with gam/REML. The by-year block used to
+# use engine = "bam", method = "fREML"; that was removed after a direct
+# comparison on the real data:
+#     lo.dsm.xy.byyear.season   bam/fREML   AIC 1031.89   edf 20.62
+#     identical formula         gam/REML    AIC  976.65   edf 39.80   (782 s)
+# bam was shrinking the 11 year-specific surfaces to nearly nothing and cost
+# ~55 AIC units. Its approximations target n >= 1e5; there are 6288 segments
+# here. bs = "ts" is what makes this block converge — the engine never was.
+
 # correlation among covariates ----
 
 # Simple model ----
@@ -48,7 +67,7 @@ lo.dsm.xy  <-  dsm(count~s(x,y),
                    ddf.obj =  df.lo,
                    segment.data = segdata,
                    observation.data = obsdata_lo_mod,
-                   family = Tweedie(p = 1.31),
+                   family = tw(link = "log"),
                    method="REML")
 
 # summary(lo.dsm.xy)
@@ -61,7 +80,7 @@ lo.dsm.xy.year  <-  dsm(count ~ s(x,y) +
                         ddf.obj =  df.lo,
                         segment.data = segdata,
                         observation.data = obsdata_lo_mod,
-                        family = Tweedie(p = 1.31),
+                        family = tw(link = "log"),
                         method="REML")
 
 # summary(lo.dsm.xy.year)
@@ -75,7 +94,7 @@ lo.dsm.xy.season  <-  dsm(count ~ s(x,y) +
                           ddf.obj =  df.lo,
                           segment.data = segdata,
                           observation.data = obsdata_lo_mod,
-                          family = Tweedie(p = 1.31),
+                          family = tw(link = "log"),
                           method="REML")
 
 # summary(lo.dsm.xy.season)
@@ -90,7 +109,7 @@ lo.dsm.xy.season.year  <-  dsm(count ~ s(x,y) +
                                ddf.obj =  df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = 1.31),
+                               family = tw(link = "log"),
                                method="REML")
 
 # summary(lo.dsm.xy.season.year)
@@ -107,7 +126,7 @@ lo.dsm.xy.year.season.slope  <- dsm(count ~ s(x,y) +
                                     ddf.obj =  df.lo,
                                     segment.data = segdata,
                                     observation.data = obsdata_lo_mod,
-                                    family = Tweedie(p = 1.31),
+                                    family = tw(link = "log"),
                                     method="REML")
 
 # summary(lo.dsm.xy.year.season.slope)
@@ -122,7 +141,7 @@ lo.dsm.xy.year.season.grad  <- dsm(count ~ s(x,y) +
                                    ddf.obj =  df.lo,
                                    segment.data = segdata,
                                    observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = 1.31),
+                                   family = tw(link = "log"),
                                    method="REML")
 
 # summary(lo.dsm.xy.year.season.grad)
@@ -137,8 +156,18 @@ lo.dsm.xy.year.season.depth  <-  dsm(count ~ s(x,y) +
                                      ddf.obj =  df.lo,
                                      segment.data = segdata,
                                      observation.data = obsdata_lo_mod,
-                                     family = Tweedie(p = 1.31),
+                                     family = tw(link = "log"),
                                      method="REML")
+
+## VelVert ----
+lo.dsm.xy.year.season.VelVert  <-  dsm(count ~ s(x,y) +
+                                         season + s(Ano) +
+                                         s(VelVert),
+                                       ddf.obj =  df.lo,
+                                       segment.data = segdata,
+                                       observation.data = obsdata_lo_mod,
+                                       family = tw(link = "log"),
+                                       method="REML")
 
 # summary(lo.dsm.xy.year.season.depth)
 # appraise(lo.dsm.xy.year.season.depth)
@@ -153,7 +182,7 @@ lo.dsm.xy.year.season.sst  <- dsm(count ~ s(x,y) +
                                   ddf.obj =  df.lo,
                                   segment.data = segdata,
                                   observation.data = obsdata_lo_mod,
-                                  family = Tweedie(p = 1.31),
+                                  family = tw(link = "log"),
                                   method="REML")
 
 # summary(lo.dsm.xy.year.season.sst)
@@ -169,7 +198,7 @@ lo.dsm.xy.year.season.clo  <- dsm(count ~ s(x,y) +
                                   ddf.obj =  df.lo,
                                   segment.data = segdata,
                                   observation.data = obsdata_lo_mod,
-                                  family = Tweedie(p = 1.31),
+                                  family = tw(link = "log"),
                                   method="REML")
 
 # summary(lo.dsm.xy.year.season.clo)
@@ -184,7 +213,7 @@ lo.dsm.xy.year.season.dist.up  <- dsm(count ~ s(x,y) +
                                       ddf.obj =  df.lo,
                                       segment.data = segdata,
                                       observation.data = obsdata_lo_mod,
-                                      family = Tweedie(p = 1.31),
+                                      family = tw(link = "log"),
                                       method="REML")
 
 # summary(lo.dsm.xy.year.season.dist.up)
@@ -200,7 +229,7 @@ lo.dsm.xy.year.season.dist.up.grad  <- dsm(count ~ s(x,y) +
                                            ddf.obj =  df.lo,
                                            segment.data = segdata,
                                            observation.data = obsdata_lo_mod,
-                                           family = Tweedie(p = 1.31),
+                                           family = tw(link = "log"),
                                            method="REML")
 
 # summary(lo.dsm.xy.year.season.dist.up.grad)
@@ -219,7 +248,7 @@ lo.dsm.xy.season.slope  <- dsm(count ~ s(x,y) +
                                ddf.obj =  df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = 1.31),
+                               family = tw(link = "log"),
                                method="REML")
 
 # summary(lo.dsm.xy.season.slope)
@@ -233,7 +262,7 @@ lo.dsm.xy.season.grad  <- dsm(count ~ s(x,y) +
                               ddf.obj =  df.lo,
                               segment.data = segdata,
                               observation.data = obsdata_lo_mod,
-                              family = Tweedie(p = 1.31),
+                              family = tw(link = "log"),
                               method="REML")
 
 # summary(lo.dsm.xy.season.grad)
@@ -247,7 +276,7 @@ lo.dsm.xy.season.sst  <- dsm(count ~ s(x,y) +
                              ddf.obj =  df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
+                             family = tw(link = "log"),
                              method="REML")
 
 # summary(lo.dsm.xy.season.sst)
@@ -261,7 +290,7 @@ lo.dsm.xy.season.clo  <- dsm(count ~ s(x,y) +
                              ddf.obj =  df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
+                             family = tw(link = "log"),
                              method="REML")
 
 # summary(lo.dsm.xy.season.clo)
@@ -275,7 +304,7 @@ lo.dsm.xy.season.dist.up  <- dsm(count ~ s(x,y) +
                                  ddf.obj =  df.lo,
                                  segment.data = segdata,
                                  observation.data = obsdata_lo_mod,
-                                 family = Tweedie(p = 1.31),
+                                 family = tw(link = "log"),
                                  method="REML")
 
 # summary(lo.dsm.xy.season.dist.up)
@@ -289,8 +318,18 @@ lo.dsm.xy.season.depth  <- dsm(count ~ s(x,y) +
                                ddf.obj =  df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = 1.31),
+                               family = tw(link = "log"),
                                method="REML")
+
+## VelVert ----
+lo.dsm.xy.season.VelVert  <- dsm(count ~ s(x,y) +
+                                   season +
+                                   s(VelVert),
+                                 ddf.obj =  df.lo,
+                                 segment.data = segdata,
+                                 observation.data = obsdata_lo_mod,
+                                 family = tw(link = "log"),
+                                 method="REML")
 
 # summary(lo.dsm.xy.season.depth)
 # appraise(lo.dsm.xy.season.depth)
@@ -307,7 +346,7 @@ lo.dsm.xy.year.slope  <- dsm(count ~ s(x,y) +
                              ddf.obj =  df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
+                             family = tw(link = "log"),
                              method="REML")
 
 # summary(lo.dsm.xy.year.slope)
@@ -321,7 +360,7 @@ lo.dsm.xy.year.grad  <- dsm(count ~ s(x,y) +
                             ddf.obj =  df.lo,
                             segment.data = segdata,
                             observation.data = obsdata_lo_mod,
-                            family = Tweedie(p = 1.31),
+                            family = tw(link = "log"),
                             method="REML")
 
 # summary(lo.dsm.xy.year.grad)
@@ -335,7 +374,7 @@ lo.dsm.xy.year.sst  <- dsm(count ~ s(x,y) +
                            ddf.obj =  df.lo,
                            segment.data = segdata,
                            observation.data = obsdata_lo_mod,
-                           family = Tweedie(p = 1.31),
+                           family = tw(link = "log"),
                            method="REML")
 
 # summary(lo.dsm.xy.year.sst)
@@ -349,7 +388,7 @@ lo.dsm.xy.year.clo  <- dsm(count ~ s(x,y) +
                            ddf.obj =  df.lo,
                            segment.data = segdata,
                            observation.data = obsdata_lo_mod,
-                           family = Tweedie(p = 1.31),
+                           family = tw(link = "log"),
                            method="REML")
 
 # summary(lo.dsm.xy.year.clo)
@@ -363,7 +402,7 @@ lo.dsm.xy.year.dist.up  <- dsm(count ~ s(x,y) +
                                ddf.obj =  df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = 1.31),
+                               family = tw(link = "log"),
                                method="REML")
 
 # summary(lo.dsm.xy.year.dist.up)
@@ -377,8 +416,18 @@ lo.dsm.xy.year.depth  <- dsm(count ~ s(x,y) +
                              ddf.obj =  df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
+                             family = tw(link = "log"),
                              method="REML")
+
+## VelVert ----
+lo.dsm.xy.year.VelVert  <- dsm(count ~ s(x,y) +
+                                 s(Ano) +
+                                 s(VelVert),
+                               ddf.obj =  df.lo,
+                               segment.data = segdata,
+                               observation.data = obsdata_lo_mod,
+                               family = tw(link = "log"),
+                               method="REML")
 
 # summary(lo.dsm.xy.year.depth)
 # appraise(lo.dsm.xy.year.depth)
@@ -394,7 +443,7 @@ lo.dsm.xy.fsyear.season <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                ddf.obj = df.lo,
                                segment.data = segdata,
                                observation.data = obsdata_lo_mod,
-                               family = Tweedie(p = 1.31),
+                               family = tw(link = "log"),
                                method = "REML")
 
 # summary(lo.dsm.xy.fsyear.season)
@@ -448,7 +497,7 @@ lo.dsm.xy.fsyear <- dsm(count ~ s(x, y, year_fac, bs = "fs"),
                         ddf.obj = df.lo,
                         segment.data = segdata,
                         observation.data = obsdata_lo_mod,
-                        family = Tweedie(p = 1.31),
+                        family = tw(link = "log"),
                         method = "REML")
 
 # summary(lo.dsm.xy.fsyear)
@@ -464,7 +513,7 @@ lo.dsm.xy.fsyear.season.slope <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                      ddf.obj = df.lo,
                                      segment.data = segdata,
                                      observation.data = obsdata_lo_mod,
-                                     family = Tweedie(p = 1.31),
+                                     family = tw(link = "log"),
                                      method = "REML")
 
 ## grad ----
@@ -474,7 +523,7 @@ lo.dsm.xy.fsyear.season.grad <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                     ddf.obj = df.lo,
                                     segment.data = segdata,
                                     observation.data = obsdata_lo_mod,
-                                    family = Tweedie(p = 1.31),
+                                    family = tw(link = "log"),
                                     method = "REML")
 
 ## sst ----
@@ -484,7 +533,7 @@ lo.dsm.xy.fsyear.season.sst <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                    ddf.obj = df.lo,
                                    segment.data = segdata,
                                    observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = 1.31),
+                                   family = tw(link = "log"),
                                    method = "REML")
 
 ## clo ----
@@ -494,7 +543,7 @@ lo.dsm.xy.fsyear.season.clo <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                    ddf.obj = df.lo,
                                    segment.data = segdata,
                                    observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = 1.31),
+                                   family = tw(link = "log"),
                                    method = "REML")
 
 ## dist.up ----
@@ -504,7 +553,7 @@ lo.dsm.xy.fsyear.season.dist.up <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                        ddf.obj = df.lo,
                                        segment.data = segdata,
                                        observation.data = obsdata_lo_mod,
-                                       family = Tweedie(p = 1.31),
+                                       family = tw(link = "log"),
                                        method = "REML")
 
 ## depth ----
@@ -514,8 +563,18 @@ lo.dsm.xy.fsyear.season.depth <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                      ddf.obj = df.lo,
                                      segment.data = segdata,
                                      observation.data = obsdata_lo_mod,
-                                     family = Tweedie(p = 1.31),
+                                     family = tw(link = "log"),
                                      method = "REML")
+
+## VelVert ----
+lo.dsm.xy.fsyear.season.VelVert <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
+                                         season +
+                                         s(VelVert),
+                                       ddf.obj = df.lo,
+                                       segment.data = segdata,
+                                       observation.data = obsdata_lo_mod,
+                                       family = tw(link = "log"),
+                                       method = "REML")
 
 # Set: fs year + environmental variable (no season) ----
 ## slope ----
@@ -524,7 +583,7 @@ lo.dsm.xy.fsyear.slope <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                               ddf.obj = df.lo,
                               segment.data = segdata,
                               observation.data = obsdata_lo_mod,
-                              family = Tweedie(p = 1.31),
+                              family = tw(link = "log"),
                               method = "REML")
 
 ## grad ----
@@ -533,7 +592,7 @@ lo.dsm.xy.fsyear.grad <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                              ddf.obj = df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
+                             family = tw(link = "log"),
                              method = "REML")
 
 ## sst ----
@@ -542,7 +601,7 @@ lo.dsm.xy.fsyear.sst <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                             ddf.obj = df.lo,
                             segment.data = segdata,
                             observation.data = obsdata_lo_mod,
-                            family = Tweedie(p = 1.31),
+                            family = tw(link = "log"),
                             method = "REML")
 
 ## clo ----
@@ -551,7 +610,7 @@ lo.dsm.xy.fsyear.clo <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                             ddf.obj = df.lo,
                             segment.data = segdata,
                             observation.data = obsdata_lo_mod,
-                            family = Tweedie(p = 1.31),
+                            family = tw(link = "log"),
                             method = "REML")
 
 ## dist.up ----
@@ -560,7 +619,7 @@ lo.dsm.xy.fsyear.dist.up <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                                 ddf.obj = df.lo,
                                 segment.data = segdata,
                                 observation.data = obsdata_lo_mod,
-                                family = Tweedie(p = 1.31),
+                                family = tw(link = "log"),
                                 method = "REML")
 
 ## depth ----
@@ -569,8 +628,17 @@ lo.dsm.xy.fsyear.depth <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
                               ddf.obj = df.lo,
                               segment.data = segdata,
                               observation.data = obsdata_lo_mod,
-                              family = Tweedie(p = 1.31),
+                              family = tw(link = "log"),
                               method = "REML")
+
+## VelVert ----
+lo.dsm.xy.fsyear.VelVert <- dsm(count ~ s(x, y, year_fac, bs = "fs") +
+                                  s(VelVert),
+                                ddf.obj = df.lo,
+                                segment.data = segdata,
+                                observation.data = obsdata_lo_mod,
+                                family = tw(link = "log"),
+                                method = "REML")
 
 print("Annual (x, y) surface via by = year_fac")
 s6 <- Sys.time()
@@ -587,9 +655,8 @@ lo.dsm.xy.byyear  <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                          ddf.obj = df.lo,
                          segment.data = segdata,
                          observation.data = obsdata_lo_mod,
-                         family = Tweedie(p = 1.31),
-                         method   = "fREML",
-                         engine   = "bam")
+                         family = tw(link = "log"),
+                         method   = "REML")
 
 # summary(lo.dsm.xy.byyear)
 # appraise(lo.dsm.xy.byyear)
@@ -601,9 +668,8 @@ lo.dsm.xy.byyear.season  <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                 ddf.obj = df.lo,
                                 segment.data = segdata,
                                 observation.data = obsdata_lo_mod,
-                                family = Tweedie(p = 1.31),
-                                method   = "fREML",
-                         engine   = "bam")
+                                family = tw(link = "log"),
+                                method   = "REML")
 
 # summary(lo.dsm.xy.byyear.season)
 # appraise(lo.dsm.xy.byyear.season)
@@ -619,9 +685,8 @@ lo.dsm.xy.byyear.season.slope <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                      ddf.obj = df.lo,
                                      segment.data = segdata,
                                      observation.data = obsdata_lo_mod,
-                                     family = Tweedie(p = 1.31),
-                                     method   = "fREML",
-                         engine   = "bam")
+                                     family = tw(link = "log"),
+                                     method   = "REML")
 
 ## grad ----
 lo.dsm.xy.byyear.season.grad <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -631,9 +696,8 @@ lo.dsm.xy.byyear.season.grad <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                     ddf.obj = df.lo,
                                     segment.data = segdata,
                                     observation.data = obsdata_lo_mod,
-                                    family = Tweedie(p = 1.31),
-                                    method   = "fREML",
-                         engine   = "bam")
+                                    family = tw(link = "log"),
+                                    method   = "REML")
 
 ## sst ----
 lo.dsm.xy.byyear.season.sst <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -643,9 +707,8 @@ lo.dsm.xy.byyear.season.sst <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                    ddf.obj = df.lo,
                                    segment.data = segdata,
                                    observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = 1.31),
-                                   method   = "fREML",
-                         engine   = "bam")
+                                   family = tw(link = "log"),
+                                   method   = "REML")
 
 ## clo ----
 lo.dsm.xy.byyear.season.clo <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -655,9 +718,8 @@ lo.dsm.xy.byyear.season.clo <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                    ddf.obj = df.lo,
                                    segment.data = segdata,
                                    observation.data = obsdata_lo_mod,
-                                   family = Tweedie(p = 1.31),
-                                   method   = "fREML",
-                         engine   = "bam")
+                                   family = tw(link = "log"),
+                                   method   = "REML")
 
 ## dist.up ----
 lo.dsm.xy.byyear.season.dist.up <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -667,9 +729,8 @@ lo.dsm.xy.byyear.season.dist.up <- dsm(count ~ s(x, y, by = year_fac, bs = "ts")
                                        ddf.obj = df.lo,
                                        segment.data = segdata,
                                        observation.data = obsdata_lo_mod,
-                                       family = Tweedie(p = 1.31),
-                                       method   = "fREML",
-                         engine   = "bam")
+                                       family = tw(link = "log"),
+                                       method   = "REML")
 
 ## depth ----
 lo.dsm.xy.byyear.season.depth <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -679,9 +740,19 @@ lo.dsm.xy.byyear.season.depth <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                      ddf.obj = df.lo,
                                      segment.data = segdata,
                                      observation.data = obsdata_lo_mod,
-                                     family = Tweedie(p = 1.31),
-                                     method   = "fREML",
-                         engine   = "bam")
+                                     family = tw(link = "log"),
+                                     method   = "REML")
+
+## VelVert ----
+lo.dsm.xy.byyear.season.VelVert <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
+                                         year_fac +
+                                         season +
+                                         s(VelVert),
+                                       ddf.obj = df.lo,
+                                       segment.data = segdata,
+                                       observation.data = obsdata_lo_mod,
+                                       family = tw(link = "log"),
+                                       method   = "REML")
 
 print("Set: by = year_fac + environmental variable (no season)")
 s8 <- Sys.time()
@@ -693,9 +764,8 @@ lo.dsm.xy.byyear.slope <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                               ddf.obj = df.lo,
                               segment.data = segdata,
                               observation.data = obsdata_lo_mod,
-                              family = Tweedie(p = 1.31),
-                              method   = "fREML",
-                         engine   = "bam")
+                              family = tw(link = "log"),
+                              method   = "REML")
 
 ## grad ----
 lo.dsm.xy.byyear.grad <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -704,9 +774,8 @@ lo.dsm.xy.byyear.grad <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                              ddf.obj = df.lo,
                              segment.data = segdata,
                              observation.data = obsdata_lo_mod,
-                             family = Tweedie(p = 1.31),
-                             method   = "fREML",
-                         engine   = "bam")
+                             family = tw(link = "log"),
+                             method   = "REML")
 
 ## sst ----
 lo.dsm.xy.byyear.sst <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -715,9 +784,8 @@ lo.dsm.xy.byyear.sst <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                             ddf.obj = df.lo,
                             segment.data = segdata,
                             observation.data = obsdata_lo_mod,
-                            family = Tweedie(p = 1.31),
-                            method   = "fREML",
-                         engine   = "bam")
+                            family = tw(link = "log"),
+                            method   = "REML")
 
 ## clo ----
 lo.dsm.xy.byyear.clo <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -726,9 +794,8 @@ lo.dsm.xy.byyear.clo <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                             ddf.obj = df.lo,
                             segment.data = segdata,
                             observation.data = obsdata_lo_mod,
-                            family = Tweedie(p = 1.31),
-                            method   = "fREML",
-                         engine   = "bam")
+                            family = tw(link = "log"),
+                            method   = "REML")
 
 ## dist.up ----
 lo.dsm.xy.byyear.dist.up <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -737,9 +804,8 @@ lo.dsm.xy.byyear.dist.up <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                                 ddf.obj = df.lo,
                                 segment.data = segdata,
                                 observation.data = obsdata_lo_mod,
-                                family = Tweedie(p = 1.31),
-                                method   = "fREML",
-                         engine   = "bam")
+                                family = tw(link = "log"),
+                                method   = "REML")
 
 ## depth ----
 lo.dsm.xy.byyear.depth <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
@@ -748,172 +814,129 @@ lo.dsm.xy.byyear.depth <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
                               ddf.obj = df.lo,
                               segment.data = segdata,
                               observation.data = obsdata_lo_mod,
-                              family = Tweedie(p = 1.31),
-                              method   = "fREML",
-                         engine   = "bam")
+                              family = tw(link = "log"),
+                              method   = "REML")
+
+## VelVert ----
+lo.dsm.xy.byyear.VelVert <- dsm(count ~ s(x, y, by = year_fac, bs = "ts") +
+                                  year_fac +
+                                  s(VelVert),
+                                ddf.obj = df.lo,
+                                segment.data = segdata,
+                                observation.data = obsdata_lo_mod,
+                                family = tw(link = "log"),
+                                method   = "REML")
+
+# the seven environmental covariates, single-sourced so the model set and the
+# selection-table labels cannot drift apart
+.env7 <- c("slope", "grad", "sst", "clo", "dist.up", "depth", "VelVert")
 
 print("Model selection")
 s9 <- Sys.time()
 # Model selection -----
-table_lo_modselection <- AIC(lo.dsm.xy,
-                             lo.dsm.xy.season,
-                             lo.dsm.xy.season.year,
-                             lo.dsm.xy.year.season.slope,
-                             lo.dsm.xy.year.season.grad,
-                             lo.dsm.xy.year.season.sst,
-                             lo.dsm.xy.year.season.clo,
-                             lo.dsm.xy.year.season.dist.up,
-                             lo.dsm.xy.year.season.depth,
-                             lo.dsm.xy.year,
-                             lo.dsm.xy.season.slope,
-                             lo.dsm.xy.season.grad,
-                             lo.dsm.xy.season.sst,
-                             lo.dsm.xy.season.clo,
-                             lo.dsm.xy.season.dist.up,
-                             lo.dsm.xy.season.depth,
-                             lo.dsm.xy.year.slope,
-                             lo.dsm.xy.year.grad,
-                             lo.dsm.xy.year.sst,
-                             lo.dsm.xy.year.clo,
-                             lo.dsm.xy.year.dist.up,
-                             lo.dsm.xy.year.depth,
-                             lo.dsm.xy.fsyear.season,
-                             lo.dsm.xy.fsyear,
-                             lo.dsm.xy.fsyear.season.slope,
-                             lo.dsm.xy.fsyear.season.grad,
-                             lo.dsm.xy.fsyear.season.sst,
-                             lo.dsm.xy.fsyear.season.clo,
-                             lo.dsm.xy.fsyear.season.dist.up,
-                             lo.dsm.xy.fsyear.season.depth,
-                             lo.dsm.xy.fsyear.slope,
-                             lo.dsm.xy.fsyear.grad,
-                             lo.dsm.xy.fsyear.sst,
-                             lo.dsm.xy.fsyear.clo,
-                             lo.dsm.xy.fsyear.dist.up,
-                             lo.dsm.xy.fsyear.depth,
-                             lo.dsm.xy.byyear,
-                             lo.dsm.xy.byyear.season,
-                             lo.dsm.xy.byyear.season.slope,
-                             lo.dsm.xy.byyear.season.grad,
-                             lo.dsm.xy.byyear.season.sst,
-                             lo.dsm.xy.byyear.season.clo,
-                             lo.dsm.xy.byyear.season.dist.up,
-                             lo.dsm.xy.byyear.season.depth,
-                             lo.dsm.xy.byyear.slope,
-                             lo.dsm.xy.byyear.grad,
-                             lo.dsm.xy.byyear.sst,
-                             lo.dsm.xy.byyear.clo,
-                             lo.dsm.xy.byyear.dist.up,
-                             lo.dsm.xy.byyear.depth
+# NAME-DRIVEN table. The previous version passed three parallel POSITIONAL
+# vectors to AIC() / Dev = c(...) / model = c(...); with 57 models per species
+# inserting one model silently shifted every label below it by a row. Here each
+# row is looked up by object name, so a name that does not resolve is reported
+# rather than quietly mislabelling the table.
+#
+# lo.dsm.xy.ts and lo.dsm.xy.te are deliberately left out, as before.
 
-) %>%
-  mutate(deltaAIC = round(AIC - min(AIC), 2)) %>%
-  mutate(Dev = c(
-    round(summary(lo.dsm.xy)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.year)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.season.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.season.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.year.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.season.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.fsyear.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.season.depth)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.slope)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.grad)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.sst)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.clo)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.dist.up)$dev.expl, 2),
-    round(summary(lo.dsm.xy.byyear.depth)$dev.expl, 2)
+.lbl <- function(nm, lab) setNames(lab, nm)
 
-  )) %>%
-  mutate(model = c("count ~ s(x,y)",
-                   "count ~ s(x,y) + season ",
-                   "count ~ s(x,y) + season + s(Ano)",
-                   "count ~ s(x,y) + season + s(Ano) + s(slope)",
-                   "count ~ s(x,y) + season + s(Ano) + s(grad)",
-                   "count ~ s(x,y) + season + s(Ano) + s(sst)",
-                   "count ~ s(x,y) + season + s(Ano) + s(clo)",
-                   "count ~ s(x,y) + season + s(Ano) + s(dist.up)",
-                   "count ~ s(x,y) + season + s(Ano) + s(depth)",
-                   "count ~ s(x,y) + s(Ano)",
-                   "count ~ s(x,y) + season + s(slope)",
-                   "count ~ s(x,y) + season + s(grad)",
-                   "count ~ s(x,y) + season + s(sst)",
-                   "count ~ s(x,y) + season + s(clo)",
-                   "count ~ s(x,y) + season + s(dist.up)",
-                   "count ~ s(x,y) + season + s(depth)",
-                   "count ~ s(x,y) + s(Ano) + s(slope)",
-                   "count ~ s(x,y) + s(Ano) + s(grad)",
-                   "count ~ s(x,y) + s(Ano) + s(sst)",
-                   "count ~ s(x,y) + s(Ano) + s(clo)",
-                   "count ~ s(x,y) + s(Ano) + s(dist.up)",
-                   "count ~ s(x,y) + s(Ano) + s(depth)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season",
-                   "count ~ s(x,y,year_fac,bs=fs)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(slope)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(grad)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(sst)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(clo)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(dist.up)",
-                   "count ~ s(x,y,year_fac,bs=fs) + season + s(depth)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(slope)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(grad)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(sst)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(clo)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(dist.up)",
-                   "count ~ s(x,y,year_fac,bs=fs) + s(depth)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(slope)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(grad)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(sst)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(clo)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(dist.up)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(depth)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(slope)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(grad)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(sst)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(clo)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(dist.up)",
-                   "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(depth)") ) %>%
-  data.table() %>%
-  mutate(df = round(df, 2)) %>%
-  mutate(AIC = round(AIC, 2)) %>%
-  select(model, df, AIC, deltaAIC, Dev) %>%
-  arrange(deltaAIC)
+# p_hat — the Tweedie power parameter p, as estimated by tw() for that model.
+#
+# WHAT IT IS. The Tweedie distributions used here are indexed by a power
+# parameter p in (1, 2), which sets how the variance scales with the mean:
+#   Var(y) = phi * mu^p
+# p -> 1 behaves like a (quasi-)Poisson, p -> 2 like a Gamma. In between, the
+# distribution has an atom at zero plus a continuous positive part, which is
+# what makes it suit segment counts that are mostly zero with occasional large
+# groups. Lower p puts relatively more mass on exact zeros; higher p spreads
+# more of the variance into a heavy right tail.
+#
+# WHY IT IS IN THE TABLE. p used to be fixed per species by the AIC grid search
+# in UTIL_FindTweedieP_*.R. It is now estimated inside each fit by tw(), which
+# costs exactly 1 degree of freedom (family$n.theta == 1), so AIC stays
+# comparable across rows even though each row has its own p.
+#
+# HOW TO READ IT. The point is the SPREAD down the column. If every model lands
+# on a similar p, they are competing on the MEAN structure, which is what this
+# table is meant to compare. A row whose p sits well away from the rest is
+# partly winning by fitting the dispersion/tail differently rather than the
+# spatial or temporal structure, and its AIC advantage should be read with that
+# in mind. On the real dusky data p came out at 1.29-1.32 across structures.
+#
+# NA means that model was fitted with a fixed-p family rather than tw().
+.p_hat <- function(n) {
+  fam <- get(n)$family
+  if (is.null(fam$getTheta)) NA_real_ else round(fam$getTheta(TRUE), 4)
+}
+
+.lo_labels <- c(
+  # shared thin-plate surface
+  .lbl("lo.dsm.xy",            "count ~ s(x,y)"),
+  .lbl("lo.dsm.xy.season",     "count ~ s(x,y) + season "),
+  .lbl("lo.dsm.xy.season.year", "count ~ s(x,y) + season + s(Ano)"),
+  setNames(sprintf("count ~ s(x,y) + season + s(Ano) + s(%s)", .env7),
+           sprintf("lo.dsm.xy.year.season.%s", .env7)),
+  .lbl("lo.dsm.xy.year",       "count ~ s(x,y) + s(Ano)"),
+  setNames(sprintf("count ~ s(x,y) + season + s(%s)", .env7),
+           sprintf("lo.dsm.xy.season.%s", .env7)),
+  setNames(sprintf("count ~ s(x,y) + s(Ano) + s(%s)", .env7),
+           sprintf("lo.dsm.xy.year.%s", .env7)),
+  # fs factor-smooth (year-varying, shrunk)
+  .lbl("lo.dsm.xy.fsyear.season", "count ~ s(x,y,year_fac,bs=fs) + season"),
+  .lbl("lo.dsm.xy.fsyear",        "count ~ s(x,y,year_fac,bs=fs)"),
+  setNames(sprintf("count ~ s(x,y,year_fac,bs=fs) + season + s(%s)", .env7),
+           sprintf("lo.dsm.xy.fsyear.season.%s", .env7)),
+  setNames(sprintf("count ~ s(x,y,year_fac,bs=fs) + s(%s)", .env7),
+           sprintf("lo.dsm.xy.fsyear.%s", .env7)),
+  # by = year_fac (year-varying, unshrunk)
+  .lbl("lo.dsm.xy.byyear",        "count ~ s(x,y,by=year_fac,bs=ts) + year_fac"),
+  .lbl("lo.dsm.xy.byyear.season", "count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season"),
+  setNames(sprintf("count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(%s)", .env7),
+           sprintf("lo.dsm.xy.byyear.season.%s", .env7)),
+  setNames(sprintf("count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(%s)", .env7),
+           sprintf("lo.dsm.xy.byyear.%s", .env7))
+)
+
+.ms_table <- function(labels) {
+  present <- vapply(names(labels), exists, logical(1))
+
+  # a missing model is a real problem (typo, or a fit that errored)
+  gone <- names(labels)[!present]
+  if (length(gone))
+    warning("model selection: not found in the workspace -> ",
+            paste(gone, collapse = ", "), call. = FALSE)
+
+  nm <- names(labels)[present]
+  if (!length(nm)) stop("model selection: no models found in the workspace")
+
+  # AIC is only comparable across models fitted to the SAME segments. The old
+  # AIC(m1, m2, ...) form checked this implicitly; check it explicitly now.
+  # The likely trigger is an NA in a covariate silently dropping those rows.
+  n_used <- vapply(nm, function(n) length(get(n)$y), integer(1))
+  if (length(unique(n_used)) > 1L)
+    warning("model selection: models were fitted to different numbers of ",
+            "segments (", paste(sort(unique(n_used)), collapse = " / "),
+            ") — AIC is NOT comparable across these rows.", call. = FALSE)
+
+  aic <- vapply(nm, function(n) AIC(get(n)), numeric(1))
+  out <- data.table(
+    model    = unname(labels[nm]),
+    df       = vapply(nm, function(n) round(attr(logLik(get(n)), "df"), 2), numeric(1)),
+    AIC      = round(aic, 2),
+    deltaAIC = round(aic - min(aic), 2),
+    Dev      = vapply(nm, function(n) round(summary(get(n))$dev.expl, 2), numeric(1)),
+    # with tw() every model estimates its own Tweedie p. AIC handles that (p
+    # costs 1 df), but the spread should be VISIBLE rather than assumed: a wide
+    # spread means models are competing partly on the tail/dispersion rather
+    # than on the mean structure.
+    p_hat    = vapply(nm, .p_hat, numeric(1))
+  )
+  out[order(deltaAIC)]
+}
+
+table_lo_modselection <- .ms_table(.lo_labels)
 

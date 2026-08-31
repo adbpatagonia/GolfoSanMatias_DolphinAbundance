@@ -192,7 +192,7 @@ dd.dsm.soap.season.year <- dsm(
   ddf.obj          = df.dd,
   segment.data     = segdata,
   observation.data = obsdata_dd_mod,
-  family           = Tweedie(p = 1.58),
+  family           = tw(link = "log"),
   method           = "REML",
   knots            = knots
 )
