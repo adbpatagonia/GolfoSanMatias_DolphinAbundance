@@ -59,14 +59,28 @@ obsdata_lo <- fread(paste0(here::here(), "/data/DistanceData/obsdata_lo.csv"))
 
 ### segment and prediction grid ----
 segdata <-  fread(paste0(here::here(), "/data/DistanceData/segdata.csv"))
-segdata <-  fread(paste0(here::here(), "/data/DistanceData/segdata_vana.csv"))
+#' segdata_vana.csv is segdata.csv plus the observer / vessel columns, but it
+#' came back from a Spanish-locale Excel round-trip that turned every decimal
+#' point into a thousands separator (x = 3.587.989.862, depth = 7.640.243).
+#' Most of those columns then read as character, which is loud, but `slope`
+#' (733 rows) and `grad` (52 rows) still read as NUMERIC and silently wrong by
+#' factors of 10^k, so reading the file wholesale corrupts the covariates.
+#' Digit-for-digit the two files carry identical numbers, so segdata.csv is
+#' authoritative and only the four non-numeric extra columns are taken from
+#' vana. Sample.Label is a clean 1:1 key (6288 rows, 6288 unique labels).
+segdata <- merge(
+  segdata,
+  fread(paste0(here::here(), "/data/DistanceData/segdata_gui_vana.csv"),
+        select = c("Sample.Label", "N_ObsAcordado", "vessel type")),
+  by = "Sample.Label", all.x = TRUE, sort = FALSE
+)
+
 preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddata.csv"))
 preddata <-  fread(paste0(here::here(), "/data/DistanceData/preddataVV.csv"))
 
 setnames(preddata, old = c("dist_coast", "dist_up"), new = c("dist.coast", "dist.up"))
 
-segdata[, `n obs` := NULL]
-# setnames(segdata, old = c("N_obsVana"), new = c("n_obs"))
+
 
 
 ## map data ----
@@ -80,8 +94,7 @@ pred.polys <- st_read(paste0(here::here(), "/data/shp/gridproy41.1.shp"))
 
 # wrangle data ----
 ## effective observers -----
-setnames(segdata, old = c("N_obsVana"), new = c("n_obs"))
-segdata[is.na(n_obs), n_obs := N_obsGui]
+setnames(segdata, old = c("N_ObsAcordado"), new = c("n_obs"))
 
 ### canonical survey ID -----
 #' Sample.Label is not written the same way in every file:
@@ -342,19 +355,48 @@ segdata_traj_m <- segdata[
 
     list(geometry = geom)
   },
-  by = .(traj_id,  Ano, season)
+  by = .(traj_id,  Ano, season )
+] %>%
+  st_as_sf()
+
+segdata_traj_m_month <- segdata[
+  ,
+  {
+    coords <- as.matrix(.SD[, .(x, y)])
+
+    if (nrow(coords) < 2) {
+      geom <- st_sfc(st_linestring(), crs = st_crs(target_crs))
+    } else {
+      geom <- st_sfc(st_linestring(coords), crs = st_crs(target_crs))
+    }
+
+    list(geometry = geom)
+  },
+  by = .(traj_id,  Ano, Mes_n )
 ] %>%
   st_as_sf()
 
 n.surveys <- segdata %>%
-  distinct(Ano, season, traj_id) %>%
-  group_by(Ano, season) %>%
+  distinct(Ano, season   , traj_id) %>%
+  group_by(Ano, season   ) %>%
   tally() %>%
-  pivot_wider(names_from = season, values_from = n)
+  pivot_wider(names_from = season   , values_from = n)
 
 setnafill(n.surveys, "const", fill = 0)
 
 # plots -----
+## observadores efectivos -----
+p.nobs <- lkp_nobs %>%
+  mutate(year = as.integer(substr(surveyID, start = 1, stop = 4))) %>%
+  ggplot(.) +
+  geom_jitter(aes(x = year, y = n_obs),
+              alpha = 0.6,
+              width = 0.2,
+              height = 0.2) +
+  scale_y_continuous(breaks = c(1, 2, 3, 4)) +
+  scale_x_continuous(breaks = seq(2006, 2018, 2)) +
+  theme(panel.grid.minor = element_blank())
+
 ## area map ----
 # Original lon/lat bbox (WGS84)
 bbox_ll <- st_bbox(
@@ -394,7 +436,7 @@ map.area.m <- ggplot() +
     datum = target_crs,
     expand = TRUE
   ) +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank()) +
   guides(
     color = guide_legend(nrow = 1,
@@ -448,7 +490,7 @@ p.dd <- ggplot() +
     datum = target_crs,
     expand = TRUE
   ) +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5),
         axis.text = element_text(size = 6)) +
@@ -488,7 +530,7 @@ p.lo <- ggplot() +
     datum = target_crs,
     expand = TRUE
   ) +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5),
         axis.text = element_text(size = 6)) +
@@ -508,7 +550,7 @@ p.sp <- (p.dd + p.lo.c) +
     guides = "collect"
   ) &
   theme(
-    legend.position = "bottom"
+    legend.position = "bottom", legend.key.width = unit(4, "cm")
   )
 
 ## variables maps ----
@@ -589,7 +631,7 @@ p.depth <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(2, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))
 
@@ -625,7 +667,7 @@ p.slope <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(2, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))
 
@@ -657,7 +699,7 @@ p.clo <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ Mes_n, ncol = 3)
@@ -688,7 +730,7 @@ p.sst <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ Mes_n, ncol = 3)
@@ -720,7 +762,7 @@ p.grad <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ Mes_n, ncol = 3)
@@ -752,7 +794,7 @@ p.distup <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ Mes_n, ncol = 3)
@@ -783,7 +825,7 @@ p.velvert <- ggplot() +
   scale_y_continuous(labels = \(x) x / 1000000) +
   labs(title = {{var}},
        x = "Easting (Mm)", y = "Northing (Mm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = "bottom", legend.key.width = unit(4, "cm"),
         legend.title = element_blank(),
         plot.title = element_text(hjust = 0.5))  +
   facet_wrap(. ~ Mes_n, ncol = 3)
@@ -824,3 +866,6 @@ ggsave(plot = p.distup,
        filename = paste0(here::here(), '/output/EnvVars/dist.up.png'),
        width = 16,
        height = 16)
+ggsave(p.nobs,filename = paste0(here::here(), '/output/EnvVars/nobs.png'),
+       width = 8,
+       height = 5)
