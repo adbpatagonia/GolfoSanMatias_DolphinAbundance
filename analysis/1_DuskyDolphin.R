@@ -28,6 +28,9 @@ source(file.path(here::here(), "analysis", "4_DuskyDolphin_DSM_soap.R"))
 # Create abundance estimates ----
 source(file.path(here::here(), "analysis", "5_DuskyDolphin_Abundance.R"))
 
+# n_obs == 2 sensitivity analysis ----
+source(file.path(here::here(), "analysis", "6_DuskyDolphin_Nobs2SensitivityAnalysis.R"))
+
 # Map expected densities -----
 source(file.path(here::here(), "analysis", "UTIL_Map_DSM_output_LO.R"))
 

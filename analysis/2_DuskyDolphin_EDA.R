@@ -93,132 +93,132 @@ p.slope.lo <- p.slope +
   facet_wrap(.~Ano)
 
 ## grad ----
-p.grad.lo <- p.grad +
-  geom_sf(data = segdata_traj_m_month ,
-          # aes(color = season),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m ,
-          aes(size = size),
-          alpha = 0.9
-  ) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  facet_grid(Mes_n ~ Ano)
+# p.grad.lo <- p.grad +
+#   geom_sf(data = segdata_traj_m_month ,
+#           # aes(color = season),
+#           size = 0.6,
+#           alpha = 0.25) +
+#   geom_sf(data = distdata_lo_sf_m ,
+#           aes(size = size),
+#           alpha = 0.9
+#   ) +
+#   coord_sf(
+#     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+#     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+#     default_crs = st_crs(target_crs),
+#     datum = target_crs,
+#     expand = TRUE
+#   ) +
+#   facet_grid(Mes_n ~ Ano)
 
 
 ## sst ----
-p.sst.lo <- p.sst +
-  geom_sf(data = segdata_traj_m_month ,
-          # aes(color = season),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m ,
-          aes(size = size),
-          alpha = 0.9
-  ) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  facet_grid(Mes_n ~ Ano)
+# p.sst.lo <- p.sst +
+#   geom_sf(data = segdata_traj_m_month ,
+#           # aes(color = season),
+#           size = 0.6,
+#           alpha = 0.25) +
+#   geom_sf(data = distdata_lo_sf_m ,
+#           aes(size = size),
+#           alpha = 0.9
+#   ) +
+#   coord_sf(
+#     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+#     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+#     default_crs = st_crs(target_crs),
+#     datum = target_crs,
+#     expand = TRUE
+#   ) +
+#   facet_grid(Mes_n ~ Ano)
 
 ## clorophyll ----
-p.clo.lo <- p.clo +
-  geom_sf(data = segdata_traj_m_month ,
-          # aes(color = season),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m ,
-          aes(size = size),
-          alpha = 0.9
-  ) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  facet_grid(Mes_n ~ Ano)
+# p.clo.lo <- p.clo +
+#   geom_sf(data = segdata_traj_m_month ,
+#           # aes(color = season),
+#           size = 0.6,
+#           alpha = 0.25) +
+#   geom_sf(data = distdata_lo_sf_m ,
+#           aes(size = size),
+#           alpha = 0.9
+#   ) +
+#   coord_sf(
+#     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+#     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+#     default_crs = st_crs(target_crs),
+#     datum = target_crs,
+#     expand = TRUE
+#   ) +
+#   facet_grid(Mes_n ~ Ano)
 
 ## dist.up ----
-p.distup.lo <- p.distup +
-  geom_sf(data = segdata_traj_m_month ,
-          # aes(color = season),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m ,
-          aes(size = size),
-          alpha = 0.9
-  ) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  facet_grid(Mes_n ~ Ano)
+# p.distup.lo <- p.distup +
+#   geom_sf(data = segdata_traj_m_month ,
+#           # aes(color = season),
+#           size = 0.6,
+#           alpha = 0.25) +
+#   geom_sf(data = distdata_lo_sf_m ,
+#           aes(size = size),
+#           alpha = 0.9
+#   ) +
+#   coord_sf(
+#     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+#     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+#     default_crs = st_crs(target_crs),
+#     datum = target_crs,
+#     expand = TRUE
+#   ) +
+#   facet_grid(Mes_n ~ Ano)
 
 ## VelVert ----
-p.velvert.lo <- p.velvert +
-  geom_sf(data = segdata_traj_m_month ,
-          # aes(color = season),
-          size = 0.6,
-          alpha = 0.25) +
-  geom_sf(data = distdata_lo_sf_m ,
-          aes(size = size),
-          alpha = 0.9
-  ) +
-  coord_sf(
-    xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
-    ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
-    default_crs = st_crs(target_crs),
-    datum = target_crs,
-    expand = TRUE
-  ) +
-  facet_grid(Mes_n ~ Ano)
+# p.velvert.lo <- p.velvert +
+#   geom_sf(data = segdata_traj_m_month ,
+#           # aes(color = season),
+#           size = 0.6,
+#           alpha = 0.25) +
+#   geom_sf(data = distdata_lo_sf_m ,
+#           aes(size = size),
+#           alpha = 0.9
+#   ) +
+#   coord_sf(
+#     xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+#     ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+#     default_crs = st_crs(target_crs),
+#     datum = target_crs,
+#     expand = TRUE
+#   ) +
+#   facet_grid(Mes_n ~ Ano)
 
 
 # output ----
-ggsave(plot = p.distup.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Distup.png'),
-       width = 10,
-       height = 13)
+# ggsave(plot = p.distup.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Distup.png'),
+#        width = 10,
+#        height = 13)
 
-ggsave(plot = p.clo.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Clorophyll.png'),
-       width = 10,
-       height = 13)
+# ggsave(plot = p.clo.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Clorophyll.png'),
+#        width = 10,
+#        height = 13)
 
-ggsave(plot = p.sst.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_SST.png'),
-       width = 10,
-       height = 13)
+# ggsave(plot = p.sst.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_SST.png'),
+#        width = 10,
+#        height = 13)
 
-ggsave(plot = p.depth.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Depth.png'),
-       width = 13,
-       height = 10)
+# ggsave(plot = p.depth.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Depth.png'),
+#        width = 13,
+#        height = 10)
 
-ggsave(plot = p.slope.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Slope.png'),
-       width = 13,
-       height = 10)
+# ggsave(plot = p.slope.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Slope.png'),
+#        width = 13,
+#        height = 10)
 
-ggsave(plot = p.grad.lo,
-       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Grad.png'),
-       width = 13,
-       height = 10)
+# ggsave(plot = p.grad.lo,
+#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Grad.png'),
+#        width = 13,
+#        height = 10)
 # -----
 
 titlab <- "EDA - Dusky Dolphin"
