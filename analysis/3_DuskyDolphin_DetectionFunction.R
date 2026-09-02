@@ -477,7 +477,6 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 # cutpoints:  cutpoints_lo: c(0, 50, 150, 250, 350)
 # Half normal
 # No adjustment
-# n_obsgrp as covariate
 
 ## lo: lagenorynchus obscurus
 ## df: detection function
@@ -485,8 +484,25 @@ detfun_dat_lo[distance <= trunc.dist_lo] %>%
 ## trun: trnacated distance
 ## cp: use cutpoints to deal with grouped data
 
-
-df.lo <- lo.df.hn.trun.cp
+# nobs_grp (number of observers, grouped "1" vs "> 1") was fit and evaluated
+# above (lo.df.hn.trun.cp.nobsgrp) to address a concern raised by the data
+# providers: that the apparent trend in abundance over time could be an
+# artefact of changing observer numbers rather than a real change in
+# abundance. It is NOT used as the final detection function: only 9 of the
+# 108 detections used in that fit have nobs_grp == "1", which leaves the
+# nobs_grp coefficient numerically unidentifiable (a near-singular Hessian,
+# SE = 1e5), and that unusable SE propagates into every downstream abundance
+# CV via summary(ddf)$average.p.se, silently inflating them to nonsense
+# (CV ~ 64000 on every season x year cell, regardless of which dsm variance
+# estimator is used). See NOTE_nobsgrp_detection_function_issue.R, in this
+# same directory, for the full writeup — the numerical diagnosis, the dsm
+# GitHub issue research, and why dsm_var_prop is not a workaround either —
+# and 6_DuskyDolphin_Nobs2SensitivityAnalysis.R for how the actual trend
+# question is addressed instead (holding n_obs constant by subsetting to
+# n_obs == 2, rather than modelling it as a covariate).
 df.lo <- lo.df.hn.trun.cp.nobsgrp
+df.lo <- lo.df.hn.trun.cp
+segdata <- segdata %>%
+  mutate(nobs_grp = factor(ifelse(n_obs == 1, 1, "> 1")))
 
 qqplot.ddf(df.lo$ddf, plot = TRUE)

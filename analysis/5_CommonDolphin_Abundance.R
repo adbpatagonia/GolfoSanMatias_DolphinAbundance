@@ -63,10 +63,15 @@ results_dd <- lapply(seq_len(nrow(sy_combos)),
                          )
 
                        # variance from the GAM + detection function (delta
-                       # method). dsm_var_gam is the correct estimator when the
-                       # detection function has NO covariates (df.dd is a plain
-                       # hazard-rate); dsm_var_prop refits the model and fails
-                       # here. pred.data must be a data.frame and off.set a
+                       # method). dsm_var_gam is the correct estimator here:
+                       # df.dd is a plain hazard-rate with NO covariates (a
+                       # nobs_grp covariate was investigated and deliberately
+                       # NOT used as the final detection function — see
+                       # NOTE_nobsgrp_detection_function_issue.R for why, and
+                       # 6_CommonDolphin_Nobs2SensitivityAnalysis.R for how the
+                       # underlying question — whether the dd time trend is a
+                       # changing-observer-effort artefact — is addressed
+                       # instead). pred.data must be a data.frame and off.set a
                        # per-cell-area vector (m²) — the list() form errors in
                        # dsm 2.3.3.
                        vp <- dsm_var_gam(

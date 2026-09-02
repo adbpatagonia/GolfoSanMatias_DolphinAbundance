@@ -456,8 +456,6 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 # No adjustment
 # Include group size as covariate
 
-# Include nobs_grp as covariate
-
 ## dd: delphinus delphi
 ## df: detection function
 ## hr: hazard rate
@@ -466,9 +464,26 @@ detfun_dat_dd[distance <= trunc.dist_dd] %>%
 ## size: group size as covariate to the detection function
 ## beauf: beaufort sea state as covariate
 
+# nobs_grp (number of observers, grouped "1" vs "> 1") was fit and evaluated
+# below (dd.df.hr.trun.cp.nobsgrp) to address a concern raised by the data
+# providers: that the apparent increasing trend in dd abundance over time
+# could be an artefact of changing observer numbers rather than a real change
+# in abundance. It is NOT used as the final detection function — for common
+# dolphins the nobsgrp fit is itself numerically fine, but segdata's n_obs is
+# almost a step function of year (n_obs==1 only occurs 2006-2010; n_obs is
+# almost always 2 from 2015 on), so nobsgrp and the s(Ano) trend term are too
+# confounded for a covariate adjustment to cleanly separate "detectability
+# changed" from "abundance changed". See NOTE_nobsgrp_detection_function_issue.R
+# for the full writeup (dusky dolphins have a worse, numerically degenerate
+# version of this same problem) and 6_CommonDolphin_Nobs2SensitivityAnalysis.R
+# for how the trend question is addressed instead (holding n_obs constant by
+# subsetting, rather than modelling it as a covariate).
 df.dd <- dd.df.hr.trun.cp.sizebeaufgrp
-df.dd <- dd.df.hr.trun.cp
 df.dd <- dd.df.hr.trun.cp.nobsgrp
+df.dd <- dd.df.hr.trun.cp
+
+segdata <- segdata %>%
+  mutate(nobs_grp = factor(ifelse(n_obs == 1, 1, "> 1")))
 
 qqdat <- qqplot.ddf(df.dd$ddf, plot = FALSE)
 plot(qqdat$cdf)

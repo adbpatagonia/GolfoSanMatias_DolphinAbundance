@@ -63,12 +63,21 @@ results_lo <- lapply(seq_len(nrow(sy_combos)),
                          )
 
                        # variance from the GAM + detection function (delta
-                       # method). dsm_var_gam is the correct estimator when the
-                       # detection function has NO covariates (df.lo is a plain
-                       # half-normal); dsm_var_prop refits the model and fails
-                       # here. pred.data must be a data.frame and off.set a
-                       # per-cell-area vector (m²) — the list() form errors in
-                       # dsm 2.3.3.
+                       # method). dsm_var_gam is the correct estimator here:
+                       # df.lo is a plain half-normal with NO covariates (a
+                       # nobs_grp covariate was investigated and deliberately
+                       # NOT used as the final detection function — its
+                       # coefficient was numerically unidentifiable for dusky
+                       # dolphins, only 9 of 108 detections had nobs_grp=="1",
+                       # producing a near-singular Hessian and an SE of 1e5
+                       # that inflated every downstream CV to nonsense. See
+                       # NOTE_nobsgrp_detection_function_issue.R for the full
+                       # writeup, and 6_DuskyDolphin_Nobs2SensitivityAnalysis.R
+                       # for how the underlying question — whether the
+                       # abundance time trend is a changing-observer-effort
+                       # artefact — is addressed instead). pred.data must be a
+                       # data.frame and off.set a per-cell-area vector (m²) —
+                       # the list() form errors in dsm 2.3.3.
                        vp <- dsm_var_gam(
                          dsm.obj   = lo.dsm.xy.season.year,
                          pred.data = pred_grid,
