@@ -1,0 +1,3 @@
+model,n_seg,n_obs,AIC,Dev
+full data,6288,630,6100.53,0.218
+n_obs == 2 subset,4396,480,4554.11,0.243
