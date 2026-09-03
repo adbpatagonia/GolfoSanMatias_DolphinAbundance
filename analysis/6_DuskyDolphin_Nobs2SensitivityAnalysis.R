@@ -154,13 +154,40 @@ p.lo.nobs2.year <- ggplot(yr_compare, aes(x = year, y = partial, colour = data, 
   labs(title = "Dusky dolphin: per-year partial effect, full data vs n_obs == 2 subset",
        subtitle = "count ~ s(x,y,year_fac,bs=\"fs\") + season, area-weighted mean over the survey extent",
        x = "Ano", y = "partial effect (log scale)", colour = NULL, fill = NULL) +
-  theme_minimal(base_size = 13)
+  theme_bw() +
+  theme(base.size = 13,
+        legend.position = "bottom")
 
 print(p.lo.nobs2.year)
 
+# partial effects of model n_obs == 2
+# season partial effect. n_obs=2
+p.lo.fsyear.season.nobs2 <-  gratia::draw(gratia::parametric_effects(lo.dsm.xy.fsyear.season.nobs2,
+                                                                     term = "season")) +
+  theme_bw()
+
+# year partial effect. n_obs=2
+p.lo.year.pe.nobs2 <-   ggplot(yr_nobs2, aes(year, partial)) +
+  geom_hline(yintercept = 0, linetype = 2, colour = "grey60") +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.15) +
+  geom_line() +
+  geom_point(size = 2) +
+  scale_x_continuous(breaks = 2006:2018) + #,
+  # minor_breaks = seq(2006.1, 2018.1, 0.25),
+  # guide = guide_axis(minor.ticks = TRUE)) +
+  labs(
+    title    = "Dusky dolphin — partial effect of year (fs model). n_obs == 2 subset",
+    subtitle = "s(x, y, year_fac, bs = \"fs\")  |  area-averaged, log scale, 95% CI",
+    x = "Year",
+    y = "Partial effect of year (log scale)"
+  ) +
+  theme_bw(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        axis.minor.ticks.length.x = rel(0.65))
+
 ggsave(p.lo.nobs2.year,
        filename = file.path(out_dir, "LO_year_partial_effect_compare.png"),
-       width = 9, height = 6)
+       width = 10, height = 6)
 fwrite(yr_compare, file.path(out_dir, "LO_year_partial_effect_compare.csv"))
 
 # ============================================================================
@@ -173,7 +200,7 @@ table_lo_nobs2_compare <- data.frame(
   n_years = c(nlevels(segdata$year_fac), nlevels(segdata_nobs2$year_fac)),
   AIC     = round(c(AIC(lo.dsm.xy.fsyear.season), AIC(lo.dsm.xy.fsyear.season.nobs2)), 2),
   Dev     = round(c(summary(lo.dsm.xy.fsyear.season)$dev.expl,
-                     summary(lo.dsm.xy.fsyear.season.nobs2)$dev.expl), 3)
+                    summary(lo.dsm.xy.fsyear.season.nobs2)$dev.expl), 3)
 )
 print(table_lo_nobs2_compare)
 fwrite(table_lo_nobs2_compare, file.path(out_dir, "LO_nobs2_fit_compare.csv"))
@@ -328,3 +355,19 @@ print(lo.map.density.year.nobs2)
 ggsave(lo.map.density.year.nobs2,
        filename = file.path(out_dir, "LO_DSM_Year_fsyear_nobs2.png"),
        width = 13, height = 13)
+
+
+# output ----
+ggsave(
+  file = file.path(out_dir, "LO_year_partial_effect_fsyear_nobs2.png"),
+  plot   = p.lo.year.pe.nobs2,
+  width  = 10,
+  height = 6
+)
+
+ggsave(
+  file = file.path(out_dir, "LO_season_partial_effect_fsyear_nobs2.png"),
+  plot   = p.lo.fsyear.season.nobs2,
+  width  = 10,
+  height = 6
+)

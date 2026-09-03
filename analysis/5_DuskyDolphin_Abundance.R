@@ -637,6 +637,11 @@ ggsave(
   height = 8
 )
 
+# partial effect of season (fs model) -----
+p.lo.fsyear.season <-  gratia::draw(gratia::parametric_effects(lo.dsm.xy.fsyear.season,
+                                                               term = "season")) +
+  theme_bw()
+
 # partial effect of YEAR (fs model) -----
 # year lives INSIDE s(x,y,year_fac,bs="fs"), so there is no standalone year term.
 # year_partial_effect() (in R/year_partial_effect.R) returns that spatial smooth
@@ -1180,4 +1185,11 @@ ggsave(
   plot   = p.lo.D.sy.soap,
   width  = 13,
   height = 8
+)
+
+ggsave(
+  "output/DuskyDolphin/Abundance/LO_season_partial_effect_fsyear.png",
+  plot   = p.lo.fsyear.season,
+  width  = 10,
+  height = 6
 )

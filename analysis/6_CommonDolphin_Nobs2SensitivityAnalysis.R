@@ -163,13 +163,15 @@ p.dd.nobs2.sAno <- ggplot(sAno_compare, aes(x = Ano, y = estimate, colour = data
   labs(title = "Common dolphin: s(Ano) partial effect, full data vs n_obs == 2 subset",
        subtitle = "count ~ s(x,y,bs=\"so\") + season + s(Ano), same spatial basis both fits",
        x = "Ano", y = "partial effect (log scale)", colour = NULL, fill = NULL) +
-  theme_minimal(base_size = 13)
+  theme_bw() +
+  theme(base.size = 13,
+        legend.position = "bottom")
 
 print(p.dd.nobs2.sAno)
 
 ggsave(p.dd.nobs2.sAno,
        filename = file.path(out_dir, "DD_sAno_partial_effect_compare.png"),
-       width = 9, height = 6)
+       width = 10, height = 6)
 fwrite(sAno_compare, file.path(out_dir, "DD_sAno_partial_effect_compare.csv"))
 
 
