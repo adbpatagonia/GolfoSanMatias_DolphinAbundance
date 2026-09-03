@@ -36,3 +36,5 @@ assets/Dellabianca PlosOne.pdf
 analysis/UTIL_AssignPredCovariates.R
 
 analysis/UTIL_PlotEnvByYearMonth.R
+
+output/env_covariate_assignment_comparison.csv
