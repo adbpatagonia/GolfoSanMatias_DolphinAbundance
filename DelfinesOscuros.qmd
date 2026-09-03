@@ -211,6 +211,47 @@ p.beauf.dist.ship.lo
 
 ```
 
+## Numero de observadores efectivos   
+
+Numeros definidos por Silvana y Guille   
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+lkp_nobs %>% 
+  mutate(year = as.integer(substr(surveyID, start = 1, stop = 4))) %>% 
+  ggplot(.) +
+  geom_jitter(aes(x = year, y = n_obs),
+              alpha = 0.6,
+              width = 0.2,
+              height = 0.2) +
+  scale_y_continuous(breaks = c(1, 2, 3, 4)) +
+  scale_x_continuous(breaks = seq(2006, 2018, 2)) +
+  theme(panel.grid.minor = element_blank())
+
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+lkp_nobs %>% 
+  mutate(year = as.integer(substr(surveyID, start = 1, stop = 4))) %>% 
+  group_by(year, n_obs) %>% 
+  tally() %>% 
+  pivot_wider(names_from = n_obs, values_from = n) %>% 
+  kable() %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center",
+    full_width = FALSE
+  ) 
+```
+
+
 ## Variables espaciales
 
 ### Escala: periodo
@@ -245,6 +286,16 @@ p.slope.lo
 
 ```
 
+
+
+#### Conclusion escala periodo
+
+Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion
+
+### Escala mensual
+
+Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales
+
 #### Gradiente de temperatura superficial
 
 No parece infuenciar la deteccion de animales
@@ -259,14 +310,6 @@ No parece infuenciar la deteccion de animales
 p.grad.lo
 
 ```
-
-#### Conclusion escala periodo
-
-Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion
-
-### Escala estacional
-
-Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales
 
 #### Temperatura superficial del mar
 
@@ -307,7 +350,7 @@ p.distup.lo
 
 ```
 
-# Funciones de deteccion
+# Funciones de deteccion {#sec-funcdetec} 
 
 ## Datos
 
@@ -552,7 +595,8 @@ Analizamos incluir
 
 - embarcación\
 - tamaño grupal\
-- estado del mar (Beaufort)
+- estado del mar (Beaufort)    
+- numero efectivo de observadores \
 
 en las funciones de detección
 
@@ -742,6 +786,95 @@ legend("bottomleft",
        lwd = 2)
 ```
 
+### Efecto de numero de observadores efectivos 
+
+Este es un gráfico de la función de detección considerando el efecto del numero efectivo de observadores - la línea negra es la función de detección promedio.
+
+Nótese que los patrones no siguen el patrón esperado; las peores funciones de deteccion fueron con 1 ó 4 observadores 
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+
+plot(lo.df.hn.trun.cp.nobs, main="Dusky dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=2), col='blue', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=3), col= "darkgreen", lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobs, data = data.frame(n_obs=4), col='purple', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3", "Effective observers 4"),
+       col=c("red", "blue", "darkgreen", "purple"), lwd=2)
+
+```
+
+
+### Efecto de numero de observadores efectivos , agrupado   
+#### Agrupar 3 y 4 observadores    
+
+Hay una separacion entre surveys con 1 observador y el resto    
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+plot(lo.df.hn.trun.cp.nobsgrp34, main="Common dolphin", showpoints=FALSE)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=1), col='red', lwd=2, lty=1)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=2), col='blue', lwd=2, lty=1)
+mrds::add_df_covar_line(lo.df.hn.trun.cp.nobsgrp34, data = data.frame(nobs_grp34=3), col= "darkgreen", lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers 2", "Effective observers 3 & 4"),
+       col=c("red", "blue", "darkgreen"), lwd=2)
+```
+
+#### Agrupar 1 y >1 observadores    
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+plot(lo.df.hn.trun.cp.nobsgrp, main="Dusky dolphin", showpoints=FALSE)
+add_df_covar_line(lo.df.hn.trun.cp.nobsgrp, data = data.frame(nobs_grp=1), col='red', lwd=2, lty=1)
+add_df_covar_line(lo.df.hn.trun.cp.nobsgrp, data = data.frame(nobs_grp= "> 1"), col='darkgreen', lwd=2, lty=1)
+legend("topright", legend=c("Effective observers 1", "Effective observers > 1"),
+       col=c("red",  "darkgreen"), lwd=2)
+```
+
+##### Convergencia func detec con observadores agrupados {#sec-convfuncdetec}
+
+Notese los tamaños muestrales (detecciones dentro de la distancia de truncado `trunc.dist_lo`) en cada categoria para ajustar esta funcion de deteccion. El tamaño muestral para  `n_obs`== 1 es mucho menor que la categoria `> 1`.    
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false
+detfun_dat_lo[distance <= trunc.dist_lo] %>%
+  group_by(nobs_grp) %>%
+  tally() %>% 
+  kable() %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  ) 
+```
+
+Esta diferencia tan grande en tamaño muestral merece que se le preste un poco mas de atencion.    
+
+Debemos prestar atencion al coeficiente de variacion de la estimacion de abundancia que se obtiene usando esta funcion de deteccion: ~6,400,000 % !!!
+
+`r summary(lo.df.hn.trun.cp.nobsgrp)`  
+
+Para ver por que puede estar pasando esto, debemos mirar la matriz hessiana (derivadas segundas de la verosimilitud con respecto al parametro de interes). Una forma simple de concebir la matriz hessiana es pensando en un perfil de verosimilitud de cada parametro: si el perfil muestra curvatura pronunciada, sera sencillo encontrar el parametro de maxima verosimilitud (MLE). Si por otro lado, el perfil es plano, sera myu dificil determinar que un valor del parametro resulta en verosimilitud "mejor" que otro valor del parametro porque al moverse a lo largo del eje x (parametro), el valor de y (verosimilitud) permanece constante.   
+En la matriz hessiana, valores altos indican que el perfil esta bien definido y por lo tanto podemos confiar en que el valor del parametro es el verdadero MLE. Valores bajos indican que el perfil es plano y por lo tanto no se puede confiar en el valor del parametro estimado.   
+
+Estos son los valores de la matriz hessiana:  `r lo.df.hn.trun.cp.nobsgrp$ddf$hessian`    
+
+El unico elemento bien definido es el [1,1]. El resto de los valores de la matriz hessiana es cero. Esto significa que el modelo con el que estimamos la funcion de deteccion con `n_obs` como covariable no convergio y por lo tanto los parametros estimados no son confiables. 
+
+
+Conclusion: no incluir `n_obs` en la funcion de deteccion
+
+
 ## Conclusión de función de detección
 
 Truncar en `trunc.dist_lo`: `r trunc.dist_lo`m - esto descarta `r nrow(detfun_dat_lo[distance > trunc.dist_lo])` datos (\~ `r round(100 - nrow(detfun_dat_lo[distance <= trunc.dist_lo])/nrow(detfun_dat_lo) * 100, 1)`% de los datos)
@@ -807,7 +940,7 @@ Notese que el modelo que tiene solo posicion + estacion explica el 32% del devia
 #| warning: false
 table_lo_modselection[!grepl(pattern = "year_fac", x = model)]  %>%
   kable(
-    align = c("l", "c","c", "c")
+    align = c("l", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -982,7 +1115,7 @@ esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)
 #| warning: false
 table_lo_combined_modselection %>%
   kable(
-    align = c("l", "c","c", "c")
+    align = c("l", "l", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1002,9 +1135,11 @@ Esta es la tabla de model selection considerando solamente los modelos **2.b. Su
 #| message: false    
 #| warning: false
 table_lo_combined_modselection %>%
-  filter(grepl(pattern = 'bs = "fs"', model)) %>% 
+  # thin-plate rows of the combined table now carry the same compact labels as
+  # table_lo_modselection ("bs=fs") instead of deparse(formula(m)) ("bs = \"fs\"")
+  filter(grepl(pattern = "bs=fs", model, fixed = TRUE)) %>%
   kable(
-    align = c("l", "c","c", "c")
+    align = c("l", "l", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1014,7 +1149,7 @@ table_lo_combined_modselection %>%
 ```
 
 
-Similar al caso @tbl-modelselectionlo, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 58% explicada por el modelo mas parsimonioso (incluye profundidad) contra 56% explicada por el modelo que incluye solo la superficie espacial variable por año y estación.   
+Similar al caso @tbl-modelselectionlo, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 57% explicada por el modelo mas parsimonioso (incluye profundidad) contra 56% explicada por el modelo que incluye solo la superficie espacial variable por año y estación.   
 En lo que continua, persentare los resultados del modelo que excluye variables ambientales.   
 
 
@@ -1038,7 +1173,7 @@ gratia::draw(gratia::parametric_effects(lo.dsm.xy.fsyear.season, term = "season"
   theme_bw()
 ```
 
-### Año
+### Año {#sec-partialeffectyearfs}
 
 Estos modelos no tienen termino año como variable, si no que computa diferentes superficies espacials por año. Para obtener un equivalente de effecto parcial de año, se evalua la contribucion parcial de la superficie smooth para un set de locaciones y luego se obtiene un promedio anual - en aquellos años que tienen pocos datos el efecto de año es atraido fuertemente hacia la gran media (*shrunk*)  
 
@@ -1088,7 +1223,7 @@ lo.map.density.year.fs
 lo.map.density.season.fs
 ```
 
-## Estimaciones de abundancia    
+## Estimaciones de abundancia  {#sec-abunfs}    
 
 ```{r}
 #| echo: false
@@ -1115,6 +1250,156 @@ La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde
 
 lo.map.cv.year.fs
 ```
+
+
+# Separar efecto del tiempo del numero de observadores {#sec-nobs}    
+
+Durante agosto 2026 mantuvimos reuniones con el grupo de trabajo: Silvana Dans, Guillermo Svendsen, Alejandro Buren, Mariano Coscarella y Agustin Luzzenti. Silvana y ADB presentaron los resultados obtenidos hasta ese momento.   
+De esa reunión surgieron 2 temas que el equipo de trabajo considero importante abordar:     
+
+   1. <u> Velocidad Vertical </u>: inlcusión de Velocidad Vertical de agua como covariable en los modelos DSM. Esta variable indica upwellings (velocidades positivas)/downwellings (velocidades negativas). Guille calculo promedios climatologicos (medias mensuales). La inclusión de esta variable fue hecha del mismo modo que la inclusión del resto de las variables ambientales a los DSMs. Su inclusión no mejoró la capacidad de explicación de los modelos.     
+   2.  <u> Número de observadores </u>: dado que los surveys que informan este analisis se hicieron con una multiplicidad de objetivos (es decir, no fueron diseñados especificamente como surveys para estimar abundancia), el numero de observadores, y el comportamiento de los observadores, vario con el tiempo. Los surveys mas tempranos se hicieron con solo un observador (Guille), y luego se sumaron mas observadores. Dada esta tendencia: bajo numero de observadores al principio, aumento de observadores luego, es posible que el efecto del tiempo estimada por los DSM (nula para LO) sea en parte resultado del aumento de observadores. Dado que el efecto estimado de año es nulo para LO, existe la posibilidad que el aumento en el numero de observadores este enmascarando una potencial caide en la abundancia de LO en el area.  
+   Para abordar este problema, Guille y Silvana revisaron las planillas en papel de cada survey y establecieron la variable "Numero efectivo de observadores". Es decir, en algunas salidas hubo hsata 6 personas a bordo de la embarcacion, pero no todos fueron parte del esfuerzo de observacion de delfines. 
+   
+Aqui se grafica el numero efectivo de observadores (`n_obs`) a lo largo del tiempo (cada punto representa una salida)   
+   
+   
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false  
+
+lkp_nobs %>% 
+  mutate(year = as.integer(substr(surveyID, start = 1, stop = 4))) %>% 
+  ggplot(.) +
+  geom_jitter(aes(x = year, y = n_obs),
+              alpha = 0.6,
+              width = 0.2,
+              height = 0.2) +
+  scale_y_continuous(breaks = c(1, 2, 3, 4)) +
+  scale_x_continuous(breaks = seq(2006, 2018, 2)) +
+  theme(panel.grid.minor = element_blank())
+
+
+```   
+
+## Estrategias    
+
+Consideramos 3 estrategias independientes:   
+
+  1. Incorporar la variable `n_obs` a la funcion de detección    
+  2. Incorporar la variable `n_obs` a los modelos DSM    
+  3. Analisis de sensibilidad. Ajustar el mejor modelo (DSM soap model, con año y estación como covariables), usando sólo las salidas donde `n_obs`=2, y comparar la tendencia del efecto parcial de la variable año entre este modelo y la del modelo ajustado usando todos los datos.    
+    
+    
+### Incorporar la variable `n_obs` a la funcion de detección     
+
+Este ejercicio es presentado en @sec-funcdetec.  
+Ver particularmente la explicacion de la falta de convergencia de la funcion de deteccion en @sec-convfuncdetec.      
+
+Esta estrategia no fue adoptada por los problemas de convergencia descriptos y porque dado que `n_obs` == 1 ocurre solo en el periodo 2006-2010, y `n_obs` es casi siempre 2 a partir de 2015. Es decir que el numero efectivo de observadores no esta simplemente correlacionado con año, es casi una "step function" de año. Esto quiere decir que en caso de incluir `n_obs` en la funcion de deteccion, su coeficiente en realidad va a codificar "periodo", que es la misma informacion que codifica la variable año en el DSM.    
+Como conclusion, incluir `n_obs` en la funcion de deteccion no nos permitiria separar el efecto de año del efecto del numero de observadores
+
+### Incorporar la variable `n_obs` a los modelos DSM    
+
+Este ejercicio consideraba incluir `n_obs` al DSM,   
+`count ~ s(x, y, year_fac, bs = "fs") + season + n_obs + ...`     
+en lugar de incorporarla a la funcion de deteccion.    
+
+Esta estrategia no fue implementada por dos razones:       
+
+   i. `n_obs` es una covariable de detectabilidad (es decir afecta si un animal fue detectado), no una covariable de densidad (el numero de observadores no afecta la cantidad de animales presentes en el area)     
+   ii. `n_obs` es una "step function" de año. Por ende, incluir el efecto de año  `s(x, y, year_fac, bs = "fs")` y `n_obs` en el mismo DSM no va a permitir separar la variabilidad explicada por cada una de las variables.    
+   
+### Analisis de sensibilidad         
+
+En esta estrategia, mantuvimos `n_obs` constante. Por ende, removemos el efecto de `n_obs` de los resultados, en lugar de intentar modelarlo. De esta manera, si encontramos que no hay tendencia a lo largo del tiempo es evidencia de que esto es real y no un artefacto del numero variable de `n_obs` (es decir que el aumento de `n_obs` no esta enmasarando una caida en la abudancia). Por el contrario, si el efecto de año es distinto al efecto encontrado usando todos los datos, esto indicaria que la tendencia es, al menos parcialmente, un artefacto del numero variable de `n_obs`.     
+
+Procedimiento: 
+
+Usando la funcion de deteccion sin covariables, ajustamos nuevamente el modelo `ccount ~ s(x, y, year_fac, bs = "fs") + season`, utilizando solo las detecciones donde `n_obs`==2.   
+Elegimos `n_obs`==2 porque es el numero de observadores efectivos mas consistente a lo largo del tiempo 
+
+
+Esta tabla presenta el numero de detecciones totales, y las detecciones usando `n_obs`==2    
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+kable(nobs2_by_year) %>% 
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    position = "center", full_width = FALSE
+  )
+```
+ 
+
+Este grafico muestra el equivalente del efecto parcial de año (para ver una explicacion de porque no se puede estimar el efecto parcial directamente ver @sec-partialeffectyearfs) en el modelo DSM usando todas las detecciones (rojo), y solo las detecciones donde `n_obs`==2 (celeste).      
+Los efectos parciales de los dos modelos se solapan casi completamente.     
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false    
+
+p.lo.nobs2.year
+
+```
+
+
+Este grafico muestra el efecto parcial de `season` en el modelo DSM usando  solo las detecciones donde `n_obs`==2 (celeste en el grafico anterior). Este efecto es consistente con lo que encontramos antes
+
+
+```{r}
+#| echo: false   
+#| message: false    
+#| warning: false    
+
+p.lo.fsyear.season.nobs2
+
+```
+
+
+Estos son los mapas estimados usando el modelo DSM usando  solo las detecciones donde `n_obs`==2     
+
+Estos mapas son consistentes con los mapas obtenidos usando todos los datos - esperable dada la proporcion de detecciones donde `n_obs`==2 (ver tabla). La unica inconsistencia pareca estar en la primavera de 2017, donde el modelo usando `n_obs`==2 estima un foco de densidad en el limite sureste del area de estudio, y en la primavera del 2016 donde el foco sureste tiene una extension espacial mayor que en el modelo con todos los datos. Esto necesariamente tiene que ser un artefacto de un modelo al que le falta informacion.  
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.year.nobs2
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+
+lo.map.density.season.nobs2
+```
+
+## Conclusion de Separar efecto del tiempo del numero de observadores     
+
+La tendencia nula estimada en la abundancia de delfines oscuros en el area de estudio parece ser real, y no un artefacto del numero variable de observadores.    
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+p.lo.year.pe
+```
+
 
 
 # Referencias

@@ -608,7 +608,7 @@ Analizamos incluir
 
 - embarcación
 - tamaño grupal\
-- estado del mar (Beaufort)
+- estado del mar (Beaufort)   
 - numero efectivo de observadores \
 
 en las funciones de detección
@@ -827,7 +827,7 @@ legend("topright", legend=c("Effective observers 1", "Effective observers 2", "E
 ### Efecto de numero de observadores efectivos , agrupado   
 #### Agrupar 3 y 4 observadores    
 
-Las lineas roja y verde son contra intuitivas    
+Las lineas azul y verde son contra intuitivas    
 Hay una separacion entre surveys con 1 observador y el resto    
 
 ```{r}
@@ -924,7 +924,8 @@ cutpoints: `cutpoints_dd`: `r cutpoints_dd`
 
 Hazard rate \
 No adjustment term\
-covariables: numero de observadores efectivos, agrupado   
+
+Covariables       
 
 Beaufort state??
 
@@ -1452,16 +1453,16 @@ lkp_nobs %>%
 
 Consideramos 3 estrategias independientes:   
 
-    1. Incorporar la variable `n_obs` a la funcion de detección     
-    2. Incorporar la variable `n_obs` a los modelos DSM    
-    3. Analisis de sensibilidad. Ajustar el mejor modelo (DSM soap model, con año y estación como covariables), usando sólo las salidas donde `n_obs`=2, y comparar la tendencia del efecto parcial de la variable año entre este modelo y la del modelo ajustado usando todos los datos.    
+  1. Incorporar la variable `n_obs` a la funcion de detección    
+  2. Incorporar la variable `n_obs` a los modelos DSM    
+  3. Analisis de sensibilidad. Ajustar el mejor modelo (DSM soap model, con año y estación como covariables), usando sólo las salidas donde `n_obs`=2, y comparar la tendencia del efecto parcial de la variable año entre este modelo y la del modelo ajustado usando todos los datos.    
     
     
 ### Incorporar la variable `n_obs` a la funcion de detección     
 
 Este ejercicio es presentado en @sec-funcdetec.     
 La funcion de deteccion cambia sensiblemente con la incorporación de `n_obs`. Notese que la funcion de deteccion es diferente para las salidas con 1 observador y con 2 o más observadores.     
-Sin embargo, esta estrategia no fue adoptada dado que `n_obs` == 1 ocurre solo en el periodo 2006-2010, y `n_obs` es casi siempre 2 a partir de 2015. Es decir que el numero efectivo de observadores no esta simplemente correlacionado con año, es casi una `step function` de año. Esto quiere decir que en caso de incluir `n_obs` en la funcion de deteccion, su coeficiente en realidad va a codificar "periodo", que es la misma informacion que codifica la variable año en el DSM.    
+Sin embargo, esta estrategia no fue adoptada dado que `n_obs` == 1 ocurre solo en el periodo 2006-2010, y `n_obs` es casi siempre 2 a partir de 2015. Es decir que el numero efectivo de observadores no esta simplemente correlacionado con año, es casi una "step function" de año. Esto quiere decir que en caso de incluir `n_obs` en la funcion de deteccion, su coeficiente en realidad va a codificar "periodo", que es la misma informacion que codifica la variable año en el DSM.    
 Como conclusion, incluir `n_obs` en la funcion de deteccion no nos permitiria separar el efecto de año del efecto del numero de observadores
 
 ### Incorporar la variable `n_obs` a los modelos DSM    
@@ -1473,11 +1474,11 @@ en lugar de incorporarla a la funcion de deteccion.
 Esta estrategia no fue implementada por dos razones:       
 
    i. `n_obs` es una covariable de detectabilidad (es decir afecta si un animal fue detectado), no una covariable de densidad (el numero de observadores no afecta la cantidad de animales presentes en el area)     
-   ii. `n_obs` es una `step function` de año. Por ende, incluir `s(Ano)` y `n_obs` en el mismo DSM no va a permitir separar la variabilidad explicada por cada una de las variables.    
+   ii. `n_obs` es una "step function" de año. Por ende, incluir `s(Ano)` y `n_obs` en el mismo DSM no va a permitir separar la variabilidad explicada por cada una de las variables.    
    
 ### Analisis de sensibilidad         
 
-En esta estrategia, mantuvimos `n_obs` constante. Por ende, removemos el efecto de `n_obs` de los resultados, en lugar de intentar modelarlo. De esta manera, si encontramos que el efecto de `s(Ano)` todavia muestra una tendencia positiva, esto es evidencia de que la tendencia es real y no un artefacto del numero variable de `n_obs`. Por el contrario, si el efecto de `s(Ano)` es distinto al efecto encontrado usando todos los datos, eto indicaria que la tendencia es, al menos parcialmente, un artefacto del numero variable de `n_obs`.     
+En esta estrategia, mantuvimos `n_obs` constante. Por ende, removemos el efecto de `n_obs` de los resultados, en lugar de intentar modelarlo. De esta manera, si encontramos que el efecto de `s(Ano)` todavia muestra una tendencia positiva, esto es evidencia de que la tendencia es real y no un artefacto del numero variable de `n_obs`. Por el contrario, si el efecto de `s(Ano)` es distinto al efecto encontrado usando todos los datos, esto indicaria que la tendencia es, al menos parcialmente, un artefacto del numero variable de `n_obs`.     
 
 Procedimiento: 
 
@@ -1500,7 +1501,7 @@ kable(nobs2_by_year) %>%
 ```
 
 Este grafico muestra el efecto parcial de `s(Ano)` en el modelo DSM usando todas las detecciones (rojo), y solo las detecciones donde `n_obs`==2 (celeste).      
-El efecto parcial en la curva celeste es mucho mas `wiggly` que el de la curva roja, pero en general muestra una tendencia positiva - en el primer periodo tiende a estar por debajo de cero, y en el segundo periodo tiende a estar por encima de cero     
+El efecto parcial en la curva celeste es mucho mas "wiggly" que el de la curva roja, pero en general muestra una tendencia positiva - en el primer periodo tiende a estar por debajo de cero, y en el segundo periodo tiende a estar por encima de cero     
 
 
 ```{r}
