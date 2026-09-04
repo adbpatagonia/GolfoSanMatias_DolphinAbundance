@@ -190,35 +190,35 @@ p.velvert.lo <- p.velvert +
 
 
 # output ----
-# ggsave(plot = p.distup.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Distup.png'),
-#        width = 10,
-#        height = 13)
+ggsave(plot = p.distup.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Distup.png'),
+       width = 10,
+       height = 13)
 
-# ggsave(plot = p.clo.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Clorophyll.png'),
-#        width = 10,
-#        height = 13)
+ggsave(plot = p.clo.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Clorophyll.png'),
+       width = 10,
+       height = 13)
 
-# ggsave(plot = p.sst.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_SST.png'),
-#        width = 10,
-#        height = 13)
+ggsave(plot = p.sst.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_SST.png'),
+       width = 10,
+       height = 13)
 
-# ggsave(plot = p.depth.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Depth.png'),
-#        width = 13,
-#        height = 10)
+ggsave(plot = p.depth.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Depth.png'),
+       width = 13,
+       height = 10)
 
-# ggsave(plot = p.slope.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Slope.png'),
-#        width = 13,
-#        height = 10)
+ggsave(plot = p.slope.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Slope.png'),
+       width = 13,
+       height = 10)
 
-# ggsave(plot = p.grad.lo,
-#        filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Grad.png'),
-#        width = 13,
-#        height = 10)
+ggsave(plot = p.grad.lo,
+       filename = paste0(here::here(), '/output/DuskyDolphin/EDA/Survey_Grad.png'),
+       width = 13,
+       height = 10)
 # -----
 
 titlab <- "EDA - Dusky Dolphin"

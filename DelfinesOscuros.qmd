@@ -862,12 +862,25 @@ Esta diferencia tan grande en tamaño muestral merece que se le preste un poco m
 
 Debemos prestar atencion al coeficiente de variacion de la estimacion de abundancia que se obtiene usando esta funcion de deteccion: ~6,400,000 % !!!
 
-`r summary(lo.df.hn.trun.cp.nobsgrp)`  
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+ summary(lo.df.hn.trun.cp.nobsgrp)
+```
+
 
 Para ver por que puede estar pasando esto, debemos mirar la matriz hessiana (derivadas segundas de la verosimilitud con respecto al parametro de interes). Una forma simple de concebir la matriz hessiana es pensando en un perfil de verosimilitud de cada parametro: si el perfil muestra curvatura pronunciada, sera sencillo encontrar el parametro de maxima verosimilitud (MLE). Si por otro lado, el perfil es plano, sera myu dificil determinar que un valor del parametro resulta en verosimilitud "mejor" que otro valor del parametro porque al moverse a lo largo del eje x (parametro), el valor de y (verosimilitud) permanece constante.   
 En la matriz hessiana, valores altos indican que el perfil esta bien definido y por lo tanto podemos confiar en que el valor del parametro es el verdadero MLE. Valores bajos indican que el perfil es plano y por lo tanto no se puede confiar en el valor del parametro estimado.   
 
-Estos son los valores de la matriz hessiana:  `r lo.df.hn.trun.cp.nobsgrp$ddf$hessian`    
+Estos son los valores de la matriz hessiana:   
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+ lo.df.hn.trun.cp.nobsgrp$ddf$hessian
+```
+
 
 El unico elemento bien definido es el [1,1]. El resto de los valores de la matriz hessiana es cero. Esto significa que el modelo con el que estimamos la funcion de deteccion con `n_obs` como covariable no convergio y por lo tanto los parametros estimados no son confiables. 
 
