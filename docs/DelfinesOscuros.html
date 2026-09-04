@@ -96,23 +96,23 @@ div.csl-indent {
 
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 
-<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/plotly-binding-4.12.1/plotly.js"></script>
 
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
 
 <script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
 
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
 
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
 
-<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<link href="site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
 
-<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 
@@ -180,9 +180,10 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#efecto-de-barco" id="toc-efecto-de-barco" class="nav-link" data-scroll-target="#efecto-de-barco"><span class="header-section-number">2.1</span> Efecto de barco</a></li>
   <li><a href="#estado-del-mar" id="toc-estado-del-mar" class="nav-link" data-scroll-target="#estado-del-mar"><span class="header-section-number">2.2</span> Estado del mar</a></li>
-  <li><a href="#variables-espaciales" id="toc-variables-espaciales" class="nav-link" data-scroll-target="#variables-espaciales"><span class="header-section-number">2.3</span> Variables espaciales</a></li>
+  <li><a href="#numero-de-observadores-efectivos" id="toc-numero-de-observadores-efectivos" class="nav-link" data-scroll-target="#numero-de-observadores-efectivos"><span class="header-section-number">2.3</span> Numero de observadores efectivos</a></li>
+  <li><a href="#variables-espaciales" id="toc-variables-espaciales" class="nav-link" data-scroll-target="#variables-espaciales"><span class="header-section-number">2.4</span> Variables espaciales</a></li>
   </ul></li>
-  <li><a href="#funciones-de-deteccion" id="toc-funciones-de-deteccion" class="nav-link" data-scroll-target="#funciones-de-deteccion"><span class="header-section-number">3</span> Funciones de deteccion</a>
+  <li><a href="#sec-funcdetec" id="toc-sec-funcdetec" class="nav-link" data-scroll-target="#sec-funcdetec"><span class="header-section-number">3</span> Funciones de deteccion</a>
   <ul class="collapse">
   <li><a href="#datos" id="toc-datos" class="nav-link" data-scroll-target="#datos"><span class="header-section-number">3.1</span> Datos</a></li>
   <li><a href="#funciones-de-detección-básicas" id="toc-funciones-de-detección-básicas" class="nav-link" data-scroll-target="#funciones-de-detección-básicas"><span class="header-section-number">3.2</span> Funciones de detección básicas</a></li>
@@ -204,10 +205,15 @@ div.csl-indent {
   <li><a href="#model-selection-1" id="toc-model-selection-1" class="nav-link" data-scroll-target="#model-selection-1"><span class="header-section-number">6.1</span> Model selection</a></li>
   <li><a href="#efectos-parciales-de-estacion-año-y-efecto-espacial" id="toc-efectos-parciales-de-estacion-año-y-efecto-espacial" class="nav-link" data-scroll-target="#efectos-parciales-de-estacion-año-y-efecto-espacial"><span class="header-section-number">6.2</span> Efectos parciales de estacion, año y efecto espacial</a></li>
   <li><a href="#predicciones-de-densidad-1" id="toc-predicciones-de-densidad-1" class="nav-link" data-scroll-target="#predicciones-de-densidad-1"><span class="header-section-number">6.3</span> Predicciones de densidad</a></li>
-  <li><a href="#estimaciones-de-abundancia-1" id="toc-estimaciones-de-abundancia-1" class="nav-link" data-scroll-target="#estimaciones-de-abundancia-1"><span class="header-section-number">6.4</span> Estimaciones de abundancia</a></li>
+  <li><a href="#sec-abunfs" id="toc-sec-abunfs" class="nav-link" data-scroll-target="#sec-abunfs"><span class="header-section-number">6.4</span> Estimaciones de abundancia</a></li>
   <li><a href="#mapas-de-coeficiente-de-variacion-cv" id="toc-mapas-de-coeficiente-de-variacion-cv" class="nav-link" data-scroll-target="#mapas-de-coeficiente-de-variacion-cv"><span class="header-section-number">6.5</span> Mapas de coeficiente de variacion (CV)</a></li>
   </ul></li>
-  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">7</span> Referencias</a></li>
+  <li><a href="#sec-nobs" id="toc-sec-nobs" class="nav-link" data-scroll-target="#sec-nobs"><span class="header-section-number">7</span> Separar efecto del tiempo del numero de observadores</a>
+  <ul class="collapse">
+  <li><a href="#estrategias" id="toc-estrategias" class="nav-link" data-scroll-target="#estrategias"><span class="header-section-number">7.1</span> Estrategias</a></li>
+  <li><a href="#conclusion-de-separar-efecto-del-tiempo-del-numero-de-observadores" id="toc-conclusion-de-separar-efecto-del-tiempo-del-numero-de-observadores" class="nav-link" data-scroll-target="#conclusion-de-separar-efecto-del-tiempo-del-numero-de-observadores"><span class="header-section-number">7.2</span> Conclusion de Separar efecto del tiempo del numero de observadores</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">8</span> Referencias</a></li>
   </ul>
 </nav>
     </div>
@@ -539,39 +545,132 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 </div>
 </section>
 </section>
-<section id="variables-espaciales" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="variables-espaciales"><span class="header-section-number">2.3</span> Variables espaciales</h2>
-<section id="escala-periodo" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="escala-periodo"><span class="header-section-number">2.3.1</span> Escala: periodo</h3>
-<section id="profundidad" class="level4" data-number="2.3.1.1">
-<h4 data-number="2.3.1.1" class="anchored" data-anchor-id="profundidad"><span class="header-section-number">2.3.1.1</span> Profundidad</h4>
+<section id="numero-de-observadores-efectivos" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="numero-de-observadores-efectivos"><span class="header-section-number">2.3</span> Numero de observadores efectivos</h2>
+<p>Numeros definidos por Silvana y Guille</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">3</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">NA</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="variables-espaciales" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="variables-espaciales"><span class="header-section-number">2.4</span> Variables espaciales</h2>
+<section id="escala-periodo" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="escala-periodo"><span class="header-section-number">2.4.1</span> Escala: periodo</h3>
+<section id="profundidad" class="level4" data-number="2.4.1.1">
+<h4 data-number="2.4.1.1" class="anchored" data-anchor-id="profundidad"><span class="header-section-number">2.4.1.1</span> Profundidad</h4>
 <p>Parece haber mayor cantidad de detecciones en la zona donde aumenta la profundidad - alrededor de northing 5.47 Mm</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="pendiente" class="level4" data-number="2.3.1.2">
-<h4 data-number="2.3.1.2" class="anchored" data-anchor-id="pendiente"><span class="header-section-number">2.3.1.2</span> Pendiente</h4>
-<p>La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="gradiente-de-temperatura-superficial" class="level4" data-number="2.3.1.3">
-<h4 data-number="2.3.1.3" class="anchored" data-anchor-id="gradiente-de-temperatura-superficial"><span class="header-section-number">2.3.1.3</span> Gradiente de temperatura superficial</h4>
-<p>No parece infuenciar la deteccion de animales</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -582,16 +681,9 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 </div>
 </div>
 </section>
-<section id="conclusion-escala-periodo" class="level4" data-number="2.3.1.4">
-<h4 data-number="2.3.1.4" class="anchored" data-anchor-id="conclusion-escala-periodo"><span class="header-section-number">2.3.1.4</span> Conclusion escala periodo</h4>
-<p>Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion</p>
-</section>
-</section>
-<section id="escala-estacional" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="escala-estacional"><span class="header-section-number">2.3.2</span> Escala estacional</h3>
-<p>Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales</p>
-<section id="temperatura-superficial-del-mar" class="level4" data-number="2.3.2.1">
-<h4 data-number="2.3.2.1" class="anchored" data-anchor-id="temperatura-superficial-del-mar"><span class="header-section-number">2.3.2.1</span> Temperatura superficial del mar</h4>
+<section id="pendiente" class="level4" data-number="2.4.1.2">
+<h4 data-number="2.4.1.2" class="anchored" data-anchor-id="pendiente"><span class="header-section-number">2.4.1.2</span> Pendiente</h4>
+<p>La zona donde hay mas detecciones parece ser donde hay una pendiente mas pronunciada</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -602,8 +694,17 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 </div>
 </div>
 </section>
-<section id="clorofila" class="level4" data-number="2.3.2.2">
-<h4 data-number="2.3.2.2" class="anchored" data-anchor-id="clorofila"><span class="header-section-number">2.3.2.2</span> Clorofila</h4>
+<section id="conclusion-escala-periodo" class="level4" data-number="2.4.1.3">
+<h4 data-number="2.4.1.3" class="anchored" data-anchor-id="conclusion-escala-periodo"><span class="header-section-number">2.4.1.3</span> Conclusion escala periodo</h4>
+<p>Evaluar la incorporacion de pendiente y profundidad en la funcion de deteccion - creo que codifican la misma informacion</p>
+</section>
+</section>
+<section id="escala-mensual" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="escala-mensual"><span class="header-section-number">2.4.2</span> Escala mensual</h3>
+<p>Ninguna de las variables ambientales medidas a escala estacional parece tener relacion con la deteccion de animales</p>
+<section id="gradiente-de-temperatura-superficial" class="level4" data-number="2.4.2.1">
+<h4 data-number="2.4.2.1" class="anchored" data-anchor-id="gradiente-de-temperatura-superficial"><span class="header-section-number">2.4.2.1</span> Gradiente de temperatura superficial</h4>
+<p>No parece infuenciar la deteccion de animales</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -614,8 +715,8 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 </div>
 </div>
 </section>
-<section id="distancia-a-upwellings" class="level4" data-number="2.3.2.3">
-<h4 data-number="2.3.2.3" class="anchored" data-anchor-id="distancia-a-upwellings"><span class="header-section-number">2.3.2.3</span> Distancia a upwellings</h4>
+<section id="temperatura-superficial-del-mar" class="level4" data-number="2.4.2.2">
+<h4 data-number="2.4.2.2" class="anchored" data-anchor-id="temperatura-superficial-del-mar"><span class="header-section-number">2.4.2.2</span> Temperatura superficial del mar</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -626,10 +727,34 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 </div>
 </div>
 </section>
+<section id="clorofila" class="level4" data-number="2.4.2.3">
+<h4 data-number="2.4.2.3" class="anchored" data-anchor-id="clorofila"><span class="header-section-number">2.4.2.3</span> Clorofila</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="distancia-a-upwellings" class="level4" data-number="2.4.2.4">
+<h4 data-number="2.4.2.4" class="anchored" data-anchor-id="distancia-a-upwellings"><span class="header-section-number">2.4.2.4</span> Distancia a upwellings</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
-<section id="funciones-de-deteccion" class="level1" data-number="3">
+</section>
+<section id="sec-funcdetec" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Funciones de deteccion</h1>
 <section id="datos" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="datos"><span class="header-section-number">3.1</span> Datos</h2>
@@ -642,7 +767,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -651,7 +776,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -665,7 +790,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -717,7 +842,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -760,7 +885,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -780,7 +905,7 @@ Quizás sea efecto del observador en lugar de embarcación, pero no lo podemos d
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -824,22 +949,22 @@ Utilizar el modelo half-normal.</p>
 <table class="table table-striped table-hover caption-top table-sm small">
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 255) !important;">Key function</th>
-<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 255) !important;">Series adjustment</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 1) !important;">Key function</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; color: white !important; background-color: rgba(74, 154, 181, 1) !important;">Series adjustment</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Uniform</td>
-<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Cosine</td>
+<td style="text-align: left; background-color: rgba(184, 212, 224, 1) !important;">Uniform</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 1) !important;">Cosine</td>
 </tr>
 <tr class="even">
-<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Half normal</td>
-<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Hermite polynomial</td>
+<td style="text-align: left; background-color: rgba(184, 212, 224, 1) !important;">Half normal</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 1) !important;">Hermite polynomial</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left; background-color: rgba(184, 212, 224, 255) !important;">Hazard rate</td>
-<td style="text-align: left; background-color: rgba(221, 238, 244, 255) !important;">Simple polynomial</td>
+<td style="text-align: left; background-color: rgba(184, 212, 224, 1) !important;">Hazard rate</td>
+<td style="text-align: left; background-color: rgba(221, 238, 244, 1) !important;">Simple polynomial</td>
 </tr>
 </tbody>
 </table>
@@ -891,7 +1016,7 @@ Utilizar el modelo half-normal.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -900,7 +1025,7 @@ Utilizar el modelo half-normal.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -914,7 +1039,10 @@ Utilizar el modelo half-normal.</p>
 </li>
 <li>tamaño grupal<br>
 </li>
-<li>estado del mar (Beaufort)</li>
+<li>estado del mar (Beaufort)<br>
+</li>
+<li>numero efectivo de observadores<br>
+</li>
 </ul>
 <p>en las funciones de detección</p>
 <p>La función de detección mas parsimoniosa incluye el estado del mar</p>
@@ -984,7 +1112,7 @@ Utilizar el modelo half-normal.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1097,7 +1225,7 @@ Ajustamos los modelos nuevamente. El modelo mas parsimonioso no incluye ninguna 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1111,7 +1239,7 @@ Conclusión: no utilizar embarcación como covariable.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1125,11 +1253,115 @@ Las líneas de colores representan la probabilidad de detección de grupos que r
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="efecto-de-numero-de-observadores-efectivos" class="level3" data-number="3.6.5">
+<h3 data-number="3.6.5" class="anchored" data-anchor-id="efecto-de-numero-de-observadores-efectivos"><span class="header-section-number">3.6.5</span> Efecto de numero de observadores efectivos</h3>
+<p>Este es un gráfico de la función de detección considerando el efecto del numero efectivo de observadores - la línea negra es la función de detección promedio.</p>
+<p>Nótese que los patrones no siguen el patrón esperado; las peores funciones de deteccion fueron con 1 ó 4 observadores</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="efecto-de-numero-de-observadores-efectivos-agrupado" class="level3" data-number="3.6.6">
+<h3 data-number="3.6.6" class="anchored" data-anchor-id="efecto-de-numero-de-observadores-efectivos-agrupado"><span class="header-section-number">3.6.6</span> Efecto de numero de observadores efectivos , agrupado</h3>
+<section id="agrupar-3-y-4-observadores" class="level4" data-number="3.6.6.1">
+<h4 data-number="3.6.6.1" class="anchored" data-anchor-id="agrupar-3-y-4-observadores"><span class="header-section-number">3.6.6.1</span> Agrupar 3 y 4 observadores</h4>
+<p>Hay una separacion entre surveys con 1 observador y el resto</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="agrupar-1-y-1-observadores" class="level4" data-number="3.6.6.2">
+<h4 data-number="3.6.6.2" class="anchored" data-anchor-id="agrupar-1-y-1-observadores"><span class="header-section-number">3.6.6.2</span> Agrupar 1 y &gt;1 observadores</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="sec-convfuncdetec" class="level5" data-number="3.6.6.2.1">
+<h5 data-number="3.6.6.2.1" class="anchored" data-anchor-id="sec-convfuncdetec"><span class="header-section-number">3.6.6.2.1</span> Convergencia func detec con observadores agrupados</h5>
+<p>Notese los tamaños muestrales (detecciones dentro de la distancia de truncado <code>trunc.dist_lo</code>) en cada categoria para ajustar esta funcion de deteccion. El tamaño muestral para <code>n_obs</code>== 1 es mucho menor que la categoria <code>&gt; 1</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">nobs_grp</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">&gt; 1</td>
+<td style="text-align: right;">99</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Esta diferencia tan grande en tamaño muestral merece que se le preste un poco mas de atencion.</p>
+<p>Debemos prestar atencion al coeficiente de variacion de la estimacion de abundancia que se obtiene usando esta funcion de deteccion: ~6,400,000 % !!!</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Summary for distance analysis 
+Number of observations :  108 
+Distance range         :  0  -  450 
+
+Model       : Half-normal key function 
+AIC         :  276.1663 
+Optimisation:  mrds (nlminb) 
+
+Detection function parameters
+Scale coefficient(s):  
+             estimate           se
+(Intercept)  5.094764 8.034332e-02
+nobs_grp1   -2.978671 1.000000e+05
+
+                       Estimate          SE       CV
+Average p             0.1774802    11357.01 63990.29
+N in covered region 608.5184928 38939272.10 63990.29</code></pre>
+</div>
+</div>
+<p>Para ver por que puede estar pasando esto, debemos mirar la matriz hessiana (derivadas segundas de la verosimilitud con respecto al parametro de interes). Una forma simple de concebir la matriz hessiana es pensando en un perfil de verosimilitud de cada parametro: si el perfil muestra curvatura pronunciada, sera sencillo encontrar el parametro de maxima verosimilitud (MLE). Si por otro lado, el perfil es plano, sera myu dificil determinar que un valor del parametro resulta en verosimilitud “mejor” que otro valor del parametro porque al moverse a lo largo del eje x (parametro), el valor de y (verosimilitud) permanece constante.<br>
+En la matriz hessiana, valores altos indican que el perfil esta bien definido y por lo tanto podemos confiar en que el valor del parametro es el verdadero MLE. Valores bajos indican que el perfil es plano y por lo tanto no se puede confiar en el valor del parametro estimado.</p>
+<p>Estos son los valores de la matriz hessiana:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]         [,2]
+[1,] 1.549175e+02 3.567116e-14
+[2,] 3.567116e-14 3.566837e-14</code></pre>
+</div>
+</div>
+<p>El unico elemento bien definido es el [1,1]. El resto de los valores de la matriz hessiana es cero. Esto significa que el modelo con el que estimamos la funcion de deteccion con <code>n_obs</code> como covariable no convergio y por lo tanto los parametros estimados no son confiables.</p>
+<p>Conclusion: no incluir <code>n_obs</code> en la funcion de deteccion</p>
+</section>
+</section>
 </section>
 </section>
 <section id="conclusión-de-función-de-detección" class="level2" data-number="3.7">
@@ -1143,7 +1375,7 @@ No covariate</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1213,142 +1445,212 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">AIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(depth)</td>
-<td style="text-align: center;">30.31</td>
-<td style="text-align: center;">22.93</td>
-<td style="text-align: center;">0.39</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(sst)</td>
-<td style="text-align: center;">29.55</td>
-<td style="text-align: center;">26.04</td>
+<td style="text-align: center;">31.32</td>
+<td style="text-align: center;">1011.59</td>
+<td style="text-align: center;">65.22</td>
 <td style="text-align: center;">0.38</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">count ~ s(x,y) + season + s(Ano)</td>
-<td style="text-align: center;">28.22</td>
-<td style="text-align: center;">26.38</td>
-<td style="text-align: center;">0.37</td>
+<td style="text-align: center;">1.3215</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(clo)</td>
-<td style="text-align: center;">29.21</td>
-<td style="text-align: center;">27.79</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano)</td>
+<td style="text-align: center;">30.02</td>
+<td style="text-align: center;">1011.98</td>
+<td style="text-align: center;">65.61</td>
 <td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3222</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(clo)</td>
+<td style="text-align: center;">31.02</td>
+<td style="text-align: center;">1013.47</td>
+<td style="text-align: center;">67.10</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3225</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(dist.up)</td>
-<td style="text-align: center;">28.88</td>
-<td style="text-align: center;">28.68</td>
-<td style="text-align: center;">0.37</td>
+<td style="text-align: center;">30.83</td>
+<td style="text-align: center;">1014.80</td>
+<td style="text-align: center;">68.43</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3235</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">32.21</td>
+<td style="text-align: center;">1015.30</td>
+<td style="text-align: center;">68.93</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3125</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(grad)</td>
-<td style="text-align: center;">30.47</td>
-<td style="text-align: center;">29.28</td>
+<td style="text-align: center;">32.70</td>
+<td style="text-align: center;">1015.94</td>
+<td style="text-align: center;">69.57</td>
 <td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3238</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(slope)</td>
-<td style="text-align: center;">31.89</td>
-<td style="text-align: center;">30.80</td>
+<td style="text-align: center;">33.68</td>
+<td style="text-align: center;">1016.39</td>
+<td style="text-align: center;">70.02</td>
 <td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3195</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(depth)</td>
-<td style="text-align: center;">24.54</td>
-<td style="text-align: center;">35.10</td>
+<td style="text-align: center;">26.30</td>
+<td style="text-align: center;">1020.60</td>
+<td style="text-align: center;">74.23</td>
 <td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3274</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(depth)</td>
+<td style="text-align: center;">27.28</td>
+<td style="text-align: center;">1022.76</td>
+<td style="text-align: center;">76.39</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3283</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season</td>
-<td style="text-align: center;">22.17</td>
-<td style="text-align: center;">39.55</td>
+<td style="text-align: center;">23.66</td>
+<td style="text-align: center;">1024.40</td>
+<td style="text-align: center;">78.03</td>
 <td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(VelVert)</td>
+<td style="text-align: center;">24.99</td>
+<td style="text-align: center;">1025.75</td>
+<td style="text-align: center;">79.38</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3208</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + season + s(sst)</td>
+<td style="text-align: center;">24.71</td>
+<td style="text-align: center;">1026.28</td>
+<td style="text-align: center;">79.91</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3287</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">count ~ s(x,y) + season + s(clo)</td>
+<td style="text-align: center;">24.67</td>
+<td style="text-align: center;">1026.42</td>
+<td style="text-align: center;">80.05</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3289</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(grad)</td>
-<td style="text-align: center;">24.31</td>
-<td style="text-align: center;">41.13</td>
+<td style="text-align: center;">26.12</td>
+<td style="text-align: center;">1026.84</td>
+<td style="text-align: center;">80.47</td>
 <td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3295</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(slope)</td>
-<td style="text-align: center;">25.11</td>
-<td style="text-align: center;">41.34</td>
+<td style="text-align: center;">26.98</td>
+<td style="text-align: center;">1027.15</td>
+<td style="text-align: center;">80.78</td>
 <td style="text-align: center;">0.33</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">count ~ s(x,y) + season + s(clo)</td>
-<td style="text-align: center;">23.19</td>
-<td style="text-align: center;">41.53</td>
-<td style="text-align: center;">0.32</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">count ~ s(x,y) + season + s(sst)</td>
-<td style="text-align: center;">23.33</td>
-<td style="text-align: center;">41.61</td>
-<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3260</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(dist.up)</td>
-<td style="text-align: center;">22.98</td>
-<td style="text-align: center;">41.66</td>
+<td style="text-align: center;">24.69</td>
+<td style="text-align: center;">1027.30</td>
+<td style="text-align: center;">80.93</td>
 <td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3297</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(sst)</td>
-<td style="text-align: center;">28.10</td>
-<td style="text-align: center;">66.16</td>
-<td style="text-align: center;">0.29</td>
+<td style="text-align: center;">30.51</td>
+<td style="text-align: center;">1052.71</td>
+<td style="text-align: center;">106.34</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">1.3464</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(depth)</td>
-<td style="text-align: center;">23.86</td>
-<td style="text-align: center;">80.57</td>
-<td style="text-align: center;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">26.63</td>
+<td style="text-align: center;">1062.06</td>
+<td style="text-align: center;">115.69</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3376</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y)</td>
-<td style="text-align: center;">20.43</td>
-<td style="text-align: center;">81.09</td>
+<td style="text-align: center;">21.74</td>
+<td style="text-align: center;">1064.94</td>
+<td style="text-align: center;">118.57</td>
 <td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3447</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(slope)</td>
-<td style="text-align: center;">21.75</td>
-<td style="text-align: center;">82.45</td>
-<td style="text-align: center;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(depth)</td>
+<td style="text-align: center;">25.32</td>
+<td style="text-align: center;">1065.16</td>
+<td style="text-align: center;">118.79</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3405</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(grad)</td>
-<td style="text-align: center;">23.81</td>
-<td style="text-align: center;">82.51</td>
-<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">25.25</td>
+<td style="text-align: center;">1066.90</td>
+<td style="text-align: center;">120.53</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3460</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
-<td style="text-align: center;">21.38</td>
-<td style="text-align: center;">83.21</td>
-<td style="text-align: center;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(slope)</td>
+<td style="text-align: center;">23.21</td>
+<td style="text-align: center;">1067.00</td>
+<td style="text-align: center;">120.64</td>
+<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">1.3440</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(dist.up)</td>
-<td style="text-align: center;">25.08</td>
-<td style="text-align: center;">83.23</td>
-<td style="text-align: center;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
+<td style="text-align: center;">22.69</td>
+<td style="text-align: center;">1067.10</td>
+<td style="text-align: center;">120.73</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3461</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">26.89</td>
+<td style="text-align: center;">1068.72</td>
+<td style="text-align: center;">122.35</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3431</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(clo)</td>
-<td style="text-align: center;">22.33</td>
-<td style="text-align: center;">85.22</td>
+<td style="text-align: center;">23.64</td>
+<td style="text-align: center;">1069.16</td>
+<td style="text-align: center;">122.79</td>
 <td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3473</td>
 </tr>
 </tbody>
 </table>
@@ -1370,7 +1672,7 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1383,7 +1685,7 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1392,7 +1694,7 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Family: Tweedie(1.31) 
+Family: Tweedie(p=1.322) 
 Link function: log 
 
 Formula:
@@ -1400,12 +1702,12 @@ count ~ s(x, y) + season + s(Ano) + offset(off.set)
 
 Parametric Terms:
        df     F  p-value
-season  3 9.677 2.28e-06
+season  3 15.31 6.39e-10
 
 Approximate significance of smooth terms:
           edf Ref.df     F p-value
-s(x,y) 15.848 20.170 1.189  0.2534
-s(Ano)  5.511  6.609 1.865  0.0753</code></pre>
+s(x,y) 15.724 20.055 1.869 0.01066
+s(Ano)  5.509  6.607 2.911 0.00609</code></pre>
 </div>
 </div>
 </section>
@@ -1442,7 +1744,7 @@ Figure&nbsp;1: Predicciones de densidad de delfines oscuros a lo largo de las es
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -1470,7 +1772,7 @@ Figure&nbsp;2: Predicciones de densidad de delfines oscuros a lo largo de los a�
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -1500,8 +1802,8 @@ Se notan claramente los efectos de<br>
 - Año: oscilaciones, por ej. abundancias mas altas en 2010 y 2017</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-6e3faf3cf16e008c88b3" style="width:100%;height:590px;"></div>
-<script type="application/json" data-for="htmlwidget-6e3faf3cf16e008c88b3">{"x":{"visdat":{"27419856171":["function () ","plotlyVisDat"],"27429ed7d":["function () ","data"],"27484b2ec0":["function () ","data"],"274c434150":["function () ","data"],"2741e873496":["function () ","data"]},"cur_data":"2741e873496","attrs":{"27429ed7d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"27484b2ec0":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"274c434150":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"2741e873496":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[1,0,18,32,7,1,129,68,13,2,225,152,4,447,202,42,6,5,2,0,32,9,1,185,141,27,3,501,72,14,2,267,5,5,298,1786,55,201,621,3260,99,375,1092,1167,37,141,468,12,48,297,261,1205,3860,5449,129,1515,1933,54,211,602,1169,34,132,443,2418,39,198],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[16,3,206,119,30,5,388,203,52,9,659,479,22,1560,884,225,40,37,10,2,123,36,6,464,393,100,18,1278,212,54,10,690,38],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833164,411.23191511949034,133.1830634193804,0,0,831.21344545428894,0,0,0,1674.3013687007822,0,0,0,0,116.0414069978698,0,0,729.13124120840507,603.04814398395058,0,0,2008.2210236944775,272.57389402755109,0,74.177908739908062,932.68139307506021,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.3433489765456,307.79105902575549,102.18696874121903,null,null,673.05700825366023,null,null,null,null,null,null,null,null,85.799050356960237,null,null,443.96722659083957,442.30805963484374,null,null,1527.2891698298497,195.08322755013526,null,51.696681777336636,591.1900377407735,null],"array":[null,null,null,null,null,null,1267.2276524397053,1223.6316619916661,439.07381493723409,null,null,3537.3459640342512,null,null,null,null,null,null,null,null,329.21516800825958,null,null,1135.1725967743905,1659.405962812767,null,null,6377.4819560538472,686.2064479507427,null,170.57573189487175,1614.6585831796626,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833164,411.23191511949034,133.1830634193804,0,0,831.21344545428894,0,0,0,1674.3013687007822,0,0,0,0,116.0414069978698,0,0,729.13124120840507,603.04814398395058,0,0,2008.2210236944775,272.57389402755109,0,74.177908739908062,932.68139307506021,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-d7b7b037e37c9eee53f5" style="width:100%;height:590px;"></div>
+<script type="application/json" data-for="htmlwidget-d7b7b037e37c9eee53f5">{"x":{"visdat":{"27a0351b2fb2":["function () ","plotlyVisDat"],"27a04f2a7c3b":["function () ","data"],"27a06709534b":["function () ","data"],"27a0406e7b7d":["function () ","data"],"27a03a5a754":["function () ","data"]},"cur_data":"27a03a5a754","attrs":{"27a04f2a7c3b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"27a06709534b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"27a0406e7b7d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"27a03a5a754":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[2,0,23,39,9,1,155,81,15,2,272,183,5,552,253,53,8,6,2,0,40,11,1,215,166,32,4,590,86,18,2,316,6,6,223,1519,42,158,512,2766,75,294,904,985,28,110,373,9,37,223,199,924,3049,4446,98,1237,1611,41,165,495,964,26,101,351,1814,29,145],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[16,3,203,117,30,5,387,201,50,9,662,475,22,1567,878,221,40,36,9,2,122,35,6,461,388,98,18,1278,210,53,10,693,37],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -1534,516 +1836,752 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">basis</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">AIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Dev</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">71.98</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(depth)</td>
+<td style="text-align: center;">41.29</td>
+<td style="text-align: center;">946.37</td>
 <td style="text-align: center;">0.00</td>
-<td style="text-align: left;">0.58</td>
+<td style="text-align: center;">0.53</td>
+<td style="text-align: center;">1.2910</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">76.83</td>
-<td style="text-align: center;">8.06</td>
-<td style="text-align: left;">0.58</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(VelVert)</td>
+<td style="text-align: center;">51.34</td>
+<td style="text-align: center;">957.98</td>
+<td style="text-align: center;">11.61</td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;">1.2845</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">71.92</td>
-<td style="text-align: center;">11.50</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(clo)</td>
+<td style="text-align: center;">48.24</td>
+<td style="text-align: center;">966.42</td>
+<td style="text-align: center;">20.05</td>
+<td style="text-align: center;">0.52</td>
+<td style="text-align: center;">1.2930</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + offset(off.set)</td>
-<td style="text-align: center;">73.32</td>
-<td style="text-align: center;">13.28</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(dist.up)</td>
+<td style="text-align: center;">50.41</td>
+<td style="text-align: center;">975.98</td>
+<td style="text-align: center;">29.61</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">1.2745</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">73.42</td>
-<td style="text-align: center;">14.62</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season</td>
+<td style="text-align: center;">49.23</td>
+<td style="text-align: center;">977.92</td>
+<td style="text-align: center;">31.55</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">1.2903</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">66.33</td>
-<td style="text-align: center;">15.12</td>
-<td style="text-align: left;">0.54</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(sst)</td>
+<td style="text-align: center;">51.32</td>
+<td style="text-align: center;">978.63</td>
+<td style="text-align: center;">32.26</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">1.2821</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">71.09</td>
-<td style="text-align: center;">17.06</td>
-<td style="text-align: left;">0.55</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(sst)</td>
-<td style="text-align: center;">29.74</td>
-<td style="text-align: center;">19.73</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano)</td>
-<td style="text-align: center;">28.57</td>
-<td style="text-align: center;">19.87</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(clo)</td>
-<td style="text-align: center;">29.31</td>
-<td style="text-align: center;">21.31</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(depth)</td>
-<td style="text-align: center;">34.40</td>
-<td style="text-align: center;">21.87</td>
-<td style="text-align: left;">0.41</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(grad)</td>
-<td style="text-align: center;">30.50</td>
-<td style="text-align: center;">21.91</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">30.31</td>
-<td style="text-align: center;">22.93</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(dist.up)</td>
-<td style="text-align: center;">31.33</td>
-<td style="text-align: center;">24.87</td>
-<td style="text-align: left;">0.39</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">28.89</td>
-<td style="text-align: center;">25.22</td>
-<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(slope)</td>
+<td style="text-align: center;">52.39</td>
+<td style="text-align: center;">980.25</td>
+<td style="text-align: center;">33.88</td>
+<td style="text-align: center;">0.48</td>
+<td style="text-align: center;">1.2702</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">29.55</td>
-<td style="text-align: center;">26.04</td>
-<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + season + s(grad)</td>
+<td style="text-align: center;">50.63</td>
+<td style="text-align: center;">982.23</td>
+<td style="text-align: center;">35.86</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">1.2949</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + offset(off.set)</td>
-<td style="text-align: center;">28.22</td>
-<td style="text-align: center;">26.39</td>
-<td style="text-align: left;">0.37</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(depth)</td>
+<td style="text-align: center;">74.43</td>
+<td style="text-align: center;">988.26</td>
+<td style="text-align: center;">41.89</td>
+<td style="text-align: center;">0.57</td>
+<td style="text-align: center;">1.2936</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">28.60</td>
-<td style="text-align: center;">27.21</td>
-<td style="text-align: left;">0.37</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(VelVert)</td>
+<td style="text-align: center;">72.95</td>
+<td style="text-align: center;">991.41</td>
+<td style="text-align: center;">45.04</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2872</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">29.21</td>
-<td style="text-align: center;">27.79</td>
-<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(sst)</td>
+<td style="text-align: center;">80.90</td>
+<td style="text-align: center;">996.74</td>
+<td style="text-align: center;">50.37</td>
+<td style="text-align: center;">0.58</td>
+<td style="text-align: center;">1.2928</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(slope)</td>
+<td style="text-align: center;">76.18</td>
+<td style="text-align: center;">1000.61</td>
+<td style="text-align: center;">54.24</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2928</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season</td>
+<td style="text-align: center;">76.93</td>
+<td style="text-align: center;">1002.57</td>
+<td style="text-align: center;">56.20</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2951</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(Ano) + s(slope)</td>
-<td style="text-align: center;">33.27</td>
-<td style="text-align: center;">28.45</td>
-<td style="text-align: left;">0.39</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(sst)</td>
+<td style="text-align: center;">31.61</td>
+<td style="text-align: center;">1004.98</td>
+<td style="text-align: center;">58.61</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3121</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">28.88</td>
-<td style="text-align: center;">28.68</td>
-<td style="text-align: left;">0.37</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">30.47</td>
-<td style="text-align: center;">29.28</td>
-<td style="text-align: left;">0.38</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">21.23</td>
-<td style="text-align: center;">30.14</td>
-<td style="text-align: left;">0.34</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(Ano) + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">31.89</td>
-<td style="text-align: center;">30.80</td>
-<td style="text-align: left;">0.38</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">22.11</td>
-<td style="text-align: center;">34.45</td>
-<td style="text-align: left;">0.35</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(clo)</td>
+<td style="text-align: center;">76.29</td>
+<td style="text-align: center;">1005.04</td>
+<td style="text-align: center;">58.67</td>
+<td style="text-align: center;">0.55</td>
+<td style="text-align: center;">1.2959</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season</td>
-<td style="text-align: center;">22.34</td>
-<td style="text-align: center;">34.55</td>
-<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano)</td>
+<td style="text-align: center;">30.46</td>
+<td style="text-align: center;">1005.19</td>
+<td style="text-align: center;">58.82</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3128</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(dist.up)</td>
+<td style="text-align: center;">68.81</td>
+<td style="text-align: center;">1005.60</td>
+<td style="text-align: center;">59.23</td>
+<td style="text-align: center;">0.53</td>
+<td style="text-align: center;">1.3000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(depth)</td>
+<td style="text-align: center;">45.80</td>
+<td style="text-align: center;">1006.26</td>
+<td style="text-align: center;">59.89</td>
+<td style="text-align: center;">0.44</td>
+<td style="text-align: center;">1.3067</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(depth)</td>
-<td style="text-align: center;">27.69</td>
-<td style="text-align: center;">34.74</td>
-<td style="text-align: left;">0.35</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">24.54</td>
-<td style="text-align: center;">35.10</td>
-<td style="text-align: left;">0.34</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(grad)</td>
-<td style="text-align: center;">24.04</td>
-<td style="text-align: center;">35.33</td>
-<td style="text-align: left;">0.34</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(clo)</td>
+<td style="text-align: center;">31.21</td>
+<td style="text-align: center;">1006.74</td>
+<td style="text-align: center;">60.37</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3135</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(clo)</td>
-<td style="text-align: center;">22.98</td>
-<td style="text-align: center;">36.08</td>
-<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(depth)</td>
+<td style="text-align: center;">36.17</td>
+<td style="text-align: center;">1007.04</td>
+<td style="text-align: center;">60.67</td>
+<td style="text-align: center;">0.41</td>
+<td style="text-align: center;">1.3135</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(sst)</td>
-<td style="text-align: center;">23.40</td>
-<td style="text-align: center;">36.40</td>
-<td style="text-align: left;">0.33</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + offset(off.set)</td>
-<td style="text-align: center;">22.17</td>
-<td style="text-align: center;">39.55</td>
-<td style="text-align: left;">0.32</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(slope)</td>
-<td style="text-align: center;">25.83</td>
-<td style="text-align: center;">40.56</td>
-<td style="text-align: left;">0.33</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">24.31</td>
-<td style="text-align: center;">41.14</td>
-<td style="text-align: left;">0.33</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">74.53</td>
-<td style="text-align: center;">41.24</td>
-<td style="text-align: left;">0.52</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">25.11</td>
-<td style="text-align: center;">41.34</td>
-<td style="text-align: left;">0.33</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + season + s(dist.up)</td>
-<td style="text-align: center;">26.35</td>
-<td style="text-align: center;">41.39</td>
-<td style="text-align: left;">0.33</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">23.19</td>
-<td style="text-align: center;">41.53</td>
-<td style="text-align: left;">0.32</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">23.33</td>
-<td style="text-align: center;">41.62</td>
-<td style="text-align: left;">0.32</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + season + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">22.98</td>
-<td style="text-align: center;">41.66</td>
-<td style="text-align: left;">0.32</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + offset(off.set)</td>
-<td style="text-align: center;">23.87</td>
-<td style="text-align: center;">50.55</td>
-<td style="text-align: left;">0.34</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">25.11</td>
-<td style="text-align: center;">53.80</td>
-<td style="text-align: left;">0.34</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(sst)</td>
-<td style="text-align: center;">28.47</td>
-<td style="text-align: center;">55.87</td>
-<td style="text-align: left;">0.31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">72.71</td>
-<td style="text-align: center;">65.23</td>
-<td style="text-align: left;">0.47</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">28.10</td>
-<td style="text-align: center;">66.17</td>
-<td style="text-align: left;">0.29</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">73.92</td>
-<td style="text-align: center;">69.55</td>
-<td style="text-align: left;">0.47</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(grad)</td>
-<td style="text-align: center;">24.63</td>
-<td style="text-align: center;">73.68</td>
-<td style="text-align: left;">0.26</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">74.84</td>
-<td style="text-align: center;">75.80</td>
-<td style="text-align: left;">0.46</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">75.72</td>
-<td style="text-align: center;">76.57</td>
-<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(grad)</td>
+<td style="text-align: center;">32.82</td>
+<td style="text-align: center;">1008.28</td>
+<td style="text-align: center;">61.91</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3147</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(dist.up)</td>
-<td style="text-align: center;">28.25</td>
-<td style="text-align: center;">76.80</td>
-<td style="text-align: left;">0.26</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">33.21</td>
+<td style="text-align: center;">1008.62</td>
+<td style="text-align: center;">62.25</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3044</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + offset(off.set)</td>
-<td style="text-align: center;">76.54</td>
-<td style="text-align: center;">78.44</td>
-<td style="text-align: left;">0.46</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(depth)</td>
-<td style="text-align: center;">28.05</td>
-<td style="text-align: center;">78.94</td>
-<td style="text-align: left;">0.26</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so)</td>
-<td style="text-align: center;">24.46</td>
-<td style="text-align: center;">79.11</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(grad)</td>
+<td style="text-align: center;">73.63</td>
+<td style="text-align: center;">1008.83</td>
+<td style="text-align: center;">62.46</td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;">1.2978</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">23.86</td>
-<td style="text-align: center;">80.57</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(VelVert)</td>
+<td style="text-align: center;">48.24</td>
+<td style="text-align: center;">1010.15</td>
+<td style="text-align: center;">63.78</td>
+<td style="text-align: center;">0.44</td>
+<td style="text-align: center;">1.2983</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + offset(off.set)</td>
-<td style="text-align: center;">20.43</td>
-<td style="text-align: center;">81.09</td>
-<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(sst)</td>
+<td style="text-align: center;">31.32</td>
+<td style="text-align: center;">1011.59</td>
+<td style="text-align: center;">65.22</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3215</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano)</td>
-<td style="text-align: center;">25.46</td>
-<td style="text-align: center;">81.15</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(slope)</td>
+<td style="text-align: center;">34.23</td>
+<td style="text-align: center;">1011.88</td>
+<td style="text-align: center;">65.51</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">1.3118</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(slope)</td>
-<td style="text-align: center;">25.36</td>
-<td style="text-align: center;">81.54</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano)</td>
+<td style="text-align: center;">30.02</td>
+<td style="text-align: center;">1011.98</td>
+<td style="text-align: center;">65.61</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3222</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">21.75</td>
-<td style="text-align: center;">82.46</td>
-<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(clo)</td>
+<td style="text-align: center;">31.02</td>
+<td style="text-align: center;">1013.47</td>
+<td style="text-align: center;">67.10</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3225</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(grad) + offset(off.set)</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(sst)</td>
+<td style="text-align: center;">44.72</td>
+<td style="text-align: center;">1014.45</td>
+<td style="text-align: center;">68.08</td>
+<td style="text-align: center;">0.40</td>
+<td style="text-align: center;">1.2950</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">30.83</td>
+<td style="text-align: center;">1014.80</td>
+<td style="text-align: center;">68.43</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3235</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">32.21</td>
+<td style="text-align: center;">1015.30</td>
+<td style="text-align: center;">68.93</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3125</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(grad)</td>
+<td style="text-align: center;">32.70</td>
+<td style="text-align: center;">1015.94</td>
+<td style="text-align: center;">69.57</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3238</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(slope)</td>
+<td style="text-align: center;">33.68</td>
+<td style="text-align: center;">1016.39</td>
+<td style="text-align: center;">70.02</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(depth)</td>
+<td style="text-align: center;">29.00</td>
+<td style="text-align: center;">1019.23</td>
+<td style="text-align: center;">72.86</td>
+<td style="text-align: center;">0.36</td>
+<td style="text-align: center;">1.3193</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season</td>
 <td style="text-align: center;">23.81</td>
-<td style="text-align: center;">82.51</td>
-<td style="text-align: left;">0.23</td>
+<td style="text-align: center;">1019.32</td>
+<td style="text-align: center;">72.95</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(depth)</td>
+<td style="text-align: center;">26.30</td>
+<td style="text-align: center;">1020.60</td>
+<td style="text-align: center;">74.23</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(clo)</td>
+<td style="text-align: center;">24.52</td>
+<td style="text-align: center;">1021.05</td>
+<td style="text-align: center;">74.68</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3205</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
-<td style="text-align: center;">count ~ s(x,y,so) + s(Ano) + s(clo)</td>
-<td style="text-align: center;">26.03</td>
-<td style="text-align: center;">82.95</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(sst)</td>
+<td style="text-align: center;">24.83</td>
+<td style="text-align: center;">1021.13</td>
+<td style="text-align: center;">74.76</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3203</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(grad)</td>
+<td style="text-align: center;">25.93</td>
+<td style="text-align: center;">1021.18</td>
+<td style="text-align: center;">74.81</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3219</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(VelVert)</td>
+<td style="text-align: center;">26.42</td>
+<td style="text-align: center;">1022.09</td>
+<td style="text-align: center;">75.72</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3131</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + offset(off.set)</td>
-<td style="text-align: center;">21.38</td>
-<td style="text-align: center;">83.21</td>
-<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(depth)</td>
+<td style="text-align: center;">27.28</td>
+<td style="text-align: center;">1022.76</td>
+<td style="text-align: center;">76.39</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3283</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">16.44</td>
+<td style="text-align: center;">1023.82</td>
+<td style="text-align: center;">77.45</td>
+<td style="text-align: center;">0.29</td>
+<td style="text-align: center;">1.3328</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(slope)</td>
+<td style="text-align: center;">26.61</td>
+<td style="text-align: center;">1024.24</td>
+<td style="text-align: center;">77.87</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3200</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">25.08</td>
-<td style="text-align: center;">83.23</td>
-<td style="text-align: left;">0.24</td>
+<td style="text-align: left;">count ~ s(x,y) + season</td>
+<td style="text-align: center;">23.66</td>
+<td style="text-align: center;">1024.40</td>
+<td style="text-align: center;">78.03</td>
+<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + season + s(dist.up)</td>
+<td style="text-align: center;">27.36</td>
+<td style="text-align: center;">1025.39</td>
+<td style="text-align: center;">79.02</td>
+<td style="text-align: center;">0.34</td>
+<td style="text-align: center;">1.3208</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(VelVert)</td>
+<td style="text-align: center;">24.99</td>
+<td style="text-align: center;">1025.75</td>
+<td style="text-align: center;">79.38</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3208</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y) + s(Ano) + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">22.33</td>
-<td style="text-align: center;">85.22</td>
-<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(sst)</td>
+<td style="text-align: center;">24.71</td>
+<td style="text-align: center;">1026.28</td>
+<td style="text-align: center;">79.91</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3287</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">73.42</td>
-<td style="text-align: center;">85.39</td>
-<td style="text-align: left;">0.44</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(clo)</td>
+<td style="text-align: center;">24.67</td>
+<td style="text-align: center;">1026.42</td>
+<td style="text-align: center;">80.05</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">36.54</td>
-<td style="text-align: center;">91.27</td>
-<td style="text-align: left;">0.28</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(grad)</td>
+<td style="text-align: center;">26.12</td>
+<td style="text-align: center;">1026.84</td>
+<td style="text-align: center;">80.47</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3295</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + offset(off.set)</td>
-<td style="text-align: center;">32.63</td>
-<td style="text-align: center;">97.63</td>
-<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(slope)</td>
+<td style="text-align: center;">26.98</td>
+<td style="text-align: center;">1027.15</td>
+<td style="text-align: center;">80.78</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3260</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">47.69</td>
-<td style="text-align: center;">121.63</td>
-<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">count ~ s(x,y) + season + s(dist.up)</td>
+<td style="text-align: center;">24.69</td>
+<td style="text-align: center;">1027.30</td>
+<td style="text-align: center;">80.93</td>
+<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3297</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">44.97</td>
-<td style="text-align: center;">136.75</td>
-<td style="text-align: left;">0.36</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(sst)</td>
+<td style="text-align: center;">78.26</td>
+<td style="text-align: center;">1033.65</td>
+<td style="text-align: center;">87.28</td>
+<td style="text-align: center;">0.52</td>
+<td style="text-align: center;">1.3087</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + season + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">94.20</td>
-<td style="text-align: center;">495.62</td>
-<td style="text-align: left;">0.67</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(dist.up)</td>
+<td style="text-align: center;">49.84</td>
+<td style="text-align: center;">1037.67</td>
+<td style="text-align: center;">91.30</td>
+<td style="text-align: center;">0.40</td>
+<td style="text-align: center;">1.3123</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">105.24</td>
-<td style="text-align: center;">898.90</td>
-<td style="text-align: left;">0.60</td>
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(sst)</td>
+<td style="text-align: center;">30.64</td>
+<td style="text-align: center;">1042.08</td>
+<td style="text-align: center;">95.71</td>
+<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3377</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">134.79</td>
-<td style="text-align: center;">1407.58</td>
-<td style="text-align: left;">0.70</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(VelVert)</td>
+<td style="text-align: center;">82.67</td>
+<td style="text-align: center;">1042.18</td>
+<td style="text-align: center;">95.81</td>
+<td style="text-align: center;">0.51</td>
+<td style="text-align: center;">1.3027</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, by = year_fac, bs = "ts") + year_fac + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">81.93</td>
-<td style="text-align: center;">2895.76</td>
-<td style="text-align: left;">0.34</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(grad)</td>
+<td style="text-align: center;">51.68</td>
+<td style="text-align: center;">1042.73</td>
+<td style="text-align: center;">96.36</td>
+<td style="text-align: center;">0.40</td>
+<td style="text-align: center;">1.3111</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(clo)</td>
+<td style="text-align: center;">38.31</td>
+<td style="text-align: center;">1046.12</td>
+<td style="text-align: center;">99.75</td>
+<td style="text-align: center;">0.33</td>
+<td style="text-align: center;">1.3195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac + s(slope)</td>
+<td style="text-align: center;">52.08</td>
+<td style="text-align: center;">1051.45</td>
+<td style="text-align: center;">105.08</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3140</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(sst)</td>
+<td style="text-align: center;">30.51</td>
+<td style="text-align: center;">1052.71</td>
+<td style="text-align: center;">106.34</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">1.3464</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">28.18</td>
+<td style="text-align: center;">1054.89</td>
+<td style="text-align: center;">108.52</td>
+<td style="text-align: center;">0.28</td>
+<td style="text-align: center;">1.3290</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,by=year_fac,bs=ts) + year_fac</td>
+<td style="text-align: center;">52.11</td>
+<td style="text-align: center;">1056.09</td>
+<td style="text-align: center;">109.72</td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;">1.3175</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(depth)</td>
+<td style="text-align: center;">77.31</td>
+<td style="text-align: center;">1058.08</td>
+<td style="text-align: center;">111.71</td>
+<td style="text-align: center;">0.47</td>
+<td style="text-align: center;">1.3085</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">29.17</td>
+<td style="text-align: center;">1060.44</td>
+<td style="text-align: center;">114.07</td>
+<td style="text-align: center;">0.27</td>
+<td style="text-align: center;">1.3347</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(grad)</td>
+<td style="text-align: center;">27.21</td>
+<td style="text-align: center;">1060.55</td>
+<td style="text-align: center;">114.18</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">1.3377</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(VelVert)</td>
+<td style="text-align: center;">26.63</td>
+<td style="text-align: center;">1062.06</td>
+<td style="text-align: center;">115.69</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3376</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(depth)</td>
+<td style="text-align: center;">28.96</td>
+<td style="text-align: center;">1062.53</td>
+<td style="text-align: center;">116.16</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">1.3328</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so)</td>
+<td style="text-align: center;">25.61</td>
+<td style="text-align: center;">1062.93</td>
+<td style="text-align: center;">116.56</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3366</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y)</td>
+<td style="text-align: center;">21.74</td>
+<td style="text-align: center;">1064.94</td>
+<td style="text-align: center;">118.57</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3447</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano)</td>
+<td style="text-align: center;">26.60</td>
+<td style="text-align: center;">1064.99</td>
+<td style="text-align: center;">118.62</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3378</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(slope)</td>
+<td style="text-align: center;">26.24</td>
+<td style="text-align: center;">1065.07</td>
+<td style="text-align: center;">118.70</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3364</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(depth)</td>
+<td style="text-align: center;">25.32</td>
+<td style="text-align: center;">1065.16</td>
+<td style="text-align: center;">118.79</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3405</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(dist.up)</td>
+<td style="text-align: center;">80.84</td>
+<td style="text-align: center;">1066.50</td>
+<td style="text-align: center;">120.13</td>
+<td style="text-align: center;">0.47</td>
+<td style="text-align: center;">1.3118</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(grad)</td>
+<td style="text-align: center;">25.25</td>
+<td style="text-align: center;">1066.90</td>
+<td style="text-align: center;">120.53</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3460</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(slope)</td>
+<td style="text-align: center;">23.21</td>
+<td style="text-align: center;">1067.00</td>
+<td style="text-align: center;">120.63</td>
+<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">1.3440</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
+<td style="text-align: center;">22.69</td>
+<td style="text-align: center;">1067.10</td>
+<td style="text-align: center;">120.73</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3461</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(clo)</td>
+<td style="text-align: center;">27.31</td>
+<td style="text-align: center;">1067.12</td>
+<td style="text-align: center;">120.75</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3389</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(grad)</td>
+<td style="text-align: center;">80.14</td>
+<td style="text-align: center;">1068.09</td>
+<td style="text-align: center;">121.72</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3125</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(dist.up)</td>
+<td style="text-align: center;">26.89</td>
+<td style="text-align: center;">1068.72</td>
+<td style="text-align: center;">122.35</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">1.3431</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(clo)</td>
+<td style="text-align: center;">23.64</td>
+<td style="text-align: center;">1069.16</td>
+<td style="text-align: center;">122.79</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">1.3473</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(slope)</td>
+<td style="text-align: center;">81.43</td>
+<td style="text-align: center;">1069.70</td>
+<td style="text-align: center;">123.33</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3115</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs)</td>
+<td style="text-align: center;">81.76</td>
+<td style="text-align: center;">1070.43</td>
+<td style="text-align: center;">124.06</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3132</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(clo)</td>
+<td style="text-align: center;">79.41</td>
+<td style="text-align: center;">1079.96</td>
+<td style="text-align: center;">133.59</td>
+<td style="text-align: center;">0.44</td>
+<td style="text-align: center;">1.3157</td>
 </tr>
 </tbody>
 </table>
@@ -2067,110 +2605,158 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">basis</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">AIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Dev</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">71.98</td>
-<td style="text-align: center;">0.00</td>
-<td style="text-align: left;">0.58</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(depth)</td>
+<td style="text-align: center;">74.43</td>
+<td style="text-align: center;">988.26</td>
+<td style="text-align: center;">41.89</td>
+<td style="text-align: center;">0.57</td>
+<td style="text-align: center;">1.2936</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">76.83</td>
-<td style="text-align: center;">8.06</td>
-<td style="text-align: left;">0.58</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(VelVert)</td>
+<td style="text-align: center;">72.95</td>
+<td style="text-align: center;">991.41</td>
+<td style="text-align: center;">45.04</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2872</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">71.92</td>
-<td style="text-align: center;">11.50</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(sst)</td>
+<td style="text-align: center;">80.90</td>
+<td style="text-align: center;">996.74</td>
+<td style="text-align: center;">50.37</td>
+<td style="text-align: center;">0.58</td>
+<td style="text-align: center;">1.2928</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + offset(off.set)</td>
-<td style="text-align: center;">73.32</td>
-<td style="text-align: center;">13.28</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(slope)</td>
+<td style="text-align: center;">76.18</td>
+<td style="text-align: center;">1000.61</td>
+<td style="text-align: center;">54.24</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2928</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">73.42</td>
-<td style="text-align: center;">14.62</td>
-<td style="text-align: left;">0.56</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season</td>
+<td style="text-align: center;">76.93</td>
+<td style="text-align: center;">1002.57</td>
+<td style="text-align: center;">56.20</td>
+<td style="text-align: center;">0.56</td>
+<td style="text-align: center;">1.2951</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">66.33</td>
-<td style="text-align: center;">15.12</td>
-<td style="text-align: left;">0.54</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(clo)</td>
+<td style="text-align: center;">76.29</td>
+<td style="text-align: center;">1005.04</td>
+<td style="text-align: center;">58.67</td>
+<td style="text-align: center;">0.55</td>
+<td style="text-align: center;">1.2959</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + season + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">71.09</td>
-<td style="text-align: center;">17.06</td>
-<td style="text-align: left;">0.55</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(dist.up)</td>
+<td style="text-align: center;">68.81</td>
+<td style="text-align: center;">1005.60</td>
+<td style="text-align: center;">59.23</td>
+<td style="text-align: center;">0.53</td>
+<td style="text-align: center;">1.3000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(sst) + offset(off.set)</td>
-<td style="text-align: center;">74.53</td>
-<td style="text-align: center;">41.24</td>
-<td style="text-align: left;">0.52</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + season + s(grad)</td>
+<td style="text-align: center;">73.63</td>
+<td style="text-align: center;">1008.83</td>
+<td style="text-align: center;">62.46</td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;">1.2978</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(depth) + offset(off.set)</td>
-<td style="text-align: center;">72.71</td>
-<td style="text-align: center;">65.23</td>
-<td style="text-align: left;">0.47</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(sst)</td>
+<td style="text-align: center;">78.26</td>
+<td style="text-align: center;">1033.65</td>
+<td style="text-align: center;">87.28</td>
+<td style="text-align: center;">0.52</td>
+<td style="text-align: center;">1.3087</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(dist.up) + offset(off.set)</td>
-<td style="text-align: center;">73.92</td>
-<td style="text-align: center;">69.55</td>
-<td style="text-align: left;">0.47</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(VelVert)</td>
+<td style="text-align: center;">82.67</td>
+<td style="text-align: center;">1042.18</td>
+<td style="text-align: center;">95.81</td>
+<td style="text-align: center;">0.51</td>
+<td style="text-align: center;">1.3027</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(grad) + offset(off.set)</td>
-<td style="text-align: center;">74.84</td>
-<td style="text-align: center;">75.80</td>
-<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(depth)</td>
+<td style="text-align: center;">77.31</td>
+<td style="text-align: center;">1058.08</td>
+<td style="text-align: center;">111.71</td>
+<td style="text-align: center;">0.47</td>
+<td style="text-align: center;">1.3085</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(slope) + offset(off.set)</td>
-<td style="text-align: center;">75.72</td>
-<td style="text-align: center;">76.57</td>
-<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(dist.up)</td>
+<td style="text-align: center;">80.84</td>
+<td style="text-align: center;">1066.50</td>
+<td style="text-align: center;">120.13</td>
+<td style="text-align: center;">0.47</td>
+<td style="text-align: center;">1.3118</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + offset(off.set)</td>
-<td style="text-align: center;">76.54</td>
-<td style="text-align: center;">78.44</td>
-<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(grad)</td>
+<td style="text-align: center;">80.14</td>
+<td style="text-align: center;">1068.09</td>
+<td style="text-align: center;">121.72</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3125</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
-<td style="text-align: center;">count ~ s(x, y, year_fac, bs = "fs") + s(clo) + offset(off.set)</td>
-<td style="text-align: center;">73.42</td>
-<td style="text-align: center;">85.39</td>
-<td style="text-align: left;">0.44</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(slope)</td>
+<td style="text-align: center;">81.43</td>
+<td style="text-align: center;">1069.70</td>
+<td style="text-align: center;">123.33</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3115</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs)</td>
+<td style="text-align: center;">81.76</td>
+<td style="text-align: center;">1070.43</td>
+<td style="text-align: center;">124.06</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">1.3132</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">thin-plate</td>
+<td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(clo)</td>
+<td style="text-align: center;">79.41</td>
+<td style="text-align: center;">1079.96</td>
+<td style="text-align: center;">133.59</td>
+<td style="text-align: center;">0.44</td>
+<td style="text-align: center;">1.3157</td>
 </tr>
 </tbody>
 </table>
@@ -2179,7 +2765,7 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 </figure>
 </div>
 </div>
-<p>Similar al caso <a href="#tbl-modelselectionlo" class="quarto-xref">Table&nbsp;1</a>, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 58% explicada por el modelo mas parsimonioso (incluye profundidad) contra 56% explicada por el modelo que incluye solo la superficie espacial variable por año y estación.<br>
+<p>Similar al caso <a href="#tbl-modelselectionlo" class="quarto-xref">Table&nbsp;1</a>, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 57% explicada por el modelo mas parsimonioso (incluye profundidad) contra 56% explicada por el modelo que incluye solo la superficie espacial variable por año y estación.<br>
 En lo que continua, persentare los resultados del modelo que excluye variables ambientales.</p>
 </section>
 <section id="efectos-parciales-de-estacion-año-y-efecto-espacial" class="level2" data-number="6.2">
@@ -2193,21 +2779,21 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="año-1" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="año-1"><span class="header-section-number">6.2.2</span> Año</h3>
+<section id="sec-partialeffectyearfs" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="sec-partialeffectyearfs"><span class="header-section-number">6.2.2</span> Año</h3>
 <p>Estos modelos no tienen termino año como variable, si no que computa diferentes superficies espacials por año. Para obtener un equivalente de effecto parcial de año, se evalua la contribucion parcial de la superficie smooth para un set de locaciones y luego se obtiene un promedio anual - en aquellos años que tienen pocos datos el efecto de año es atraido fuertemente hacia la gran media (<em>shrunk</em>)</p>
 <p>Es claro que no hay tendencia en la abundancia de delfines oscuros en el area de estudio</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2220,7 +2806,7 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2235,7 +2821,7 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
@@ -2247,19 +2833,19 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="estimaciones-de-abundancia-1" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="estimaciones-de-abundancia-1"><span class="header-section-number">6.4</span> Estimaciones de abundancia</h2>
+<section id="sec-abunfs" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-abunfs"><span class="header-section-number">6.4</span> Estimaciones de abundancia</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-65d573c9ff743ee20657" style="width:100%;height:590px;"></div>
-<script type="application/json" data-for="htmlwidget-65d573c9ff743ee20657">{"x":{"visdat":{"274577ca9":["function () ","plotlyVisDat"],"274482853d":["function () ","data"],"2744404646":["function () ","data"],"2743b923a83":["function () ","data"],"2746202f8b":["function () ","data"]},"cur_data":"2746202f8b","attrs":{"274482853d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"2744404646":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"2743b923a83":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"2746202f8b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x, y, year_fac, bs = \"fs\") + season  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[0,0,5,6,2,0,31,23,5,0,82,19,0,72,20,6,1,1,1,0,8,3,0,49,30,8,1,120,16,5,0,76,1,1,411,5299,72,457,1360,14362,165,1189,3032,6388,78,544,1716,19,134,620,79,524,1427,5848,76,1167,4976,70,438,933,1343,20,129,370,3280,32,249],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[9,1,127,47,15,2,204,146,47,6,638,149,6,651,167,54,7,27,9,1,115,41,5,557,300,97,12,1312,145,47,6,635,23],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833164,411.23191511949034,133.1830634193804,0,0,831.21344545428894,0,0,0,1674.3013687007822,0,0,0,0,116.0414069978698,0,0,729.13124120840507,603.04814398395058,0,0,2008.2210236944775,272.57389402755109,0,74.177908739908062,932.68139307506021,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.3433489765456,307.79105902575549,102.18696874121903,null,null,673.05700825366023,null,null,null,null,null,null,null,null,85.799050356960237,null,null,443.96722659083957,442.30805963484374,null,null,1527.2891698298497,195.08322755013526,null,51.696681777336636,591.1900377407735,null],"array":[null,null,null,null,null,null,1267.2276524397053,1223.6316619916661,439.07381493723409,null,null,3537.3459640342512,null,null,null,null,null,null,null,null,329.21516800825958,null,null,1135.1725967743905,1659.405962812767,null,null,6377.4819560538472,686.2064479507427,null,170.57573189487175,1614.6585831796626,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833164,411.23191511949034,133.1830634193804,0,0,831.21344545428894,0,0,0,1674.3013687007822,0,0,0,0,116.0414069978698,0,0,729.13124120840507,603.04814398395058,0,0,2008.2210236944775,272.57389402755109,0,74.177908739908062,932.68139307506021,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-62688cf18f96c405ff80" style="width:100%;height:590px;"></div>
+<script type="application/json" data-for="htmlwidget-62688cf18f96c405ff80">{"x":{"visdat":{"27a036a7d1d":["function () ","plotlyVisDat"],"27a026db62ef":["function () ","data"],"27a030b72786":["function () ","data"],"27a0301a6706":["function () ","data"],"27a0493862f7":["function () ","data"]},"cur_data":"27a0493862f7","attrs":{"27a026db62ef":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"27a030b72786":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"27a0301a6706":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"27a0493862f7":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x, y, year_fac, bs = \"fs\") + season  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[1,0,12,13,4,0,64,47,11,1,172,42,1,162,40,12,1,3,1,0,17,7,1,110,65,18,2,261,34,11,1,167,3,3,212,2336,31,207,599,7993,87,669,1716,2651,33,235,804,9,65,303,43,308,840,2907,37,591,2383,32,211,465,740,10,69,197,1238,12,98],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[9,1,120,50,16,2,217,148,49,6,641,158,6,687,184,61,7,28,9,1,115,41,5,541,333,110,13,1445,144,48,6,625,24],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -2271,21 +2857,216 @@ La mayor variabilidad en las estimaciones de abundancia ocurren en lugares donde
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="1056"></p>
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="1056"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="referencias" class="level1" data-number="7">
+<section id="sec-nobs" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Separar efecto del tiempo del numero de observadores</h1>
+<p>Durante agosto 2026 mantuvimos reuniones con el grupo de trabajo: Silvana Dans, Guillermo Svendsen, Alejandro Buren, Mariano Coscarella y Agustin Luzzenti. Silvana y ADB presentaron los resultados obtenidos hasta ese momento.<br>
+De esa reunión surgieron 2 temas que el equipo de trabajo considero importante abordar:</p>
+<ol type="1">
+<li><u> Velocidad Vertical </u>: inlcusión de Velocidad Vertical de agua como covariable en los modelos DSM. Esta variable indica upwellings (velocidades positivas)/downwellings (velocidades negativas). Guille calculo promedios climatologicos (medias mensuales). La inclusión de esta variable fue hecha del mismo modo que la inclusión del resto de las variables ambientales a los DSMs. Su inclusión no mejoró la capacidad de explicación de los modelos.<br>
+</li>
+<li><u> Número de observadores </u>: dado que los surveys que informan este analisis se hicieron con una multiplicidad de objetivos (es decir, no fueron diseñados especificamente como surveys para estimar abundancia), el numero de observadores, y el comportamiento de los observadores, vario con el tiempo. Los surveys mas tempranos se hicieron con solo un observador (Guille), y luego se sumaron mas observadores. Dada esta tendencia: bajo numero de observadores al principio, aumento de observadores luego, es posible que el efecto del tiempo estimada por los DSM (nula para LO) sea en parte resultado del aumento de observadores. Dado que el efecto estimado de año es nulo para LO, existe la posibilidad que el aumento en el numero de observadores este enmascarando una potencial caide en la abundancia de LO en el area.<br>
+Para abordar este problema, Guille y Silvana revisaron las planillas en papel de cada survey y establecieron la variable “Numero efectivo de observadores”. Es decir, en algunas salidas hubo hsata 6 personas a bordo de la embarcacion, pero no todos fueron parte del esfuerzo de observacion de delfines.</li>
+</ol>
+<p>Aqui se grafica el numero efectivo de observadores (<code>n_obs</code>) a lo largo del tiempo (cada punto representa una salida)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="estrategias" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="estrategias"><span class="header-section-number">7.1</span> Estrategias</h2>
+<p>Consideramos 3 estrategias independientes:</p>
+<ol type="1">
+<li>Incorporar la variable <code>n_obs</code> a la funcion de detección<br>
+</li>
+<li>Incorporar la variable <code>n_obs</code> a los modelos DSM<br>
+</li>
+<li>Analisis de sensibilidad. Ajustar el mejor modelo (DSM soap model, con año y estación como covariables), usando sólo las salidas donde <code>n_obs</code>=2, y comparar la tendencia del efecto parcial de la variable año entre este modelo y la del modelo ajustado usando todos los datos.</li>
+</ol>
+<section id="incorporar-la-variable-n_obs-a-la-funcion-de-detección" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="incorporar-la-variable-n_obs-a-la-funcion-de-detección"><span class="header-section-number">7.1.1</span> Incorporar la variable <code>n_obs</code> a la funcion de detección</h3>
+<p>Este ejercicio es presentado en <a href="#sec-funcdetec" class="quarto-xref">Section&nbsp;3</a>.<br>
+Ver particularmente la explicacion de la falta de convergencia de la funcion de deteccion en <a href="#sec-convfuncdetec" class="quarto-xref">Section&nbsp;3.6.6.2.1</a>.</p>
+<p>Esta estrategia no fue adoptada por los problemas de convergencia descriptos y porque dado que <code>n_obs</code> == 1 ocurre solo en el periodo 2006-2010, y <code>n_obs</code> es casi siempre 2 a partir de 2015. Es decir que el numero efectivo de observadores no esta simplemente correlacionado con año, es casi una “step function” de año. Esto quiere decir que en caso de incluir <code>n_obs</code> en la funcion de deteccion, su coeficiente en realidad va a codificar “periodo”, que es la misma informacion que codifica la variable año en el DSM.<br>
+Como conclusion, incluir <code>n_obs</code> en la funcion de deteccion no nos permitiria separar el efecto de año del efecto del numero de observadores</p>
+</section>
+<section id="incorporar-la-variable-n_obs-a-los-modelos-dsm" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="incorporar-la-variable-n_obs-a-los-modelos-dsm"><span class="header-section-number">7.1.2</span> Incorporar la variable <code>n_obs</code> a los modelos DSM</h3>
+<p>Este ejercicio consideraba incluir <code>n_obs</code> al DSM,<br>
+<code>count ~ s(x, y, year_fac, bs = "fs") + season + n_obs + ...</code><br>
+en lugar de incorporarla a la funcion de deteccion.</p>
+<p>Esta estrategia no fue implementada por dos razones:</p>
+<ol type="i">
+<li><code>n_obs</code> es una covariable de detectabilidad (es decir afecta si un animal fue detectado), no una covariable de densidad (el numero de observadores no afecta la cantidad de animales presentes en el area)<br>
+</li>
+<li><code>n_obs</code> es una “step function” de año. Por ende, incluir el efecto de año <code>s(x, y, year_fac, bs = "fs")</code> y <code>n_obs</code> en el mismo DSM no va a permitir separar la variabilidad explicada por cada una de las variables.</li>
+</ol>
+</section>
+<section id="analisis-de-sensibilidad" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="analisis-de-sensibilidad"><span class="header-section-number">7.1.3</span> Analisis de sensibilidad</h3>
+<p>En esta estrategia, mantuvimos <code>n_obs</code> constante. Por ende, removemos el efecto de <code>n_obs</code> de los resultados, en lugar de intentar modelarlo. De esta manera, si encontramos que no hay tendencia a lo largo del tiempo es evidencia de que esto es real y no un artefacto del numero variable de <code>n_obs</code> (es decir que el aumento de <code>n_obs</code> no esta enmasarando una caida en la abudancia). Por el contrario, si el efecto de año es distinto al efecto encontrado usando todos los datos, esto indicaria que la tendencia es, al menos parcialmente, un artefacto del numero variable de <code>n_obs</code>.</p>
+<p>Procedimiento:</p>
+<p>Usando la funcion de deteccion sin covariables, ajustamos nuevamente el modelo <code>ccount ~ s(x, y, year_fac, bs = "fs") + season</code>, utilizando solo las detecciones donde <code>n_obs</code>==2.<br>
+Elegimos <code>n_obs</code>==2 porque es el numero de observadores efectivos mas consistente a lo largo del tiempo</p>
+<p>Esta tabla presenta el numero de detecciones totales, y las detecciones usando <code>n_obs</code>==2</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ano</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n_total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n_obs2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pct_obs2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">31.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">660</td>
+<td style="text-align: right;">387</td>
+<td style="text-align: right;">58.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">644</td>
+<td style="text-align: right;">260</td>
+<td style="text-align: right;">40.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">356</td>
+<td style="text-align: right;">265</td>
+<td style="text-align: right;">74.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">279</td>
+<td style="text-align: right;">129</td>
+<td style="text-align: right;">46.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">489</td>
+<td style="text-align: right;">235</td>
+<td style="text-align: right;">48.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">1059</td>
+<td style="text-align: right;">764</td>
+<td style="text-align: right;">72.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">1276</td>
+<td style="text-align: right;">1088</td>
+<td style="text-align: right;">85.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">1188</td>
+<td style="text-align: right;">1075</td>
+<td style="text-align: right;">90.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">144</td>
+<td style="text-align: right;">144</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Este grafico muestra el equivalente del efecto parcial de año (para ver una explicacion de porque no se puede estimar el efecto parcial directamente ver <a href="#sec-partialeffectyearfs" class="quarto-xref">Section&nbsp;6.2.2</a>) en el modelo DSM usando todas las detecciones (rojo), y solo las detecciones donde <code>n_obs</code>==2 (celeste).<br>
+Los efectos parciales de los dos modelos se solapan casi completamente.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Este grafico muestra el efecto parcial de <code>season</code> en el modelo DSM usando solo las detecciones donde <code>n_obs</code>==2 (celeste en el grafico anterior). Este efecto es consistente con lo que encontramos antes</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Estos son los mapas estimados usando el modelo DSM usando solo las detecciones donde <code>n_obs</code>==2</p>
+<p>Estos mapas son consistentes con los mapas obtenidos usando todos los datos - esperable dada la proporcion de detecciones donde <code>n_obs</code>==2 (ver tabla). La unica inconsistencia pareca estar en la primavera de 2017, donde el modelo usando <code>n_obs</code>==2 estima un foco de densidad en el limite sureste del area de estudio, y en la primavera del 2016 donde el foco sureste tiene una extension espacial mayor que en el modelo con todos los datos. Esto necesariamente tiene que ser un artefacto de un modelo al que le falta informacion.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion-de-separar-efecto-del-tiempo-del-numero-de-observadores" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="conclusion-de-separar-efecto-del-tiempo-del-numero-de-observadores"><span class="header-section-number">7.2</span> Conclusion de Separar efecto del tiempo del numero de observadores</h2>
+<p>La tendencia nula estimada en la abundancia de delfines oscuros en el area de estudio parece ser real, y no un artefacto del numero variable de observadores.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DelfinesOscuros_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="referencias" class="level1" data-number="8">
 
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">7 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">8 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-Buckland2001" class="csl-entry" role="listitem">
 Buckland ST, Anderson DR, Burnham KP, Laake JL, Borchers DL, Thomas L (2001) Introduction to distance sampling: Estimating abundance of biological populations. Oxford University Press, Oxford.
 </div>
