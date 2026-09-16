@@ -192,16 +192,60 @@ p.dd.soap.seasonyear.season.nobs2 <- gratia::draw(gratia::parametric_effects(m,
 # ============================================================================
 # side-by-side fit summary
 # ============================================================================
+# THE TWO AIC VALUES IN THIS TABLE ARE NOT COMPARABLE WITH EACH OTHER.
+#
+# AIC = -2*logLik + 2*df, and a log-likelihood is a sum over the rows that were
+# fitted. The full-data model is fitted on all 6288 segments; the subset model on
+# the 4396 segments with n_obs == 2. Fewer rows means fewer terms in the sum, so
+# the subset model's AIC is lower for a reason that has nothing to do with fit
+# quality -- it is a different likelihood over different data, not a worse or
+# better description of the same data. Differencing them measures sample size.
+#
+# Each AIC IS valid within its own arm: any two models fitted on all 6288
+# segments can be ranked against each other, and so can any two fitted on the
+# same 4396-segment subset. That is why the column is kept rather than dropped.
+#
+# What this table is actually for: `Dev` (deviance explained) is a proportion,
+# so it is directly readable across the two rows, and the real comparison in
+# this script is the s(Ano) partial-effect overlay above -- does the year trend
+# survive when observer number is held constant? -- not a number in this table.
+.aic_note <- paste(
+  "AIC is comparable only WITHIN a row's own data set:",
+  "the full-data model is fitted on all segments and the n_obs == 2 model on the",
+  "subset, so their log-likelihoods are sums over different numbers of rows.",
+  "Do NOT difference the two AIC values. Dev (a proportion) is comparable;",
+  "the s(Ano) partial-effect overlay is the intended comparison.")
+
 table_dd_nobs2_compare <- data.frame(
   model   = c("full data", "n_obs == 2 subset"),
   n_seg   = c(nrow(segdata), nrow(segdata_nobs2)),
   n_obs   = c(nrow(obsdata_dd_mod), nrow(obsdata_dd_mod_nobs2)),
   AIC     = round(c(AIC(dd.dsm.soap.season.year), AIC(dd.dsm.soap.season.year.nobs2)), 2),
+  AIC_comparable_across_rows = c(FALSE, FALSE),
   Dev     = round(c(summary(dd.dsm.soap.season.year)$dev.expl,
-                    summary(dd.dsm.soap.season.year.nobs2)$dev.expl), 3)
+                    summary(dd.dsm.soap.season.year.nobs2)$dev.expl), 3),
+  note    = .aic_note
 )
 print(table_dd_nobs2_compare)
+message("\nNOTE: ", .aic_note, "\n")
 fwrite(table_dd_nobs2_compare, file.path(out_dir, "DD_nobs2_fit_compare.csv"))
+
+# A reader opening the CSV alone gets the caveat in the `note` column above; a
+# reader opening the folder gets it here.
+writeLines(c(
+  "DD_nobs2_fit_compare.csv -- how to read it",
+  "",
+  strwrap(.aic_note, width = 78),
+  "",
+  strwrap(paste("Context: n_obs is the number of observers on watch. It is almost a step",
+                "function of year (n_obs == 1 occurs only 2006-2009 and 2013; n_obs == 2",
+                "dominates from 2014 on), so it cannot be separated from s(Ano) by putting",
+                "it in the detection function as a covariate. This script instead holds it",
+                "constant by subsetting to n_obs == 2 and asks whether the s(Ano) trend",
+                "survives. Note that 2013 drops out of the subset entirely -- all 39 of its",
+                "segments are n_obs == 1 -- so the subset model interpolates through 2013",
+                "with no data there."), width = 78)),
+  file.path(out_dir, "README_nobs2_fit_compare.txt"))
 
 # ============================================================================
 # map the predicted density from the n_obs == 2 subset model
