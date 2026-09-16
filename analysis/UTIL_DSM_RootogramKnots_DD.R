@@ -1,5 +1,28 @@
 # ADB / Claude
 # 2026-09-15
+# =========================================================================
+# STATUS: DECISION RECORD -- NOT RE-RUN BY THE PIPELINE  (marked 2026-09-16)
+#
+# This script measured the ORIGINAL common-dolphin soap configuration:
+#     simplify_tol 3000 / margin 2000 / knot_ngrid c(10, 8) -> 41 knots,
+#     boundary-film k = 10, all seven environmental smooths at mgcv k = 10.
+# That configuration no longer exists. 4_CommonDolphin_DSM_soap.R was retuned
+# to tol500 / margin250 / c(14, 11) -> 89 knots with K_COV = 20, and the
+# evidence for doing so is exactly what this script produced.
+#
+# SO IT CANNOT BE RE-RUN AGAINST THE CURRENT PIPELINE:
+#   * it pins AIC_STORED_ORIG <- 6100.53 as a reconstruction check, and
+#   * both of its arms build from the global `knot_ngrid`, now c(14, 11), so
+#     the `original (10x8)` and `revised (14x11)` arms would be the same fit
+#     and the rootogram comparison would be vacuous.
+#
+# It is preserved as the evidence behind that change, not as a regenerable
+# output. Its CSVs under output/CommonDolphin/DSM/ are dated artefacts of the
+# run described above; 9_RegenerateStudies_DD.R deliberately does NOT source
+# it. To re-derive the comparison you would first have to rebuild the
+# abandoned configuration, which is the thing the repo decided against.
+# =========================================================================
+#
 #
 # Is the common dolphin's spatially structured rootogram misfit the MODEL, or
 # the under-resolved interior knot grid?
