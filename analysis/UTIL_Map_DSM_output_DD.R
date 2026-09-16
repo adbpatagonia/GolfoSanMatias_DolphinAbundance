@@ -1106,3 +1106,141 @@ ggsave(
   width    = 14,
   height   = 3.2 * length(yf_levels)
 )
+
+
+# ===========================================================================
+# Map 12 - TUNED SOAP ARM, 4 x 2 tile: season (columns) x model (rows)
+#          rows = base  count ~ s(x,y,so) + season + s(Ano)
+#                 +sst  count ~ s(x,y,so) + season + s(Ano) + s(sst, k = 20)
+#
+# Both models come straight out of 4_CommonDolphin_DSM_soap.R at the tuned
+# configuration (boundary tol500/margin250, 14x11 -> 89 knots, K_COV = 20), so
+# this panel shows what the environmental covariate actually buys in space.
+#
+# TWO THINGS THAT ARE NOT OPTIONAL HERE
+#
+# 1. sst IS A MONTHLY CLIMATOLOGY. preddata carries one value per cell per
+#    calendar month (Mes_n 1-12) and has no Ano. Averaging sst over the three
+#    months of a season and predicting once would be wrong wherever s(sst) is
+#    curved, because mean(f(sst)) != f(mean(sst)), and the within-season monthly
+#    spread PER CELL is large: median range 4.29 degC in Spring and 3.62 in
+#    Fall. So each season is predicted at EACH of its three months and the
+#    resulting densities are averaged -- mean(f(sst)), the quantity wanted.
+#
+# 2. THE sst TERM IS IDENTICAL IN EVERY YEAR, by construction, because the
+#    climatology has no year dimension. All interannual variation still comes
+#    from s(Ano). Do not read these panels as sst-driven change.
+#
+# Only the 1353 of 1408 grid cells that carry covariates can be shown for the
+# +sst row (the other 55 are 3.9% of grid area and 0.35% of predicted N), so
+# BOTH rows are drawn on that common footprint to keep them comparable.
+#
+# Both a linear and a log10 colour version are written. The density field is
+# strongly skewed -- two small hotspots reach ~55 km^-2 against a median near 2
+# -- so on a linear scale the gulf renders as one flat dark field. The linear
+# version is the honest depiction of magnitude; read spatial structure off the
+# log one.
+# ===========================================================================
+if (exists("dd.dsm.soap.season.year") && exists("dd.dsm.soap.year.season.sst") &&
+    exists("preddata")) {
+
+  .tuned_models <- list(base = dd.dsm.soap.season.year,
+                        sst  = dd.dsm.soap.year.season.sst)
+
+  .pd_sst <- as.data.frame(preddata)[, c("id", "Mes_n", "season", "sst")]
+  .grid0  <- pred.polys_m
+  .grid0$area_m2 <- as.numeric(st_area(.grid0))
+  .grid0$id_int  <- suppressWarnings(as.integer(as.character(.grid0$id)))
+  .ids_cov <- sort(unique(.pd_sst$id))
+  .grid_cov <- .grid0[.grid0$id_int %in% .ids_cov, ]
+  message(sprintf("tuned 4x2 map: %d/%d cells carry covariates (%.1f%% of area)",
+                  nrow(.grid_cov), nrow(.grid0),
+                  100 * sum(.grid_cov$area_m2) / sum(.grid0$area_m2)))
+
+  # NOTE: pred.polys_m has columns `x` and `y`. Never name a loop variable after
+  # a grid column and then reference it inside mutate()/transform() -- data
+  # masking resolves the COLUMN, so `Ano = y` silently binds the year to the
+  # northing (~5e6), s(Ano) extrapolates, and every prediction becomes Inf.
+  .tuned_density <- function(model, .ssn) {
+    .mo <- sort(unique(.pd_sst$Mes_n[.pd_sst$season == .ssn]))
+    stopifnot(length(.mo) == 3L)
+    .acc <- rep(0, nrow(.grid_cov))
+    for (.m in .mo) {
+      .g <- st_drop_geometry(.grid_cov)
+      .g$season <- factor(.ssn, levels = levels(segdata$season))
+      .g$Ano    <- ref_ano
+      .this_mo  <- .pd_sst[.pd_sst$Mes_n == .m, ]
+      .g$sst    <- .this_mo$sst[match(.g$id_int, .this_mo$id)]
+      stopifnot(!anyNA(.g$sst))
+      .p <- predict(model, newdata = .g,
+                    off.set = .grid_cov$area_m2 / 3, type = "response")
+      stopifnot(all(is.finite(.p)))
+      .acc <- .acc + .p
+    }
+    .acc / (.grid_cov$area_m2 / 1e6)          # dolphins km^-2
+  }
+
+  .tuned_tiles <- do.call(rbind, lapply(names(.tuned_models), function(.mk) {
+    do.call(rbind, lapply(levels(segdata$season), function(.ssn) {
+      out <- .grid_cov["geometry"]
+      out$density <- .tuned_density(.tuned_models[[.mk]], .ssn)
+      out$season  <- factor(.ssn, levels = levels(segdata$season))
+      out$model   <- factor(.mk, levels = c("base", "sst"),
+                            labels = c("base: season + s(Ano)",
+                                       "+ s(sst, k = 20)"))
+      out
+    }))
+  }))
+
+  .tuned_map <- function(dat, ttl, cap, log_scale = FALSE) {
+    d <- if (log_scale) dat[dat$density > 0, ] else dat
+    ggplot() +
+      geom_sf(data = patagonia_m, fill = "grey85", color = "grey40") +
+      geom_sf(data = d, aes(fill = density), color = NA) +
+      geom_sf(data = survey.area_m, fill = NA, color = "black", linewidth = 0.5) +
+      geom_sf(data = segdata_traj_m %>% filter(Ano > 2006), size = 0.5, alpha = 0.15) +
+      (if (log_scale)
+         scale_fill_viridis_c(option = "turbo", trans = "log10",
+                              name = expression("Dolphins km"^-2),
+                              labels = \(v) format(v, drop0trailing = TRUE,
+                                                   scientific = FALSE))
+       else
+         scale_fill_viridis_c(option = "turbo",
+                              name = expression("Dolphins km"^-2))) +
+      labs(title = ttl, caption = cap, x = "Easting (Mm)", y = "Northing (Mm)") +
+      theme_minimal(base_size = 12) +
+      theme(legend.position = "right", panel.grid.minor = element_blank()) +
+      scale_x_continuous(labels = \(x) x / 1e6) +
+      scale_y_continuous(labels = \(x) x / 1e6) +
+      coord_sf(xlim = c(bb["xmin"] - xpad, bb["xmax"] + xpad),
+               ylim = c(bb["ymin"] - ypad, bb["ymax"] + ypad),
+               default_crs = st_crs(target_crs), datum = target_crs,
+               expand = FALSE) +
+      facet_grid(model ~ season)
+  }
+
+  .cap_tuned <- paste0(
+    "tuned soap: boundary tol500/margin250, 89 knots | s(Ano) evaluated at ",
+    ref_ano, "\n",
+    "sst is a monthly CLIMATOLOGY averaged over each season's 3 months - ",
+    "the sst term is identical in every year, so all interannual change is s(Ano)")
+
+  dd.map.tuned.season.model <- .tuned_map(
+    .tuned_tiles, "Common dolphin density - tuned soap film: base vs + s(sst)",
+    .cap_tuned)
+
+  dd.map.tuned.season.model.log <- .tuned_map(
+    .tuned_tiles,
+    "Common dolphin density - tuned soap film: base vs + s(sst) (log scale)",
+    paste0(.cap_tuned, " | log10 colour scale"), log_scale = TRUE)
+
+  ggsave("output/CommonDolphin/DSM/DD_DSM_Tuned_SeasonByModel.png",
+         dd.map.tuned.season.model, width = 15, height = 9)
+  ggsave("output/CommonDolphin/DSM/DD_DSM_Tuned_SeasonByModel_log.png",
+         dd.map.tuned.season.model.log, width = 15, height = 9)
+
+} else {
+  warning("Map 12 skipped: needs dd.dsm.soap.season.year, ",
+          "dd.dsm.soap.year.season.sst and preddata in the workspace ",
+          "(run 4_CommonDolphin_DSM_soap.R first).", call. = FALSE)
+}
