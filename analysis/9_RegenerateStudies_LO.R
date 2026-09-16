@@ -63,12 +63,20 @@ source(file.path(here::here(), "analysis", "UTIL_DSM_CovariateK_LO.R"))
 # Kept in the driver anyway: it is the evidence that the arm was checked and
 # left alone deliberately, and it regenerates cleanly.
 #
-# Sourced with no overrides, so it runs the full sweep and then the tuned arm at
-# whatever the sweep auto-picks. To reproduce the 2026-09-16 run exactly, set
-# FORCE_CONFIG <- list(tol = 500, margin = 250, ngrid = c(10L, 8L)) first.
+# FORCE_CONFIG IS SET ON PURPOSE -- DO NOT REMOVE IT.
+# Left to itself the script auto-picks the LOWEST-AIC configuration, which for
+# LO is 26x21 / 361 knots. That is precisely the configuration the study
+# concluded against: the AIC landscape it wins on spans 15.8 units with a
+# non-monotone wobble up to 12.8, so "lowest AIC" here is noise, and the basis
+# was never binding in the first place. Regenerating without this line would
+# quietly write a 361-knot tuned arm into output/ that contradicts the RESULT
+# block in the script it came from, and cost ~45 extra fits doing it.
+# This reproduces the 2026-09-16 run.
+FORCE_CONFIG <- list(tol = 500, margin = 250, ngrid = c(10L, 8L))
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_SoapTuning_LO.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_SoapTuning_LO.R"))
+rm(FORCE_CONFIG)   # do not leak into anything sourced after this
 
 message(sprintf("\n9_RegenerateStudies_LO.R finished in %.1f min",
                 as.numeric(difftime(Sys.time(), .t0, units = "mins"))))
