@@ -25,10 +25,45 @@ library(dplyr)
 # ============================================================
 # Soap boundary (buffered so ALL segments sit inside) + interior knots
 # ============================================================
-simplify_tol <- 3000        ## TUNE  metres; larger = simpler (safer) boundary
-margin       <- 2000        ## TUNE  metres clearance to leave inside the edge
-knot_ngrid   <- c(10, 8)    ## TUNE  interior-knot grid density (start coarse)
+# TUNED CONFIGURATION (set 2026-09-16; see UTIL_DSM_SoapTuning_DD.R for the
+# evidence and analysis/TODO_DD_TunedArm_MapsAbundance.md for the summary).
+# The previous values were simplify_tol = 3000, margin = 2000, knot_ngrid =
+# c(10, 8) -> 41 knots, and the seven environmental smooths at mgcv's default
+# k = 10. Three things changed, and they are independent:
+#
+#  KNOB 1  boundary: 3000/2000 -> 500/250.
+#     The old boundary was a 9-vertex polygon of 2184.6 km2 against a survey
+#     polygon of 1811.0 km2, every vertex ~2.91 km OUTSIDE the survey area, so
+#     only 44 of 6288 segments sat within 2 km of it. A soap film exists to
+#     impose behaviour AT its boundary, so one placed ~3 km beyond the data was
+#     barely doing its job. The new boundary is 19 vertices / 2012.0 km2 with
+#     247 segments within 2 km, and still contains every segment (checked below).
+#     Worth ~6 AIC on the reported model.
+#
+#  KNOB 2  interior knots: c(10, 8) -> c(14, 11), i.e. 41 -> 89 knots.
+#     Worth ~24 AIC on the reported model, the largest of the three gains.
+#     DO NOT REFINE FURTHER. AIC keeps falling all the way to 485 knots (-132
+#     in total) but residual lag-1 autocorrelation rises monotonically with it
+#     (0.0215 -> 0.0441 against a band of 0.026): the independence assumption
+#     underwriting those AIC gains degrades exactly as the claimed gain grows.
+#     89 knots is the most refined grid still inside the band (lag-1 0.0247, at
+#     95% of it). See UTIL_DSM_SoapTuning_DD.R / DD_soap_knot_sweep.csv.
+#
+#  KNOB 3  covariate basis: the seven environmental smooths go to k = 20 (K_COV
+#     below). s(Ano) is DELIBERATELY left at the default -- it comes out at edf
+#     1.00 of 9, so raising it is meaningless. k = 20 is ample: s(sst) in the
+#     tuned fit uses edf 10.04 of k' = 19.
+#
+# Reference values for the reported model count ~ s(x,y,so) + season + s(Ano):
+#     AIC 6070.35, Dev 0.258, lag-1 0.0247   (was AIC 6100.53, Dev 0.218)
+simplify_tol <- 500         ## TUNE  metres; larger = simpler (safer) boundary
+margin       <- 250         ## TUNE  metres clearance to leave inside the edge
+knot_ngrid   <- c(14, 11)   ## TUNE  interior-knot grid density -> 89 knots
 knot_buffer  <- 1000        ## TUNE  metres; knots this close to the edge are dropped
+K_COV        <- 20          ## TUNE  basis for the 7 environmental smooths (knob 3)
+K_BND        <- 10          ## boundary-film dimension; never was the constraint
+
+.n_knots_expected <- 89L    # assertion below; update if any knob above changes
 
 gulf0 <- survey.area_m %>%
   st_geometry() %>% st_union() %>%
@@ -81,6 +116,15 @@ keep <- as.logical(in.out(bmat, cbind(kn$x, kn$y))) & bnd_dist(kn$x, kn$y) > kno
 knots <- data.frame(x = kn$x[keep], y = kn$y[keep])
 message(sprintf("soap knots: %d generated, %d kept", length(kn$x), nrow(knots)))
 
+# Fail loudly rather than silently fitting a differently-resolved surface: the
+# whole tuned configuration is calibrated to this knot count.
+if (nrow(knots) != .n_knots_expected)
+  stop(sprintf(paste0("soap knots: expected %d, got %d. The boundary/knot knobs ",
+                      "at the top of this script have changed, so the stored AIC ",
+                      "reference values no longer apply -- re-run ",
+                      "UTIL_DSM_SoapTuning_DD.R before trusting any output."),
+               .n_knots_expected, nrow(knots)))
+
 # sanity: every segment must be strictly inside (soap errors otherwise)
 seg_in <- as.logical(in.out(bmat, cbind(segdata$x, segdata$y)))
 if (!all(seg_in))
@@ -90,7 +134,12 @@ if (!all(seg_in))
 # ============================================================
 # Fit helper + candidate set (soap spatial term shared by all)
 # ============================================================
-soap_term <- 's(x, y, bs = "so", xt = list(bnd = bnd_soap), k = 10)'
+soap_term <- sprintf('s(x, y, bs = "so", xt = list(bnd = bnd_soap), k = %d)', K_BND)
+
+# KNOB 3. The seven environmental smooths are built at k = K_COV; s(Ano) and the
+# parametric season term are untouched. Kept as a helper so the basis appears in
+# exactly one place and cannot drift between the 21 covariate models.
+.s_cov <- function(v) sprintf("s(%s, k = %d)", v, K_COV)
 
 fit_soap <- function(extra = "") {
   rhs  <- if (nzchar(extra)) paste(soap_term, "+", extra) else soap_term
@@ -121,16 +170,16 @@ spec <- do.call(rbind, c(
     .sp("dd.dsm.soap.season.year", "season + s(Ano)", "count ~ s(x,y,so) + season + s(Ano)")
   ),
   lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.year.season.%s", e),
-                         sprintf("season + s(Ano) + s(%s)", e),
+                         sprintf("season + s(Ano) + %s", .s_cov(e)),
                          sprintf("count ~ s(x,y,so) + season + s(Ano) + s(%s)", e))),
   list(
     .sp("dd.dsm.soap.year", "s(Ano)", "count ~ s(x,y,so) + s(Ano)")
   ),
   lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.season.%s", e),
-                         sprintf("season + s(%s)", e),
+                         sprintf("season + %s", .s_cov(e)),
                          sprintf("count ~ s(x,y,so) + season + s(%s)", e))),
   lapply(.env7, \(e) .sp(sprintf("dd.dsm.soap.year.%s", e),
-                         sprintf("s(Ano) + s(%s)", e),
+                         sprintf("s(Ano) + %s", .s_cov(e)),
                          sprintf("count ~ s(x,y,so) + s(Ano) + s(%s)", e)))
 ))
 
@@ -138,6 +187,24 @@ spec <- do.call(rbind, c(
 dd_soap_models <- lapply(spec$extra, fit_soap)
 names(dd_soap_models) <- spec$name
 list2env(dd_soap_models, envir = .GlobalEnv)
+
+# Reference check against the tuned run of 2026-09-16. Not an error -- REML can
+# land marginally differently across mgcv versions -- but a large discrepancy
+# means a knob moved or the data changed, and every downstream number would then
+# be built on a surface nobody has diagnosed.
+.aic_ref <- c(dd.dsm.soap.season.year = 6070.35,
+              dd.dsm.soap.year.season.sst = 6034.93)
+for (.nm in names(.aic_ref)) {
+  if (!is.null(dd_soap_models[[.nm]])) {
+    .got <- round(AIC(dd_soap_models[[.nm]]), 2)
+    message(sprintf("AIC check %-28s got %8.2f  expected %8.2f  (diff %+.2f)",
+                    .nm, .got, .aic_ref[.nm], .got - .aic_ref[.nm]))
+    if (abs(.got - .aic_ref[.nm]) > 1)
+      warning(sprintf(paste0("%s AIC differs from the tuned reference by %+.2f ",
+                             "-- check the knobs at the top of this script."),
+                      .nm, .got - .aic_ref[.nm]), call. = FALSE)
+  }
+}
 
 # ============================================================
 # Model-selection table (analogous to table_dd_modselection)
