@@ -17,10 +17,15 @@ obsdata_dd_mod <- copy(obsdata_dd)
 obsdata_dd_mod <-   obsdata_dd_mod[distance <= trunc.dist_dd]
 
 
-# esto esta en m2
-segdata[, off.set_dd := Effort * trunc.dist_dd]
-
-off.set_dd <- 800 * trunc.dist_dd
+# REMOVED 2026-09-16: segdata$off.set_dd (= Effort * trunc.dist_dd) and the
+# global off.set_dd (= 800 * trunc.dist_dd). Both were assigned here and never
+# read anywhere in the repo. dsm() builds its own offset from the detection
+# function -- 2 * w * L * p_hat, ~276304 m2 at the median segment -- so neither
+# of these ever entered a model. The global in particular was NOT the segment's
+# effective area: 800 * trunc.dist omits the factor 2 (both sides of the
+# trackline) and the detection probability. It was the same quantity that, used
+# as a constant prediction offset, made the density maps 4.49x too low (see the
+# note in UTIL_Map_DSM_output_DD.R). Dropped so it cannot be reached for again.
 
 obsdata_dd_mod[, season := relevel(factor(season), ref = "Spring")]
 obsdata_dd_mod[, year_fac := factor(Ano)]

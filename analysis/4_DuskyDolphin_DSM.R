@@ -17,10 +17,15 @@ obsdata_lo_mod <- copy(obsdata_lo)
 obsdata_lo_mod <-   obsdata_lo_mod[distance <= trunc.dist_lo]
 
 
-# esto esta en m2
-segdata[, off.set_lo := Effort * trunc.dist_lo]
-
-off.set_lo <- 800 * trunc.dist_lo
+# REMOVED 2026-09-16: segdata$off.set_lo (= Effort * trunc.dist_lo) and the
+# global off.set_lo (= 800 * trunc.dist_lo). Both were assigned here and never
+# read anywhere in the repo. dsm() builds its own offset from the detection
+# function -- 2 * w * L * p_hat -- so neither of these ever entered a model. The
+# global in particular was NOT the segment's effective area: 800 * trunc.dist
+# omits the factor 2 (both sides of the trackline) and the detection
+# probability. It was the same quantity that, used as a constant prediction
+# offset, made the density maps 3.25x too low for LO (see the note in
+# UTIL_Map_DSM_output_LO.R). Dropped so it cannot be reached for again.
 
 obsdata_lo_mod[, season := relevel(factor(season), ref = "Spring")]
 obsdata_lo_mod[, year_fac := factor(Ano)]
