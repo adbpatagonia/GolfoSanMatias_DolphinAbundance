@@ -64,6 +64,62 @@
 # OUTPUT  output/DuskyDolphin/DSM/LO_soap_boundary_variants.csv
 #                                 LO_soap_knot_sweep.csv
 #                                 LO_soap_tuned_selection.csv   (both arms)
+#
+# ===========================================================================
+# RESULT, 2026-09-16: NOTHING WAS ADOPTED. THE LO SOAP ARM NEEDS NO RETUNE.
+#
+# Ran in full (20-configuration sweep, then 25 models at tol500/margin250/10x8
+# with K_COV = 20 against the 25 stored models). All three knobs came back
+# negative, for reasons that are specific and checkable rather than a shrug:
+#
+#  KNOT GRID -- the LO spatial basis was NEVER BINDING. edf_frac_xy is 0.335 at
+#     the stored configuration (16.06 of 48), against 0.64 for the DD arm that
+#     did need fixing. Across the whole sweep edf_xy climbs only 15.9 -> 29.3
+#     while k' goes 49 -> 369: the penalty is doing the work, not the basis
+#     ceiling. There is no defect here to repair.
+#     Supporting: the entire 20-configuration sweep spans 15.8 AIC (DD's knot
+#     refinement ALONE was worth 24), and AIC is NON-MONOTONE in knots -- 12x9
+#     is worse than 10x8 in all three boundaries, by 3.4 / 9.2 / 12.8. A finer
+#     penalized basis cannot genuinely fit worse, so that spread is REML landing
+#     differently and it sets the noise floor for everything else in the table.
+#     The stored 40-knot configuration ranks 4th of 20, within 3.06 of the best.
+#
+#  COVARIATE BASIS -- k = 10 was never the constraint either, and the edf say so
+#     directly. Doubling k to 20 moved every environmental smooth by essentially
+#     nothing:
+#         depth 3.09 -> 3.15   grad 2.06 -> 2.15   slope 2.23 -> 2.36
+#         VelVert 1.71 -> 1.71   sst 1.00 -> 1.00   clo 1.00 -> 1.00
+#     (DD's s(clo), by contrast, was pinned at 8.25-8.43 of 9.) The apparent
+#     within-arm "gains" at k = 20 -- depth +4.25, grad +2.69 -- are NOT the
+#     basis: depth swings 6 AIC units while its edf moves 0.06. That is noise of
+#     the size the knot sweep already measured. At the stored configuration no
+#     covariate beats the base at all; the best is sst at +0.21.
+#
+#  BOUNDARY -- tol500/margin250 costs 7.32 AIC on the reported model
+#     (1005.19 -> 1012.51). AIC cannot really adjudicate this, since 7.32 sits
+#     inside the 12.8-unit wobble, but it is consistently negative across grids
+#     (3.7-7.4), and the only argument the other way is geometric tidiness.
+#     Not worth paying for. NOTE this is the opposite of the DD result, where
+#     the tighter boundary was worth ~6 AIC -- so the two species' soap arms now
+#     sit at different boundaries ON PURPOSE, each on its own evidence.
+#
+# SO 4_DuskyDolphin_DSM_soap.R KEEPS 3000/2000/10x8 AND k = 10. The only change
+# that arm received is the vertex-vs-edge bnd_dist bug fix, which is a
+# correctness fix worth 0.08 AIC and changes the kept-knot count from 41 to 40.
+#
+# SIDE FINDING, worth more than the tuning was: EVERY model that drops `season`
+# has SIGNIFICANT residual autocorrelation (lag-1 0.030-0.081 against a band of
+# 0.026), and every model that keeps it is clean (0.010-0.026). That includes
+# the nominal AIC winner of the whole table, count ~ s(x,y,so) + s(Ano) + s(sst)
+# at 1003.92 -- which is therefore NOT a defensible model, because the residual
+# independence its AIC assumes does not hold. Season is doing real work here,
+# and the ranking must be read with lag1_sig, not on AIC alone.
+#
+# This script remains RUNNABLE, unlike the three DD decision records: its guard
+# reads simplify_tol / margin / knot_ngrid from the workspace rather than
+# hardcoding them, so it re-runs correctly whatever the pipeline is set to. It
+# is sourced by 9_RegenerateStudies_LO.R.
+# ===========================================================================
 
 library(dsm)
 library(mgcv)
@@ -251,9 +307,22 @@ bnd_ok <- bnd_tab[usable == TRUE]
 #     -- so the two must agree about what "original" means before anything is
 #     compared. Refit one model at the stored configuration and check.
 # ---------------------------------------------------------------------------
+#     The stored configuration is read FROM THE WORKSPACE (simplify_tol, margin
+#     and knot_ngrid are plain globals assigned by 4_DuskyDolphin_DSM_soap.R and
+#     so travel inside lo_output.RData) rather than hardcoded. That matters: the
+#     moment any of those knobs is adopted into the pipeline, a hardcoded
+#     3000/2000/c(10,8) would reconstruct a configuration the workspace no
+#     longer uses, the guard would trip, and this script would become
+#     un-runnable -- which is exactly what happened to the three DD studies.
+#     Reading the knobs keeps it a live study instead of a decision record.
 .AIC_STORED <- round(AIC(lo.dsm.soap.season.year), 2)
-.loop_st    <- .build_boundary(3000, 2000)$loop
-.knots_st   <- .make_knots(.loop_st, c(10L, 8L))
+.tol_st     <- if (exists("simplify_tol")) simplify_tol else 3000
+.mar_st     <- if (exists("margin"))       margin       else 2000
+.ng_st      <- if (exists("knot_ngrid"))   as.integer(knot_ngrid) else c(10L, 8L)
+cat(sprintf("\nguard: workspace was fitted at tol %g / margin %g / grid %dx%d\n",
+            .tol_st, .mar_st, .ng_st[1], .ng_st[2]))
+.loop_st    <- .build_boundary(.tol_st, .mar_st)$loop
+.knots_st   <- .make_knots(.loop_st, .ng_st)
 cat(sprintf("\nguard: stored config reconstructs to %d knots (workspace has %s)\n",
             nrow(.knots_st),
             if (exists("knots")) as.character(nrow(knots)) else "unknown"))

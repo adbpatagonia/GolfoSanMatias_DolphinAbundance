@@ -25,9 +25,28 @@ library(dplyr)
 # ============================================================
 # Soap boundary (buffered so ALL segments sit inside) + interior knots
 # ============================================================
-simplify_tol <- 3000        ## TUNE  metres; larger = simpler (safer) boundary
-margin       <- 2000        ## TUNE  metres clearance to leave inside the edge
-knot_ngrid   <- c(10, 8)    ## TUNE  interior-knot grid density (start coarse)
+# THESE KNOBS WERE TUNED ON 2026-09-16 AND DELIBERATELY LEFT WHERE THEY ARE.
+# Do not assume they are untouched defaults just because they match the values
+# the script shipped with -- UTIL_DSM_SoapTuning_LO.R ran the full study for
+# dusky (20-configuration boundary x knot sweep, then 25 models at K_COV = 20)
+# and every knob came back negative:
+#
+#   knot grid    the LO spatial basis is NOT basis-limited -- edf_frac_xy 0.335
+#                (16.06 of 48), against 0.64 for the DD arm that did need
+#                fixing. edf_xy climbs only 15.9 -> 29.3 while k' goes 49 -> 369.
+#   covariate k  no environmental smooth is near its ceiling at k = 10. Doubling
+#                to k = 20 moves them by nothing: depth 3.09 -> 3.15, grad
+#                2.06 -> 2.15, sst and clo both stay at 1.00.
+#   boundary     tol500/margin250 COSTS 7.32 AIC here (1005.19 -> 1012.51). This
+#                is the opposite of the DD result, so the two species' soap arms
+#                sit at different boundaries on purpose, each on its own evidence.
+#
+# The one change this arm did receive is the vertex-vs-edge bnd_dist fix below,
+# which is a correctness fix (worth 0.08 AIC; kept knots 41 -> 40).
+# See the RESULT block at the top of UTIL_DSM_SoapTuning_LO.R before re-tuning.
+simplify_tol <- 3000        ## TUNED 2026-09-16: keep. See note above.
+margin       <- 2000        ## TUNED 2026-09-16: keep. tol500/m250 costs 7.3 AIC.
+knot_ngrid   <- c(10, 8)    ## TUNED 2026-09-16: keep. Basis is not binding.
 knot_buffer  <- 1000        ## TUNE  metres; knots this close to the edge are dropped
 
 gulf0 <- survey.area_m %>%
