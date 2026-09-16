@@ -76,7 +76,9 @@ FORCE_CONFIG <- list(tol = 500, margin = 250, ngrid = c(10L, 8L))
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_SoapTuning_LO.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_SoapTuning_LO.R"))
-rm(FORCE_CONFIG)   # do not leak into anything sourced after this
+# Do not leak into anything sourced after this. rm() on a missing object throws,
+# and this line runs at the end of an hour-long driver, so guard it.
+suppressWarnings(rm(list = "FORCE_CONFIG", envir = .GlobalEnv))
 
 message(sprintf("\n9_RegenerateStudies_LO.R finished in %.1f min",
                 as.numeric(difftime(Sys.time(), .t0, units = "mins"))))

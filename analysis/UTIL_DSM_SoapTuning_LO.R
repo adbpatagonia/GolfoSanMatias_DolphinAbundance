@@ -138,6 +138,18 @@ source(file.path(here::here(), "R", "cached_fit_row.R"))
 .ws               <- if (exists("LO_WORKSPACE")) LO_WORKSPACE else
                        file.path("output", "DuskyDolphin", "lo_output.RData")
 
+# SKIP THE LOAD IF THE WORKSPACE IS ALREADY IN MEMORY. When this runs standalone
+# it needs the .RData; when 9_RegenerateStudies_LO.R sources it the objects are
+# already there, and lo_output.RData is 2.1 GB -- re-reading it would add
+# minutes and, worse, would restore stale copies over anything the driver had
+# already recomputed in this session.
+.have_ws <- all(vapply(c("segdata", "obsdata_lo_mod", "df.lo", "survey.area_m",
+                         "lo.dsm.soap.season.year"), exists, logical(1)))
+
+if (.have_ws) {
+  message("LO workspace already in memory -- skipping load(", .ws, ")")
+} else {
+
 if (!file.exists(.ws))
   stop("LO workspace not found: ", .ws,
        "\n  Run analysis/1_DuskyDolphin.R first, or set LO_WORKSPACE.")
@@ -154,6 +166,8 @@ load(.ws)
 .stop_after_sweep <- .keep$sas
 .force_config     <- .keep$fc
 .ws               <- .keep$ws
+
+}  # end if (!.have_ws)
 
 source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
 

@@ -37,15 +37,24 @@ library(dplyr)
 #   covariate k  no environmental smooth is near its ceiling at k = 10. Doubling
 #                to k = 20 moves them by nothing: depth 3.09 -> 3.15, grad
 #                2.06 -> 2.15, sst and clo both stay at 1.00.
-#   boundary     tol500/margin250 COSTS 7.32 AIC here (1005.19 -> 1012.51). This
-#                is the opposite of the DD result, so the two species' soap arms
-#                sit at different boundaries on purpose, each on its own evidence.
+#   boundary     the weakest of the three findings, and worth stating honestly.
+#                tol500/margin250 scores 7.32 AIC WORSE here (1005.19 -> 1012.51)
+#                and is worse at every grid (3.7-7.4) -- but that gap sits INSIDE
+#                the 12.8-unit REML wobble the sweep measured, so AIC does not
+#                really adjudicate the boundary either way. The tighter boundary
+#                was adopted for DD on GEOMETRY (247 segments within 2 km of the
+#                film instead of 44), and that argument applies here unchanged.
+#                The stored boundary is kept because nothing positive was found
+#                to justify changing it, not because AIC settled it. If the two
+#                species' soap arms ever need to sit at the same boundary for
+#                comparability, switching this one to 500/250 costs little and
+#                is defensible -- just say which criterion you used.
 #
 # The one change this arm did receive is the vertex-vs-edge bnd_dist fix below,
 # which is a correctness fix (worth 0.08 AIC; kept knots 41 -> 40).
 # See the RESULT block at the top of UTIL_DSM_SoapTuning_LO.R before re-tuning.
 simplify_tol <- 3000        ## TUNED 2026-09-16: keep. See note above.
-margin       <- 2000        ## TUNED 2026-09-16: keep. tol500/m250 costs 7.3 AIC.
+margin       <- 2000        ## TUNED 2026-09-16: keep. 500/250 not supported.
 knot_ngrid   <- c(10, 8)    ## TUNED 2026-09-16: keep. Basis is not binding.
 knot_buffer  <- 1000        ## TUNE  metres; knots this close to the edge are dropped
 
