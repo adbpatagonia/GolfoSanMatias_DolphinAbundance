@@ -36,7 +36,23 @@ library(ggplot2)
 library(viridis)
 
 # common helpers ----
-off.set   <- 800 * trunc.dist_dd
+# DENSITY OFFSET -- CORRECTED 2026-09-16. READ THIS BEFORE CHANGING IT BACK.
+# These maps used to predict with a CONSTANT offset, off.set <- 800 * trunc.dist,
+# and then divide the result by the cell area to get density. That does not
+# convert anything: a prediction made with a constant off.set does not depend on
+# cell area, so dividing by it only rescales. The maps were 4.49x too LOW for
+# common dolphins (median cell area 1168794 m2 / 260000 m2) and 3.25x for dusky
+# (/ 360000 m2, trunc.dist_lo = 450). The spatial PATTERN survived nearly intact
+# because the factor varies only ~7% across cells; the legend did not.
+# Verified against the project's own abundance output: predicting the stored soap
+# model with off.set = cell area and summing reproduces
+# DD_abundance_season_year_soap.csv exactly (4200.7 vs 4201 stored, Fall 2006;
+# ratios 0.9999-1.0002 over four season-year combos). 5_*_Abundance.R already
+# used off.set = cell_area_m2 and was always correct.
+# The offset is taken PER GRID rather than as one shared vector, because these
+# prediction frames are stacks of the grid (4 seasons, or one panel per year):
+# a single 1408-long vector would be silently recycled against a 5632-row frame.
+.cell_off <- function(x) as.numeric(st_area(x))
 bb        <- st_bbox(survey.area_m)
 xpad <- 3000; ypad <- 3000
 
@@ -66,7 +82,7 @@ pred.polys_year_fs_m <- bind_rows(
 pred.polys_year_fs_m$Nhat <- predict(
   dd.dsm.xy.fsyear.season,
   newdata = pred.polys_year_fs_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_fs_m),
   type    = "response"
 )
 pred.polys_year_fs_m$area_m2 <- as.numeric(st_area(pred.polys_year_fs_m))
@@ -220,7 +236,7 @@ pred.polys_soap_m$Nhat <- NA_real_
 pred.polys_soap_m$Nhat[pred.polys_soap_m$inside] <- predict(
   dd.dsm.soap.season.year,
   newdata = pred.polys_soap_m[pred.polys_soap_m$inside, ],
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_soap_m[pred.polys_soap_m$inside, ]),
   type    = "response"
 )
 pred.polys_soap_m$area_m2 <- as.numeric(st_area(pred.polys_soap_m))

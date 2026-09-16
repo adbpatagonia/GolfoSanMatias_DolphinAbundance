@@ -217,7 +217,15 @@ library(sf)
 library(dplyr)
 library(viridis)
 
-off.set <- 800 * trunc.dist_dd
+# DENSITY OFFSET -- CORRECTED 2026-09-16, same bug and same fix as
+# UTIL_Map_DSM_output_DD.R (see the long note there for the verification).
+# These two maps used to predict with a CONSTANT off.set = 800 * trunc.dist_dd
+# and then divide by cell area, which does not convert to density and left them
+# 4.49x too low. The offset is taken per grid rather than as one shared vector
+# because both frames below are stacks of pred.polys_m (4 seasons / one panel
+# per year), where a single 1408-long vector would be silently recycled.
+.cell_off <- function(x) as.numeric(st_area(x))
+
 ref_ano <- as.integer(round(median(segdata$Ano)))
 bb      <- st_bbox(survey.area_m)
 xpad    <- 3000
@@ -250,7 +258,7 @@ pred.polys_season_nobs2_m <- bind_rows(
 pred.polys_season_nobs2_m$Nhat <- predict(
   dd.dsm.soap.season.year.nobs2,
   newdata = pred.polys_season_nobs2_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_nobs2_m),
   type    = "response"
 )
 
@@ -303,7 +311,7 @@ pred.polys_year_nobs2_m <- bind_rows(
 pred.polys_year_nobs2_m$Nhat <- predict(
   dd.dsm.soap.season.year.nobs2,
   newdata = pred.polys_year_nobs2_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_nobs2_m),
   type    = "response"
 )
 

@@ -22,7 +22,33 @@ library(viridis)
 
 # Helpers -----
 
-off.set <- 800 * trunc.dist_dd
+# ---------------------------------------------------------------------------
+# DENSITY OFFSET -- CORRECTED 2026-09-16. READ THIS BEFORE CHANGING IT BACK.
+#
+# Every map here used to predict with a CONSTANT offset,
+#     off.set <- 800 * trunc.dist_dd          # = 260000 m2
+# and then divide the result by the cell area to get density. That does not
+# convert anything: a prediction made with a constant off.set does not depend on
+# cell area at all, so dividing by it only rescales. The maps were therefore
+# 4.49x too LOW (the factor is median(cell_area)/260000 = 4.495, and it varies
+# only 4.222-4.508 across cells, which is why the spatial PATTERN still looked
+# right while the legend did not).
+#
+# Verified against the project's own abundance output rather than by derivation:
+# predicting the stored soap model with off.set = cell area and summing over the
+# grid reproduces DD_abundance_season_year_soap.csv exactly --
+#     Fall 2006  4200.7 vs 4201 stored     Winter 2006  1628.4 vs 1628
+#     Spring 2006 3919.5 vs 3920           Summer 2007  3704.7 vs 3705
+# (ratios 0.9999-1.0002). So 5_CommonDolphin_Abundance.R, which already used
+# off.set = cell_area_m2, was right and these maps were wrong.
+#
+# The offset is now taken PER GRID rather than as one shared vector, because the
+# prediction frames here are stacks of the grid (4 seasons, or one panel per
+# year). A single 1408-long vector would be silently recycled against a
+# 5632-row frame; it happens to recycle correctly when the stack is grid-major,
+# but that is a property of how the frames are built, not something to rely on.
+.cell_off <- function(x) as.numeric(st_area(x))
+# ---------------------------------------------------------------------------
 
 # Reference year for s(Ano) — evaluated at the median survey year
 ref_ano <- as.integer(round(median(segdata$Ano)))
@@ -57,7 +83,7 @@ pred.polys_season_m <- bind_rows(
 pred.polys_season_m$Nhat <- predict(
   dd.dsm.xy.season.year,
   newdata = pred.polys_season_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_m),
   type    = "response"
 )
 
@@ -145,7 +171,7 @@ pred.polys_season_clo_m <- pred.polys_season_clo_m %>%
 pred.polys_season_clo_m$Nhat <- predict(
   dd.dsm.xy.year.season.clo,
   newdata = pred.polys_season_clo_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_clo_m),
   type    = "response"
 )
 
@@ -223,7 +249,7 @@ pred.polys_year_m <- bind_rows(
 pred.polys_year_m$Nhat <- predict(
   dd.dsm.xy.season.year,
   newdata = pred.polys_year_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_m),
   type    = "response"
 )
 
@@ -312,7 +338,7 @@ pred.polys_year_clo_m <- bind_rows(
 pred.polys_year_clo_m$Nhat <- predict(
   dd.dsm.xy.year.season.clo,
   newdata = pred.polys_year_clo_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_clo_m),
   type    = "response"
 )
 
@@ -399,7 +425,7 @@ pred.polys_season_fs_m <- bind_rows(
 pred.polys_season_fs_m$Nhat <- predict(
   dd.dsm.xy.fsyear.season,
   newdata = pred.polys_season_fs_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_fs_m),
   type    = "response"
 )
 
@@ -483,7 +509,7 @@ pred.polys_year_fs_m <- bind_rows(
 pred.polys_year_fs_m$Nhat <- predict(
   dd.dsm.xy.fsyear.season,
   newdata = pred.polys_year_fs_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_fs_m),
   type    = "response"
 )
 
@@ -574,7 +600,7 @@ pred.polys_season_byyear_m <- bind_rows(
 pred.polys_season_byyear_m$Nhat <- predict(
   dd.dsm.xy.byyear.season,
   newdata = pred.polys_season_byyear_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_byyear_m),
   type    = "response"
 )
 
@@ -656,7 +682,7 @@ pred.polys_year_byyear_m <- bind_rows(
 pred.polys_year_byyear_m$Nhat <- predict(
   dd.dsm.xy.byyear.season,
   newdata = pred.polys_year_byyear_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_byyear_m),
   type    = "response"
 )
 
@@ -746,7 +772,7 @@ pred.polys_season_soap_m <- bind_rows(
 pred.polys_season_soap_m$Nhat <- predict(
   dd.dsm.soap.season.year,
   newdata = pred.polys_season_soap_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_soap_m),
   type    = "response"
 )
 
@@ -825,7 +851,7 @@ pred.polys_year_soap_m <- bind_rows(
 pred.polys_year_soap_m$Nhat <- predict(
   dd.dsm.soap.season.year,
   newdata = pred.polys_year_soap_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_soap_m),
   type    = "response"
 )
 
@@ -916,7 +942,7 @@ pred.polys_yearseason_fs_m <- bind_rows(
 pred.polys_yearseason_fs_m$Nhat <- predict(
   dd.dsm.xy.fsyear.season,
   newdata = pred.polys_yearseason_fs_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_yearseason_fs_m),
   type    = "response"
 )
 

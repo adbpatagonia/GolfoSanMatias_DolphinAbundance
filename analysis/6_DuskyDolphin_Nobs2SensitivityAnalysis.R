@@ -219,7 +219,23 @@ library(sf)
 library(dplyr)
 library(viridis)
 
-off.set <- 800 * trunc.dist_lo
+# DENSITY OFFSET -- CORRECTED 2026-09-16. READ THIS BEFORE CHANGING IT BACK.
+# These maps used to predict with a CONSTANT offset, off.set <- 800 * trunc.dist,
+# and then divide the result by the cell area to get density. That does not
+# convert anything: a prediction made with a constant off.set does not depend on
+# cell area, so dividing by it only rescales. The maps were 4.49x too LOW for
+# common dolphins (median cell area 1168794 m2 / 260000 m2) and 3.25x for dusky
+# (/ 360000 m2, trunc.dist_lo = 450). The spatial PATTERN survived nearly intact
+# because the factor varies only ~7% across cells; the legend did not.
+# Verified against the project's own abundance output: predicting the stored soap
+# model with off.set = cell area and summing reproduces
+# DD_abundance_season_year_soap.csv exactly (4200.7 vs 4201 stored, Fall 2006;
+# ratios 0.9999-1.0002 over four season-year combos). 5_*_Abundance.R already
+# used off.set = cell_area_m2 and was always correct.
+# The offset is taken PER GRID rather than as one shared vector, because these
+# prediction frames are stacks of the grid (4 seasons, or one panel per year):
+# a single 1408-long vector would be silently recycled against a 5632-row frame.
+.cell_off <- function(x) as.numeric(st_area(x))
 ref_ano <- as.integer(round(median(segdata$Ano)))
 bb      <- st_bbox(survey.area_m)
 xpad    <- 3000
@@ -260,7 +276,7 @@ pred.polys_season_nobs2_m <- bind_rows(
 pred.polys_season_nobs2_m$Nhat <- predict(
   lo.dsm.xy.fsyear.season.nobs2,
   newdata = pred.polys_season_nobs2_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_season_nobs2_m),
   type    = "response"
 )
 
@@ -318,7 +334,7 @@ pred.polys_year_nobs2_m <- bind_rows(
 pred.polys_year_nobs2_m$Nhat <- predict(
   lo.dsm.xy.fsyear.season.nobs2,
   newdata = pred.polys_year_nobs2_m,
-  off.set = off.set,
+  off.set = .cell_off(pred.polys_year_nobs2_m),
   type    = "response"
 )
 
