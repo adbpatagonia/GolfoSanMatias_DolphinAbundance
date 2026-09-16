@@ -57,10 +57,23 @@ if (bnd_loop$x[1] != tail(bnd_loop$x, 1)) {
 bnd_soap <- list(bnd_loop)                             # xt$bnd is a LIST OF LOOPS
 bmat     <- cbind(bnd_loop$x, bnd_loop$y)
 
-bnd_dist <- function(px, py)
-  vapply(seq_along(px),
-         function(i) min(sqrt((bnd_loop$x - px[i])^2 + (bnd_loop$y - py[i])^2)),
-         numeric(1))
+# KNOT CLEARANCE IS MEASURED TO THE BOUNDARY EDGES, NOT ITS VERTICES.
+# The previous bnd_dist() took the minimum distance from a candidate knot to the
+# boundary VERTICES. With a 9-vertex boundary the edges are tens of km long, so a
+# knot could be far from every vertex and still sit on -- or just outside -- an
+# edge; the filter passed it and mgcv then failed inside crunch.knots() with
+# "knot <n> is on or outside boundary". It survived only because the old 10x8
+# grid happened to miss the edges. The 14x11 grid does not, so this had to be
+# fixed for knob 2 to run at all. Distance to the boundary as a LINESTRING is the
+# clearance that was intended all along.
+bnd_line <- st_cast(st_sfc(st_polygon(list(bmat)), crs = st_crs(survey.area_m)),
+                    "MULTILINESTRING")
+
+bnd_dist <- function(px, py) {
+  pts <- st_as_sf(data.frame(x = px, y = py), coords = c("x", "y"),
+                  crs = st_crs(survey.area_m))
+  as.numeric(st_distance(pts, bnd_line))
+}
 
 # interior knots, strictly inside + buffered off the edge
 kn   <- make.soapgrid(bnd_loop, n.grid = knot_ngrid)
