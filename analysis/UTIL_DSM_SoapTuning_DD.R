@@ -1,5 +1,30 @@
 # ADB / Claude
 # 2026-09-10
+# =========================================================================
+# STATUS: DECISION RECORD -- NOT RE-RUN BY THE PIPELINE  (marked 2026-09-16)
+#
+# This is the study that produced the tuned common-dolphin configuration now
+# live in 4_CommonDolphin_DSM_soap.R (tol500/margin250, 14x11 -> 89 knots,
+# K_COV = 20). It is a decision record for two independent reasons:
+#
+#   * step 6 stops unless DD_soap_revised_selection.csv exists, and that file is
+#     the output of UTIL_DSM_SoapRevised_DD.R, itself a decision record whose
+#     `original` arm can no longer be rebuilt;
+#   * re-running it would re-derive a conclusion the repo has already adopted,
+#     at the cost of a knot sweep that reaches 485 knots.
+#
+# Its CSVs -- DD_soap_boundary_variants.csv, DD_soap_knot_sweep.csv,
+# DD_soap_knot_correlogram.csv, DD_soap_tuned_selection.csv -- are dated
+# artefacts of the 2026-09-10 run. Restore them from the quarantine rather than
+# expecting 9_RegenerateStudies_DD.R to rebuild them; it deliberately does not
+# source this file.
+#
+# NOTE the LO twin, UTIL_DSM_SoapTuning_LO.R, is NOT a decision record: it reads
+# the stored configuration from the workspace instead of hardcoding it, and it
+# builds its own `original` arm rather than depending on a prior CSV. That is
+# the pattern to copy if this script is ever revived.
+# =========================================================================
+#
 #
 # COMMON DOLPHIN soap film: tune the BOUNDARY and the INTERIOR KNOT GRID, then
 # refit the candidate set at the tuned configuration and rank it alongside the
