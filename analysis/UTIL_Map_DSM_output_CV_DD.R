@@ -47,6 +47,9 @@
 
 # Helpers -----
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 m <- dd_soap_models$dd.dsm.soap.season.year
 
 off.set <- 800 * trunc.dist_dd

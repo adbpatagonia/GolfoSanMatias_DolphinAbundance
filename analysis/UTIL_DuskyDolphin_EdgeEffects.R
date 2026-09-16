@@ -28,6 +28,9 @@
 # certainly need adjusting for your geometry. This section is a working scaffold,
 # not a guaranteed one-shot fit.
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 library(dsm)
 library(mgcv)
 library(sf)

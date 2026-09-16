@@ -21,6 +21,9 @@
 #
 # OUTPUT  output/CommonDolphin/DSM/DD_two_defects.png
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 library(data.table)
 library(ggplot2)
 

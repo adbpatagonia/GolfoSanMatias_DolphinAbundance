@@ -11,6 +11,9 @@
 # This is the MAIN file for common dolphins
 
 # source data ----
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 source(file.path(here::here(), "analysis", "0_ReadData_Plots.r"))
 
 # EDA -----

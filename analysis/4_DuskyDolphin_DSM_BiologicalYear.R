@@ -36,6 +36,9 @@
 # 1. Load workspace ------------------------------------------------------------
 load("output/DuskyDolphin/lo_output.RData")
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 library(dsm)
 library(mgcv)
 library(sf)

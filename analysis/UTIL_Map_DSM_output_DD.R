@@ -13,6 +13,9 @@
 #   trunc.dist_dd, dd.dsm.xy.season.year, dd.dsm.xy.year.season.clo,
 #   dd.dsm.xy.fsyear.season, dd.dsm.xy.byyear.season
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 library(dsm)
 library(sf)
 library(dplyr)

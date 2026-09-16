@@ -10,6 +10,9 @@
 
 # This is the EDA file for common dolphins
 
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 distdata_lo$ship <- as.factor(distdata_lo$ship)
 
 

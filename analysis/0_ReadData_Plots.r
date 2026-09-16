@@ -12,6 +12,9 @@
 # variable Effort es el largo del segmento
 
 # libraries -----
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
+
 library(dsm)
 library(Distance)
 library(mrds)
