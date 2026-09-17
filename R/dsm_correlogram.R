@@ -221,3 +221,110 @@ dsm_kcheck <- function(model, n.rep = 400L, subsample = 5000L) {
   out[, edf_frac := round(edf / k_prime, 3)]
   out[]
 }
+
+
+#' Lag-1 residual autocorrelation for a model-selection table
+#'
+#' @description
+#' A one-row summary of \code{dsm_correlogram(..., max.lag = 1)}, meant to be
+#' bound onto an AIC ranking so the ranking carries its own health warning.
+#'
+#' @details
+#' AIC -- and the REML smoothing-parameter selection underneath it -- assumes the
+#' segments are independent. They are contiguous pieces of one survey track, so
+#' that can fail, and when it does the effective sample size is below the nominal
+#' one and AIC over-selects complexity. With ~57 candidates per species, a model
+#' can therefore win a ranking on an AIC its own residuals do not support.
+#'
+#' This has already happened twice in this project and been caught only by
+#' looking: the DD soap knot sweep kept improving AIC to 485 knots while lag-1
+#' rose past its band, and in the LO soap table the nominal winner
+#' \code{count ~ s(x,y,so) + s(Ano) + s(sst)} is the one model in the top 15
+#' whose residuals are significantly correlated -- every LO model that drops
+#' \code{season} fails this check and every model that keeps it passes. Neither
+#' is visible from AIC, deltaAIC or deviance. Hence the column.
+#'
+#' Read \code{lag1_sig == TRUE} as "do not select this model on its AIC", not as
+#' "this model is wrong".
+#'
+#' The band is \code{2 / sqrt(n_pairs)}, so it is IDENTICAL for every model
+#' fitted to the same segments; it varies across a table only when the rows were
+#' fitted to different data (e.g. a full-data row against an n_obs == 2 subset).
+#'
+#' Deliberately total: anything that stops the correlogram being computable --
+#' a model carrying no \code{$data}, missing \code{Transect.Label} or
+#' \code{Sample.Label}, NA residuals, too few pairs -- returns NA rather than
+#' erroring, because a diagnostic column must never take a selection table down
+#' with it.
+#'
+#' @param model A fitted \code{dsm}/\code{gam} object.
+#' @param resid.type Residual type passed to \code{dsm_correlogram}.
+#'
+#' @return A list of \code{lag1}, \code{lag1_band}, \code{lag1_sig}.
+#'
+#' @seealso \code{\link{dsm_correlogram}}, \code{\link{dsm_lag1_cols}}
+#' @export
+dsm_lag1 <- function(model, resid.type = "scaled.pearson") {
+  na_out <- list(lag1 = NA_real_, lag1_band = NA_real_, lag1_sig = NA)
+  d <- tryCatch(model$data, error = function(e) NULL)
+  if (is.null(d) || !all(c("Transect.Label", "Sample.Label") %in% names(d)))
+    return(na_out)
+  ct <- tryCatch(
+    dsm_correlogram(model, d$Transect.Label, dsm_seg_num(d$Sample.Label),
+                    max.lag = 1L, resid.type = resid.type),
+    error = function(e) NULL)
+  if (is.null(ct) || !nrow(ct)) return(na_out)
+  list(lag1      = round(ct$cor[1], 4),
+       lag1_band = round(ct$band[1], 4),
+       lag1_sig  = ct$sig[1])
+}
+
+
+#' Lag-1 columns for a list of models
+#'
+#' @description
+#' Vectorised \code{\link{dsm_lag1}}: returns one row per model, ready to
+#' \code{cbind} onto a selection table.
+#'
+#' @param models A list of fitted models, or a character vector of object names
+#'   to \code{get()} from \code{envir}.
+#' @param envir Environment used when \code{models} is a character vector.
+#'
+#' @return A \code{data.table} with columns \code{lag1}, \code{lag1_band},
+#'   \code{lag1_sig}, one row per model, in the order given.
+#'
+#' @export
+dsm_lag1_cols <- function(models, envir = parent.frame()) {
+  if (is.character(models))
+    models <- lapply(models, function(n) get(n, envir = envir))
+  data.table::rbindlist(lapply(models, function(m)
+    as.data.frame(dsm_lag1(m), stringsAsFactors = FALSE)))
+}
+
+
+#' Report a selection table's autocorrelation band once
+#'
+#' @description
+#' The band is the same for every model fitted to the same segments, so printing
+#' it per row is noise. This prints it once, with a count of how many rows fail,
+#' and is meant to be called right before \code{print()}ing a selection table.
+#'
+#' @param tab A selection table carrying \code{lag1} and \code{lag1_sig}.
+#' @param what A label for the table, used in the message.
+#'
+#' @return \code{tab}, invisibly.
+#' @export
+dsm_lag1_note <- function(tab, what = "this table") {
+  if (!all(c("lag1", "lag1_sig") %in% names(tab))) return(invisible(tab))
+  sig  <- sum(tab$lag1_sig %in% TRUE)
+  band <- unique(stats::na.omit(tab$lag1_band))
+  message(sprintf(
+    paste0("%s: lag-1 residual autocorrelation band %s; %d of %d models exceed ",
+           "it.
+  Rows with lag1_sig = TRUE break the independence their own ",
+           "AIC assumes -- do not select on AIC alone."),
+    what,
+    if (length(band) == 1L) sprintf("%.4f", band) else "varies by row",
+    sig, nrow(tab)))
+  invisible(tab)
+}

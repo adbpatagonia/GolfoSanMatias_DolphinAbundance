@@ -947,13 +947,13 @@ Notese que el modelo que tiene solo posicion + estacion explica el 32% del devia
 
 ```{r}
 #| label: tbl-modelselectionlo
-#| tbl-cap: "Selección de modelos DSM para delfines oscuros (superficie estática thin plate)."
+#| tbl-cap: "Selección de modelos DSM para delfines oscuros (superficie estática thin plate). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC."
 #| echo: false   
 #| message: false    
 #| warning: false
 table_lo_modselection[!grepl(pattern = "year_fac", x = model)]  %>%
   kable(
-    align = c("l", "c", "c", "c", "c", "c")
+    align = c("l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1122,13 +1122,13 @@ esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)
 
 ```{r}
 #| label: tbl-completemodelselectionlo
-#| tbl-cap: "Selección de modelos DSM completa para delfines oscuros: los cuatro tipos de superficie (72 modelos)."
+#| tbl-cap: "Selección de modelos DSM completa para delfines oscuros: los cuatro tipos de superficie (72 modelos). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC."
 #| echo: false   
 #| message: false    
 #| warning: false
 table_lo_combined_modselection %>%
   kable(
-    align = c("l", "l", "c", "c", "c", "c", "c")
+    align = c("l", "l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1143,7 +1143,7 @@ Los modelos **2.a. Superficies independientes por año (modelos by-year)** produ
 Esta es la tabla de model selection considerando solamente los modelos **2.b. Superficies con informacion compartida entre años** . La proporción del deviance explicada por estos modelos es alta (>50%)
 ```{r}
 #| label: tbl-completemodelselectionfslo
-#| tbl-cap: "Selección de modelos DSM para delfines oscuros: superficies factor smooth (modelos 2.b)."
+#| tbl-cap: "Selección de modelos DSM para delfines oscuros: superficies factor smooth (modelos 2.b). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC."
 #| echo: false   
 #| message: false    
 #| warning: false
@@ -1152,7 +1152,7 @@ table_lo_combined_modselection %>%
   # table_lo_modselection ("bs=fs") instead of deparse(formula(m)) ("bs = \"fs\"")
   filter(grepl(pattern = "bs=fs", model, fixed = TRUE)) %>%
   kable(
-    align = c("l", "l", "c", "c", "c", "c", "c")
+    align = c("l", "l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),

@@ -1111,10 +1111,10 @@ Notese que el modelo que tiene solo posicion + estacion + año explica el 20% de
 #| message: false    
 #| warning: false
 #| label: tbl-modelselectiondd
-#| tbl-cap: "Selección de modelos DSM para delfines comunes (superficie estática thin plate)."
+#| tbl-cap: "Selección de modelos DSM para delfines comunes (superficie estática thin plate). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC."
 table_dd_modselection[!grepl(pattern = "year_fac", x = model)] %>%
   kable(
-    align = c("l", "c", "c", "c", "c", "c")
+    align = c("l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1286,13 +1286,13 @@ esta es la tabla completa con los 4 tipos de modelos (72 modelos en total)
 
 ```{r}
 #| label: tbl-completemodelselectiondd
-#| tbl-cap: "Selección de modelos DSM completa para delfines comunes: los cuatro tipos de superficie (72 modelos)."
+#| tbl-cap: "Selección de modelos DSM completa para delfines comunes: los cuatro tipos de superficie (72 modelos). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC."
 #| echo: false
 #| message: false
 #| warning: false
 table_dd_combined_modselection %>%
   kable(
-    align = c("l", "l", "c", "c", "c", "c", "c")
+    align = c("l", "l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),
@@ -1312,13 +1312,15 @@ De los modelos **1. Superficie estática**, los modelos **1.b soap film** son lo
 
 Esta es la tabla de model selection considerando solamente los modelos **1.b soap film** . La proporción del deviance explicada es menor que para delfines oscuros (>20%)   
 
+`lag1` es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; `lag1_sig = TRUE` marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC.
+
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
 table_dd_soap_modselection %>%
   kable(
-    align = c("l", "c", "c", "c", "c", "c")
+    align = c("l", "c", "c", "c", "c", "c", "c", "c")
   ) %>%
   kable_styling(
     bootstrap_options = c("striped", "hover"),

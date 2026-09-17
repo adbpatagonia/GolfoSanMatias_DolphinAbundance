@@ -48,6 +48,8 @@ library(ggplot2)
 library(viridis)
 
 source(file.path(here::here(), "R", "lnorm_ci.R"))
+# lag-1 residual autocorrelation for the selection tables below.
+source(file.path(here::here(), "R", "dsm_correlogram.R"))
 
 # 2. Biological year ------------------------------------------------------------
 segdata[, biological_year := ifelse(season == "Spring", Ano, Ano - 1)]
@@ -149,11 +151,17 @@ table_lo_bioyear_modselection <- local({
     AIC      = round(aic, 2),
     deltaAIC = round(aic - min(aic), 2),
     Dev      = vapply(lo_bioyear_models, function(m) round(summary(m)$dev.expl, 2), numeric(1)),
-    p_hat    = vapply(lo_bioyear_models, .p_hat_m, numeric(1))
+    p_hat    = vapply(lo_bioyear_models, .p_hat_m, numeric(1)),
+    # lag1_sig = TRUE means the row breaks the independence its own AIC
+    # assumes -- do not select it on AIC. See dsm_lag1().
+    lag1     = vapply(lo_bioyear_models, function(m) dsm_lag1(m)$lag1, numeric(1)),
+    lag1_sig = vapply(lo_bioyear_models,
+                      function(m) isTRUE(dsm_lag1(m)$lag1_sig), logical(1))
   )
   out[order(deltaAIC)]
 })
 
+dsm_lag1_note(table_lo_bioyear_modselection, "table_lo_bioyear_modselection")
 print(table_lo_bioyear_modselection)
 
 # 6. Append to the combined selection table --------------------------------------
@@ -180,11 +188,16 @@ if (!"AIC" %in% names(table_lo_combined_modselection)) {
              AIC   = round(AIC(m), 2),
              Dev   = round(summary(m)$dev.expl, 2),
              p_hat = .p_hat_m(m),
+             lag1     = dsm_lag1(m)$lag1,
+             lag1_sig = isTRUE(dsm_lag1(m)$lag1_sig),
              stringsAsFactors = FALSE),
   lo_bioyear_models, .spec_bio$label))
 
 table_lo_combined_modselection <- rbind(
-  table_lo_combined_modselection[, c("basis", "model", "df", "AIC", "Dev", "p_hat")],
+  # lag1/lag1_sig must be listed here or the rbind silently drops them --
+  # this subset is why the columns need adding in three places, not one.
+  table_lo_combined_modselection[, c("basis", "model", "df", "AIC", "Dev",
+                                     "p_hat", "lag1", "lag1_sig")],
   .bioyear_rows
 )
 table_lo_combined_modselection$deltaAIC <-
@@ -192,9 +205,11 @@ table_lo_combined_modselection$deltaAIC <-
           min(table_lo_combined_modselection$AIC), 2)
 table_lo_combined_modselection <-
   table_lo_combined_modselection[order(table_lo_combined_modselection$deltaAIC),
-                                 c("basis", "model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
+                                 c("basis", "model", "df", "AIC", "deltaAIC", "Dev",
+                                   "p_hat", "lag1", "lag1_sig")]
 rownames(table_lo_combined_modselection) <- NULL
 
+dsm_lag1_note(table_lo_combined_modselection, "table_lo_combined_modselection")
 print(table_lo_combined_modselection)
 
 # 7. Map — lo.dsm.xy.fsbioyear.season, one panel per BIOLOGICAL YEAR ------------

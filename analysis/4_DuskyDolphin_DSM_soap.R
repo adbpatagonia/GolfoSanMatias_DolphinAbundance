@@ -22,6 +22,9 @@ library(mgcv)
 library(sf)
 library(dplyr)
 
+# lag-1 residual autocorrelation, appended to both selection tables below.
+source(file.path(here::here(), "R", "dsm_correlogram.R"))
+
 # ============================================================
 # Soap boundary (buffered so ALL segments sit inside) + interior knots
 # ============================================================
@@ -181,15 +184,23 @@ table_lo_soap_modselection <- data.frame(stringsAsFactors = FALSE,
   df    = vapply(lo_soap_models, function(m) round(attr(logLik(m), "df"), 2), numeric(1)),
   AIC   = round(vapply(lo_soap_models, AIC, numeric(1)), 2),
   Dev   = vapply(lo_soap_models, function(m) round(summary(m)$dev.expl, 2), numeric(1)),
-  p_hat = vapply(lo_soap_models, .p_hat_m, numeric(1))
+  p_hat = vapply(lo_soap_models, .p_hat_m, numeric(1)),
+  # AIC assumes independent segments; these are contiguous pieces of one
+  # track. lag1_sig = TRUE means the row breaks the independence its own AIC
+  # assumes -- do not select it on AIC. Travels with the ranking on purpose.
+  lag1     = vapply(lo_soap_models, function(m) dsm_lag1(m)$lag1, numeric(1)),
+  lag1_sig = vapply(lo_soap_models, function(m) isTRUE(dsm_lag1(m)$lag1_sig), logical(1))
 )
 table_lo_soap_modselection$deltaAIC <-
   round(table_lo_soap_modselection$AIC - min(table_lo_soap_modselection$AIC), 2)
 table_lo_soap_modselection <-
   table_lo_soap_modselection[order(table_lo_soap_modselection$deltaAIC),
-                             c("model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
+                             c("model", "df", "AIC", "deltaAIC", "Dev", "p_hat",
+                               "lag1", "lag1_sig")]
 rownames(table_lo_soap_modselection) <- NULL
 
+dsm_lag1_note(transform(table_lo_soap_modselection, lag1_band = dsm_lag1(lo_soap_models[[1]])$lag1_band),
+              "table_lo_soap_modselection")
 print(table_lo_soap_modselection)
 
 # ============================================================
@@ -203,6 +214,8 @@ print(table_lo_soap_modselection)
              AIC   = round(AIC(m), 2),
              Dev   = round(summary(m)$dev.expl, 2),
              p_hat = .p_hat_m(m),
+             lag1     = dsm_lag1(m)$lag1,
+             lag1_sig = isTRUE(dsm_lag1(m)$lag1_sig),
              stringsAsFactors = FALSE)
 
 # soap candidates (fitted above; concise labels from `spec`)
@@ -230,8 +243,10 @@ if (length(.tp_names) == 0) {
             min(table_lo_combined_modselection$AIC), 2)
   table_lo_combined_modselection <-
     table_lo_combined_modselection[order(table_lo_combined_modselection$deltaAIC),
-                                   c("basis", "model", "df", "AIC", "deltaAIC", "Dev", "p_hat")]
+                                   c("basis", "model", "df", "AIC", "deltaAIC", "Dev",
+                                     "p_hat", "lag1", "lag1_sig")]
   rownames(table_lo_combined_modselection) <- NULL
 }
 
+dsm_lag1_note(table_lo_combined_modselection, "table_lo_combined_modselection")
 print(table_lo_combined_modselection)

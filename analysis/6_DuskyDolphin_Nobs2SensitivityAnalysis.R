@@ -70,6 +70,9 @@ library(mgcv)
 library(data.table)
 library(ggplot2)
 
+# lag-1 residual autocorrelation for the fit-comparison table below.
+source(file.path(here::here(), "R", "dsm_correlogram.R"))
+
 source(file.path(here::here(), "R", "year_partial_effect.R"))
 
 out_dir <- "output/DuskyDolphin/Nobs2Sensitivity"
@@ -233,6 +236,17 @@ table_lo_nobs2_compare <- data.frame(
   AIC_comparable_across_rows = c(FALSE, FALSE),
   Dev     = round(c(summary(lo.dsm.xy.fsyear.season)$dev.expl,
                     summary(lo.dsm.xy.fsyear.season.nobs2)$dev.expl), 3),
+  # Residual autocorrelation, per row. Unlike a selection table the BAND
+  # differs between these two rows -- it is 2/sqrt(n_pairs) and the subset
+  # has fewer pairs -- so it is kept as its own column rather than reported
+  # once. lag1_sig = TRUE means that row's AIC rests on an independence
+  # assumption its own residuals break.
+  lag1      = c(dsm_lag1(lo.dsm.xy.fsyear.season)$lag1,
+                dsm_lag1(lo.dsm.xy.fsyear.season.nobs2)$lag1),
+  lag1_band = c(dsm_lag1(lo.dsm.xy.fsyear.season)$lag1_band,
+                dsm_lag1(lo.dsm.xy.fsyear.season.nobs2)$lag1_band),
+  lag1_sig  = c(isTRUE(dsm_lag1(lo.dsm.xy.fsyear.season)$lag1_sig),
+                isTRUE(dsm_lag1(lo.dsm.xy.fsyear.season.nobs2)$lag1_sig)),
   note    = .aic_note
 )
 print(table_lo_nobs2_compare)

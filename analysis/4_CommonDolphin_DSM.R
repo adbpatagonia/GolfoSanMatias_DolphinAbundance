@@ -12,6 +12,9 @@
 # libraries ----
 library(gratia)
 
+# lag-1 residual autocorrelation, appended to every selection table below.
+source(file.path(here::here(), "R", "dsm_correlogram.R"))
+
 # prepare data -----
 obsdata_dd_mod <- copy(obsdata_dd)
 obsdata_dd_mod <-   obsdata_dd_mod[distance <= trunc.dist_dd]
@@ -917,7 +920,15 @@ dd.dsm.xy.byyear.VelVert <- dsm(count ~ s(x, y, by = year_fac) +
     # than on the mean structure.
     p_hat    = vapply(nm, .p_hat, numeric(1))
   )
-  out[order(deltaAIC)]
+  # AIC assumes the segments are independent; they are contiguous pieces of one
+  # track. A model can win this ranking on an AIC its own residuals do not
+  # support, so the check travels WITH the ranking rather than in a side script.
+  # lag1_sig = TRUE means "do not select this row on its AIC".
+  out <- cbind(out, dsm_lag1_cols(nm, envir = .GlobalEnv)[, .(lag1, lag1_sig)])
+  out <- out[order(deltaAIC)]
+  dsm_lag1_note(cbind(out, lag1_band = dsm_lag1(get(nm[1]))$lag1_band),
+                deparse(substitute(labels)))
+  out
 }
 
 table_dd_modselection <- .ms_table(.dd_labels)
