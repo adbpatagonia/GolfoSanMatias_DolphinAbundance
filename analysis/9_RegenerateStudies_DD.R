@@ -35,6 +35,17 @@
 #                                      from those stored CSVs, never from a
 #                                      fresh run
 #
+#     UTIL_DSM_SoapTuning_DD.R         marked a decision record on 2026-09-16,
+#                                      AFTER this header was first written. It
+#                                      IS the study that chose 500/250/14x11,
+#                                      so re-running it against the pipeline it
+#                                      produced would compare that arm with
+#                                      itself. Its four CSVs -- DD_soap_knot_sweep,
+#                                      DD_soap_boundary_variants,
+#                                      DD_soap_tuned_selection and
+#                                      DD_soap_knot_correlogram -- restore from
+#                                      quarantine like the three above.
+#
 # Each carries a DECISION RECORD header saying the same thing. Their CSVs under
 # output/CommonDolphin/DSM/ are dated artefacts, not regenerable output: restore
 # them from the quarantine rather than expecting this driver to rebuild them.
@@ -70,6 +81,20 @@ source(file.path(here::here(), "analysis", "UTIL_DSM_TailFix_DD.R"))
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_TunedArm_MapsAbundance_DD.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_TunedArm_MapsAbundance_DD.R"))
+
+# ---------------------------------------------------------------------------
+# How much the rootogram tail misfit costs the abundance estimates.
+# MUST RUN LAST, AND AFTER THE TWO BLOCKS ABOVE -- it is not order-independent:
+#   * it readRDS()es output/.../DSM/tuned_models/dd_tuned_base.rds, written by
+#     UTIL_DSM_TunedArm_MapsAbundance_DD.R immediately above;
+#   * it fread()s DD_abundance_tuned.csv (same script) and
+#     DD_abundance_season_year_soap.csv (5_CommonDolphin_Abundance.R, pipeline).
+# Both fread()s are wrapped in tryCatch() and degrade to NULL, so running this
+# out of order does NOT error -- it silently writes a test-C block with nothing
+# in it. That is why the ordering is stated here rather than left to the reader.
+# ---------------------------------------------------------------------------
+message("\n=== UTIL_DSM_TailMisfit_Impact_DD.R ===")
+source(file.path(here::here(), "analysis", "UTIL_DSM_TailMisfit_Impact_DD.R"))
 
 message(sprintf("\n9_RegenerateStudies_DD.R finished in %.1f min",
                 as.numeric(difftime(Sys.time(), .t0, units = "mins"))))

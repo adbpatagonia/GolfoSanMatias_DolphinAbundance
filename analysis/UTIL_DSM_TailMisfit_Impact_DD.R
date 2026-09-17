@@ -51,6 +51,7 @@
 # correlogram found structure, and leg-level resampling would break it.
 #
 # OUTPUT  output/CommonDolphin/DSM/TailMisfit/DD_tailmisfit_A_bins.csv
+#                                             DD_tailmisfit_A2_inflation.csv
 #                                             DD_tailmisfit_B_pladder.csv
 #                                             DD_tailmisfit_C_designcheck.csv
 #                                             DD_tailmisfit_summary.csv
