@@ -43,12 +43,33 @@ part of either species' tree.
 
 ---
 
-## Step 2 — snapshot the LO tree before it is touched
+## Step 2 — snapshot the LO tree before it is touched  (DONE 2026-09-17)
 
-`output/DuskyDolphin/DSM/` is not empty: it holds `autocorrelation/` and three
-`LO_soap_*.csv` from the 2026-09-16 tuning run that happened after the LO
-quarantine. Step 7 overwrites all four. Snapshot now so that is confirmed at
-step 9 rather than assumed.
+`output/DuskyDolphin/` is not empty. It holds **73 files, 39,612 bytes**: 70 in
+`DSM/.cache_soaptune_lo/`, plus three `DSM/LO_soap_*.csv` written 2026-09-16
+19:30 by the soap tuning run that happened AFTER the LO quarantine. None of the
+three exists in `../_quarantine_LO_output_20260916`, so the step 10 diff alone
+would not have flagged them -- which is the whole reason for snapshotting.
+
+`DSM/autocorrelation/` is an EMPTY directory created by UTIL_EnsureOutputDirs.R,
+not held-over output. The LO autocorrelation files exist only in the quarantine
+and are rebuilt by UTIL_DSM_Diagnostics.R inside step 7, not step 8.
+
+Snapshot written OUTSIDE the repo, so it neither pollutes `git status` nor gets
+picked up as "old tree" by the step 10 diff:
+
+    D:\Buren_files\IAA\IAA_analyses\_rerun_snapshots_20260917\
+        LO_pre_rerun_manifest.csv   73 rows: path, bytes, mtime, SHA256
+        LO_pre_rerun_dirs.txt       empty dirs vanish from a file manifest
+        LO_pre_rerun_gitref.txt     HEAD at snapshot time
+
+SHA256 is recorded rather than just size and mtime because the interesting
+question at step 10 is not whether the three CSVs were touched but whether they
+came back IDENTICAL. `FORCE_CONFIG` pins step 8 to the same 500/250/10x8
+configuration that produced them, so byte-identical is the expected result and
+is a real reproducibility check. A changed hash means the pinned configuration
+did not reproduce its own output and needs explaining before anything is
+committed.
 
 **Time**: seconds.
 
