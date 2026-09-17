@@ -38,3 +38,9 @@ analysis/UTIL_AssignPredCovariates.R
 analysis/UTIL_PlotEnvByYearMonth.R
 
 output/env_covariate_assignment_comparison.csv
+
+# cached_fit_row() working caches under output/. Kept on disk -- they save
+# hours of model fitting -- but never tracked. The cache is keyed by NAME
+# ONLY and the model expression is never hashed, so a tracked cache would
+# hand a fresh checkout a set of fits that silently survive a formula change.
+output/**/.cache_*/
