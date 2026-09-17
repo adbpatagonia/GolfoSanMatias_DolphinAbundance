@@ -10,11 +10,6 @@ Helper scripts sit beside this file in `analysis/`:
 `restore_dd_decision_records.ps1` (step 9) and `diff_output_vs_quarantine.ps1`
 (step 10). Both hardcode the repo path.
 
-DELIBERATELY NOT COMMITTED. This is operational state for one re-run, not part
-of the analysis. It will show as untracked in `git status` until the re-run is
-finished and it is deleted or, if it turns out to be worth keeping, committed on
-purpose.
-
 Steps 5 and 7 are the long ones (hours). Everything else is seconds to minutes.
 
 ---

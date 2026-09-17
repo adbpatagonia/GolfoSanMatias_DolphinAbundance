@@ -1,0 +1,5 @@
+tol,margin,stored,buffer_out,vertices,area_km2,pct_larger,seg_outside,seg_within_2km,min_dist_m,usable
+3000,2000,TRUE,2912,9,2184.6,20.6,0,44,827,TRUE
+3000,250,FALSE,1162,9,1880.4,3.8,32,337,2,FALSE
+500,2000,FALSE,2912,22,2348.7,29.7,0,2,1928,TRUE
+500,250,FALSE,1162,19,2012,11.1,0,247,230,TRUE
