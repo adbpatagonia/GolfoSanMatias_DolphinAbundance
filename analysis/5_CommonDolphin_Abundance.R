@@ -13,13 +13,12 @@
 #   pred.polys_m, survey.area_m, segdata, obsdata_dd_mod, trunc.dist_dd, target_crs
 
 # libraries -----
-# Output directories must exist before any ggsave()/fwrite() below.
-source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
-
 library(plotly)
 # functions ----
 source(file.path(here::here(), "R", "lnorm_ci.R"))
 source(file.path(here::here(), "R", "year_partial_effect.R"))
+# Output directories must exist before any ggsave()/fwrite() below.
+source(file.path(here::here(), "analysis", "UTIL_EnsureOutputDirs.R"))
 
 #  helpers ----
 # total survey area (km²)
