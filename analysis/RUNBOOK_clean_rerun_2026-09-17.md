@@ -127,10 +127,37 @@ alone points at mgcv convergence (a methods note).
 
 ---
 
-## Step 4 — checkpoint before the long runs
+## Step 4 — pre-flight gate  (PASSED 2026-09-17)
 
-Confirm: DD tree quarantined and counted, LO snapshot taken, LO cache seeded,
-`git status` clean for `analysis/`. Nothing else to do; this is the gate.
+Ten hours of fitting is a long way to get before finding a missing package, so
+this gate checks the things that fail late, not just the bookkeeping.
+
+| check | result |
+|---|---|
+| `git status` | clean, HEAD 899d04a |
+| `output/` cache dirs | 0 — both species cold |
+| `output/` contents | 3 tracked `LO_soap_*.csv` + the shared `EnvVars/` root |
+| DD quarantine | 372 files |
+| LO quarantine | 81 files |
+| caches held aside | 77 files |
+| driver patches | TailMisfit in 9_DD, FORCE_CONFIG in 9_LO |
+| **parse** | 35 scripts, 0 failures, 0 missing |
+| **packages** | 20 referenced, all installed (R 4.6.1, mgcv 1.9.4, dsm 2.3.4, sf 1.1.2) |
+| **data inputs** | 9 CSVs + 3 shapefiles present |
+| **disk** | 192.8 GB free on D:; run needs ~4.5 GB |
+| Excel | not running (step 6 hazard) |
+
+### What the gate caught
+
+Neither driver clears the workspace, and both end with
+`save(list = ls(envir = .GlobalEnv), ...)`. Anything already in the session is
+written into the new `.RData`. Two RStudio sessions were open at gate time, so
+this was a live risk rather than a theoretical one. Steps 5 and 7 now carry a
+FRESH-SESSION instruction; see step 5 for why it matters more at step 7 than at
+step 5.
+
+This is the same failure the drivers' own `save(list = ls())` comment guards
+against for DOTTED names -- it just never covered ordinary leftovers.
 
 ---
 
@@ -143,7 +170,22 @@ save `dd_output.RData`.
 **Time**: hours — the 18 `bs = "fs"` fits dominate at roughly 11 min each. Budget
 4–6 h and treat that as an estimate, not a measurement.
 
-**Run from an R session you will keep open** — step 6 needs the workspace.
+**START FROM A FRESH R SESSION.** Restart R (Session -> Restart R, Ctrl+Shift+F10)
+or `rm(list = ls(all.names = TRUE))` before sourcing. This is not hygiene, it is
+the last contamination route left open:
+
+* neither driver clears the workspace, and both end with
+  `save(list = ls(envir = .GlobalEnv), ...)`. Every object sitting in the session
+  when you start is therefore written into the new .RData.
+* the `save(list = ls())` comment in the drivers explains why that beats
+  `save.image()` -- it keeps DOTTED config objects out. It does nothing about
+  ordinary leftovers. Start step 5 in a session that still holds `lo.dsm.*` and
+  `dd_output.RData` ends up carrying dusky models, which `DelfinesComunes.qmd`
+  then `load()`s into the common-dolphin report.
+* worse, a leftover object can satisfy an `exists()` guard in one of the 9_
+  drivers and let a script run against the wrong species' fit without erroring.
+
+**Then keep that session open** — step 6 needs the workspace it built.
 
 ---
 
@@ -171,6 +213,12 @@ than an error. Step 9 sweeps for that, but not writing it is better.
 Full LO pipeline, same shape as step 5. Also 18 `bs = "fs"` fits.
 
 **Time**: hours. Budget 4–6 h.
+
+**START FROM A FRESH R SESSION**, for the reason spelled out under step 5: the
+driver saves `ls(envir = .GlobalEnv)` wholesale, so whatever the session already
+holds is written into `lo_output.RData`. After step 6 the session holds a full
+common-dolphin workspace, so this matters MORE here than it did at step 5, not
+less -- do not simply carry on in the same R session you used for steps 5 and 6.
 
 **Keep the R session open** for step 8.
 
