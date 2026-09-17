@@ -75,31 +75,53 @@ committed.
 
 ---
 
-## Step 3 — seed the LO covariate-k cache, selectively
+## Step 3 — strip every cache: BOTH species refit cold  (DONE 2026-09-17)
 
-Copy **only** the seven `*_k20.rds` from
-`..\_quarantine_LO_output_20260916\DSM\.cache_covk_lo\` into
-`output/DuskyDolphin/DSM/.cache_covk_lo/`.
+This step originally seeded `.cache_covk_lo` with seven `*_k20.rds` to save ~77
+min of fs fitting. **That was reversed.** Seeding it exposed the reason: the
+cached rows are dated **2026-09-10**, six days before `UTIL_DSM_CovariateK_LO.R`
+was committed (7203b10), and they were fitted against a workspace that no longer
+exists. Their schema checks out — all 18 columns, correlogram ones included —
+and the AICs match the stored CSV, so they were usable. ADB's call was that a
+risk of the two workspaces disagreeing is not worth ~77 minutes. Correct call:
+the whole point of this re-run is that output cannot be traced to a workspace
+nobody can inspect.
 
-Deliberately NOT copied:
+So `output/` now holds **no cache at all**:
 
-| file | why not |
-|---|---|
-| `GUARD_base_refit.rds` | it is the cache's own validity check. Cached, it returns a stored `ok` without ever comparing against the new workspace. Left out, it refits once (~11 min) and licenses the seven k20 rows. |
-| `BASE_diag.rds` | two correlograms, seconds. No reason to carry a stale one. |
-| seven `*_k10.rds` | these read the stored k=10 models from the workspace rather than fitting them. Cheap, and re-deriving them means the k=10 arm comes from the NEW run. |
+| cache | files | moved to |
+|---|---|---|
+| `.cache_covk_lo` | 7 | `_rerun_snapshots_20260917\_caches_removed_for_cold_refit\` |
+| `.cache_soaptune_lo` | 70 | same |
 
-Saves ~77 min of fs fitting (7 × ~11 min) at the cost of ~11 min for the guard.
+Moved, not deleted. `.cache_soaptune_lo` is NOT in the LO quarantine — it was
+written on 2026-09-16 *after* it — so that holding directory is its only copy
+outside git history.
 
-Licensed by: `UTIL_DSM_CovariateK_LO.R` has exactly one commit (7203b10,
-2026-09-16), so the cache was written by the current version and its row schema
-matches. `6623a6d` touched `4_DuskyDolphin_DSM.R` only to append `lag1`/`lag1_sig`
-columns to selection tables — no formula, no data change. `cached_fit_row()`
-invalidates by key only, never by hashing the expression, which is why this
-needed checking rather than assuming.
+The DD side needed nothing: step 1 moved the entire `output/CommonDolphin` tree,
+its five caches with it.
 
-**If you would rather not**: skip this step. Costs ~77 extra minutes in step 7,
-changes nothing else.
+Verified no other prior state can leak in:
+
+* neither LO script has a CSV-level stage cache (the `file.exists() -> fread()`
+  shortcut that `UTIL_DSM_CovariateK_DD.R` uses at its line 179). They cache only
+  through `cached_fit_row()`, against the directories now gone.
+* `UTIL_DSM_SoapTuning_LO.R` prefers the in-memory workspace over `load()`ing any
+  `.RData`, so running it inside step 8's session cannot pick up a stale one.
+* the three tracked `LO_soap_*.csv` are left in place ON PURPOSE. They are
+  output, not cache; step 8 overwrites them, and because `FORCE_CONFIG` pins the
+  configuration that wrote them, byte-identical output is the expected result and
+  a silent `git status` is the check.
+
+WHAT THIS BUYS. The 2026-09-10 values in
+`_rerun_snapshots_20260917\LO_covk_expected_values.md` were going to be the
+licence for reusing the cache. With nothing cached they become an independent
+reproducibility check instead: every one of them is recomputed from scratch by a
+workspace that has never seen them. That file also says how to read a mismatch —
+k=10 differing means the WORKSPACE differs (a pipeline finding), k=20 differing
+alone points at mgcv convergence (a methods note).
+
+**Cost**: ~77 min of fs fitting in step 8, plus ~45 soap fits at 20-250 s.
 
 **Time**: seconds.
 
@@ -158,17 +180,30 @@ Full LO pipeline, same shape as step 5. Also 18 `bs = "fs"` fits.
 
 Same session as step 7.
 
-1. `UTIL_DSM_CovariateK_LO.R` — **watch the first line of output**. It prints
-   `reproduction guard: refit AIC ... -> OK` or `MISMATCH`. `MISMATCH` stops the
-   script and means the step-3 cache was not licensed; delete
-   `.cache_covk_lo/` and re-run cold.
+Runs COLD — step 3 removed every cache, so nothing here resumes.
+
+1. `UTIL_DSM_CovariateK_LO.R` — 16 fits, the seven k=20 ones ~11 min each. It
+   still prints `reproduction guard: refit AIC ... -> OK` or `MISMATCH` first.
+   Cold, that guard now checks only that `.fit_fs()` reproduces the workspace's
+   own stored base, which it should; `MISMATCH` here would mean the pipeline
+   disagrees with itself and is a genuine stop.
+
+   Then compare the CSV it writes against
+   `_rerun_snapshots_20260917\LO_covk_expected_values.md` (2026-09-10 values,
+   recomputed from scratch here, so a real check rather than a tautology).
+   That file says how to read a mismatch: k=10 differing means the WORKSPACE
+   differs, k=20 differing alone points at mgcv convergence.
+
 2. `UTIL_DSM_SoapTuning_LO.R`, with `FORCE_CONFIG <- list(tol = 500, margin = 250,
    ngrid = c(10L, 8L))` set by the driver. **Do not remove it** — without it the
    script auto-picks the lowest-AIC configuration (26×21 / 361 knots), which is
    precisely what the study concluded against, and writes a tuned arm into
    `output/` that contradicts its own RESULT block.
 
-**Time**: ~1–2 h with the seeded cache, ~2.5–3 h without.
+   ~45 soap fits at 20-250 s. Its three CSVs are tracked and should come back
+   byte-identical under the pinned config — a silent `git status` is the result.
+
+**Time**: ~2.5–3 h, all of it cold.
 
 ---
 
