@@ -65,33 +65,60 @@ if (!exists("dd.dsm.soap.season.year"))
 
 .t0 <- Sys.time()
 
-# ---------------------------------------------------------------------------
-# Rootogram tail: why DD over-predicts large counts, and the two routes out.
-# Distributional, so it is unaffected by the soap retune -- the finding is that
-# 92.7% of the count variance is school SIZE, which no spatial basis can fix.
-# ---------------------------------------------------------------------------
-message("\n=== UTIL_DSM_TailFix_DD.R ===")
-source(file.path(here::here(), "analysis", "UTIL_DSM_TailFix_DD.R"))
+# ===========================================================================
+# ORDER IS LOAD-BEARING. All three scripts below consume
+# output/CommonDolphin/DSM/tuned_models/dd_tuned_base.rds, and the FIRST one
+# is the only script in the project that writes it. Reordering them breaks the
+# run.
+#
+# This was wrong until 2026-09-18. TailFix_DD ran first and read a
+# dd_tuned_base.rds that had been left on disk by a manual run of TunedArm on
+# 2026-09-16, so the driver appeared to work while actually depending on output
+# it had not produced. The first genuinely cold run -- the one this re-run
+# exists to perform -- failed on it immediately:
+#
+#     cannot open compressed file '.../tuned_models/dd_tuned_base.rds'
+#
+# which is the bug doing exactly what it should. Worth keeping in view: a driver
+# that passes only because the output directory is dirty is indistinguishable
+# from a correct one until the directory is clean.
+# ===========================================================================
 
 # ---------------------------------------------------------------------------
-# Tuned-arm density maps and abundance series. Its guards (89 knots, AIC 6070.35
-# / 6034.93) now MATCH the pipeline, so it runs -- but it refits those two
-# models rather than reading them, which is why it belongs here and not in the
-# driver.
+# 1. Tuned-arm density maps and abundance series. Its guards (89 knots, AIC
+# 6070.35 / 6034.93) now MATCH the pipeline, so it runs -- but it refits those
+# two models rather than reading them, which is why it belongs here and not in
+# the pipeline driver.
+#
+# FIRST because it WRITES tuned_models/dd_tuned_base.rds and
+# Abundance/DD_abundance_tuned.csv, which 2 and 3 both read. It depends on
+# nothing either of them produces -- only on the pipeline's own
+# DD_abundance_season_year_soap.csv -- so it is safe here.
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_TunedArm_MapsAbundance_DD.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_TunedArm_MapsAbundance_DD.R"))
 
 # ---------------------------------------------------------------------------
-# How much the rootogram tail misfit costs the abundance estimates.
-# MUST RUN LAST, AND AFTER THE TWO BLOCKS ABOVE -- it is not order-independent:
-#   * it readRDS()es output/.../DSM/tuned_models/dd_tuned_base.rds, written by
-#     UTIL_DSM_TunedArm_MapsAbundance_DD.R immediately above;
-#   * it fread()s DD_abundance_tuned.csv (same script) and
-#     DD_abundance_season_year_soap.csv (5_CommonDolphin_Abundance.R, pipeline).
-# Both fread()s are wrapped in tryCatch() and degrade to NULL, so running this
-# out of order does NOT error -- it silently writes a test-C block with nothing
-# in it. That is why the ordering is stated here rather than left to the reader.
+# 2. Rootogram tail: why DD over-predicts large counts, and the two routes out.
+# Distributional, so it is unaffected by the soap retune -- the finding is that
+# 92.7% of the count variance is school SIZE, which no spatial basis can fix.
+#
+# AFTER 1: readRDS()es dd_tuned_base.rds at its line 71 and takes the reported
+# tw() model from it. Its other two readRDS() calls are self-contained -- both
+# files are written inside its own cached_fit_row() blocks earlier in the same
+# script -- so they are not an ordering constraint.
+# ---------------------------------------------------------------------------
+message("\n=== UTIL_DSM_TailFix_DD.R ===")
+source(file.path(here::here(), "analysis", "UTIL_DSM_TailFix_DD.R"))
+
+# ---------------------------------------------------------------------------
+# 3. How much the rootogram tail misfit costs the abundance estimates.
+# LAST, and it fails DIFFERENTLY from 2 if run early, which is the dangerous
+# case: it readRDS()es dd_tuned_base.rds (hard error, like 2), but its two
+# fread()s -- DD_abundance_tuned.csv from 1, and the pipeline's
+# DD_abundance_season_year_soap.csv -- are wrapped in tryCatch() and degrade to
+# NULL. Out of order it would not stop; it would write a test-C block with
+# nothing in it.
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_TailMisfit_Impact_DD.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_TailMisfit_Impact_DD.R"))
