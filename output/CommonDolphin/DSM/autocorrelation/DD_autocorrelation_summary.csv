@@ -1,0 +1,9 @@
+model,scale,lag1,band,pct_of_band,lag1_within,n_lags_checked,n_lags_outside,lags_outside,max_abs_cor,n_eff_lag1,n_segments,verdict
+dd.dsm.soap.season.clo,survey day (traj_id),0.0298,0.0254,117,FALSE,25,1,1,0.0298,5924,6288,FAIL: lag-1 outside band
+dd.dsm.soap.season.year,survey day (traj_id),0.0167,0.0254,66,TRUE,25,0,"",0.0167,6081,6288,pass
+dd.dsm.soap.year.season.sst,survey day (traj_id),0.0212,0.0254,83,TRUE,25,0,"",0.023,6027,6288,pass
+dd.dsm.xy.byyear.season.clo,survey day (traj_id),0.0275,0.0254,108,FALSE,25,1,1,0.0275,5951,6288,FAIL: lag-1 outside band
+dd.dsm.soap.season.clo,transect leg (Transect.Label),0.0388,0.026,149,FALSE,12,1,1,0.0388,5818,6288,FAIL: lag-1 outside band
+dd.dsm.soap.season.year,transect leg (Transect.Label),0.0247,0.026,95,TRUE,12,0,"",0.0247,5985,6288,pass
+dd.dsm.soap.year.season.sst,transect leg (Transect.Label),0.0278,0.026,107,FALSE,12,1,1,0.0278,5948,6288,FAIL: lag-1 outside band
+dd.dsm.xy.byyear.season.clo,transect leg (Transect.Label),0.0332,0.026,128,FALSE,12,1,1,0.0332,5884,6288,FAIL: lag-1 outside band

@@ -1,0 +1,20 @@
+model,smooth,k_prime,edf,k_index,p_value,edf_frac,near_ceiling,shrunk,low_k_index,flag,k_index_model_wide
+dd.dsm.soap.season.year,"s(x,y)",97,46.7370215483059,0.544920380070873,0.0075,0.482,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),FALSE
+dd.dsm.soap.season.year,s(Ano),9,1.00072913718423,0.582331258337695,0.3675,0.111,FALSE,FALSE,FALSE,"",FALSE
+dd.dsm.soap.year.season.sst,"s(x,y)",97,45.0848041687903,0.596095537180051,0.0275,0.465,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),FALSE
+dd.dsm.soap.year.season.sst,s(Ano),9,1.00398024781068,0.634570298176543,0.905,0.112,FALSE,FALSE,FALSE,"",FALSE
+dd.dsm.soap.year.season.sst,s(sst),19,10.0419980548204,0.583654997226632,0,0.529,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),FALSE
+dd.dsm.soap.season.clo,"s(x,y)",97,40.4946570040802,0.566986424794907,0,0.417,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.soap.season.clo,s(clo),19,11.6124263495269,0.556771771567925,0,0.611,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2006",29,2.00000601616773,0.638192916969643,0,0.069,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2007",29,17.8466142343107,0.638192916969643,0,0.615,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2008",29,11.9339467722355,0.638192916969643,0,0.412,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2009",29,10.6257000649786,0.638192916969643,0,0.366,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2010",29,8.0785651619199,0.638192916969643,0,0.279,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2013",29,2.00057388235994,0.638192916969643,0,0.069,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2014",29,14.6145208333538,0.638192916969643,0,0.504,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2015",29,10.2958610205047,0.638192916969643,0,0.355,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2016",29,16.1237079031604,0.638192916969643,0,0.556,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2017",29,18.7871954988413,0.638192916969643,0,0.648,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,"s(x,y):year_fac2018",29,2.004473312627,0.638192916969643,0,0.069,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+dd.dsm.xy.byyear.season.clo,s(clo),9,8.34893033645101,0.624277412473686,0,0.928,TRUE,FALSE,TRUE,at ceiling - refit at higher k,TRUE
