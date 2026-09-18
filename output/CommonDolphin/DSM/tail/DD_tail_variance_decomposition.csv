@@ -1,0 +1,10 @@
+quantity,value
+E[N] schools per occupied segment,1.458
+Var[N],0.908
+E[X] school size,11.822
+Var[X],1104.464
+E[N]*Var[X]  (school-SIZE component),1610.677
+Var[N]*E[X]^2 (school-NUMBER component),126.875
+predicted Var[count],1737.552
+observed Var[count],1629.756
+school-size share of variance (%),92.698

@@ -1,0 +1,17 @@
+stat,value
+n detections,630
+min,1
+median,4
+mean,11.8222
+p90,20
+p99,192.75
+max,450
+sd,33.2335
+CV of a single school,2.8111
+CV of the MEAN school size,0.112
+size-bias slope log(size)~distance,0.00298
+size-bias p,0
+size ratio over w,2.62985
+naive mean school size,11.82222
+size-bias-corrected mean school size,6.0101
+corrected / naive,0.50837

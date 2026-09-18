@@ -1,0 +1,12 @@
+quantity,value
+animals in segments with >20 animals (% of all seen),70.6%
+expected/observed segment ratio in those bins,1.6x
+"ABUNDANCE spread, p in [1.50, 1.80] (% of reported)",5.7%
+"ABUNDANCE spread, p in [1.30, 1.80] (% of reported)",15.4%
+phi: REML vs Pearson,28.5 vs 47.7
+VARIANCE inflation factor implied by the residuals,1.68x
+-> implied CV inflation,1.29x
+phi Pearson EXCLUDING the >20-animal segments (vs REML),10.6 vs 28.5
+CV under a residual-based scale estimate (vs reported),0.305 vs 0.194
+group-count route: N_groups x S_bar / N_individuals,1.071
+median CV_model / CV_design (order of magnitude only),0.37

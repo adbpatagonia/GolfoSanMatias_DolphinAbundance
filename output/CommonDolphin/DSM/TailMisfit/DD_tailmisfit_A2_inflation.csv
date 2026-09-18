@@ -1,0 +1,7 @@
+quantity,value
+"phi, REML -- what the model's intervals use",28.45
+"phi, Pearson -- what the residuals imply",47.664
+variance inflation factor (Pearson / REML),1.675
+-> implied CV inflation (sqrt),1.294
+"phi, Pearson EXCLUDING the segments with y > 20",10.622
+ratio excluding those segments,0.373

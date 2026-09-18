@@ -1,0 +1,3 @@
+model,p,phi,Dev,tail_obs,tail_exp,tail_pct_over,zero_obs,zero_exp
+individuals (current),1.572,28.45,0.258,249,270.8,8.7,5862,5875.6
+groups (route 1),1.01,1.03,0.229,45,32.4,-27.9,5862,5728.6

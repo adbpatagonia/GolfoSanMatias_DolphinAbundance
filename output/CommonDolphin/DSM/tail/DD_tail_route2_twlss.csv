@@ -1,0 +1,6 @@
+spec,label,AIC_twlss,edf,p_med,p_range,phi_med,phi_range,secs,tail_obs,tail_exp,tail_pct_over,zero_obs,zero_exp
+tw_reference,tw() -- the current model,,51.7,1.572,constant,28.45,constant,,249,270.8,8.7,5862,5875.6
+A_constant,"phi ~ 1, p ~ 1  (matches tw)",6057.04,49.9,1.562,1.56-1.56,27.03,27.0-27.0,786,249,281,12.8,5862,5862.8
+B_phi_season,phi ~ season,6001.02,50.9,1.556,1.56-1.56,35.15,18.7-49.4,728,249,281.4,13,5862,5862.2
+C_phi_xy,"phi ~ s(x,y)",5989.34,56.2,1.57,1.57-1.57,30.31,14.4-642.4,754,249,286.4,15,5862,5862.7
+D_phi_p_xy,"phi ~ s(x,y), p ~ s(x,y)",5982.76,64.2,1.558,1.29-1.65,29.53,10.1-455.5,774,249,289.3,16.2,5862,5863
