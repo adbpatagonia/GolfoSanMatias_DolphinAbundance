@@ -1,0 +1,9 @@
+covariate,k,lag1_transect,band_transect,sig_transect,lag1_day,band_day,sig_day
+"(base, no covariate)",,-0.0021,0.026,FALSE,-0.0031,0.0254,FALSE
+slope,20,-0.0034,0.026,FALSE,-0.004,0.0254,FALSE
+grad,20,0.0015,0.026,FALSE,4e-04,0.0254,FALSE
+sst,20,-0.0052,0.026,FALSE,-0.0063,0.0254,FALSE
+clo,20,-0.0039,0.026,FALSE,-0.0048,0.0254,FALSE
+dist.up,20,0.0011,0.026,FALSE,0,0.0254,FALSE
+depth,20,-0.0028,0.026,FALSE,-0.0042,0.0254,FALSE
+VelVert,20,-0.0017,0.026,FALSE,-0.0022,0.0254,FALSE
