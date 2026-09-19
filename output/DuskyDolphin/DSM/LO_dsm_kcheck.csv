@@ -1,0 +1,16 @@
+model,smooth,k_prime,edf,k_index,p_value,edf_frac,near_ceiling,shrunk,low_k_index,flag,k_index_model_wide
+lo.dsm.xy.fsyear.season,"s(x,y,year_fac)",330,63.0377776585133,0.811942940179011,0.41,0.191,FALSE,FALSE,FALSE,"",FALSE
+lo.dsm.xy.fsyear.season.depth,"s(x,y,year_fac)",330,56.3418104426436,0.743556018503727,0.0075,0.171,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+lo.dsm.xy.fsyear.season.depth,s(depth),9,3.66499656370983,0.741713010530133,0,0.407,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),TRUE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2006",29,1.77356033805583e-05,0.844520207285673,0.1,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2007",29,1.66987050915775,0.844520207285673,0.1225,0.058,FALSE,FALSE,FALSE,"",FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2008",29,0.170044339261402,0.844520207285673,0.1175,0.006,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2009",29,2.75822596828886,0.844520207285673,0.1,0.095,FALSE,FALSE,FALSE,"",FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2010",29,0.00388690991954672,0.844520207285673,0.11,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2013",29,1.7252384803699e-05,0.844520207285673,0.1075,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2014",29,0.888713469749071,0.844520207285673,0.1,0.031,FALSE,FALSE,FALSE,"",FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2015",29,0.00260955025436007,0.844520207285673,0.09,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2016",29,10.1610817835883,0.844520207285673,0.09,0.35,FALSE,FALSE,FALSE,"",FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2017",29,0.00357613219048627,0.844520207285673,0.0975,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,"s(x,y):year_fac2018",29,1.87468624979937e-05,0.844520207285673,0.1025,0,FALSE,TRUE,FALSE,shrunk to ~0,FALSE
+lo.dsm.xy.byyear.season.depth,s(depth),9,5.12517418374472,0.819903759251291,0,0.569,FALSE,FALSE,TRUE,low k-index (see model-wide pattern),FALSE

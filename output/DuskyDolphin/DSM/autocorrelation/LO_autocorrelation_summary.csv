@@ -1,0 +1,7 @@
+model,scale,lag1,band,pct_of_band,lag1_within,n_lags_checked,n_lags_outside,lags_outside,max_abs_cor,n_eff_lag1,n_segments,verdict
+lo.dsm.xy.byyear.season.depth,survey day (traj_id),0.0041,0.0254,16,TRUE,25,1,3,0.0308,6237,6288,pass at lag 1; isolated higher-lag spike(s)
+lo.dsm.xy.fsyear.season,survey day (traj_id),-0.0031,0.0254,12,TRUE,25,0,"",0.0117,6327,6288,pass
+lo.dsm.xy.fsyear.season.depth,survey day (traj_id),-0.0042,0.0254,17,TRUE,25,0,"",0.0243,6341,6288,pass
+lo.dsm.xy.byyear.season.depth,transect leg (Transect.Label),0.0044,0.026,17,TRUE,12,1,3,0.0415,6233,6288,pass at lag 1; isolated higher-lag spike(s)
+lo.dsm.xy.fsyear.season,transect leg (Transect.Label),-0.0021,0.026,8,TRUE,12,0,"",0.0113,6314,6288,pass
+lo.dsm.xy.fsyear.season.depth,transect leg (Transect.Label),-0.0028,0.026,11,TRUE,12,0,"",0.0203,6323,6288,pass
