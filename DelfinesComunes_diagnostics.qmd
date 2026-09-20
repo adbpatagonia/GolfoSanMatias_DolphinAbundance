@@ -1,0 +1,568 @@
+---
+title: "Delfines Comunes -- secciones pendientes"
+---
+
+<!--
+=============================================================================
+BORRADOR DE TRABAJO -- NO ES UN DOCUMENTO PARA RENDERIZAR JUNTO AL SITIO
+=============================================================================
+Este archivo reune las secciones que faltan en DelfinesComunes.qmd. El ultimo
+render del sitio es del 2026-09-04 (docs/DelfinesComunes.html); todo el trabajo
+de diagnostico y de estudios de seleccion se hizo entre el 2026-09-16 y el
+2026-09-17 y no esta reflejado en el reporte.
+
+COMO USARLO. Cada seccion lleva un ANCLA que dice donde va en DelfinesComunes.qmd.
+Copiar la seccion, no el archivo.
+
+CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
+
+1. QUARTO RENDERIZA ESTE ARCHIVO. _quarto.yml declara `project: type: website` y
+   no tiene bloque `render:`, asi que todo .qmd en la raiz entra al render aunque
+   no este en la navbar. Para que este borrador quede afuera, agregar a _quarto.yml:
+
+       project:
+         type: website
+         output-dir: docs
+         render:
+           - index.qmd
+           - VariablesAmbientales.qmd
+           - DelfinesOscuros.qmd
+           - DelfinesComunes.qmd
+
+2. LOS NUMEROS DE ESTE BORRADOR SON PRE-RE-RUN. Los pasos 5 a 8 del runbook
+   (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescriben dd_output.RData y todo
+   output/CommonDolphin/. Ademas dd_output.RData quedaba en la configuracion
+   soap ANTERIOR al retune (41 nudos, tol3000/margin2000, k=10), asi que los
+   diagnosticos van a cambiar. Por eso las cifras se leen desde los CSV con
+   `fread()` y no estan escritas en la prosa. Donde una cifra SI esta en la
+   prosa va marcada con [VERIFICAR TRAS RE-RUN].
+
+   Lo que SI es estable: los bloques RESULT de los scripts en analysis/ (estan
+   versionados) y los 16 registros de decision que restaura el paso 9.
+
+3. DOS CITAS FALTAN EN EL .bib. references/distancesampling.bib solo tiene
+   Buckland2001, Buckland2015DistanceSampling y Miller2013SpatialModels. Las
+   referencias a Wood, Pya y Safken (2016) y a Kleiber y Zeileis (2016) van
+   escritas en texto plano y marcadas [AGREGAR A .bib]; convertirlas a @clave
+   recien despues de agregar la entrada.
+
+4. DEPENDENCIAS DE CADA SECCION. Las secciones 1 (diagnosticos) salen del
+   workspace (dd.diag) y de output/CommonDolphin/DSM/, que el paso 5 escribe.
+   Las secciones 2, 3 y 4 salen de los 16 registros de decision que restaura el
+   paso 9. Las secciones 5, 6 y 7 salen del paso 6 (9_RegenerateStudies_DD.R).
+   Ninguna renderiza antes de que corran esos pasos; los helpers de abajo avisan
+   en lugar de romper.
+=============================================================================
+-->
+
+```{r}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(kableExtra)
+library(knitr)
+library(here)
+
+# Los estudios de los drivers 9_ corren DESPUES de que se guarda dd_output.RData,
+# asi que sus resultados NO viajan en el workspace: viven como CSV y PNG en
+# output/CommonDolphin/. Los diagnosticos SI viajan, en el objeto dd.diag.
+dd_out <- file.path(here::here(), "output", "CommonDolphin")
+
+# Helpers tolerantes: si el archivo todavia no existe (re-run a medias), la
+# seccion avisa en lugar de romper el render.
+rd <- function(...) {
+  f <- file.path(dd_out, ...)
+  if (file.exists(f)) data.table::fread(f) else NULL
+}
+tab <- function(x, ...) {
+  if (is.null(x) || !NROW(x))
+    return(cat("_[pendiente: el archivo todavia no fue escrito]_"))
+  kableExtra::kable_styling(kableExtra::kable(x, ...),
+                            bootstrap_options = c("striped", "hover"),
+                            position = "center", full_width = FALSE)
+}
+img <- function(...) {
+  f <- file.path(dd_out, ...)
+  if (file.exists(f)) knitr::include_graphics(f) else invisible(NULL)
+}
+```
+
+# 1. Diagnósticos del modelo
+
+<!-- ANCLA: DelfinesComunes.qmd, nueva seccion `## Diagnósticos del modelo`
+     dentro de "Progreso luego de la reunion con Silvana", DESPUES de
+     `### Mapas de coeficiente de variacion (CV)` (linea 1407) y ANTES de
+     `# Separar efecto del tiempo del numero de observadores` (linea 1424).
+     Motivo: los diagnosticos son sobre el modelo soap que se presenta ahi. -->
+
+Las tablas de selección de modelos ordenan los candidatos por AIC, y `mgcv` calcula ese AIC con la corrección por incertidumbre en los parámetros de suavizado de Wood, Pya y Säfken (2016) [AGREGAR A .bib]. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente para expresarse, y que la distribución ajustada produce los conteos que efectivamente se observaron. Los tres se verifican acá.
+
+## Autocorrelación residual
+
+Un DSM asume que los residuos de los segmentos son independientes. Los segmentos son tramos contiguos de una misma trayectoria, así que no tienen por qué serlo. Si los residuos quedan correlacionados a lo largo de la trayectoria, el tamaño muestral efectivo es menor que el nominal: la abundancia estimada no se sesga mucho, pero los errores estándar se desinflan y las diferencias de AIC se inflan. Es decir, tanto los intervalos de confianza como la selección de modelos quedan sobre-confiados.
+
+El correlograma correlaciona el residuo de cada segmento con el residuo del segmento *k* posiciones más adelante, a dos escalas: la pata de transecta (escala fina, pocos km) y el día de campaña (escala gruesa). La banda es $\pm 2/\sqrt{n_{pares}}$.
+
+```{r}
+#| label: tbl-x-dd-acf
+#| tbl-cap: "Autocorrelación residual de los DSM de delfines comunes, a dos escalas. lag1 es la correlación entre segmentos vecinos; band es la banda de referencia; pct_of_band dice qué proporción de esa banda usa lag1. n_eff_lag1 traduce lag1 a un tamaño muestral efectivo equivalente AR(1)."
+#| echo: false
+#| message: false
+#| warning: false
+tab(if (exists("dd.diag")) dd.diag$acf_summary else
+      rd("DSM", "autocorrelation", "DD_autocorrelation_summary.csv"))
+```
+
+```{r}
+#| label: fig-x-dd-correlograma
+#| fig-cap: "Correlograma de los residuos a lo largo de la trayectoria, delfines comunes."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+img("DSM", "autocorrelation", "DD_dsm_correlogram.png")
+```
+
+El resultado es el que sostiene la columna `lag1_sig` de las tablas de selección: **el modelo que se presenta, `count ~ s(x,y,bs="so") + season + s(Ano)`, pasa la prueba a las dos escalas, y los modelos que incluyen `s(clo)` no la pasan** [VERIFICAR TRAS RE-RUN]. Esto es relevante porque `s(clo)` era, por AIC, el mejor modelo del bloque soap. Un modelo cuya independencia residual no se sostiene no puede seleccionarse por un AIC que asume esa independencia, de modo que el ordenamiento debe leerse con `lag1_sig` y no sólo con `deltaAIC`.
+
+Dos advertencias que conviene explicitar. La banda es optimista: trata a los pares de residuos como independientes cuando por construcción se solapan, así que una correlación apenas adentro de la banda es evidencia más débil de lo que parece. Y un correlograma plano significa que no hay correlación *no modelada*, no que no haya correlación: una superficie espacial flexible que varíe por año puede absorber la estructura a lo largo de la trayectoria dentro del ajuste, que es exactamente el mecanismo de sobre-ajuste que se está testeando. Por eso el conjunto diagnosticado incluye siempre un modelo sin término de año, como control positivo.
+
+## Dimensión de la base (`k.check`)
+
+Cada suavizado se ajusta dentro de una base de tamaño *k*. Si el ajuste se apoya contra ese techo, el término no es "tan ondulado como la penalización quiso" sino "tan ondulado como *k* permitió", y entonces ni su deviance ni sus grados de libertad efectivos, ni por lo tanto su AIC, miden lo que se pretende que midan.
+
+```{r}
+#| label: tbl-x-dd-kcheck
+#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k'; near_ceiling marca los suavizados apoyados contra su techo."
+#| echo: false
+#| message: false
+#| warning: false
+tab(if (exists("dd.diag")) dd.diag$kcheck else rd("DSM", "DD_dsm_kcheck.csv"))
+```
+
+Acá aparece el hallazgo que motivó todo el trabajo posterior: **`s(clo)` está apoyado contra su techo en todos los modelos que lo incluyen** (edf ~8.3-8.4 sobre k' = 9) [VERIFICAR TRAS RE-RUN]. Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (@sec-x-dd-covk), y no sólo la marcada.
+
+## Rootogramas
+
+Ni la autocorrelación ni la dimensión de la base preguntan si la distribución ajustada produce los conteos que se vieron. El rootograma sí: compara, por cada clase de conteo, el número de segmentos observados con el número esperado por el modelo, en escala de raíz cuadrada. Esa es la escala en la que el error estándar de $\sqrt{observado}$ es aproximadamente constante, así que un desvío de un dado tamaño significa lo mismo en la clase del cero que en la cola (Kleiber y Zeileis 2016) [AGREGAR A .bib]. Eso es lo que hace legibles los dos modos de falla de un conteo por segmento: exceso de ceros y sobredispersión.
+
+```{r}
+#| label: fig-x-dd-rootograma
+#| fig-cap: "Rootograma de los DSM de delfines comunes, escala de toda el área. Izquierda: barras colgantes. Derecha: residuos suspendidos."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+img("DSM", "DD_dsm_rootogram.png")
+```
+
+**No hay exceso de ceros.** La clase del cero se ajusta bien en las dos especies, lo cual descarta la explicación que uno probaría primero. El problema de los delfines comunes está en la cola: el modelo **sobre-predice los conteos grandes**, y lo hace de manera idéntica en los cuatro modelos diagnosticados, incluidos los dos que llevan clorofila. Que el desajuste no se mueva al cambiar las covariables ni la superficie espacial significa que no es un problema que una covariable o la base espacial puedan arreglar: es la distribución de conteos. La sección @sec-x-dd-cola muestra por qué.
+
+```{r}
+#| label: fig-x-dd-rootograma-bloque
+#| fig-cap: "Rootograma por bloque espacial. Los bloques son una grilla regular sobre el golfo: el survey no tiene estratos de diseño, así que el bloque es independiente del modelo y por lo tanto comparable entre candidatos."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 9
+img("DSM", "DD_dsm_rootogram_block.png")
+```
+
+El rootograma agregado promedia los desajustes locales, así que se calcula también por bloque. A esa escala aparece estructura espacial: el bloque noroeste queda sobre-predicho en todas las clases positivas y el del centro-oeste al revés. Ese patrón es ambiguo, y la sección siguiente existe para resolver la ambigüedad.
+
+# 2. ¿El desajuste es el modelo o la grilla de nudos?
+
+<!-- ANCLA: DelfinesComunes.qmd, a continuacion de la seccion anterior.
+     Estudio: analysis/UTIL_DSM_RootogramKnots_DD.R (REGISTRO DE DECISION,
+     no se vuelve a correr; sus CSV los restaura el paso 9 del runbook). -->
+
+Una superficie espacial que no puede doblarse tanto como los datos piden produce exactamente el patrón por bloque descripto arriba. Un modelo genuinamente mal especificado también. El ajuste guardado no puede distinguirlos, porque sólo una grilla de nudos fue alguna vez sometida a un rootograma.
+
+El experimento mínimo que discrimina es ajustar **una sola fórmula** (la que el reporte presenta) a **dos grillas de nudos**, y comparar los rootogramas con clases idénticas. Si la estructura por bloque persiste con la grilla fina, es el modelo; si se derrumba, era la grilla. La fórmula no lleva ninguna covariable ambiental, así que la grilla es lo único que difiere entre los dos ajustes.
+
+```{r}
+#| label: fig-x-dd-rootogramknots
+#| fig-cap: "Rootogramas de count ~ s(x,y,bs='so') + season + s(Ano) ajustado a 41 y a 92 nudos interiores, con clases idénticas."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+img("DSM", "DD_rootogram_knotgrid.png")
+```
+
+```{r}
+#| label: tbl-x-dd-rootogramknots
+#| tbl-cap: "Rootograma por grilla de nudos (arm = original 10x8 contra revisada 14x11)."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_rootogram_knotgrid.csv"))
+```
+
+**El resultado es que el AIC y el ajuste no coinciden.** Refinar la grilla de 41 a 92 nudos vale 24.19 unidades de AIC y 3.5 puntos de deviance, pero prácticamente no mueve el rootograma. Es decir, la grilla estaba efectivamente sub-resuelta, y ese hallazgo es real y motivó el retune, pero el desajuste en la cola **no** era la grilla. Son dos defectos distintos que se habían confundido en un solo síntoma, y el precio de no separarlos habría sido seguir agregando nudos para arreglar algo que los nudos no arreglan.
+
+# 3. Covariables ambientales y dimensión de base {#sec-x-dd-covk}
+
+<!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior. Alternativa,
+     probablemente mejor: inmediatamente DESPUES de la tabla
+     `table_dd_soap_modselection` (linea ~1336), porque es la que justifica
+     descartar las covariables ambientales.
+     Estudio: analysis/UTIL_DSM_CovariateK_DD.R (REGISTRO DE DECISION). -->
+
+El reporte descarta las covariables ambientales porque agregan poca deviance (0.26 contra 0.22). Ese argumento tenía un problema: dentro del bloque soap las covariables le ganaban al modelo presentado por mucho (`s(clo)` por 47.5 unidades de AIC), y el `k.check` mostraba a `s(clo)` apoyado contra su techo. Un suavizado que se quedó sin base no da una medida justa de lo que la covariable vale, ni en deviance ni en AIC. Como el default k = 10 aplica a las siete covariables, había que re-testear las siete.
+
+```{r}
+#| label: tbl-x-dd-covk
+#| tbl-cap: "Base de las covariables ambientales: k = 10 (original) contra k = 20. dAIC_vs_base es la ventaja de cada covariable sobre el modelo sin covariables, en cada base."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_covariate_k_comparison.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-basischeck
+#| tbl-cap: "¿Está limitada la base ESPACIAL? Para una película soap hay dos controles separados: la grilla de nudos interiores y la dimensión k de la película de borde."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_spatial_basis_check.csv"))
+```
+
+El estudio corrigió dos veces la premisa con la que había empezado, y las dos correcciones importan más que la pregunta original.
+
+**Primero, el techo de `s(clo)` era casi inocuo.** Liberarlo de k = 10 a k = 20 movió su ventaja de -47.46 a -48.72 solamente. Las covariables que sí estaban materialmente limitadas por la base fueron `s(sst)` (-27.80 a -39.08) y `s(VelVert)` (-2.97 a -11.11), y **ninguna de las dos estaba contra su techo** (edf_frac 0.73 y 0.63). De modo que `edf_frac > 0.8` no es un filtro suficiente para decidir si *k* está limitando, que es la razón por la cual se testearon las siete y no sólo la marcada.
+
+**Segundo, y más importante, el defecto mayor no era una covariable.** La grilla de nudos interiores estaba sub-resuelta: pasar de 41 a 92 nudos vale 24.19 unidades de AIC y 3.5 puntos de deviance *sin ninguna covariable en el modelo*. Subir en cambio la dimensión *k* de la película de borde no hizo nada (+0.51), así que el control que ataba era la grilla interior y no *k*.
+
+```{r}
+#| label: tbl-x-dd-2x2
+#| tbl-cap: "Grilla 2x2: grilla de nudos (41, 92) por base de covariables (10, 20)."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_covariate_2x2_grid.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-2x2-attr
+#| tbl-cap: "Atribución: cuánto aporta la base de la covariable a cada grilla, y cuánto aporta la grilla a cada base."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_covariate_2x2_attribution.csv"))
+```
+
+```{r}
+#| label: fig-x-dd-twodefects
+#| fig-cap: "Los dos defectos, separados: la grilla de nudos y la base de las covariables, y lo que aporta cada uno."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+img("DSM", "DD_two_defects.png")
+```
+
+La consecuencia para el reporte es que **descartar las covariables ambientales en delfines comunes no está sostenido por el AIC una vez que la base es adecuada**: con la grilla y la base corregidas, `s(sst)` y `s(clo)` valen del orden de 30 a 35 unidades. La decisión de presentar el modelo sin covariables se sostiene por otros motivos, que conviene enunciar como tales: la ganancia en deviance sigue siendo marginal, y las covariables ambientales son climatologías sin dimensión anual, de modo que no pueden aportar nada a la tendencia interanual que es el objeto del trabajo.
+
+# 4. Ajuste fino de la película soap: borde y grilla de nudos
+
+<!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
+     Estudio: analysis/UTIL_DSM_SoapTuning_DD.R (REGISTRO DE DECISION).
+     Es el estudio que produjo la configuracion que hoy corre en
+     4_CommonDolphin_DSM_soap.R: tol500/margin250, 14x11 -> 89 nudos, K_COV=20. -->
+
+## Por qué el borde va primero
+
+El borde guardado era un polígono de 9 vértices y 2184.6 km^2^ contra un polígono de survey de 1811.0 km^2^ y 21 vértices: 20.6 % más grande en área, con cada vértice unos 2.91 km **afuera** del área de survey. La consecuencia es que sólo 44 de 6288 segmentos quedaban a menos de 2 km del borde soap, cuando 577 quedan a menos de 2 km del borde real del área. El sentido entero de una película soap es imponer comportamiento razonable *en* el borde, de modo que un borde puesto a 3 km de los datos casi no ejerce esa función.
+
+Llegó ahí por una buena razón: `4_CommonDolphin_DSM_soap.R` infla el borde hacia afuera porque una película soap da error si hay datos afuera de su borde, e inflarlo era el arreglo seguro. El estudio pregunta qué cuesta o qué compra uno más ajustado.
+
+```{r}
+#| label: tbl-x-dd-boundary
+#| tbl-cap: "Variantes de borde: simplify_tol {3000, 500} por margin {2000, 250}. Una variante que deje algún segmento afuera se descarta, porque soap daría error."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_boundary_variants.csv"))
+```
+
+## El barrido de nudos, y por qué no se tomó el mínimo de AIC
+
+La grilla se sintoniza **después** del borde y no antes, porque `make.soapgrid()` llena el borde y el filtro de distancia descarta los nudos cercanos a él: la grilla queda definida respecto del borde que esté vigente.
+
+```{r}
+#| label: tbl-x-dd-knotsweep
+#| tbl-cap: "Barrido de la grilla de nudos interiores dentro de cada borde sobreviviente. El criterio es la MESETA de edf_xy, no el mínimo de AIC."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_knot_sweep.csv"))
+```
+
+El criterio es la grilla más chica a la que `edf_xy` deja de subir, que es el punto en el que la base dejó de ser la restricción que ata. Perseguir en cambio el mínimo de AIC agrega nudos con retorno decreciente y termina haciendo fallar el solver de la PDE. Acá esa distinción no es teórica: **el AIC sigue bajando hasta 485 nudos, pero la autocorrelación residual de rezago 1 sube con él y se sale de su banda**. Un AIC que sigue mejorando mientras se degrada el supuesto de independencia sobre el que ese mismo AIC se calcula no es una ganancia confiable.
+
+```{r}
+#| label: tbl-x-dd-knotcorrelogram
+#| tbl-cap: "Autocorrelación de rezago 1 a lo largo del barrido de nudos. Es el criterio que frenó el barrido antes del mínimo de AIC."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_knot_correlogram.csv"))
+```
+
+## La configuración adoptada
+
+```{r}
+#| label: tbl-x-dd-tunedselection
+#| tbl-cap: "Selección de modelos soap con los tres arms en un solo ordenamiento: original (41 nudos, k=10), revisado (92 nudos, k=20) y sintonizado (89 nudos, tol500/margin250, K_COV=20). deltaAIC es global; deltaAIC_spec es dentro del arm."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_tuned_selection.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-revisedpaired
+#| tbl-cap: "Original contra revisado, fórmula por fórmula."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "DD_soap_revised_paired.csv"))
+```
+
+`4_CommonDolphin_DSM_soap.R` hoy corre en **tol500 / margin250, grilla 14x11 (89 nudos), K_COV = 20**. Para delfines oscuros la conclusión fue la opuesta y también deliberada (ver `DelfinesOscuros.qmd`): las dos especies quedan en bordes distintos a propósito, cada una sobre su propia evidencia.
+
+Una advertencia honesta, que conviene que esté en el texto y no sólo en el código: **sintonizar la grilla por AIC y después citar ese AIC es un sesgo de selección leve**. Este es el modo correcto de *encontrar* un defecto de base; una cifra de titular para un paper debería salir del modelo que uno habría especificado sabiendo que la base era adecuada, y no del ganador de un barrido.
+
+# 5. Mapas y abundancia del arm sintonizado
+
+<!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
+     Script: analysis/UTIL_DSM_TunedArm_MapsAbundance_DD.R (corre en el paso 6). -->
+
+Dos modelos a la configuración sintonizada: el base (`s(x,y,bs="so") + season + s(Ano)`) y el mismo con `s(sst, k=20)`.
+
+```{r}
+#| label: fig-x-dd-tuned-season
+#| fig-cap: "Densidad predicha por estación, modelo base sintonizado (89 nudos)."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+img("DSM", "DD_DSM_Tuned_Base_Season.png")
+```
+
+```{r}
+#| label: fig-x-dd-tuned-bymodel
+#| fig-cap: "Estación por modelo: base contra base + s(sst), a la configuración sintonizada."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 10
+img("DSM", "DD_DSM_Tuned_SeasonByModel.png")
+```
+
+```{r}
+#| label: fig-x-dd-tuned-abundancia
+#| fig-cap: "Serie de abundancia del arm sintonizado, contra la del arm original."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+img("Abundance", "DD_abundance_tuned_vs_original.png")
+```
+
+```{r}
+#| label: tbl-x-dd-tuned-abundancia
+#| tbl-cap: "Abundancia estimada por estación y año, arm sintonizado."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("Abundance", "DD_abundance_tuned.csv"))
+```
+
+Tres cosas que hay que decir en la leyenda y que no son obvias:
+
+1. **La sst es climatológica.** `preddata` lleva un valor por celda y por mes calendario, sin dimensión de año, de modo que el término `s(sst)` aporta lo mismo en todos los años por construcción. Toda la variación interanual de la serie con sst sigue viniendo de `s(Ano)`: la serie **no** es evidencia de un cambio dirigido por sst.
+2. **No se predice a la sst media de la estación.** Donde el suavizado es curvo, la media de $f(sst)$ no es $f$ de la sst media, y el rango mensual dentro de una estación es grande en otoño y primavera (mediana 3.62 y 4.29). Se predice a cada uno de los tres meses y se promedian las densidades resultantes.
+3. **La grilla de predicción entra entera en el borde sintonizado**, que es más ajustado que el guardado: las 1408 celdas pasan `in.out()` contra los dos bordes y `predict()` devuelve 1408 valores finitos. No hace falta enmascarar.
+
+# 6. La cola del rootograma es el tamaño de los grupos {#sec-x-dd-cola}
+
+<!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
+     Script: analysis/UTIL_DSM_TailFix_DD.R (corre en el paso 6). -->
+
+El rootograma sobre-predice los conteos grandes de manera idéntica en los cuatro modelos, así que es la distribución y no las covariables ni la base espacial. La causa se puede escribir como una descomposición de varianza y no como una heurística. Para un proceso compuesto de $N$ grupos por segmento, cada uno de tamaño $X$:
+
+$$\mathrm{Var}(count) = E[N]\,\mathrm{Var}(X) + \mathrm{Var}(N)\,E[X]^2$$
+
+```{r}
+#| label: tbl-x-dd-vardecomp
+#| tbl-cap: "Descomposición de la varianza del conteo por segmento, delfines comunes."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "tail", "DD_tail_variance_decomposition.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-groupsize
+#| tbl-cap: "Tamaño de los grupos de delfines comunes, y test explícito de sesgo por tamaño (regresión log(tamaño) sobre distancia)."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "tail", "DD_tail_groupsize.csv"))
+```
+
+**El 92.7 % de la varianza del conteo es el TAMAÑO de los grupos, no su número.** El número de grupos es casi Poisson; el tamaño tiene mediana 4, un segundo conglomerado entre 150 y 450, y un máximo de 450. Una Tweedie con $1 < p < 2$ *es* una Poisson-gamma compuesta, así que estructuralmente es el modelo correcto, pero una sola gamma no puede concentrarse cerca de 4 y llegar a 450 al mismo tiempo. El ajuste $p = 1.576$, $\phi = 29.7$ es un compromiso que pone demasiada masa en la cola.
+
+La evidencia decisiva es el contraste entre especies: **el grupo más grande de delfines oscuros es de 11 animales y su rootograma es limpio**. Ninguna Tweedie única puede ajustar las dos situaciones.
+
+Se probaron las dos salidas, y ninguna se adoptó:
+
+```{r}
+#| label: tbl-x-dd-twlss
+#| tbl-cap: "Ruta 2: escalera twlss (Tweedie location-scale, tres predictores lineales, de modo que phi y p pueden depender de covariables). El AIC es comparable sólo DENTRO de la escalera: twlss y tw cuentan distinto los parámetros de dispersión."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "tail", "DD_tail_route2_twlss.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-route1
+#| tbl-cap: "Ruta 1: modelo de conteo de GRUPOS contra el modelo actual."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "tail", "DD_tail_route1_summary.csv"))
+```
+
+```{r}
+#| label: fig-x-dd-tailcompare
+#| fig-cap: "Los tres rootogramas lado a lado: modelo actual, ruta 1 (conteo de grupos) y ruta 2 (twlss)."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+img("DSM", "tail", "DD_tail_rootogram_compare.png")
+```
+
+**La ruta 2 (twlss) empeora la cola.** **La ruta 1 (modelar el conteo de grupos y multiplicar por el tamaño medio) confirma el diagnóstico** pero no produce un intervalo más chico: el CV del tamaño medio de grupo es un piso que entra en cuadratura con el CV espacial. Su rédito sería un modelo de conteos correctamente especificado y una atribución honesta de la varianza, no precisión.
+
+Una advertencia que conviene registrar: **la función de detección es ~1, de modo que $\hat{p}$ es constante y la media de Horvitz-Thompson del tamaño de grupo es algebraicamente idéntica a la media ingenua**. El ajuste actual no contiene corrección por sesgo de tamaño y no se le puede extraer ninguna. La regresión explícita de log(tamaño) sobre distancia da un efecto significativo (p < 1e-4) [VERIFICAR TRAS RE-RUN], así que ese sesgo está presente y sin corregir en las estimaciones de abundancia actuales.
+
+# 7. Cuánto cuesta el desajuste de la cola a las estimaciones
+
+<!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
+     Script: analysis/UTIL_DSM_TailMisfit_Impact_DD.R (paso 6, ULTIMO).
+     Esta es la seccion que mas sirve para el manuscrito: da la frase que hay
+     que poner al lado de los intervalos de confianza. -->
+
+La pregunta que importa para el manuscrito no es si el rootograma tiene un desajuste sino cuánto cuesta. El desajuste de la cola es una mala especificación de la **función de varianza**, no de la media. Bajo cuasi-verosimilitud una función de varianza mal especificada deja al estimador de la media consistente y afecta su precisión, así que la predicción es que el estimador puntual sea insensible y el intervalo no lo sea. Eso es lo que miden los tests.
+
+```{r}
+#| label: tbl-x-dd-tailmisfit-summary
+#| tbl-cap: "Impacto del desajuste de la cola sobre las estimaciones de abundancia: resumen."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_tailmisfit_summary.csv"))
+```
+
+```{r}
+#| label: fig-x-dd-pladder
+#| fig-cap: "Escalera de la función de varianza: abundancia y CV con la potencia Tweedie FIJADA en p entre 1.3 y 1.8, alrededor del 1.572 estimado."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+img("DSM", "TailMisfit", "DD_tailmisfit_pladder.png")
+```
+
+```{r}
+#| label: tbl-x-dd-pladder
+#| tbl-cap: "La escalera, en números. La columna CV NO es una sensibilidad a p: es el estimador de escala (Pearson contra REML). Ver el texto."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_tailmisfit_B_pladder.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-a2
+#| tbl-cap: "Inflación de varianza implicada por los residuos, y la parte que le corresponde a la cola."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_tailmisfit_A2_inflation.csv"))
+```
+
+**El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.** Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado [VERIFICAR TRAS RE-RUN].
+
+Esa inflación es **enteramente la cola, y es de 67 segmentos**: excluyendo los segmentos con más de 20 animales, el $\phi$ de Pearson baja a 10.6 contra 28.5 de REML. Sin esos segmentos los residuos implican *menos* dispersión que la que el modelo asume, no más.
+
+Tres trampas de análisis que conviene dejar por escrito, porque las tres se cayeron en el camino y las tres son fáciles de repetir:
+
+1. **No comparar la media ajustada contra el conteo observado dentro de clases definidas por el conteo observado.** Eso condiciona sobre el resultado: un segmento que registró 450 animales queda "sub-predicho" y uno que registró 0 queda "sobre-predicho" por encogimiento solamente, sea cual sea el ajuste. Una versión anterior de este análisis hizo eso y reportó un error de -98 % en la clase de más de 100, que medía el condicionamiento y no el desajuste. La tabla A compara, por clase, cuántos **segmentos** espera ahí la distribución ajustada, que es una suma de probabilidades por segmento y nunca mira el conteo propio de ese segmento, contra cuántos cayeron.
+2. **La columna CV de la escalera está confundida.** `Tweedie()` con *p* fijo usa un estimador de escala tipo Pearson, mientras que `tw()` estima $\phi$ por REML. A p = 1.60, es decir esencialmente el 1.572 estimado, $\phi$ vuelve 67.6 contra 28.45. Esa diferencia es el **estimador**, no una sensibilidad a *p*.
+3. **El CV basado en el diseño no es un estándar de calibración.** Es una cantidad de tasa de encuentro a nivel de estrato, de un survey con 2011-2012 sin cobertura y 2013 con una sola estación, y varias combinaciones estación-año sin valor utilizable. Sirve como comparador de orden de magnitud y nada más.
+
+```{r}
+#| label: tbl-x-dd-abins
+#| tbl-cap: "El rootograma en la moneda de animales: segmentos observados y esperados por clase, y cuántos animales hay en cada una."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_tailmisfit_A_bins.csv"))
+```
+
+```{r}
+#| label: tbl-x-dd-designcheck
+#| tbl-cap: "Comparación de orden de magnitud contra el CV basado en el diseño. No es una validación."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_tailmisfit_C_designcheck.csv"))
+```
+
+Lo que no se hizo: un bootstrap no paramétrico. Es el único intervalo genuinamente libre de distribución, pero son unos 100 re-ajustes soap (~2.5 h) para una cantidad que la escalera ya acota. Si alguna vez se corre, **la unidad de remuestreo tiene que ser el día de campaña (`traj_id`) y no la pata de transecta**: esa es la escala a la que el correlograma encontró estructura, y remuestrear por pata rompería justamente la dependencia que se quiere preservar.
+
+# 8. CORRECCIÓN a secciones ya publicadas: el offset de los mapas
+
+<!-- ANCLA: ESTO NO ES UNA SECCION NUEVA. Es una correccion a figuras que YA
+     estan en DelfinesComunes.qmd: @fig-dsmddyear, @fig-dsmddseason,
+     dd.map.density.year.clo, dd.map.density.season.clo,
+     dd.map.density.year.soap, dd.map.density.season.soap,
+     dd.map.density.year.nobs2 y dd.map.density.season.nobs2.
+     Commit fdb8b2d, 2026-09-16.
+     ACCION: el paso 5 regenera las figuras con el offset corregido, asi que el
+     qmd no necesita cambios de codigo. El texto de abajo sirve como nota, y
+     hace falta SOLO si el HTML del 2026-09-04 circulo fuera del equipo. -->
+
+Todos los mapas de densidad predecían con `off.set = 800 * trunc.dist_dd`, una constante, y después dividían por el área de la celda. Una predicción hecha con un offset constante no depende del área de la celda, así que esa división no convertía nada: sólo reescalaba. **Las leyendas de los mapas de densidad de delfines comunes estaban 4.49 veces por debajo** (3.25 en delfines oscuros). El patrón espacial sobrevivió casi intacto, porque el factor varía alrededor de un 7 % entre celdas, pero la escala no.
+
+Se verificó contra la salida de abundancia del propio proyecto: predecir el modelo soap guardado con `off.set` igual al área de la celda y sumar reproduce `DD_abundance_season_year_soap.csv` (razones 0.9999-1.0002 sobre cuatro combinaciones estación-año). `5_CommonDolphin_Abundance.R` ya usaba el área de la celda y siempre estuvo bien, de modo que **ninguna cifra de abundancia del reporte está afectada**: sólo las leyendas de los mapas.
+
+# 9. Qué queda pendiente
+
+<!-- ANCLA: candidato para reemplazar o ampliar `### Notas {#sec-notasdd}`
+     (linea 1229). El punto 2 de esa nota ("No prepare mapas de la varianza")
+     ya esta resuelto por la seccion de mapas de CV, asi que conviene sacarlo. -->
+
+1. **Sesgo por tamaño de grupo, sin corregir.** La regresión de log(tamaño) sobre distancia da un efecto significativo y el ajuste actual no lo corrige. Es la corrección pendiente con efecto más directo sobre el estimador puntual.
+2. **Los intervalos de confianza.** Están reportados como los da el modelo; el análisis de la cola indica que son optimistas por un factor cercano a 1.3. Conviene decirlo en el texto del manuscrito y no dejarlo sólo en el output.
+3. **La grilla de nudos no está convergida.** La configuración adoptada (89 nudos) sale de una meseta de `edf_xy` frenada por el criterio de autocorrelación, no de un mínimo de AIC. Es una grilla mejor, no la correcta.
+4. **Las covariables ambientales** vuelven a ser competitivas por AIC una vez corregida la base (@sec-x-dd-covk). La decisión de excluirlas se sostiene, pero por parsimonia y porque son climatologías sin dimensión anual, no por AIC.
+
+# Referencias

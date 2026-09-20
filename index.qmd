@@ -28,7 +28,9 @@ Los análisis se encuentran en [**este repositorio**](https://github.com/adbpata
 
 -   [Variables Ambientales](VariablesAmbientales.qmd)
 -   [Delfines Oscuros](DelfinesOscuros.qmd)
+-   [Delfines Oscuros - diagnostics](DelfinesOscuros_diagnostics.qmd)
 -   [Delfines Comunes](DelfinesComunes.qmd)
+-   [Delfines Comunes - diagnostics](DelfinesComunes_diagnostics.qmd)
 
 Silvana está interesada en analizar 2 preguntas:
 
