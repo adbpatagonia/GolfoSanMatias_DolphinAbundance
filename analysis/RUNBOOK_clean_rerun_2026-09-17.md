@@ -275,22 +275,66 @@ All 16 verified present on disk before step 1.
 
 ---
 
-## Step 10 — verify
+## Step 10 — verify  (PASSED 2026-09-19, with one real finding)
 
-Three checks; all three must pass before either quarantine is deleted.
+| check | result |
+|---|---|
+| DD tree vs quarantine | 2 not reproduced, 1 new — both explained below |
+| LO tree vs quarantine | 2 not reproduced, 4 new — both explained below |
+| `*_new.csv` sweep | none: every `fwrite` reached its intended filename |
+| tracked files missing | none; `git status` on `output/` clean |
+| restored records | 16/16 byte-identical to quarantine (SHA256) |
 
-1. `diff_output_vs_quarantine.ps1 -Species CommonDolphin` — every name surviving
-   on the "not reproduced" side must be one of the 16 decision records.
-2. `diff_output_vs_quarantine.ps1 -Species DuskyDolphin` — that side should be
-   empty. Memory says 29 untracked LO diagnostics exist only in the quarantine;
-   this is where that gets settled.
-3. `Get-ChildItem output -Recurse -Filter '*_new.csv'` returns nothing.
+**Not reproduced, both species**: `DSM/{DD,LO}_dsm_correlogram.{csv,png}`. The old
+trees held these in BOTH `DSM/` and `DSM/autocorrelation/`; current
+`UTIL_DSM_Diagnostics.R` writes only to `.acf_dir` (= `autocorrelation/`). The
+root-level pair are orphans of an older diagnostics script. Correctly dropped —
+this is the stale output the re-run existed to remove.
 
-Then `git status` on `output/` — the 51 LO deletions should all be resolved, and
-any file still showing as deleted is a hole worth understanding before it is
-committed.
+**New**: `Nobs2Sensitivity/README_nobs2_fit_compare.txt` (both species), written
+by the current `6_*_Nobs2SensitivityAnalysis.R` since 6623a6d. Plus, LO only, the
+three `LO_soap_*.csv` — absent from the 2026-09-16 quarantine because they
+postdate it, which is exactly why step 2 snapshotted them separately.
 
-**Time**: seconds.
+### Reproducibility check A — covariate-k: EXACT
+
+Every `AIC_10`, `AIC_20`, `dAIC`, `edf`, `edf_frac` and `Dev` in the fresh
+`LO_covariate_k_comparison.csv` matches the 2026-09-10 values to the last
+decimal, recomputed cold by a workspace that had never seen them. Only `k_index`
+and `p_value` differ, and they should: `dsm_kcheck(m, n.rep = 400)` is a
+randomised test with no seed set. `at_ceiling` is FALSE throughout in both.
+
+The LO fs block reproduces exactly across a nine-day, fully cold rebuild.
+
+### Reproducibility check B — soap CSVs: ONE REAL CHANGE
+
+`LO_soap_boundary_variants.csv` and `LO_soap_knot_sweep.csv` came back
+byte-identical. `LO_soap_tuned_selection.csv` did not:
+
+* all 25 `tuned` rows identical; all 25 `original` rows changed
+* `k_prime_xy` **49 -> 48** in every changed row, with `edf_frac_xy` and AIC
+  moving consequentially (~0.1-0.2 AIC)
+
+CAUSE, and it is not a defect in this run. The `original` arm reads its knots
+from the WORKSPACE. The workspace the 2026-09-16 study used was
+`lo_output.RData` dated **2026-09-03 21:59** — thirteen days older than
+0fccbb9 (2026-09-16 18:18), *"measure LO knot clearance to the boundary edges,
+not its vertices"*. So that study measured its `original` arm against a soap
+basis the code had already stopped building, and one knot the vertex test wrongly
+admitted is now correctly excluded. 49 -> 48 is the bug fix finally reaching the
+workspace.
+
+CONSEQUENCES, checked rather than assumed:
+* the study's conclusion holds. The nominal winner is still the `tuned` sst model
+  at deltaAIC 0 with `lag1_sig = TRUE` — it still fails the autocorrelation check
+  its own AIC assumes. The margin over the best `original` narrowed from 1.06 to
+  0.85 AIC. Adopt nothing, for the same reason as before.
+* the reported dusky numbers are untouched. Every fs-based LO abundance table is
+  byte-identical to the quarantine — `LO_abundance_season_year{,_byyear,_fsyear}.csv`
+  and `LO_year_partial_effect_fsyear.csv`. Only `_soap.csv` changed, and the soap
+  arm is a considered-not-reported block for dusky.
+
+**Time**: seconds, plus however long the one finding takes to run down.
 
 ---
 
