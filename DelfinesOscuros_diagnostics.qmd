@@ -1,0 +1,319 @@
+---
+title: "Delfines Oscuros -- secciones pendientes"
+---
+
+<!--
+=============================================================================
+BORRADOR DE TRABAJO -- NO ES UN DOCUMENTO PARA RENDERIZAR JUNTO AL SITIO
+=============================================================================
+Este archivo reune las secciones que faltan en DelfinesOscuros.qmd. El ultimo
+render del sitio es del 2026-09-04 (docs/DelfinesOscuros.html); el trabajo de
+diagnostico y de estudios de seleccion se hizo entre el 2026-09-16 y el
+2026-09-17 y no esta reflejado en el reporte.
+
+COMO USARLO. Cada seccion lleva un ANCLA que dice donde va en DelfinesOscuros.qmd.
+Copiar la seccion, no el archivo.
+
+ESTE ARCHIVO ES MAS CORTO QUE SU EQUIVALENTE DE DELFINES COMUNES, Y ESO ES UN
+RESULTADO, NO UNA OMISION. Delfines oscuros no tiene estudio de cola, no tiene
+arm sintonizado y no tiene estudio de rootograma contra grilla de nudos, porque
+los tres existen para diagnosticar y reparar defectos que esta especie no tiene.
+La asimetria esta documentada en la seccion 5 de abajo, y conviene que quede
+dicha en el reporte en lugar de fabricar simetria.
+
+CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
+
+1. QUARTO RENDERIZA ESTE ARCHIVO. _quarto.yml declara `project: type: website` y
+   no tiene bloque `render:`, asi que todo .qmd en la raiz entra al render aunque
+   no este en la navbar. Ver DelfinesComunes_extras.qmd, advertencia 1, para el
+   bloque `render:` que hay que agregar.
+
+2. LOS NUMEROS SON PRE-RE-RUN. Los pasos 7 y 8 del runbook
+   (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescriben lo_output.RData y todo
+   output/DuskyDolphin/. A diferencia del lado de delfines comunes, aca NO hubo
+   retune: la configuracion soap sigue siendo 3000/2000/10x8 con k=10, y el unico
+   cambio que recibio ese arm es la correccion de bnd_dist (vertices contra
+   aristas), que vale 0.08 de AIC y cambia el conteo de nudos de 41 a 40. Asi que
+   los diagnosticos deberian volver practicamente iguales. Las cifras se leen
+   igual desde los CSV con `fread()`; donde una cifra esta en la prosa va marcada
+   con [VERIFICAR TRAS RE-RUN].
+
+3. DOS CITAS FALTAN EN EL .bib. Ver DelfinesComunes_extras.qmd, advertencia 3.
+
+4. DEPENDENCIAS. La seccion 0 (velocidad vertical) sale del workspace y corre ya.
+   Las secciones 1 a 3 (diagnosticos) las escribe el paso 7. Las secciones 4 y 5
+   las escribe el paso 8 (9_RegenerateStudies_LO.R). Los helpers de abajo avisan
+   en lugar de romper si un archivo todavia no existe.
+=============================================================================
+-->
+
+```{r}
+#| include: false
+library(data.table)
+library(ggplot2)
+library(kableExtra)
+library(knitr)
+library(here)
+
+lo_out <- file.path(here::here(), "output", "DuskyDolphin")
+
+rd <- function(...) {
+  f <- file.path(lo_out, ...)
+  if (file.exists(f)) data.table::fread(f) else NULL
+}
+tab <- function(x, ...) {
+  if (is.null(x) || !NROW(x))
+    return(cat("_[pendiente: el archivo todavia no fue escrito]_"))
+  kableExtra::kable_styling(kableExtra::kable(x, ...),
+                            bootstrap_options = c("striped", "hover"),
+                            position = "center", full_width = FALSE)
+}
+img <- function(...) {
+  f <- file.path(lo_out, ...)
+  if (file.exists(f)) knitr::include_graphics(f) else invisible(NULL)
+}
+```
+
+# 0. EDA: velocidad vertical
+
+<!-- ANCLA: DelfinesOscuros.qmd, dentro de `### Escala mensual`, DESPUES de
+     `#### Distancia a upwellings` (linea 340), como `#### Velocidad vertical
+     (downwellings y upwellings)`. Es el mismo lugar que ocupa en
+     DelfinesComunes.qmd (linea 363).
+
+     POR QUE FALTA. `2_DuskyDolphin_EDA.R` linea 176 SI construye `p.velvert.lo`,
+     pero a diferencia del script de delfines comunes no lo guarda como PNG, y el
+     qmd nunca lo muestra. El objeto esta en el workspace, asi que la seccion
+     corre tal cual. Si ademas se quiere el PNG, agregar el ggsave que tiene
+     2_CommonDolphin_EDA.R en sus lineas 198-199.
+
+     El texto de abajo esta adaptado del parrafo equivalente de
+     DelfinesComunes.qmd; ajustarlo a lo que muestre la figura. -->
+
+La velocidad vertical del agua indica upwellings (velocidades positivas) y downwellings (velocidades negativas). Guillermo calculó promedios climatológicos, es decir medias mensuales, de modo que la variable no tiene dimensión anual. A diferencia de las otras seis covariables ambientales, la velocidad vertical no es una columna de `preddata` sino un campo que hay que asignar a los segmentos: cada segmento toma el valor de la celda de predicción más cercana dentro de su propio mes calendario.
+
+```{r}
+#| label: fig-x-lo-velvert
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+# A diferencia del resto de este archivo, esta figura sale del workspace y no
+# de un PNG, asi que el guard va explicito: si el objeto no sobrevivio al save,
+# el render avisa en lugar de romper.
+if (exists("p.velvert.lo")) p.velvert.lo else
+  cat("_[pendiente: p.velvert.lo no esta en el workspace]_")
+```
+
+# 1. Diagnósticos del modelo
+
+<!-- ANCLA: DelfinesOscuros.qmd, nueva seccion `## Diagnósticos del modelo`
+     dentro de "Progreso luego de la reunion con Silvana", DESPUES de
+     `## Mapas de coeficiente de variacion (CV)` (linea 1251) y ANTES de
+     `# Separar efecto del tiempo del numero de observadores` (linea 1268).
+     El modelo diagnosticado es el que el reporte presenta:
+     lo.dsm.xy.fsyear.season = count ~ s(x, y, year_fac, bs = "fs") + season. -->
+
+Las tablas de selección ordenan los candidatos por AIC, y `mgcv` lo calcula con la corrección por incertidumbre en los parámetros de suavizado de Wood, Pya y Säfken (2016) [AGREGAR A .bib]. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente, y que la distribución ajustada produce los conteos que se observaron.
+
+## Autocorrelación residual
+
+Un DSM asume que los residuos de los segmentos son independientes. Los segmentos son tramos contiguos de una misma trayectoria, así que no tienen por qué serlo. Si quedan correlacionados a lo largo de la trayectoria, el tamaño muestral efectivo es menor que el nominal: la abundancia no se sesga mucho, pero los errores estándar se desinflan y las diferencias de AIC se inflan.
+
+```{r}
+#| label: tbl-x-lo-acf
+#| tbl-cap: "Autocorrelación residual de los DSM de delfines oscuros, a dos escalas: pata de transecta y día de campaña."
+#| echo: false
+#| message: false
+#| warning: false
+tab(if (exists("lo.diag")) lo.diag$acf_summary else
+      rd("DSM", "autocorrelation", "LO_autocorrelation_summary.csv"))
+```
+
+```{r}
+#| label: fig-x-lo-correlograma
+#| fig-cap: "Correlograma de los residuos a lo largo de la trayectoria, delfines oscuros."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 7
+img("DSM", "autocorrelation", "LO_dsm_correlogram.png")
+```
+
+**El modelo que el reporte presenta pasa la prueba a las dos escalas, y con margen**: la correlación de rezago 1 usa alrededor del 10 % de su banda y es de hecho ligeramente negativa [VERIFICAR TRAS RE-RUN]. El modelo by-year pasa a rezago 1 con un pico aislado a rezago 3, que con una docena de rezagos por modelo es ruido esperable: la señal preocupante es una *corrida* de correlaciones positivas que arranca en el rezago 1, no una excedencia suelta.
+
+Hay que leer ese resultado con una advertencia, porque acá aplica directamente. **Un correlograma plano significa que no hay correlación no modelada, no que no haya correlación.** Una superficie espacial que varía por año, que es exactamente lo que es un término `fs`, puede absorber estructura a lo largo de la trayectoria dentro de la superficie ajustada, y ese es el mismo mecanismo que el sobre-ajuste que se está testeando. Por eso el conjunto diagnosticado incluye siempre un modelo sin término de año como control positivo, y por eso el hallazgo lateral de la sección 4, que todo modelo sin `season` tiene autocorrelación significativa, es informativo y no anecdótico.
+
+## Dimensión de la base (`k.check`)
+
+```{r}
+#| label: tbl-x-lo-kcheck
+#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k'; near_ceiling marca los suavizados apoyados contra su techo; shrunk marca los que la penalización llevó a cero."
+#| echo: false
+#| message: false
+#| warning: false
+tab(if (exists("lo.diag")) lo.diag$kcheck else rd("DSM", "LO_dsm_kcheck.csv"))
+```
+
+**Ningún suavizado de delfines oscuros está apoyado contra su techo.** `s(x,y,year_fac)` sale en 63.0 de k' = 330 (edf_frac 0.19) y `s(depth)` en 3.66 de 9 [VERIFICAR TRAS RE-RUN]. Es decir, la penalización está haciendo el trabajo y la base no ata en ningún término, que es exactamente lo contrario de lo que pasa con delfines comunes, donde `s(clo)` sale contra su techo en todos los modelos que lo incluyen. Esa diferencia es la que hace interpretable el resultado de la otra especie, y es la razón por la cual el estudio de covariables de la sección 3 se corrió acá también: como control, no porque se esperara que cambiara algo.
+
+El modelo by-year muestra otra cosa que vale la pena señalar: **la mitad de sus superficies anuales están encogidas a cero** (2006, 2008, 2010, 2013, 2015, 2017, 2018). Es lo esperable en años con pocos datos, y es el argumento estructural a favor del término `fs` sobre el by-year: el `fs` comparte información entre años en lugar de estimar cada superficie por separado.
+
+## Rootogramas
+
+El rootograma compara, por cada clase de conteo, el número de segmentos observados con el esperado por el modelo, en escala de raíz cuadrada (Kleiber y Zeileis 2016) [AGREGAR A .bib].
+
+```{r}
+#| label: fig-x-lo-rootograma
+#| fig-cap: "Rootograma de los DSM de delfines oscuros, escala de toda el área."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 8
+img("DSM", "LO_dsm_rootogram.png")
+```
+
+```{r}
+#| label: fig-x-lo-rootograma-bloque
+#| fig-cap: "Rootograma por bloque espacial. Los bloques son una grilla regular sobre el golfo: el survey no tiene estratos de diseño."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 9
+img("DSM", "LO_dsm_rootogram_block.png")
+```
+
+**El rootograma de delfines oscuros es limpio: no hay exceso de ceros ni desajuste en la cola.** Ese resultado negativo es el que sostiene todo el análisis de la cola de delfines comunes, y conviene que quede dicho en los dos reportes. La explicación es el tamaño de los grupos: el grupo más grande de delfines oscuros del conjunto de datos es de 11 animales, contra 450 en delfines comunes. Una Tweedie con $1 < p < 2$ es una Poisson-gamma compuesta y puede ajustar sin problema una distribución de tamaños acotada; no puede ajustar una que se concentra cerca de 4 y a la vez llega a 450. Es decir, la diferencia entre las dos especies no es de calidad de modelo sino de comportamiento gregario.
+
+# 2. Covariables ambientales y dimensión de base
+
+<!-- ANCLA: DelfinesOscuros.qmd, despues de la seccion anterior. Alternativa:
+     inmediatamente despues de la tabla de seleccion del bloque fs
+     (`## Model selection`, linea 1119), que es la que justifica descartar las
+     covariables ambientales.
+     Estudio: analysis/UTIL_DSM_CovariateK_LO.R (corre en el paso 8, EN FRIO:
+     el paso 3 del runbook removio .cache_covk_lo, asi que los siete ajustes a
+     k = 20 se rehacen desde cero, ~11 min cada uno). -->
+
+Todo suavizado ambiental de este proyecto se ajustó con el default k = 10 de `mgcv`, que `k.check` reporta como k' = 9 porque la restricción de centrado cuesta un grado de libertad. Una covariable cuyo suavizado se quedó sin base tendría subestimada su contribución, tanto en deviance como en AIC. Para delfines comunes ese problema resultó real. Acá el `k.check` ya salía limpio, así que la expectativa era que k = 20 no cambiara nada, pero vale confirmarlo en lugar de asumirlo: es el caso control que hace interpretable el resultado de la otra especie.
+
+```{r}
+#| label: tbl-x-lo-covk
+#| tbl-cap: "Base de las covariables ambientales en el bloque fs: k = 10 contra k = 20. El modelo base es count ~ s(x, y, year_fac, bs = 'fs') + season."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "LO_covariate_k_comparison.csv"))
+```
+
+```{r}
+#| label: tbl-x-lo-covk-diag
+#| tbl-cap: "Diagnósticos (correlograma y k.check) de los ajustes a k = 20."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "LO_covariate_k20_diagnostics.csv"))
+```
+
+**k = 20 no cambia nada.** Las siete covariables se mueven por décimas de unidad de AIC y sus edf quedan donde estaban: `s(depth)` pasa de 3.66 a 3.81, `s(sst)` y `s(clo)` salen en 1.00 en las dos bases, y ninguna se acerca a su techo [VERIFICAR TRAS RE-RUN]. La única que se mueve es `s(clo)`, de 1.00 a 5.77 edf, y aun así sigue sin ganarle al modelo base.
+
+La consecuencia para el reporte es que **descartar las covariables ambientales en delfines oscuros está bien sostenido, y por un argumento más fuerte que el de la deviance**. `s(depth)` sigue valiendo del orden de 14 unidades de AIC en las dos bases, así que no es que no aporte nada; lo que pasa es que aporta alrededor de 1.5 puntos de deviance, y esa es la cuenta relevante. La diferencia con delfines comunes es real: ahí la ventaja de las covariables crecía al liberar la base, acá no.
+
+# 3. La película soap: se revisó y no se cambió nada
+
+<!-- ANCLA: DelfinesOscuros.qmd, despues de la seccion anterior.
+     Estudio: analysis/UTIL_DSM_SoapTuning_LO.R (corre en el paso 8).
+     ATENCION AL LEER LOS CSV: el driver 9_RegenerateStudies_LO.R fija
+     FORCE_CONFIG <- list(tol=500, margin=250, ngrid=c(10L,8L)) A PROPOSITO.
+     Sin esa linea el script auto-elige la configuracion de menor AIC (26x21,
+     361 nudos), que es justo la que el estudio concluyo que NO habia que
+     adoptar. Si alguien saca FORCE_CONFIG, los CSV de abajo dejan de decir lo
+     que esta seccion dice. -->
+
+El arm soap no es el modelo que el reporte de delfines oscuros presenta: el modelo presentado es el factor-smooth, `lo.dsm.xy.fsyear.season`, y esa asimetría con delfines comunes es deliberada. Aun así el arm soap se sintonizó, por dos razones. Primero, el arm soap de delfines comunes acaba de ser sintonizado y adoptado; dejar el de delfines oscuros sin revisar mientras se presentan los dos en el mismo reporte significa que los bloques soap de las dos especies dejan de ser comparables, y un lector no puede distinguir si una diferencia entre especies es biología o resolución de base. Segundo, la diferencia de AIC entre el arm fs y el arm soap es parte del motivo por el cual se eligió fs para esta especie; si sintonizar moviera el arm soap de manera apreciable, esa elección merecería reexaminarse en lugar de heredarse.
+
+**El resultado es que no se adoptó nada. Los tres controles dieron negativo, y por motivos concretos y verificables.**
+
+```{r}
+#| label: tbl-x-lo-boundary
+#| tbl-cap: "Variantes de borde para delfines oscuros: simplify_tol {3000, 500} por margin {2000, 250}."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "LO_soap_boundary_variants.csv"))
+```
+
+```{r}
+#| label: tbl-x-lo-knotsweep
+#| tbl-cap: "Barrido de 20 configuraciones de grilla. lag1 se calcula EN CADA FILA del barrido, no sólo en el arm final, para que el criterio de autocorrelación esté disponible en el momento de elegir la configuración."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "LO_soap_knot_sweep.csv"))
+```
+
+```{r}
+#| label: tbl-x-lo-tunedselection
+#| tbl-cap: "Selección de modelos soap: arm original (el guardado) contra arm sintonizado."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "LO_soap_tuned_selection.csv"))
+```
+
+**Grilla de nudos: la base espacial nunca ató.** `edf_frac_xy` es 0.335 en la configuración guardada (16.06 de 48), contra 0.64 en el arm de delfines comunes que sí necesitó arreglo. A lo largo del barrido completo `edf_xy` sube apenas de 15.9 a 29.3 mientras k' va de 49 a 369: la penalización está haciendo el trabajo, no el techo de la base. No hay acá un defecto que reparar. Como evidencia de apoyo, las 20 configuraciones del barrido abarcan 15.8 unidades de AIC, cuando el refinamiento de grilla de delfines comunes valía 24 él solo, y el AIC es **no monótono** en el número de nudos: 12x9 es peor que 10x8 en los tres bordes, por 3.4, 9.2 y 12.8. Una base penalizada más fina no puede ajustar genuinamente peor, así que esa dispersión es REML aterrizando distinto, y fija el piso de ruido para todo lo demás en la tabla.
+
+**Base de las covariables: k = 10 tampoco era la restricción**, y los edf lo dicen directamente. Duplicar k a 20 mueve cada suavizado ambiental prácticamente nada: depth 3.09 a 3.15, grad 2.06 a 2.15, slope 2.23 a 2.36, VelVert 1.71 a 1.71, sst y clo 1.00 a 1.00. Las ganancias aparentes dentro del arm a k = 20, depth +4.25 y grad +2.69, no son la base: depth se mueve 6 unidades de AIC mientras su edf se mueve 0.06. Eso es ruido del tamaño que el barrido de nudos ya había medido.
+
+**Borde: tol500/margin250 cuesta 7.32 unidades de AIC** sobre el modelo presentado (1005.19 contra 1012.51). El AIC no puede realmente adjudicar esto, porque 7.32 cae adentro de la oscilación de 12.8 unidades, pero es consistentemente negativo a través de las grillas, entre 3.7 y 7.4, y el único argumento a favor es la prolijidad geométrica. Esto es lo opuesto al resultado de delfines comunes, donde el borde más ajustado valía alrededor de 6 unidades: **las dos especies quedan en bordes distintos a propósito, cada una sobre su propia evidencia.**
+
+De modo que `4_DuskyDolphin_DSM_soap.R` conserva 3000/2000/10x8 y k = 10. El único cambio que recibió ese arm es la corrección de `bnd_dist()`, que medía la distancia de los nudos a los **vértices** del borde en lugar de a sus **aristas**. Ese error es latente a 10x8 pero se dispara apenas se refina la grilla, así que se corrigió antes de sintonizar. Vale 0.08 unidades de AIC y cambia el conteo de nudos conservados de 41 a 40.
+
+## Hallazgo lateral: `season` no es opcional
+
+Vale más que la sintonización misma, y conviene sacarlo del bloque de sintonización y ponerlo junto a la tabla de selección de modelos. **Todo modelo que descarta `season` tiene autocorrelación residual significativa** (lag-1 entre 0.030 y 0.081 contra una banda de 0.026), y **todo modelo que la conserva sale limpio** (0.010 a 0.026). Eso incluye al ganador nominal por AIC de toda la tabla, `count ~ s(x,y,bs="so") + s(Ano) + s(sst)` con AIC 1003.92, que por lo tanto **no es un modelo defendible**: la independencia residual que su propio AIC asume no se cumple. La estación está haciendo trabajo real acá, y el ordenamiento debe leerse con `lag1_sig` y no sólo con AIC.
+
+# 4. CORRECCIÓN a secciones ya publicadas: el offset de los mapas
+
+<!-- ANCLA: ESTO NO ES UNA SECCION NUEVA. Es una correccion a figuras que YA
+     estan en DelfinesOscuros.qmd: los mapas de densidad de `## Predicciones de
+     densidad` (lineas 1009-1073), los de `## Predicciones de densidad` del
+     bloque fs (linea 1213) y los del analisis de sensibilidad nobs2.
+     Commit fdb8b2d, 2026-09-16.
+     ACCION: el paso 7 regenera las figuras con el offset corregido, asi que el
+     qmd no necesita cambios de codigo. -->
+
+Todos los mapas de densidad predecían con `off.set = 800 * trunc.dist_lo`, una constante, y después dividían por el área de la celda. Una predicción hecha con un offset constante no depende del área de la celda, así que esa división no convertía nada: sólo reescalaba. **Las leyendas de los mapas de densidad de delfines oscuros estaban 3.25 veces por debajo** (4.49 en delfines comunes). El patrón espacial sobrevivió casi intacto, porque el factor varía alrededor de un 7 % entre celdas, pero la escala no.
+
+`5_DuskyDolphin_Abundance.R` ya usaba el área de la celda y siempre estuvo bien, de modo que **ninguna cifra de abundancia del reporte está afectada**: sólo las leyendas de los mapas.
+
+# 5. Por qué esta especie tiene menos diagnósticos que la otra
+
+<!-- ANCLA: candidato para `### Notas {#sec-notaslo}` (linea 1074), o como
+     cierre de la seccion de diagnosticos. La asimetria entre los dos reportes
+     va a saltar a la vista de cualquiera que lea los dos, asi que conviene
+     explicarla en lugar de dejarla. -->
+
+El reporte de delfines comunes lleva cuatro estudios que éste no tiene: el rootograma contra la grilla de nudos, el estudio de la cola, el impacto del desajuste de la cola sobre las estimaciones, y el arm soap sintonizado con sus mapas y su serie de abundancia. La asimetría es un resultado y no una omisión, y se explica en una línea por estudio.
+
+1. **No hay estudio de rootograma contra grilla de nudos** porque el rootograma de delfines oscuros no tiene desajuste que atribuir. Ese estudio existe para separar un defecto de base de un defecto de modelo, y acá no hay ninguno de los dos.
+2. **No hay estudio de la cola** porque la cola ajusta. El grupo más grande de delfines oscuros del conjunto de datos es de 11 animales, contra 450 en delfines comunes, de modo que una sola gamma alcanza para describir la distribución de tamaños.
+3. **No hay análisis de impacto sobre las estimaciones** porque no hay desajuste cuyo impacto medir. Los intervalos de confianza de delfines oscuros se reportan como los da el modelo, sin la advertencia de inflación que corresponde a la otra especie.
+4. **No hay arm soap sintonizado** porque la sintonización se corrió y dio negativo en los tres controles (sección 3). Que el estudio se haya corrido y no haya adoptado nada es en sí mismo el resultado, y por eso el script sigue en el driver: es la evidencia de que el arm fue revisado y dejado como estaba deliberadamente.
+
+Dicho al revés, y es el modo en que conviene que aparezca en el manuscrito: **el modelo de delfines oscuros pasa todos los diagnósticos que el de delfines comunes no pasa.** Las dos especies se ajustaron con el mismo código, la misma área, los mismos 6288 segmentos y la misma familia de distribuciones. Las diferencias de calidad de ajuste entre las dos no son diferencias de método, son diferencias de comportamiento gregario.
+
+# 6. Qué queda pendiente
+
+<!-- ANCLA: candidato para ampliar `### Notas {#sec-notaslo}` (linea 1074). -->
+
+1. **El bloque considerado para esta especie es el fs y no el soap.** Esa elección está sostenida por la biología, porque los delfines oscuros mueven sus áreas de agregación entre años, y por el AIC. Conviene que quede dicho explícitamente en el reporte, porque el lector que compare los dos documentos va a encontrar que la otra especie se presenta con soap.
+2. **`season` no puede omitirse.** El hallazgo de la sección 3 es un criterio de selección, no una curiosidad, y debería aparecer junto a la tabla de selección de modelos y no sólo en el bloque de sintonización.
+3. **La configuración soap de las dos especies difiere a propósito.** Al presentarlas en el mismo reporte hay que decir que el borde y la grilla de cada una salen de su propia evidencia, y no de un default compartido.
+4. **Los diagnósticos de esta especie no fueron re-corridos desde la corrección de `bnd_dist()`** al momento de escribir este borrador. El paso 7 del runbook los rehace; la expectativa es que no se muevan, porque la corrección vale 0.08 unidades de AIC, pero conviene confirmarlo y no asumirlo.
+
+# Referencias

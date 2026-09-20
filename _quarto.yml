@@ -15,8 +15,12 @@ website:
         href: VariablesAmbientales.qmd
       - text: Delfines Oscuros
         href: DelfinesOscuros.qmd
+      # - text: Delfines Oscuros - diagnostics
+        # href: DelfinesOscuros_diagnostics.qmd
       - text: Delfines Comunes
         href: DelfinesComunes.qmd
+      # - text: Delfines Comunes - diagnostics
+        # href: DelfinesComunes_diagnostics.qmd
     right:
       - icon: github
         href: https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance

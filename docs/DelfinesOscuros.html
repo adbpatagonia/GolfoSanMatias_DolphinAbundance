@@ -149,8 +149,16 @@ div.csl-indent {
 <span class="menu-text">Delfines Oscuros</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./DelfinesOscuros_diagnostics.html"> 
+<span class="menu-text">Delfines Oscuros - diagnostics</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./DelfinesComunes.html"> 
 <span class="menu-text">Delfines Comunes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./DelfinesComunes_diagnostics.html"> 
+<span class="menu-text">Delfines Comunes - diagnostics</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -1436,7 +1444,7 @@ Notese que el modelo que tiene solo posicion + estacion explica el 32% del devia
 <div id="tbl-modelselectionlo" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelselectionlo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estática thin plate).
+Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estática thin plate). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC.
 </figcaption>
 <div aria-describedby="tbl-modelselectionlo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1449,6 +1457,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1_sig</th>
 </tr>
 </thead>
 <tbody>
@@ -1459,6 +1469,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">65.22</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3215</td>
+<td style="text-align: center;">0.0189</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano)</td>
@@ -1467,6 +1479,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">65.61</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3222</td>
+<td style="text-align: center;">0.0203</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(clo)</td>
@@ -1475,6 +1489,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">67.10</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3225</td>
+<td style="text-align: center;">0.0192</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(dist.up)</td>
@@ -1483,6 +1499,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">68.43</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3235</td>
+<td style="text-align: center;">0.0201</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(VelVert)</td>
@@ -1491,6 +1509,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">68.93</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3125</td>
+<td style="text-align: center;">0.0143</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(grad)</td>
@@ -1499,6 +1519,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">69.57</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3238</td>
+<td style="text-align: center;">0.0212</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(slope)</td>
@@ -1507,6 +1529,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">70.02</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3195</td>
+<td style="text-align: center;">0.0165</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(depth)</td>
@@ -1515,6 +1539,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">74.23</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3274</td>
+<td style="text-align: center;">0.0479</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(Ano) + s(depth)</td>
@@ -1523,6 +1549,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">76.39</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3283</td>
+<td style="text-align: center;">0.0477</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season</td>
@@ -1531,6 +1559,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">78.03</td>
 <td style="text-align: center;">0.32</td>
 <td style="text-align: center;">1.3279</td>
+<td style="text-align: center;">0.0295</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(VelVert)</td>
@@ -1539,6 +1569,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">79.38</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3208</td>
+<td style="text-align: center;">0.0201</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(sst)</td>
@@ -1547,6 +1579,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">79.91</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3287</td>
+<td style="text-align: center;">0.0298</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(clo)</td>
@@ -1555,6 +1589,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">80.05</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3289</td>
+<td style="text-align: center;">0.0294</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(grad)</td>
@@ -1563,6 +1599,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">80.47</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3295</td>
+<td style="text-align: center;">0.0301</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + season + s(slope)</td>
@@ -1571,6 +1609,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">80.78</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3260</td>
+<td style="text-align: center;">0.0241</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + season + s(dist.up)</td>
@@ -1579,6 +1619,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">80.93</td>
 <td style="text-align: center;">0.32</td>
 <td style="text-align: center;">1.3297</td>
+<td style="text-align: center;">0.0287</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(sst)</td>
@@ -1587,6 +1629,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">106.34</td>
 <td style="text-align: center;">0.30</td>
 <td style="text-align: center;">1.3464</td>
+<td style="text-align: center;">0.0604</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(VelVert)</td>
@@ -1595,6 +1639,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">115.69</td>
 <td style="text-align: center;">0.25</td>
 <td style="text-align: center;">1.3376</td>
+<td style="text-align: center;">0.0655</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y)</td>
@@ -1603,6 +1649,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">118.57</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3447</td>
+<td style="text-align: center;">0.0824</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(depth)</td>
@@ -1611,6 +1659,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">118.79</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3405</td>
+<td style="text-align: center;">0.0771</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(grad)</td>
@@ -1619,6 +1669,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">120.53</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3460</td>
+<td style="text-align: center;">0.0886</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(slope)</td>
@@ -1627,6 +1679,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">120.64</td>
 <td style="text-align: center;">0.23</td>
 <td style="text-align: center;">1.3440</td>
+<td style="text-align: center;">0.0614</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
@@ -1635,6 +1689,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">120.73</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3461</td>
+<td style="text-align: center;">0.0830</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(dist.up)</td>
@@ -1643,6 +1699,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">122.35</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3431</td>
+<td style="text-align: center;">0.0697</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">count ~ s(x,y) + s(Ano) + s(clo)</td>
@@ -1651,6 +1709,8 @@ Table&nbsp;1: Selección de modelos DSM para delfines oscuros (superficie estát
 <td style="text-align: center;">122.79</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3473</td>
+<td style="text-align: center;">0.0801</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 </tbody>
 </table>
@@ -1802,8 +1862,8 @@ Se notan claramente los efectos de<br>
 - Año: oscilaciones, por ej. abundancias mas altas en 2010 y 2017</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-d7b7b037e37c9eee53f5" style="width:100%;height:590px;"></div>
-<script type="application/json" data-for="htmlwidget-d7b7b037e37c9eee53f5">{"x":{"visdat":{"27a0351b2fb2":["function () ","plotlyVisDat"],"27a04f2a7c3b":["function () ","data"],"27a06709534b":["function () ","data"],"27a0406e7b7d":["function () ","data"],"27a03a5a754":["function () ","data"]},"cur_data":"27a03a5a754","attrs":{"27a04f2a7c3b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"27a06709534b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"27a0406e7b7d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"27a03a5a754":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[2,0,23,39,9,1,155,81,15,2,272,183,5,552,253,53,8,6,2,0,40,11,1,215,166,32,4,590,86,18,2,316,6,6,223,1519,42,158,512,2766,75,294,904,985,28,110,373,9,37,223,199,924,3049,4446,98,1237,1611,41,165,495,964,26,101,351,1814,29,145],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[16,3,203,117,30,5,387,201,50,9,662,475,22,1567,878,221,40,36,9,2,122,35,6,461,388,98,18,1278,210,53,10,693,37],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-30f9f5d5622afe0e25c9" style="width:100%;height:590px;"></div>
+<script type="application/json" data-for="htmlwidget-30f9f5d5622afe0e25c9">{"x":{"visdat":{"8eb04e8f3ca8":["function () ","plotlyVisDat"],"8eb03fb37a3b":["function () ","data"],"8eb03c9428e7":["function () ","data"],"8eb06e4451e0":["function () ","data"],"8eb053e82f6b":["function () ","data"]},"cur_data":"8eb053e82f6b","attrs":{"8eb03fb37a3b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"8eb03c9428e7":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"8eb06e4451e0":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"8eb053e82f6b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x,y) + season + s(Ano)  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[2,0,23,39,9,1,155,81,15,2,272,183,5,552,253,53,8,6,2,0,40,11,1,215,166,32,4,590,86,18,2,316,6,6,223,1519,42,158,512,2766,75,294,904,985,28,110,373,9,37,223,199,924,3049,4446,98,1237,1611,41,165,495,964,26,101,351,1814,29,145],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[16,3,203,117,30,5,387,201,50,9,662,475,22,1567,878,221,40,36,9,2,122,35,6,461,388,98,18,1278,210,53,10,693,37],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -1828,7 +1888,7 @@ b. Superficies con informacion compartida entre años (modelos fs, factor smooth
 <div id="tbl-completemodelselectionlo" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-completemodelselectionlo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuatro tipos de superficie (72 modelos).
+Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuatro tipos de superficie (72 modelos). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC.
 </figcaption>
 <div aria-describedby="tbl-completemodelselectionlo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1842,6 +1902,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1_sig</th>
 </tr>
 </thead>
 <tbody>
@@ -1853,6 +1915,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">0.00</td>
 <td style="text-align: center;">0.53</td>
 <td style="text-align: center;">1.2910</td>
+<td style="text-align: center;">0.0044</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1862,6 +1926,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">11.61</td>
 <td style="text-align: center;">0.54</td>
 <td style="text-align: center;">1.2845</td>
+<td style="text-align: center;">0.0063</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1871,6 +1937,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">20.05</td>
 <td style="text-align: center;">0.52</td>
 <td style="text-align: center;">1.2930</td>
+<td style="text-align: center;">0.0021</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1880,6 +1948,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">29.61</td>
 <td style="text-align: center;">0.50</td>
 <td style="text-align: center;">1.2745</td>
+<td style="text-align: center;">0.0153</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1889,6 +1959,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">31.55</td>
 <td style="text-align: center;">0.50</td>
 <td style="text-align: center;">1.2903</td>
+<td style="text-align: center;">0.0101</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1898,6 +1970,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">32.26</td>
 <td style="text-align: center;">0.50</td>
 <td style="text-align: center;">1.2821</td>
+<td style="text-align: center;">0.0060</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1907,6 +1981,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">33.88</td>
 <td style="text-align: center;">0.48</td>
 <td style="text-align: center;">1.2702</td>
+<td style="text-align: center;">0.0110</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1916,6 +1992,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">35.86</td>
 <td style="text-align: center;">0.50</td>
 <td style="text-align: center;">1.2949</td>
+<td style="text-align: center;">0.0065</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1925,6 +2003,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">41.89</td>
 <td style="text-align: center;">0.57</td>
 <td style="text-align: center;">1.2936</td>
+<td style="text-align: center;">-0.0028</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1934,6 +2014,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">45.04</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2872</td>
+<td style="text-align: center;">-0.0017</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1943,6 +2025,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">50.37</td>
 <td style="text-align: center;">0.58</td>
 <td style="text-align: center;">1.2928</td>
+<td style="text-align: center;">-0.0052</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -1952,6 +2036,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">54.24</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2928</td>
+<td style="text-align: center;">-0.0034</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1961,15 +2047,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">56.20</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2951</td>
+<td style="text-align: center;">-0.0021</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(sst)</td>
-<td style="text-align: center;">31.61</td>
-<td style="text-align: center;">1004.98</td>
-<td style="text-align: center;">58.61</td>
+<td style="text-align: center;">31.51</td>
+<td style="text-align: center;">1004.77</td>
+<td style="text-align: center;">58.40</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3121</td>
+<td style="text-align: center;">0.0123</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1979,15 +2069,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">58.67</td>
 <td style="text-align: center;">0.55</td>
 <td style="text-align: center;">1.2959</td>
+<td style="text-align: center;">-0.0028</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano)</td>
-<td style="text-align: center;">30.46</td>
-<td style="text-align: center;">1005.19</td>
-<td style="text-align: center;">58.82</td>
+<td style="text-align: center;">30.42</td>
+<td style="text-align: center;">1005.11</td>
+<td style="text-align: center;">58.74</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3128</td>
+<td style="text-align: center;">0.0133</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -1997,6 +2091,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">59.23</td>
 <td style="text-align: center;">0.53</td>
 <td style="text-align: center;">1.3000</td>
+<td style="text-align: center;">0.0011</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2006,42 +2102,52 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">59.89</td>
 <td style="text-align: center;">0.44</td>
 <td style="text-align: center;">1.3067</td>
+<td style="text-align: center;">0.0365</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(clo)</td>
-<td style="text-align: center;">31.21</td>
-<td style="text-align: center;">1006.74</td>
-<td style="text-align: center;">60.37</td>
+<td style="text-align: center;">31.22</td>
+<td style="text-align: center;">1006.75</td>
+<td style="text-align: center;">60.38</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3135</td>
+<td style="text-align: center;">0.0127</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(depth)</td>
-<td style="text-align: center;">36.17</td>
-<td style="text-align: center;">1007.04</td>
-<td style="text-align: center;">60.67</td>
+<td style="text-align: center;">36.16</td>
+<td style="text-align: center;">1007.02</td>
+<td style="text-align: center;">60.65</td>
 <td style="text-align: center;">0.41</td>
 <td style="text-align: center;">1.3135</td>
+<td style="text-align: center;">0.0231</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(grad)</td>
-<td style="text-align: center;">32.82</td>
-<td style="text-align: center;">1008.28</td>
-<td style="text-align: center;">61.91</td>
+<td style="text-align: center;">32.81</td>
+<td style="text-align: center;">1008.27</td>
+<td style="text-align: center;">61.90</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3147</td>
+<td style="text-align: center;">0.0141</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(VelVert)</td>
-<td style="text-align: center;">33.21</td>
-<td style="text-align: center;">1008.62</td>
-<td style="text-align: center;">62.25</td>
+<td style="text-align: center;">33.28</td>
+<td style="text-align: center;">1008.76</td>
+<td style="text-align: center;">62.39</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3044</td>
+<td style="text-align: center;">0.0096</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2051,6 +2157,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">62.46</td>
 <td style="text-align: center;">0.54</td>
 <td style="text-align: center;">1.2978</td>
+<td style="text-align: center;">0.0016</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2060,6 +2168,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">63.78</td>
 <td style="text-align: center;">0.44</td>
 <td style="text-align: center;">1.2983</td>
+<td style="text-align: center;">0.0607</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2069,15 +2179,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">65.22</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3215</td>
+<td style="text-align: center;">0.0189</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(Ano) + s(slope)</td>
-<td style="text-align: center;">34.23</td>
-<td style="text-align: center;">1011.88</td>
-<td style="text-align: center;">65.51</td>
+<td style="text-align: center;">34.22</td>
+<td style="text-align: center;">1011.85</td>
+<td style="text-align: center;">65.48</td>
 <td style="text-align: center;">0.39</td>
 <td style="text-align: center;">1.3118</td>
+<td style="text-align: center;">0.0120</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2087,6 +2201,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">65.61</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3222</td>
+<td style="text-align: center;">0.0203</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2096,6 +2212,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">67.10</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3225</td>
+<td style="text-align: center;">0.0192</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2105,6 +2223,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">68.08</td>
 <td style="text-align: center;">0.40</td>
 <td style="text-align: center;">1.2950</td>
+<td style="text-align: center;">0.0409</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2114,6 +2234,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">68.43</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3235</td>
+<td style="text-align: center;">0.0201</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2123,6 +2245,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">68.93</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3125</td>
+<td style="text-align: center;">0.0143</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2132,6 +2256,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">69.57</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3238</td>
+<td style="text-align: center;">0.0212</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2141,24 +2267,30 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">70.02</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3195</td>
+<td style="text-align: center;">0.0165</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(depth)</td>
 <td style="text-align: center;">29.00</td>
-<td style="text-align: center;">1019.23</td>
-<td style="text-align: center;">72.86</td>
+<td style="text-align: center;">1019.21</td>
+<td style="text-align: center;">72.84</td>
 <td style="text-align: center;">0.36</td>
 <td style="text-align: center;">1.3193</td>
+<td style="text-align: center;">0.0335</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season</td>
-<td style="text-align: center;">23.81</td>
-<td style="text-align: center;">1019.32</td>
-<td style="text-align: center;">72.95</td>
+<td style="text-align: center;">23.79</td>
+<td style="text-align: center;">1019.27</td>
+<td style="text-align: center;">72.90</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3195</td>
+<td style="text-align: center;">0.0214</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2168,42 +2300,52 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">74.23</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3274</td>
+<td style="text-align: center;">0.0479</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(clo)</td>
-<td style="text-align: center;">24.52</td>
-<td style="text-align: center;">1021.05</td>
-<td style="text-align: center;">74.68</td>
+<td style="text-align: center;">24.48</td>
+<td style="text-align: center;">1020.96</td>
+<td style="text-align: center;">74.59</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3205</td>
+<td style="text-align: center;">0.0213</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(sst)</td>
 <td style="text-align: center;">24.83</td>
-<td style="text-align: center;">1021.13</td>
-<td style="text-align: center;">74.76</td>
+<td style="text-align: center;">1021.11</td>
+<td style="text-align: center;">74.74</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3203</td>
+<td style="text-align: center;">0.0216</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(grad)</td>
-<td style="text-align: center;">25.93</td>
-<td style="text-align: center;">1021.18</td>
-<td style="text-align: center;">74.81</td>
+<td style="text-align: center;">25.92</td>
+<td style="text-align: center;">1021.17</td>
+<td style="text-align: center;">74.80</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3219</td>
+<td style="text-align: center;">0.0219</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(VelVert)</td>
-<td style="text-align: center;">26.42</td>
-<td style="text-align: center;">1022.09</td>
-<td style="text-align: center;">75.72</td>
+<td style="text-align: center;">26.41</td>
+<td style="text-align: center;">1022.06</td>
+<td style="text-align: center;">75.69</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3131</td>
+<td style="text-align: center;">0.0150</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2213,6 +2355,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">76.39</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3283</td>
+<td style="text-align: center;">0.0477</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
@@ -2222,15 +2366,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">77.45</td>
 <td style="text-align: center;">0.29</td>
 <td style="text-align: center;">1.3328</td>
+<td style="text-align: center;">0.0308</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(slope)</td>
 <td style="text-align: center;">26.61</td>
-<td style="text-align: center;">1024.24</td>
-<td style="text-align: center;">77.87</td>
+<td style="text-align: center;">1024.22</td>
+<td style="text-align: center;">77.85</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3200</td>
+<td style="text-align: center;">0.0200</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2240,15 +2388,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">78.03</td>
 <td style="text-align: center;">0.32</td>
 <td style="text-align: center;">1.3279</td>
+<td style="text-align: center;">0.0295</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + season + s(dist.up)</td>
-<td style="text-align: center;">27.36</td>
-<td style="text-align: center;">1025.39</td>
-<td style="text-align: center;">79.02</td>
+<td style="text-align: center;">27.34</td>
+<td style="text-align: center;">1025.35</td>
+<td style="text-align: center;">78.98</td>
 <td style="text-align: center;">0.34</td>
 <td style="text-align: center;">1.3208</td>
+<td style="text-align: center;">0.0204</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2258,6 +2410,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">79.38</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3208</td>
+<td style="text-align: center;">0.0201</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2267,6 +2421,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">79.91</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3287</td>
+<td style="text-align: center;">0.0298</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2276,6 +2432,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">80.05</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3289</td>
+<td style="text-align: center;">0.0294</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2285,6 +2443,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">80.47</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3295</td>
+<td style="text-align: center;">0.0301</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2294,6 +2454,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">80.78</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3260</td>
+<td style="text-align: center;">0.0241</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2303,6 +2465,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">80.93</td>
 <td style="text-align: center;">0.32</td>
 <td style="text-align: center;">1.3297</td>
+<td style="text-align: center;">0.0287</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2312,6 +2476,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">87.28</td>
 <td style="text-align: center;">0.52</td>
 <td style="text-align: center;">1.3087</td>
+<td style="text-align: center;">0.0170</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2321,17 +2487,10 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">91.30</td>
 <td style="text-align: center;">0.40</td>
 <td style="text-align: center;">1.3123</td>
+<td style="text-align: center;">0.0612</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(sst)</td>
-<td style="text-align: center;">30.64</td>
-<td style="text-align: center;">1042.08</td>
-<td style="text-align: center;">95.71</td>
-<td style="text-align: center;">0.32</td>
-<td style="text-align: center;">1.3377</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">thin-plate</td>
 <td style="text-align: left;">count ~ s(x,y,year_fac,bs=fs) + s(VelVert)</td>
 <td style="text-align: center;">82.67</td>
@@ -2339,6 +2498,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">95.81</td>
 <td style="text-align: center;">0.51</td>
 <td style="text-align: center;">1.3027</td>
+<td style="text-align: center;">0.0131</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(sst)</td>
+<td style="text-align: center;">30.69</td>
+<td style="text-align: center;">1042.18</td>
+<td style="text-align: center;">95.81</td>
+<td style="text-align: center;">0.32</td>
+<td style="text-align: center;">1.3377</td>
+<td style="text-align: center;">0.0533</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2348,6 +2520,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">96.36</td>
 <td style="text-align: center;">0.40</td>
 <td style="text-align: center;">1.3111</td>
+<td style="text-align: center;">0.0683</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2357,6 +2531,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">99.75</td>
 <td style="text-align: center;">0.33</td>
 <td style="text-align: center;">1.3195</td>
+<td style="text-align: center;">0.0304</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2366,6 +2542,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">105.08</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3140</td>
+<td style="text-align: center;">0.0719</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2375,15 +2553,19 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">106.34</td>
 <td style="text-align: center;">0.30</td>
 <td style="text-align: center;">1.3464</td>
+<td style="text-align: center;">0.0604</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(VelVert)</td>
-<td style="text-align: center;">28.18</td>
-<td style="text-align: center;">1054.89</td>
-<td style="text-align: center;">108.52</td>
+<td style="text-align: center;">28.16</td>
+<td style="text-align: center;">1054.85</td>
+<td style="text-align: center;">108.48</td>
 <td style="text-align: center;">0.28</td>
 <td style="text-align: center;">1.3290</td>
+<td style="text-align: center;">0.0553</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2393,6 +2575,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">109.72</td>
 <td style="text-align: center;">0.38</td>
 <td style="text-align: center;">1.3175</td>
+<td style="text-align: center;">0.0733</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2402,24 +2586,30 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">111.71</td>
 <td style="text-align: center;">0.47</td>
 <td style="text-align: center;">1.3085</td>
+<td style="text-align: center;">0.0207</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(dist.up)</td>
-<td style="text-align: center;">29.17</td>
-<td style="text-align: center;">1060.44</td>
-<td style="text-align: center;">114.07</td>
+<td style="text-align: center;">29.15</td>
+<td style="text-align: center;">1060.39</td>
+<td style="text-align: center;">114.02</td>
 <td style="text-align: center;">0.27</td>
 <td style="text-align: center;">1.3347</td>
+<td style="text-align: center;">0.0621</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(grad)</td>
-<td style="text-align: center;">27.21</td>
-<td style="text-align: center;">1060.55</td>
-<td style="text-align: center;">114.18</td>
+<td style="text-align: center;">27.17</td>
+<td style="text-align: center;">1060.47</td>
+<td style="text-align: center;">114.10</td>
 <td style="text-align: center;">0.26</td>
 <td style="text-align: center;">1.3377</td>
+<td style="text-align: center;">0.0785</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2429,24 +2619,30 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">115.69</td>
 <td style="text-align: center;">0.25</td>
 <td style="text-align: center;">1.3376</td>
+<td style="text-align: center;">0.0655</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(depth)</td>
-<td style="text-align: center;">28.96</td>
-<td style="text-align: center;">1062.53</td>
-<td style="text-align: center;">116.16</td>
+<td style="text-align: center;">28.95</td>
+<td style="text-align: center;">1062.49</td>
+<td style="text-align: center;">116.12</td>
 <td style="text-align: center;">0.26</td>
 <td style="text-align: center;">1.3328</td>
+<td style="text-align: center;">0.0649</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so)</td>
-<td style="text-align: center;">25.61</td>
-<td style="text-align: center;">1062.93</td>
-<td style="text-align: center;">116.56</td>
+<td style="text-align: center;">25.59</td>
+<td style="text-align: center;">1062.88</td>
+<td style="text-align: center;">116.51</td>
 <td style="text-align: center;">0.25</td>
 <td style="text-align: center;">1.3366</td>
+<td style="text-align: center;">0.0734</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2456,24 +2652,30 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">118.57</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3447</td>
+<td style="text-align: center;">0.0824</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano)</td>
-<td style="text-align: center;">26.60</td>
-<td style="text-align: center;">1064.99</td>
-<td style="text-align: center;">118.62</td>
+<td style="text-align: center;">26.58</td>
+<td style="text-align: center;">1064.94</td>
+<td style="text-align: center;">118.57</td>
 <td style="text-align: center;">0.25</td>
 <td style="text-align: center;">1.3378</td>
+<td style="text-align: center;">0.0734</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">soap</td>
 <td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(slope)</td>
-<td style="text-align: center;">26.24</td>
-<td style="text-align: center;">1065.07</td>
-<td style="text-align: center;">118.70</td>
+<td style="text-align: center;">26.22</td>
+<td style="text-align: center;">1065.04</td>
+<td style="text-align: center;">118.67</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3364</td>
+<td style="text-align: center;">0.0575</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2483,6 +2685,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">118.79</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3405</td>
+<td style="text-align: center;">0.0771</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2492,6 +2696,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">120.13</td>
 <td style="text-align: center;">0.47</td>
 <td style="text-align: center;">1.3118</td>
+<td style="text-align: center;">0.0188</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2501,6 +2707,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">120.53</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3460</td>
+<td style="text-align: center;">0.0886</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2510,8 +2718,21 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">120.63</td>
 <td style="text-align: center;">0.23</td>
 <td style="text-align: center;">1.3440</td>
+<td style="text-align: center;">0.0614</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">soap</td>
+<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(clo)</td>
+<td style="text-align: center;">27.29</td>
+<td style="text-align: center;">1067.07</td>
+<td style="text-align: center;">120.70</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.3389</td>
+<td style="text-align: center;">0.0703</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">thin-plate</td>
 <td style="text-align: left;">count ~ s(x,y) + s(Ano)</td>
 <td style="text-align: center;">22.69</td>
@@ -2519,15 +2740,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">120.73</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3461</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soap</td>
-<td style="text-align: left;">count ~ s(x,y,so) + s(Ano) + s(clo)</td>
-<td style="text-align: center;">27.31</td>
-<td style="text-align: center;">1067.12</td>
-<td style="text-align: center;">120.75</td>
-<td style="text-align: center;">0.25</td>
-<td style="text-align: center;">1.3389</td>
+<td style="text-align: center;">0.0830</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2537,6 +2751,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">121.72</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3125</td>
+<td style="text-align: center;">0.0318</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2546,6 +2762,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">122.35</td>
 <td style="text-align: center;">0.24</td>
 <td style="text-align: center;">1.3431</td>
+<td style="text-align: center;">0.0697</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2555,6 +2773,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">122.79</td>
 <td style="text-align: center;">0.22</td>
 <td style="text-align: center;">1.3473</td>
+<td style="text-align: center;">0.0801</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2564,6 +2784,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">123.33</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3115</td>
+<td style="text-align: center;">0.0204</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2573,6 +2795,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">124.06</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3132</td>
+<td style="text-align: center;">0.0247</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2582,6 +2806,8 @@ Table&nbsp;2: Selección de modelos DSM completa para delfines oscuros: los cuat
 <td style="text-align: center;">133.59</td>
 <td style="text-align: center;">0.44</td>
 <td style="text-align: center;">1.3157</td>
+<td style="text-align: center;">0.0246</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 </tbody>
 </table>
@@ -2597,7 +2823,7 @@ Los modelos <strong>2.a. Superficies independientes por año (modelos by-year)</
 <div id="tbl-completemodelselectionfslo" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-completemodelselectionfslo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies factor smooth (modelos 2.b).
+Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies factor smooth (modelos 2.b). lag1 es la autocorrelación residual de rezago 1 a lo largo de la trayectoria; lag1_sig = TRUE marca las filas que violan el supuesto de independencia sobre el que se calcula su propio AIC, y que por lo tanto no deben seleccionarse por AIC.
 </figcaption>
 <div aria-describedby="tbl-completemodelselectionfslo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -2611,6 +2837,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <th style="text-align: center;" data-quarto-table-cell-role="th">deltaAIC</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Dev</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">p_hat</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">lag1_sig</th>
 </tr>
 </thead>
 <tbody>
@@ -2622,6 +2850,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">41.89</td>
 <td style="text-align: center;">0.57</td>
 <td style="text-align: center;">1.2936</td>
+<td style="text-align: center;">-0.0028</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2631,6 +2861,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">45.04</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2872</td>
+<td style="text-align: center;">-0.0017</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2640,6 +2872,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">50.37</td>
 <td style="text-align: center;">0.58</td>
 <td style="text-align: center;">1.2928</td>
+<td style="text-align: center;">-0.0052</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2649,6 +2883,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">54.24</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2928</td>
+<td style="text-align: center;">-0.0034</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2658,6 +2894,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">56.20</td>
 <td style="text-align: center;">0.56</td>
 <td style="text-align: center;">1.2951</td>
+<td style="text-align: center;">-0.0021</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2667,6 +2905,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">58.67</td>
 <td style="text-align: center;">0.55</td>
 <td style="text-align: center;">1.2959</td>
+<td style="text-align: center;">-0.0028</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2676,6 +2916,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">59.23</td>
 <td style="text-align: center;">0.53</td>
 <td style="text-align: center;">1.3000</td>
+<td style="text-align: center;">0.0011</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2685,6 +2927,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">62.46</td>
 <td style="text-align: center;">0.54</td>
 <td style="text-align: center;">1.2978</td>
+<td style="text-align: center;">0.0016</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2694,6 +2938,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">87.28</td>
 <td style="text-align: center;">0.52</td>
 <td style="text-align: center;">1.3087</td>
+<td style="text-align: center;">0.0170</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2703,6 +2949,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">95.81</td>
 <td style="text-align: center;">0.51</td>
 <td style="text-align: center;">1.3027</td>
+<td style="text-align: center;">0.0131</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2712,6 +2960,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">111.71</td>
 <td style="text-align: center;">0.47</td>
 <td style="text-align: center;">1.3085</td>
+<td style="text-align: center;">0.0207</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2721,6 +2971,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">120.13</td>
 <td style="text-align: center;">0.47</td>
 <td style="text-align: center;">1.3118</td>
+<td style="text-align: center;">0.0188</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2730,6 +2982,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">121.72</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3125</td>
+<td style="text-align: center;">0.0318</td>
+<td style="text-align: center;">TRUE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2739,6 +2993,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">123.33</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3115</td>
+<td style="text-align: center;">0.0204</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">thin-plate</td>
@@ -2748,6 +3004,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">124.06</td>
 <td style="text-align: center;">0.46</td>
 <td style="text-align: center;">1.3132</td>
+<td style="text-align: center;">0.0247</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">thin-plate</td>
@@ -2757,6 +3015,8 @@ Table&nbsp;3: Selección de modelos DSM para delfines oscuros: superficies facto
 <td style="text-align: center;">133.59</td>
 <td style="text-align: center;">0.44</td>
 <td style="text-align: center;">1.3157</td>
+<td style="text-align: center;">0.0246</td>
+<td style="text-align: center;">FALSE</td>
 </tr>
 </tbody>
 </table>
@@ -2844,8 +3104,8 @@ En lo que continua, persentare los resultados del modelo que excluye variables a
 <h2 data-number="6.4" class="anchored" data-anchor-id="sec-abunfs"><span class="header-section-number">6.4</span> Estimaciones de abundancia</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-62688cf18f96c405ff80" style="width:100%;height:590px;"></div>
-<script type="application/json" data-for="htmlwidget-62688cf18f96c405ff80">{"x":{"visdat":{"27a036a7d1d":["function () ","plotlyVisDat"],"27a026db62ef":["function () ","data"],"27a030b72786":["function () ","data"],"27a0301a6706":["function () ","data"],"27a0493862f7":["function () ","data"]},"cur_data":"27a0493862f7","attrs":{"27a026db62ef":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"27a030b72786":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"27a0301a6706":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"27a0493862f7":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x, y, year_fac, bs = \"fs\") + season  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[1,0,12,13,4,0,64,47,11,1,172,42,1,162,40,12,1,3,1,0,17,7,1,110,65,18,2,261,34,11,1,167,3,3,212,2336,31,207,599,7993,87,669,1716,2651,33,235,804,9,65,303,43,308,840,2907,37,591,2383,32,211,465,740,10,69,197,1238,12,98],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[9,1,120,50,16,2,217,148,49,6,641,158,6,687,184,61,7,28,9,1,115,41,5,541,333,110,13,1445,144,48,6,625,24],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-473f8e25739944451cde" style="width:100%;height:590px;"></div>
+<script type="application/json" data-for="htmlwidget-473f8e25739944451cde">{"x":{"visdat":{"8eb07f811113":["function () ","plotlyVisDat"],"8eb019d13e69":["function () ","data"],"8eb06e9534e5":["function () ","data"],"8eb0b6e419b":["function () ","data"],"8eb0f2a3de9":["function () ","data"]},"cur_data":"8eb0f2a3de9","attrs":{"8eb019d13e69":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"ymin":{},"ymax":{},"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","color":["black"],"opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"inherit":true},"8eb06e9534e5":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6},"name":"Density surface model","inherit":true},"8eb0b6e419b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0},"error_y":{"type":"data","symmetric":false,"arrayminus":{},"array":{},"color":"firebrick","width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":"skip","inherit":true},"8eb0f2a3de9":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down"},"name":"design-based Horvitz–Thompson estimate","inherit":true}},"layout":{"margin":{"b":80,"l":60,"t":40,"r":10},"title":{"text":"count ~ s(x, y, year_fac, bs = \"fs\") + season  |  ribbon = 95% CI (lognormal)","font":{"size":11},"xref":"paper","x":0.050000000000000003},"xaxis":{"domain":[0,1],"automargin":true,"title":"","tickvals":[2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018],"minor":{"tickvals":[2006.0999999999999,2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.3499999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2010.8499999999999,2011.0999999999999,2011.3499999999999,2011.5999999999999,2011.8499999999999,2012.0999999999999,2012.3499999999999,2012.5999999999999,2012.8499999999999,2013.0999999999999,2013.3499999999999,2013.5999999999999,2013.8499999999999,2014.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.0999999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"ticklen":4,"tickcolor":"#333"},"showminor":true,"showgrid":true,"gridcolor":"#eee"},"yaxis":{"domain":[0,1],"automargin":true,"title":{"text":"N̂"}},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":-0.14999999999999999},"font":{"size":13},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(0,0,0,0.5)","x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999,2018.0999999999999,2018.0999999999999,2017.8499999999999,2017.5999999999999,2017.3499999999999,2017.0999999999999,2016.8499999999999,2016.5999999999999,2016.3499999999999,2016.0999999999999,2015.8499999999999,2015.5999999999999,2015.3499999999999,2014.8499999999999,2014.5999999999999,2014.3499999999999,2013.0999999999999,2010.5999999999999,2010.3499999999999,2010.0999999999999,2009.8499999999999,2009.5999999999999,2009.0999999999999,2008.8499999999999,2008.5999999999999,2008.3499999999999,2008.0999999999999,2007.8499999999999,2007.5999999999999,2007.3499999999999,2007.0999999999999,2006.8499999999999,2006.5999999999999,2006.3499999999999],"type":"scatter","mode":"lines","hoveron":"points","fill":"toself","opacity":0.20000000000000001,"line":{"color":"transparent"},"showlegend":false,"y":[1,0,12,13,4,0,64,47,11,1,172,42,1,162,40,12,1,3,1,0,17,7,1,110,65,18,2,261,34,11,1,167,3,3,212,2336,31,207,599,7993,87,669,1716,2651,33,235,804,9,65,303,43,308,840,2907,37,591,2383,32,211,465,740,10,69,197,1238,12,98],"marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[9,1,120,50,16,2,217,148,49,6,641,158,6,687,184,61,7,28,9,1,115,41,5,541,333,110,13,1445,144,48,6,625,24],"type":"scatter","mode":"lines+markers","line":{"color":"black","width":1.5},"marker":{"color":"black","size":6,"line":{"color":"rgba(255,127,14,1)"}},"name":"Density surface model","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":0,"opacity":0,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"firebrick","type":"data","symmetric":false,"arrayminus":[null,null,null,null,null,null,412.34334897654912,307.7910590257581,102.1869687412199,null,null,673.05700825366591,null,null,null,null,null,null,null,null,85.799050356960947,null,null,443.96722659084332,442.3080596348475,null,null,1527.2891698298624,195.08322755013694,null,51.696681777337076,591.19003774077851,null],"array":[null,null,null,null,null,null,1267.2276524397162,1223.6316619916765,439.07381493723784,null,null,3537.3459640342812,null,null,null,null,null,null,null,null,329.21516800826237,null,null,1135.1725967744001,1659.4059628127809,null,null,6377.4819560538999,686.2064479507485,null,170.57573189487317,1614.6585831796765,null],"width":0,"thickness":1.5,"opacity":0.59999999999999998},"showlegend":false,"hoverinfo":["skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip","skip"],"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2006.3499999999999,2006.5999999999999,2006.8499999999999,2007.0999999999999,2007.3499999999999,2007.5999999999999,2007.8499999999999,2008.0999999999999,2008.3499999999999,2008.5999999999999,2008.8499999999999,2009.0999999999999,2009.5999999999999,2009.8499999999999,2010.0999999999999,2010.3499999999999,2010.5999999999999,2013.0999999999999,2014.3499999999999,2014.5999999999999,2014.8499999999999,2015.3499999999999,2015.5999999999999,2015.8499999999999,2016.0999999999999,2016.3499999999999,2016.5999999999999,2016.8499999999999,2017.0999999999999,2017.3499999999999,2017.5999999999999,2017.8499999999999,2018.0999999999999],"y":[0,0,0,0,0,0,611.23229424833676,411.23191511949381,133.18306341938154,0,0,831.21344545429599,0,0,0,1674.3013687007963,0,0,0,0,116.04140699787078,0,0,729.13124120841121,603.0481439839557,0,0,2008.2210236944943,272.57389402755342,0,74.177908739908688,932.68139307506806,0],"type":"scatter","mode":"markers","marker":{"color":"firebrick","size":8,"symbol":"triangle-down","line":{"color":"rgba(214,39,40,1)"}},"name":"design-based Horvitz–Thompson estimate","error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>

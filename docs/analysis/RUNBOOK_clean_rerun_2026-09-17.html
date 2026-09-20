@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>runbook_clean_rerun_2026-09-17 – Density Surface Models in Golfo San Matías</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../assets/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ff38ca5759cea8d2b4e40dc1c167d4da.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/custom.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Density Surface Models in Golfo San Matías</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../VariablesAmbientales.html"> 
+<span class="menu-text">Variables Ambientales</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../DelfinesOscuros.html"> 
+<span class="menu-text">Delfines Oscuros</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../DelfinesOscuros_diagnostics.html"> 
+<span class="menu-text">Delfines Oscuros - diagnostics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../DelfinesComunes.html"> 
+<span class="menu-text">Delfines Comunes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../DelfinesComunes_diagnostics.html"> 
+<span class="menu-text">Delfines Comunes - diagnostics</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/adbpatagonia/GolfoSanMatias_DolphinAbundance"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#clean-re-run-runbook-2026-09-17" id="toc-clean-re-run-runbook-2026-09-17" class="nav-link active" data-scroll-target="#clean-re-run-runbook-2026-09-17"><span class="header-section-number">1</span> Clean re-run runbook — 2026-09-17</a>
+  <ul class="collapse">
+  <li><a href="#step-0-prerequisite-done-committed-874aa0b" id="toc-step-0-prerequisite-done-committed-874aa0b" class="nav-link" data-scroll-target="#step-0-prerequisite-done-committed-874aa0b"><span class="header-section-number">1.1</span> Step 0 — prerequisite (DONE, committed 874aa0b)</a></li>
+  <li><a href="#step-1-quarantine-the-dd-output-tree" id="toc-step-1-quarantine-the-dd-output-tree" class="nav-link" data-scroll-target="#step-1-quarantine-the-dd-output-tree"><span class="header-section-number">1.2</span> Step 1 — quarantine the DD output tree</a></li>
+  <li><a href="#step-2-snapshot-the-lo-tree-before-it-is-touched-done-2026-09-17" id="toc-step-2-snapshot-the-lo-tree-before-it-is-touched-done-2026-09-17" class="nav-link" data-scroll-target="#step-2-snapshot-the-lo-tree-before-it-is-touched-done-2026-09-17"><span class="header-section-number">1.3</span> Step 2 — snapshot the LO tree before it is touched (DONE 2026-09-17)</a></li>
+  <li><a href="#step-3-strip-every-cache-both-species-refit-cold-done-2026-09-17" id="toc-step-3-strip-every-cache-both-species-refit-cold-done-2026-09-17" class="nav-link" data-scroll-target="#step-3-strip-every-cache-both-species-refit-cold-done-2026-09-17"><span class="header-section-number">1.4</span> Step 3 — strip every cache: BOTH species refit cold (DONE 2026-09-17)</a></li>
+  <li><a href="#step-4-pre-flight-gate-passed-2026-09-17" id="toc-step-4-pre-flight-gate-passed-2026-09-17" class="nav-link" data-scroll-target="#step-4-pre-flight-gate-passed-2026-09-17"><span class="header-section-number">1.5</span> Step 4 — pre-flight gate (PASSED 2026-09-17)</a></li>
+  <li><a href="#step-5-1_commondolphin.r-long" id="toc-step-5-1_commondolphin.r-long" class="nav-link" data-scroll-target="#step-5-1_commondolphin.r-long"><span class="header-section-number">1.6</span> Step 5 — <code>1_CommonDolphin.R</code> ⏳ LONG</a></li>
+  <li><a href="#step-6-9_regeneratestudies_dd.r-medium" id="toc-step-6-9_regeneratestudies_dd.r-medium" class="nav-link" data-scroll-target="#step-6-9_regeneratestudies_dd.r-medium"><span class="header-section-number">1.7</span> Step 6 — <code>9_RegenerateStudies_DD.R</code> ⏳ MEDIUM</a></li>
+  <li><a href="#step-7-1_duskydolphin.r-long" id="toc-step-7-1_duskydolphin.r-long" class="nav-link" data-scroll-target="#step-7-1_duskydolphin.r-long"><span class="header-section-number">1.8</span> Step 7 — <code>1_DuskyDolphin.R</code> ⏳ LONG</a></li>
+  <li><a href="#step-8-9_regeneratestudies_lo.r-long" id="toc-step-8-9_regeneratestudies_lo.r-long" class="nav-link" data-scroll-target="#step-8-9_regeneratestudies_lo.r-long"><span class="header-section-number">1.9</span> Step 8 — <code>9_RegenerateStudies_LO.R</code> ⏳ LONG</a></li>
+  <li><a href="#step-9-restore-the-16-dd-decision-records" id="toc-step-9-restore-the-16-dd-decision-records" class="nav-link" data-scroll-target="#step-9-restore-the-16-dd-decision-records"><span class="header-section-number">1.10</span> Step 9 — restore the 16 DD decision records</a></li>
+  <li><a href="#step-10-verify-passed-2026-09-19-with-one-real-finding" id="toc-step-10-verify-passed-2026-09-19-with-one-real-finding" class="nav-link" data-scroll-target="#step-10-verify-passed-2026-09-19-with-one-real-finding"><span class="header-section-number">1.11</span> Step 10 — verify (PASSED 2026-09-19, with one real finding)</a></li>
+  <li><a href="#step-11-dispose" id="toc-step-11-dispose" class="nav-link" data-scroll-target="#step-11-dispose"><span class="header-section-number">1.12</span> Step 11 — dispose</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="clean-re-run-runbook-2026-09-17" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Clean re-run runbook — 2026-09-17</h1>
+<p>Goal: one output tree per species in which every file is either (a) written by current code in this run, or (b) an explicitly dated decision record restored from quarantine. Nothing stale, nothing orphaned.</p>
+<p>Invoke a step by name: “run step 3”, “do steps 1 and 2”.</p>
+<p>Helper scripts sit beside this file in <code>analysis/</code>: <code>restore_dd_decision_records.ps1</code> (step 9) and <code>diff_output_vs_quarantine.ps1</code> (step 10). Both hardcode the repo path.</p>
+<p>Steps 5 and 7 are the long ones (hours). Everything else is seconds to minutes.</p>
+<hr>
+<section id="step-0-prerequisite-done-committed-874aa0b" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="step-0-prerequisite-done-committed-874aa0b"><span class="header-section-number">1.1</span> Step 0 — prerequisite (DONE, committed 874aa0b)</h2>
+<p><code>UTIL_DSM_TailMisfit_Impact_DD.R</code> added to <code>9_RegenerateStudies_DD.R</code>, last, after <code>UTIL_DSM_TunedArm_MapsAbundance_DD.R</code>. Driver header corrected to list <code>UTIL_DSM_SoapTuning_DD.R</code> as a fourth decision record. <code>A2_inflation.csv</code> added to the TailMisfit OUTPUT header.</p>
+<p>Nothing to run. Listed so the runbook is complete.</p>
+<hr>
+</section>
+<section id="step-1-quarantine-the-dd-output-tree" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="step-1-quarantine-the-dd-output-tree"><span class="header-section-number">1.2</span> Step 1 — quarantine the DD output tree</h2>
+<p>Move (not delete) <code>output/CommonDolphin</code> → <code>..\_quarantine_DD_output_20260917</code>, then verify the file count landed before anything else happens.</p>
+<p>Takes <code>dd_output.RData</code> with it — 2.26 GB, dated Sep 3, pre-retune and pre-lag1, and the file <code>DelfinesComunes.qmd</code> currently load()s. <code>*.RData</code> is gitignored, so after this move it exists in exactly one place.</p>
+<p>Leaves <code>output/</code> root alone: <code>EnvVars/</code>, <code>SpeciesPlots.png</code> and <code>env_covariate_assignment_comparison.csv</code> are shared or gitignored and are not part of either species’ tree.</p>
+<p><strong>Reversible</strong>: yes, it is a move on the same volume. <strong>Time</strong>: seconds.</p>
+<hr>
+</section>
+<section id="step-2-snapshot-the-lo-tree-before-it-is-touched-done-2026-09-17" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="step-2-snapshot-the-lo-tree-before-it-is-touched-done-2026-09-17"><span class="header-section-number">1.3</span> Step 2 — snapshot the LO tree before it is touched (DONE 2026-09-17)</h2>
+<p><code>output/DuskyDolphin/</code> is not empty. It holds <strong>73 files, 39,612 bytes</strong>: 70 in <code>DSM/.cache_soaptune_lo/</code>, plus three <code>DSM/LO_soap_*.csv</code> written 2026-09-16 19:30 by the soap tuning run that happened AFTER the LO quarantine. None of the three exists in <code>../_quarantine_LO_output_20260916</code>, so the step 10 diff alone would not have flagged them – which is the whole reason for snapshotting.</p>
+<p><code>DSM/autocorrelation/</code> is an EMPTY directory created by UTIL_EnsureOutputDirs.R, not held-over output. The LO autocorrelation files exist only in the quarantine and are rebuilt by UTIL_DSM_Diagnostics.R inside step 7, not step 8.</p>
+<p>Snapshot written OUTSIDE the repo, so it neither pollutes <code>git status</code> nor gets picked up as “old tree” by the step 10 diff:</p>
+<pre><code>D:\Buren_files\IAA\IAA_analyses\_rerun_snapshots_20260917\
+    LO_pre_rerun_manifest.csv   73 rows: path, bytes, mtime, SHA256
+    LO_pre_rerun_dirs.txt       empty dirs vanish from a file manifest
+    LO_pre_rerun_gitref.txt     HEAD at snapshot time</code></pre>
+<p>SHA256 is recorded rather than just size and mtime because the interesting question at step 10 is not whether the three CSVs were touched but whether they came back IDENTICAL. <code>FORCE_CONFIG</code> pins step 8 to the same 500/250/10x8 configuration that produced them, so byte-identical is the expected result and is a real reproducibility check. A changed hash means the pinned configuration did not reproduce its own output and needs explaining before anything is committed.</p>
+<p><strong>Time</strong>: seconds.</p>
+<hr>
+</section>
+<section id="step-3-strip-every-cache-both-species-refit-cold-done-2026-09-17" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="step-3-strip-every-cache-both-species-refit-cold-done-2026-09-17"><span class="header-section-number">1.4</span> Step 3 — strip every cache: BOTH species refit cold (DONE 2026-09-17)</h2>
+<p>This step originally seeded <code>.cache_covk_lo</code> with seven <code>*_k20.rds</code> to save ~77 min of fs fitting. <strong>That was reversed.</strong> Seeding it exposed the reason: the cached rows are dated <strong>2026-09-10</strong>, six days before <code>UTIL_DSM_CovariateK_LO.R</code> was committed (7203b10), and they were fitted against a workspace that no longer exists. Their schema checks out — all 18 columns, correlogram ones included — and the AICs match the stored CSV, so they were usable. ADB’s call was that a risk of the two workspaces disagreeing is not worth ~77 minutes. Correct call: the whole point of this re-run is that output cannot be traced to a workspace nobody can inspect.</p>
+<p>So <code>output/</code> now holds <strong>no cache at all</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>cache</th>
+<th>files</th>
+<th>moved to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.cache_covk_lo</code></td>
+<td>7</td>
+<td><code>_rerun_snapshots_20260917\_caches_removed_for_cold_refit\</code></td>
+</tr>
+<tr class="even">
+<td><code>.cache_soaptune_lo</code></td>
+<td>70</td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<p>Moved, not deleted. <code>.cache_soaptune_lo</code> is NOT in the LO quarantine — it was written on 2026-09-16 <em>after</em> it — so that holding directory is its only copy outside git history.</p>
+<p>The DD side needed nothing: step 1 moved the entire <code>output/CommonDolphin</code> tree, its five caches with it.</p>
+<p>Verified no other prior state can leak in:</p>
+<ul>
+<li>neither LO script has a CSV-level stage cache (the <code>file.exists() -&gt; fread()</code> shortcut that <code>UTIL_DSM_CovariateK_DD.R</code> uses at its line 179). They cache only through <code>cached_fit_row()</code>, against the directories now gone.</li>
+<li><code>UTIL_DSM_SoapTuning_LO.R</code> prefers the in-memory workspace over <code>load()</code>ing any <code>.RData</code>, so running it inside step 8’s session cannot pick up a stale one.</li>
+<li>the three tracked <code>LO_soap_*.csv</code> are left in place ON PURPOSE. They are output, not cache; step 8 overwrites them, and because <code>FORCE_CONFIG</code> pins the configuration that wrote them, byte-identical output is the expected result and a silent <code>git status</code> is the check.</li>
+</ul>
+<p>WHAT THIS BUYS. The 2026-09-10 values in <code>_rerun_snapshots_20260917\LO_covk_expected_values.md</code> were going to be the licence for reusing the cache. With nothing cached they become an independent reproducibility check instead: every one of them is recomputed from scratch by a workspace that has never seen them. That file also says how to read a mismatch — k=10 differing means the WORKSPACE differs (a pipeline finding), k=20 differing alone points at mgcv convergence (a methods note).</p>
+<p><strong>Cost</strong>: ~77 min of fs fitting in step 8, plus ~45 soap fits at 20-250 s.</p>
+<p><strong>Time</strong>: seconds.</p>
+<hr>
+</section>
+<section id="step-4-pre-flight-gate-passed-2026-09-17" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="step-4-pre-flight-gate-passed-2026-09-17"><span class="header-section-number">1.5</span> Step 4 — pre-flight gate (PASSED 2026-09-17)</h2>
+<p>Ten hours of fitting is a long way to get before finding a missing package, so this gate checks the things that fail late, not just the bookkeeping.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>check</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>git status</code></td>
+<td>clean, HEAD 899d04a</td>
+</tr>
+<tr class="even">
+<td><code>output/</code> cache dirs</td>
+<td>0 — both species cold</td>
+</tr>
+<tr class="odd">
+<td><code>output/</code> contents</td>
+<td>3 tracked <code>LO_soap_*.csv</code> + the shared <code>EnvVars/</code> root</td>
+</tr>
+<tr class="even">
+<td>DD quarantine</td>
+<td>372 files</td>
+</tr>
+<tr class="odd">
+<td>LO quarantine</td>
+<td>81 files</td>
+</tr>
+<tr class="even">
+<td>caches held aside</td>
+<td>77 files</td>
+</tr>
+<tr class="odd">
+<td>driver patches</td>
+<td>TailMisfit in 9_DD, FORCE_CONFIG in 9_LO</td>
+</tr>
+<tr class="even">
+<td><strong>parse</strong></td>
+<td>35 scripts, 0 failures, 0 missing</td>
+</tr>
+<tr class="odd">
+<td><strong>packages</strong></td>
+<td>20 referenced, all installed (R 4.6.1, mgcv 1.9.4, dsm 2.3.4, sf 1.1.2)</td>
+</tr>
+<tr class="even">
+<td><strong>data inputs</strong></td>
+<td>9 CSVs + 3 shapefiles present</td>
+</tr>
+<tr class="odd">
+<td><strong>disk</strong></td>
+<td>192.8 GB free on D:; run needs ~4.5 GB</td>
+</tr>
+<tr class="even">
+<td>Excel</td>
+<td>not running (step 6 hazard)</td>
+</tr>
+</tbody>
+</table>
+<section id="what-the-gate-caught" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="what-the-gate-caught"><span class="header-section-number">1.5.1</span> What the gate caught</h3>
+<p>Neither driver clears the workspace, and both end with <code>save(list = ls(envir = .GlobalEnv), ...)</code>. Anything already in the session is written into the new <code>.RData</code>. Two RStudio sessions were open at gate time, so this was a live risk rather than a theoretical one. Steps 5 and 7 now carry a FRESH-SESSION instruction; see step 5 for why it matters more at step 7 than at step 5.</p>
+<p>This is the same failure the drivers’ own <code>save(list = ls())</code> comment guards against for DOTTED names – it just never covered ordinary leftovers.</p>
+<hr>
+</section>
+</section>
+<section id="step-5-1_commondolphin.r-long" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="step-5-1_commondolphin.r-long"><span class="header-section-number">1.6</span> Step 5 — <code>1_CommonDolphin.R</code> ⏳ LONG</h2>
+<p>Full DD pipeline: read data → EDA → detection function → DSM (18 fs + soap block) → soap → abundance → nobs2 sensitivity → maps → CV maps → diagnostics → save <code>dd_output.RData</code>.</p>
+<p><strong>Time</strong>: hours — the 18 <code>bs = "fs"</code> fits dominate at roughly 11 min each. Budget 4–6 h and treat that as an estimate, not a measurement.</p>
+<p><strong>START FROM A FRESH R SESSION.</strong> Restart R (Session -&gt; Restart R, Ctrl+Shift+F10) or <code>rm(list = ls(all.names = TRUE))</code> before sourcing. This is not hygiene, it is the last contamination route left open:</p>
+<ul>
+<li>neither driver clears the workspace, and both end with <code>save(list = ls(envir = .GlobalEnv), ...)</code>. Every object sitting in the session when you start is therefore written into the new .RData.</li>
+<li>the <code>save(list = ls())</code> comment in the drivers explains why that beats <code>save.image()</code> – it keeps DOTTED config objects out. It does nothing about ordinary leftovers. Start step 5 in a session that still holds <code>lo.dsm.*</code> and <code>dd_output.RData</code> ends up carrying dusky models, which <code>DelfinesComunes.qmd</code> then <code>load()</code>s into the common-dolphin report.</li>
+<li>worse, a leftover object can satisfy an <code>exists()</code> guard in one of the 9_ drivers and let a script run against the wrong species’ fit without erroring.</li>
+</ul>
+<p><strong>Then keep that session open</strong> — step 6 needs the workspace it built.</p>
+<hr>
+</section>
+<section id="step-6-9_regeneratestudies_dd.r-medium" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="step-6-9_regeneratestudies_dd.r-medium"><span class="header-section-number">1.7</span> Step 6 — <code>9_RegenerateStudies_DD.R</code> ⏳ MEDIUM</h2>
+<p>Same R session as step 5 (its guard is <code>if (!exists("dd.dsm.soap.season.year"))</code>), or <code>load("output/CommonDolphin/dd_output.RData")</code> first.</p>
+<p>Sources, in this order: 1. <code>UTIL_DSM_TailFix_DD.R</code> — group-size variance decomposition, twlss ladder 2. <code>UTIL_DSM_TunedArm_MapsAbundance_DD.R</code> — tuned density maps + abundance 3. <code>UTIL_DSM_TailMisfit_Impact_DD.R</code> — <strong>new here</strong>; reads <code>dd_tuned_base.rds</code> and <code>DD_abundance_tuned.csv</code> from (2), so the order is load-bearing</p>
+<p><strong>Before running</strong>: close any of these CSVs in Excel. All three scripts divert a locked <code>fwrite</code> to <code>*_new.csv</code> and carry on, which produces a silent hole rather than an error. Step 9 sweeps for that, but not writing it is better.</p>
+<p><strong>Time</strong>: tens of minutes to ~2 h.</p>
+<hr>
+</section>
+<section id="step-7-1_duskydolphin.r-long" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="step-7-1_duskydolphin.r-long"><span class="header-section-number">1.8</span> Step 7 — <code>1_DuskyDolphin.R</code> ⏳ LONG</h2>
+<p>Full LO pipeline, same shape as step 5. Also 18 <code>bs = "fs"</code> fits.</p>
+<p><strong>Time</strong>: hours. Budget 4–6 h.</p>
+<p><strong>START FROM A FRESH R SESSION</strong>, for the reason spelled out under step 5: the driver saves <code>ls(envir = .GlobalEnv)</code> wholesale, so whatever the session already holds is written into <code>lo_output.RData</code>. After step 6 the session holds a full common-dolphin workspace, so this matters MORE here than it did at step 5, not less – do not simply carry on in the same R session you used for steps 5 and 6.</p>
+<p><strong>Keep the R session open</strong> for step 8.</p>
+<hr>
+</section>
+<section id="step-8-9_regeneratestudies_lo.r-long" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="step-8-9_regeneratestudies_lo.r-long"><span class="header-section-number">1.9</span> Step 8 — <code>9_RegenerateStudies_LO.R</code> ⏳ LONG</h2>
+<p>Same session as step 7.</p>
+<p>Runs COLD — step 3 removed every cache, so nothing here resumes.</p>
+<ol type="1">
+<li><p><code>UTIL_DSM_CovariateK_LO.R</code> — 16 fits, the seven k=20 ones ~11 min each. It still prints <code>reproduction guard: refit AIC ... -&gt; OK</code> or <code>MISMATCH</code> first. Cold, that guard now checks only that <code>.fit_fs()</code> reproduces the workspace’s own stored base, which it should; <code>MISMATCH</code> here would mean the pipeline disagrees with itself and is a genuine stop.</p>
+<p>Then compare the CSV it writes against <code>_rerun_snapshots_20260917\LO_covk_expected_values.md</code> (2026-09-10 values, recomputed from scratch here, so a real check rather than a tautology). That file says how to read a mismatch: k=10 differing means the WORKSPACE differs, k=20 differing alone points at mgcv convergence.</p></li>
+<li><p><code>UTIL_DSM_SoapTuning_LO.R</code>, with <code>FORCE_CONFIG &lt;- list(tol = 500, margin = 250, ngrid = c(10L, 8L))</code> set by the driver. <strong>Do not remove it</strong> — without it the script auto-picks the lowest-AIC configuration (26×21 / 361 knots), which is precisely what the study concluded against, and writes a tuned arm into <code>output/</code> that contradicts its own RESULT block.</p>
+<p>~45 soap fits at 20-250 s. Its three CSVs are tracked and should come back byte-identical under the pinned config — a silent <code>git status</code> is the result.</p></li>
+</ol>
+<p><strong>Time</strong>: ~2.5–3 h, all of it cold.</p>
+<hr>
+</section>
+<section id="step-9-restore-the-16-dd-decision-records" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="step-9-restore-the-16-dd-decision-records"><span class="header-section-number">1.10</span> Step 9 — restore the 16 DD decision records</h2>
+<p><code>restore_dd_decision_records.ps1</code>. Copies, never moves — the quarantine stays intact. Warns instead of overwriting, because a file already present means the re-run wrote something that should not exist.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>study</th>
+<th>files</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>UTIL_DSM_CovariateK_DD.R</code></td>
+<td><code>DD_covariate_k_comparison</code>, <code>DD_soap_spatial_basis_check</code>, <code>DD_covariate_k20_diagnostics</code>, <code>DD_covariate_k20_denseknots</code>, <code>DD_covariate_2x2_grid</code>, <code>DD_covariate_2x2_attribution</code></td>
+</tr>
+<tr class="even">
+<td><code>UTIL_DSM_SoapRevised_DD.R</code></td>
+<td><code>DD_soap_revised_selection</code>, <code>DD_soap_revised_paired</code></td>
+</tr>
+<tr class="odd">
+<td><code>UTIL_DSM_RootogramKnots_DD.R</code></td>
+<td><code>DD_rootogram_knotgrid{,_block}.csv</code>, <code>DD_rootogram_knotgrid.png</code></td>
+</tr>
+<tr class="even">
+<td><code>UTIL_DSM_SoapTuning_DD.R</code></td>
+<td><code>DD_soap_boundary_variants</code>, <code>DD_soap_knot_sweep</code>, <code>DD_soap_tuned_selection</code>, <code>DD_soap_knot_correlogram</code></td>
+</tr>
+<tr class="odd">
+<td><code>UTIL_DSM_CovariateK_DD_Figure.R</code></td>
+<td><code>DD_two_defects.png</code> (or re-run the script — it only <code>fread</code>s the CSVs above)</td>
+</tr>
+</tbody>
+</table>
+<p>All 16 verified present on disk before step 1.</p>
+<p><strong>Time</strong>: seconds.</p>
+<hr>
+</section>
+<section id="step-10-verify-passed-2026-09-19-with-one-real-finding" class="level2" data-number="1.11">
+<h2 data-number="1.11" class="anchored" data-anchor-id="step-10-verify-passed-2026-09-19-with-one-real-finding"><span class="header-section-number">1.11</span> Step 10 — verify (PASSED 2026-09-19, with one real finding)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>check</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DD tree vs quarantine</td>
+<td>2 not reproduced, 1 new — both explained below</td>
+</tr>
+<tr class="even">
+<td>LO tree vs quarantine</td>
+<td>2 not reproduced, 4 new — both explained below</td>
+</tr>
+<tr class="odd">
+<td><code>*_new.csv</code> sweep</td>
+<td>none: every <code>fwrite</code> reached its intended filename</td>
+</tr>
+<tr class="even">
+<td>tracked files missing</td>
+<td>none; <code>git status</code> on <code>output/</code> clean</td>
+</tr>
+<tr class="odd">
+<td>restored records</td>
+<td>16/16 byte-identical to quarantine (SHA256)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not reproduced, both species</strong>: <code>DSM/{DD,LO}_dsm_correlogram.{csv,png}</code>. The old trees held these in BOTH <code>DSM/</code> and <code>DSM/autocorrelation/</code>; current <code>UTIL_DSM_Diagnostics.R</code> writes only to <code>.acf_dir</code> (= <code>autocorrelation/</code>). The root-level pair are orphans of an older diagnostics script. Correctly dropped — this is the stale output the re-run existed to remove.</p>
+<p><strong>New</strong>: <code>Nobs2Sensitivity/README_nobs2_fit_compare.txt</code> (both species), written by the current <code>6_*_Nobs2SensitivityAnalysis.R</code> since 6623a6d. Plus, LO only, the three <code>LO_soap_*.csv</code> — absent from the 2026-09-16 quarantine because they postdate it, which is exactly why step 2 snapshotted them separately.</p>
+<section id="reproducibility-check-a-covariate-k-exact" class="level3" data-number="1.11.1">
+<h3 data-number="1.11.1" class="anchored" data-anchor-id="reproducibility-check-a-covariate-k-exact"><span class="header-section-number">1.11.1</span> Reproducibility check A — covariate-k: EXACT</h3>
+<p>Every <code>AIC_10</code>, <code>AIC_20</code>, <code>dAIC</code>, <code>edf</code>, <code>edf_frac</code> and <code>Dev</code> in the fresh <code>LO_covariate_k_comparison.csv</code> matches the 2026-09-10 values to the last decimal, recomputed cold by a workspace that had never seen them. Only <code>k_index</code> and <code>p_value</code> differ, and they should: <code>dsm_kcheck(m, n.rep = 400)</code> is a randomised test with no seed set. <code>at_ceiling</code> is FALSE throughout in both.</p>
+<p>The LO fs block reproduces exactly across a nine-day, fully cold rebuild.</p>
+</section>
+<section id="reproducibility-check-b-soap-csvs-one-real-change" class="level3" data-number="1.11.2">
+<h3 data-number="1.11.2" class="anchored" data-anchor-id="reproducibility-check-b-soap-csvs-one-real-change"><span class="header-section-number">1.11.2</span> Reproducibility check B — soap CSVs: ONE REAL CHANGE</h3>
+<p><code>LO_soap_boundary_variants.csv</code> and <code>LO_soap_knot_sweep.csv</code> came back byte-identical. <code>LO_soap_tuned_selection.csv</code> did not:</p>
+<ul>
+<li>all 25 <code>tuned</code> rows identical; all 25 <code>original</code> rows changed</li>
+<li><code>k_prime_xy</code> <strong>49 -&gt; 48</strong> in every changed row, with <code>edf_frac_xy</code> and AIC moving consequentially (~0.1-0.2 AIC)</li>
+</ul>
+<p>CAUSE, and it is not a defect in this run. The <code>original</code> arm reads its knots from the WORKSPACE. The workspace the 2026-09-16 study used was <code>lo_output.RData</code> dated <strong>2026-09-03 21:59</strong> — thirteen days older than 0fccbb9 (2026-09-16 18:18), <em>“measure LO knot clearance to the boundary edges, not its vertices”</em>. So that study measured its <code>original</code> arm against a soap basis the code had already stopped building, and one knot the vertex test wrongly admitted is now correctly excluded. 49 -&gt; 48 is the bug fix finally reaching the workspace.</p>
+<p>CONSEQUENCES, checked rather than assumed: * the study’s conclusion holds. The nominal winner is still the <code>tuned</code> sst model at deltaAIC 0 with <code>lag1_sig = TRUE</code> — it still fails the autocorrelation check its own AIC assumes. The margin over the best <code>original</code> narrowed from 1.06 to 0.85 AIC. Adopt nothing, for the same reason as before. * the reported dusky numbers are untouched. Every fs-based LO abundance table is byte-identical to the quarantine — <code>LO_abundance_season_year{,_byyear,_fsyear}.csv</code> and <code>LO_year_partial_effect_fsyear.csv</code>. Only <code>_soap.csv</code> changed, and the soap arm is a considered-not-reported block for dusky.</p>
+<p><strong>Time</strong>: seconds, plus however long the one finding takes to run down.</p>
+<hr>
+</section>
+</section>
+<section id="step-11-dispose" class="level2" data-number="1.12">
+<h2 data-number="1.12" class="anchored" data-anchor-id="step-11-dispose"><span class="header-section-number">1.12</span> Step 11 — dispose</h2>
+<p>Only after step 10 passes: delete both quarantines, or keep them. Your call, ~4.5 GB between them. Commit the regenerated <code>output/</code> tree.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
