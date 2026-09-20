@@ -1,0 +1,76 @@
+arm,model,name,env,df,AIC,deltaAIC,deltaAIC_spec,Dev,p_hat,n,edf_xy,k_prime_xy,edf_frac_xy,edf_env,k_prime_env,edf_frac_env,lag1,lag1_band,lag1_sig
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(sst)",dd.dsm.soap.year.season.sst,sst,67.27,6034.93,0,0,0.29,1.5639,6288,45.08,97,0.465,10.04,19,0.529,0.0278,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(sst)",dd.dsm.soap.year.sst,sst,64.52,6040.11,5.18,5.18,0.284,1.5626,6288,44.33,97,0.457,11.61,19,0.611,0.0263,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(sst)",dd.dsm.soap.year.season.sst,sst,65.66,6040.89,5.96,0,0.285,1.5651,6288,43.27,100,0.433,9.92,19,0.522,0.0266,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(clo)",dd.dsm.soap.year.season.clo,clo,67.47,6041.45,6.52,6.52,0.287,1.5659,6288,39.76,97,0.41,11.74,19,0.618,0.0331,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(clo)",dd.dsm.soap.season.clo,clo,63.57,6041.52,6.59,6.59,0.282,1.5656,6288,40.49,97,0.417,11.61,19,0.611,0.0388,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(sst)",dd.dsm.soap.season.sst,sst,67.33,6046.04,11.11,11.11,0.284,1.5637,6288,46.57,97,0.48,8.96,19,0.472,0.0321,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(clo)",dd.dsm.soap.season.clo,clo,61.37,6046.56,11.63,5.67,0.276,1.5666,6288,38.38,100,0.384,11.63,19,0.612,0.0386,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(clo)",dd.dsm.soap.year.season.clo,clo,65.21,6046.77,11.84,5.88,0.281,1.567,6288,37.61,100,0.376,11.74,19,0.618,0.0328,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano) + s(sst)",dd.dsm.soap.year.sst,sst,62.27,6048.03,13.1,7.14,0.277,1.5637,6288,41.96,100,0.42,11.56,19,0.608,0.0245,0.026,FALSE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(clo)",dd.dsm.soap.year.season.clo,clo,49.08,6053.07,18.14,0,0.258,1.5697,6288,26.73,49,0.546,8.43,9,0.937,0.0343,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(sst)",dd.dsm.soap.season.sst,sst,66.01,6053.15,18.22,12.26,0.278,1.565,6288,44.89,100,0.449,8.59,19,0.452,0.0316,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(clo)",dd.dsm.soap.year.clo,clo,63.75,6053.91,18.98,18.98,0.275,1.5656,6288,39.81,97,0.41,11.94,19,0.628,0.0359,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(clo)",dd.dsm.soap.season.clo,clo,46.46,6054.04,19.11,0.97,0.254,1.5695,6288,27.16,49,0.554,8.42,9,0.936,0.0383,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano) + s(clo)",dd.dsm.soap.year.clo,clo,61.77,6057.59,22.66,16.7,0.27,1.5666,6288,38.02,100,0.38,11.92,19,0.627,0.0351,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(dist.up)",dd.dsm.soap.year.season.dist.up,dist.up,62.16,6057.76,22.83,22.83,0.271,1.5679,6288,46.92,97,0.484,2.36,19,0.124,0.0255,0.026,FALSE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(VelVert)",dd.dsm.soap.year.season.VelVert,VelVert,68.51,6062.69,27.76,27.76,0.275,1.5679,6288,46.53,97,0.48,8.47,19,0.446,0.0297,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(dist.up)",dd.dsm.soap.year.season.dist.up,dist.up,61.59,6063.02,28.09,22.13,0.267,1.5685,6288,45.25,100,0.453,2.54,19,0.134,0.0242,0.026,FALSE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(VelVert)",dd.dsm.soap.year.season.VelVert,VelVert,67.86,6064.01,29.08,23.12,0.274,1.5682,6288,45.17,100,0.452,8.91,19,0.469,0.0276,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(slope)",dd.dsm.soap.year.season.slope,slope,62.92,6064.38,29.45,29.45,0.268,1.5685,6288,46,97,0.474,4.16,19,0.219,0.0281,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(dist.up)",dd.dsm.soap.season.dist.up,dist.up,61.93,6064.98,30.05,30.05,0.266,1.567,6288,47.46,97,0.489,2.5,19,0.132,0.0297,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(grad)",dd.dsm.soap.season.grad,grad,60.33,6066.83,31.9,31.9,0.263,1.5736,6288,47.61,97,0.491,2.78,19,0.146,0.0314,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(VelVert)",dd.dsm.soap.season.VelVert,VelVert,68.07,6067.33,32.4,32.4,0.272,1.5668,6288,47.12,97,0.486,8.62,19,0.454,0.0342,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(grad)",dd.dsm.soap.season.grad,grad,60.1,6067.68,32.75,26.79,0.262,1.5746,6288,46.45,100,0.465,2.9,19,0.153,0.0305,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(grad)",dd.dsm.soap.year.season.grad,grad,64.79,6068.33,33.4,33.4,0.268,1.5742,6288,47.42,97,0.489,2.57,19,0.135,0.0274,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(clo)",dd.dsm.soap.year.clo,clo,45.94,6068.73,33.8,15.66,0.245,1.5694,6288,26.7,49,0.545,8.46,9,0.94,0.0358,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(VelVert)",dd.dsm.soap.season.VelVert,VelVert,67.58,6068.96,34.03,28.07,0.271,1.5671,6288,45.83,100,0.458,9.03,19,0.475,0.0326,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(slope)",dd.dsm.soap.year.season.slope,slope,62.41,6069.45,34.52,28.56,0.264,1.5689,6288,44.21,100,0.442,4.44,19,0.234,0.0269,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(dist.up)",dd.dsm.soap.season.dist.up,dist.up,61.37,6069.97,35.04,29.08,0.263,1.5676,6288,45.92,100,0.459,2.65,19,0.139,0.029,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(grad)",dd.dsm.soap.year.season.grad,grad,64.41,6070.25,35.32,29.36,0.266,1.5753,6288,46.07,100,0.461,2.72,19,0.143,0.026,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano)",dd.dsm.soap.season.year,,57.42,6070.35,35.42,35.42,0.258,1.5718,6288,46.74,97,0.482,,,,0.0247,0.026,FALSE
+tuned,"count ~ s(x,y,so) + season + s(slope)",dd.dsm.soap.season.slope,slope,61.94,6071.93,37,37,0.262,1.5675,6288,46.6,97,0.48,3.91,19,0.206,0.0318,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano) + s(depth)",dd.dsm.soap.year.season.depth,depth,57.87,6072.61,37.68,31.72,0.257,1.5716,6288,43.46,100,0.435,3.46,19,0.182,0.0248,0.026,FALSE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(sst)",dd.dsm.soap.year.season.sst,sst,48.69,6072.73,37.8,19.66,0.245,1.5713,6288,29.25,49,0.597,6.54,9,0.727,0.0317,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season + s(Ano) + s(depth)",dd.dsm.soap.year.season.depth,depth,63.56,6074.4,39.47,39.47,0.263,1.5708,6288,45.49,97,0.469,3.41,19,0.18,0.0269,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(grad)",dd.dsm.soap.year.grad,grad,60.39,6075.18,40.25,40.25,0.258,1.5745,6288,47.18,97,0.486,2.41,19,0.127,0.0329,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano) + s(grad)",dd.dsm.soap.year.grad,grad,59.88,6075.4,40.47,34.51,0.257,1.5756,6288,45.98,100,0.46,2.57,19,0.135,0.0316,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(grad)",dd.dsm.soap.year.season.grad,grad,46.05,6076.34,41.41,23.27,0.24,1.579,6288,32.78,49,0.669,2.88,9,0.32,0.0286,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(Ano)",dd.dsm.soap.season.year,"",56.67,6076.34,41.41,35.45,0.253,1.5725,6288,45.01,100,0.45,,,,0.0229,0.026,FALSE
+revised,"count ~ s(x,y,so) + season + s(slope)",dd.dsm.soap.season.slope,slope,61.59,6076.81,41.88,35.92,0.259,1.568,6288,44.98,100,0.45,4.1,19,0.216,0.0311,0.026,TRUE
+tuned,"count ~ s(x,y,so) + season",dd.dsm.soap.season,,57.17,6077.51,42.58,42.58,0.253,1.5709,6288,47.27,97,0.487,,,,0.0289,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(grad)",dd.dsm.soap.season.grad,grad,45.08,6080.4,45.47,27.33,0.236,1.5787,6288,32.9,49,0.672,3,9,0.333,0.0309,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(sst)",dd.dsm.soap.season.sst,sst,48.98,6081.37,46.44,28.3,0.24,1.5708,6288,29.62,49,0.605,6.52,9,0.725,0.0332,0.026,TRUE
+revised,"count ~ s(x,y,so) + season + s(depth)",dd.dsm.soap.season.depth,depth,59.11,6081.77,46.84,40.88,0.253,1.5705,6288,44.17,100,0.442,3.6,19,0.19,0.0298,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(dist.up)",dd.dsm.soap.year.season.dist.up,dist.up,43.9,6082.18,47.25,29.11,0.234,1.5719,6288,31.03,49,0.633,2.38,9,0.265,0.023,0.026,FALSE
+tuned,"count ~ s(x,y,so) + season + s(depth)",dd.dsm.soap.season.depth,depth,63.51,6082.35,47.42,47.42,0.258,1.5696,6288,45.92,97,0.473,3.49,19,0.184,0.0314,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(slope)",dd.dsm.soap.year.slope,slope,61.96,6083.11,48.18,48.18,0.255,1.5681,6288,45.04,97,0.464,4.22,19,0.222,0.0303,0.026,TRUE
+revised,"count ~ s(x,y,so) + season",dd.dsm.soap.season,"",56.52,6083.17,48.24,42.28,0.249,1.5716,6288,45.68,100,0.457,,,,0.0275,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(dist.up)",dd.dsm.soap.year.dist.up,dist.up,60.87,6085.95,51.02,51.02,0.252,1.5703,6288,46.14,97,0.476,2.56,19,0.135,0.0296,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(sst)",dd.dsm.soap.year.sst,sst,43.54,6086.29,51.36,33.22,0.231,1.5701,6288,27.47,49,0.561,7.29,9,0.81,0.0253,0.026,FALSE
+revised,"count ~ s(x,y,so) + s(Ano) + s(slope)",dd.dsm.soap.year.slope,slope,61.08,6086.58,51.65,45.69,0.252,1.5687,6288,43.43,100,0.434,4.47,19,0.235,0.0289,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(slope)",dd.dsm.soap.year.season.slope,slope,48.53,6086.77,51.84,33.7,0.237,1.571,6288,31.5,49,0.643,4.7,9,0.522,0.0294,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano)",dd.dsm.soap.year,,56.13,6087.76,52.83,52.83,0.245,1.5715,6288,46.04,97,0.475,,,,0.0271,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(grad)",dd.dsm.soap.year.grad,grad,45.83,6088.26,53.33,35.19,0.232,1.5792,6288,32.91,49,0.672,2.8,9,0.311,0.0338,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(dist.up)",dd.dsm.soap.season.dist.up,dist.up,42.86,6088.52,53.59,35.45,0.228,1.5719,6288,31.1,49,0.635,2.47,9,0.274,0.025,0.026,FALSE
+revised,"count ~ s(x,y,so) + s(Ano) + s(dist.up)",dd.dsm.soap.year.dist.up,dist.up,60.1,6090.28,55.35,49.39,0.249,1.5711,6288,44.59,100,0.446,2.69,19,0.142,0.0282,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(VelVert)",dd.dsm.soap.year.VelVert,VelVert,60.94,6090.36,55.43,55.43,0.25,1.5713,6288,46.01,97,0.474,3.16,19,0.166,0.0283,0.026,TRUE
+tuned,"count ~ s(x,y,so) + s(Ano) + s(depth)",dd.dsm.soap.year.depth,depth,62.13,6090.55,55.62,55.62,0.251,1.5704,6288,44.48,97,0.459,3.69,19,0.194,0.0296,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano)",dd.dsm.soap.year,"",55.02,6092.15,57.22,51.26,0.241,1.5723,6288,44.44,100,0.444,,,,0.0252,0.026,FALSE
+tuned,"count ~ s(x,y,so)",dd.dsm.soap,,52.65,6092.81,57.88,57.88,0.238,1.5715,6288,46.13,97,0.476,,,,0.0325,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(slope)",dd.dsm.soap.season.slope,slope,46.34,6093.8,58.87,40.73,0.23,1.5708,6288,31.63,49,0.645,4.32,9,0.48,0.0302,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano) + s(depth)",dd.dsm.soap.year.depth,depth,60.38,6095.75,60.82,54.86,0.246,1.5714,6288,42.38,100,0.424,3.89,19,0.205,0.0275,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(depth)",dd.dsm.soap.year.season.depth,depth,44.44,6096.75,61.82,43.68,0.225,1.5756,6288,29.96,49,0.612,3.55,9,0.394,0.0271,0.026,TRUE
+revised,"count ~ s(x,y,so)",dd.dsm.soap,"",51.73,6096.86,61.93,55.97,0.234,1.5723,6288,44.67,100,0.447,,,,0.0309,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano) + s(VelVert)",dd.dsm.soap.year.season.VelVert,VelVert,48.71,6097.56,62.63,44.49,0.23,1.5739,6288,30.65,49,0.626,5.63,9,0.625,0.0264,0.026,TRUE
+revised,"count ~ s(x,y,so) + s(Ano) + s(VelVert)",dd.dsm.soap.year.VelVert,VelVert,68.76,6098.34,63.41,57.45,0.254,1.5703,6288,44.49,100,0.445,7.02,19,0.369,0.0285,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(VelVert)",dd.dsm.soap.season.VelVert,VelVert,46.92,6099.96,65.03,46.89,0.226,1.5735,6288,30.69,49,0.626,6.01,9,0.667,0.0284,0.026,TRUE
+original,"count ~ s(x,y,so) + season + s(Ano)",dd.dsm.soap.season.year,"",40.86,6100.53,65.6,47.46,0.218,1.5761,6288,30.93,49,0.631,,,,0.0226,0.026,FALSE
+original,"count ~ s(x,y,so) + season + s(depth)",dd.dsm.soap.season.depth,depth,43.72,6103.01,68.08,49.94,0.22,1.5752,6288,30.2,49,0.616,3.71,9,0.412,0.0291,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(slope)",dd.dsm.soap.year.slope,slope,48.24,6103.88,68.95,50.81,0.226,1.571,6288,31.11,49,0.635,4.74,9,0.527,0.0312,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(dist.up)",dd.dsm.soap.year.dist.up,dist.up,41.21,6105.9,70.97,52.83,0.215,1.5743,6288,30.87,49,0.63,2.6,9,0.289,0.0272,0.026,TRUE
+original,"count ~ s(x,y,so) + season",dd.dsm.soap.season,"",39.79,6106.29,71.36,53.22,0.213,1.576,6288,31.11,49,0.635,,,,0.0246,0.026,FALSE
+original,"count ~ s(x,y,so) + s(Ano) + s(depth)",dd.dsm.soap.year.depth,depth,44.37,6111.28,76.35,58.21,0.216,1.5758,6288,29.52,49,0.602,3.94,9,0.438,0.0302,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano)",dd.dsm.soap.year,"",40.24,6118.53,83.6,65.46,0.206,1.5761,6288,30.59,49,0.624,,,,0.0245,0.026,FALSE
+original,"count ~ s(x,y,so)",dd.dsm.soap,"",36.77,6119.65,84.72,66.58,0.201,1.5764,6288,30.81,49,0.629,,,,0.0273,0.026,TRUE
+original,"count ~ s(x,y,so) + s(Ano) + s(VelVert)",dd.dsm.soap.year.VelVert,VelVert,45.19,6122.04,87.11,68.97,0.21,1.576,6288,30.65,49,0.626,2.88,9,0.32,0.026,0.026,FALSE

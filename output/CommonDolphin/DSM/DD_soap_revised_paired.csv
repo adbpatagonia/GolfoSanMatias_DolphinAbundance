@@ -1,0 +1,26 @@
+name,model,env,AIC_original,AIC_revised,df_original,df_revised,Dev_original,Dev_revised,edf_xy_original,edf_xy_revised,edf_env_original,edf_env_revised,lag1_original,lag1_revised,gain
+dd.dsm.soap.year.sst,"count ~ s(x,y,so) + s(Ano) + s(sst)",sst,6086.29,6048.03,43.54,62.27,0.231,0.277,27.47,41.96,7.29,11.56,0.0253,0.0245,-38.26
+dd.dsm.soap.year.season.VelVert,"count ~ s(x,y,so) + season + s(Ano) + s(VelVert)",VelVert,6097.56,6064.01,48.71,67.86,0.23,0.274,30.65,45.17,5.63,8.91,0.0264,0.0276,-33.55
+dd.dsm.soap.year.season.sst,"count ~ s(x,y,so) + season + s(Ano) + s(sst)",sst,6072.73,6040.89,48.69,65.66,0.245,0.285,29.25,43.27,6.54,9.92,0.0317,0.0266,-31.84
+dd.dsm.soap.season.VelVert,"count ~ s(x,y,so) + season + s(VelVert)",VelVert,6099.96,6068.96,46.92,67.58,0.226,0.271,30.69,45.83,6.01,9.03,0.0284,0.0326,-31
+dd.dsm.soap.season.sst,"count ~ s(x,y,so) + season + s(sst)",sst,6081.37,6053.15,48.98,66.01,0.24,0.278,29.62,44.89,6.52,8.59,0.0332,0.0316,-28.22
+dd.dsm.soap.year,"count ~ s(x,y,so) + s(Ano)",,6118.53,6092.15,40.24,55.02,0.206,0.241,30.59,44.44,,,0.0245,0.0252,-26.38
+dd.dsm.soap.season.year,"count ~ s(x,y,so) + season + s(Ano)",,6100.53,6076.34,40.86,56.67,0.218,0.253,30.93,45.01,,,0.0226,0.0229,-24.19
+dd.dsm.soap.year.season.depth,"count ~ s(x,y,so) + season + s(Ano) + s(depth)",depth,6096.75,6072.61,44.44,57.87,0.225,0.257,29.96,43.46,3.55,3.46,0.0271,0.0248,-24.14
+dd.dsm.soap.year.VelVert,"count ~ s(x,y,so) + s(Ano) + s(VelVert)",VelVert,6122.04,6098.34,45.19,68.76,0.21,0.254,30.65,44.49,2.88,7.02,0.026,0.0285,-23.7
+dd.dsm.soap.season,"count ~ s(x,y,so) + season",,6106.29,6083.17,39.79,56.52,0.213,0.249,31.11,45.68,,,0.0246,0.0275,-23.12
+dd.dsm.soap,"count ~ s(x,y,so)",,6119.65,6096.86,36.77,51.73,0.201,0.234,30.81,44.67,,,0.0273,0.0309,-22.79
+dd.dsm.soap.season.depth,"count ~ s(x,y,so) + season + s(depth)",depth,6103.01,6081.77,43.72,59.11,0.22,0.253,30.2,44.17,3.71,3.6,0.0291,0.0298,-21.24
+dd.dsm.soap.year.season.dist.up,"count ~ s(x,y,so) + season + s(Ano) + s(dist.up)",dist.up,6082.18,6063.02,43.9,61.59,0.234,0.267,31.03,45.25,2.38,2.54,0.023,0.0242,-19.16
+dd.dsm.soap.season.dist.up,"count ~ s(x,y,so) + season + s(dist.up)",dist.up,6088.52,6069.97,42.86,61.37,0.228,0.263,31.1,45.92,2.47,2.65,0.025,0.029,-18.55
+dd.dsm.soap.year.season.slope,"count ~ s(x,y,so) + season + s(Ano) + s(slope)",slope,6086.77,6069.45,48.53,62.41,0.237,0.264,31.5,44.21,4.7,4.44,0.0294,0.0269,-17.32
+dd.dsm.soap.year.slope,"count ~ s(x,y,so) + s(Ano) + s(slope)",slope,6103.88,6086.58,48.24,61.08,0.226,0.252,31.11,43.43,4.74,4.47,0.0312,0.0289,-17.3
+dd.dsm.soap.season.slope,"count ~ s(x,y,so) + season + s(slope)",slope,6093.8,6076.81,46.34,61.59,0.23,0.259,31.63,44.98,4.32,4.1,0.0302,0.0311,-16.99
+dd.dsm.soap.year.dist.up,"count ~ s(x,y,so) + s(Ano) + s(dist.up)",dist.up,6105.9,6090.28,41.21,60.1,0.215,0.249,30.87,44.59,2.6,2.69,0.0272,0.0282,-15.62
+dd.dsm.soap.year.depth,"count ~ s(x,y,so) + s(Ano) + s(depth)",depth,6111.28,6095.75,44.37,60.38,0.216,0.246,29.52,42.38,3.94,3.89,0.0302,0.0275,-15.53
+dd.dsm.soap.year.grad,"count ~ s(x,y,so) + s(Ano) + s(grad)",grad,6088.26,6075.4,45.83,59.88,0.232,0.257,32.91,45.98,2.8,2.57,0.0338,0.0316,-12.86
+dd.dsm.soap.season.grad,"count ~ s(x,y,so) + season + s(grad)",grad,6080.4,6067.68,45.08,60.1,0.236,0.262,32.9,46.45,3,2.9,0.0309,0.0305,-12.72
+dd.dsm.soap.year.clo,"count ~ s(x,y,so) + s(Ano) + s(clo)",clo,6068.73,6057.59,45.94,61.77,0.245,0.27,26.7,38.02,8.46,11.92,0.0358,0.0351,-11.14
+dd.dsm.soap.season.clo,"count ~ s(x,y,so) + season + s(clo)",clo,6054.04,6046.56,46.46,61.37,0.254,0.276,27.16,38.38,8.42,11.63,0.0383,0.0386,-7.48
+dd.dsm.soap.year.season.clo,"count ~ s(x,y,so) + season + s(Ano) + s(clo)",clo,6053.07,6046.77,49.08,65.21,0.258,0.281,26.73,37.61,8.43,11.74,0.0343,0.0328,-6.3
+dd.dsm.soap.year.season.grad,"count ~ s(x,y,so) + season + s(Ano) + s(grad)",grad,6076.34,6070.25,46.05,64.41,0.24,0.266,32.78,46.07,2.88,2.72,0.0286,0.026,-6.09

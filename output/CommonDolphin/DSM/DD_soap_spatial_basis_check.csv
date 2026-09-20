@@ -1,0 +1,5 @@
+variant,n_knots,k_bnd,AIC,df,edf_xy,k_prime_xy,edf_frac_xy
+"stored (41 knots, k=10)",41,10,6100.53,40.86,30.93,49,0.631
+denser interior (k=10),92,10,6076.34,56.67,45.01,100,0.45
+larger boundary k=16,41,16,6101.04,38.59,29.84,55,0.543
+denser interior + k=16,92,16,6076.54,56.76,45.01,106,0.425
