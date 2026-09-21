@@ -43,7 +43,7 @@
 #   * Covariate basis. Every environmental smooth was at mgcv's k = 10
 #     default. s(sst) gained 11.28 AIC units and s(VelVert) 8.14 when freed to
 #     k = 20 -- and NEITHER was at its basis ceiling, so the usual
-#     edf/k' screen would have missed both.
+#     edf/k_prime screen would have missed both.
 #
 # s(Ano) IS DELIBERATELY LEFT AT THE DEFAULT. It comes out at edf 1.00 of 9 --
 # a straight line, penalised to the edge of the basis from the other side --

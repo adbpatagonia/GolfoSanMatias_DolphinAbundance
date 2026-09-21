@@ -134,14 +134,14 @@ Cada suavizado se ajusta dentro de una base de tamaño *k*. Si el ajuste se apoy
 
 ```{r}
 #| label: tbl-x-dd-kcheck
-#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k'; near_ceiling marca los suavizados apoyados contra su techo."
+#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k_prime; near_ceiling marca los suavizados apoyados contra su techo."
 #| echo: false
 #| message: false
 #| warning: false
 tab(if (exists("dd.diag")) dd.diag$kcheck else rd("DSM", "DD_dsm_kcheck.csv"))
 ```
 
-Acá aparece el hallazgo que motivó todo el trabajo posterior: **`s(clo)` está apoyado contra su techo en todos los modelos que lo incluyen** (edf ~8.3-8.4 sobre k' = 9) [VERIFICAR TRAS RE-RUN]. Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (@sec-x-dd-covk), y no sólo la marcada.
+Acá aparece el hallazgo que motivó todo el trabajo posterior: **`s(clo)` está apoyado contra su techo en todos los modelos que lo incluyen** (edf ~8.3-8.4 sobre k_prime = 9) [VERIFICAR TRAS RE-RUN]. Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (@sec-x-dd-covk), y no sólo la marcada.
 
 ## Rootogramas
 

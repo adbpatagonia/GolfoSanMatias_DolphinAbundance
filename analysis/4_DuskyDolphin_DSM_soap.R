@@ -36,7 +36,7 @@ source(file.path(here::here(), "R", "dsm_correlogram.R"))
 #
 #   knot grid    the LO spatial basis is NOT basis-limited -- edf_frac_xy 0.335
 #                (16.06 of 48), against 0.64 for the DD arm that did need
-#                fixing. edf_xy climbs only 15.9 -> 29.3 while k' goes 49 -> 369.
+#                fixing. edf_xy climbs only 15.9 -> 29.3 while k_prime goes 49 -> 369.
 #   covariate k  no environmental smooth is near its ceiling at k = 10. Doubling
 #                to k = 20 moves them by nothing: depth 3.09 -> 3.15, grad
 #                2.06 -> 2.15, sst and clo both stay at 1.00.

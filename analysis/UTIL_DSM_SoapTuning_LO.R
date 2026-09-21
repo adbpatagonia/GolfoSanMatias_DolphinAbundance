@@ -75,7 +75,7 @@
 #  KNOT GRID -- the LO spatial basis was NEVER BINDING. edf_frac_xy is 0.335 at
 #     the stored configuration (16.06 of 48), against 0.64 for the DD arm that
 #     did need fixing. Across the whole sweep edf_xy climbs only 15.9 -> 29.3
-#     while k' goes 49 -> 369: the penalty is doing the work, not the basis
+#     while k_prime goes 49 -> 369: the penalty is doing the work, not the basis
 #     ceiling. There is no defect here to repair.
 #     Supporting: the entire 20-configuration sweep spans 15.8 AIC (DD's knot
 #     refinement ALONE was worth 24), and AIC is NON-MONOTONE in knots -- 12x9
@@ -397,7 +397,7 @@ if (length(NGRIDS_EXTRA)) {
 }
 
 # PLATEAU. edf_frac is NOT the criterion -- it falls as the grid grows simply
-# because k' grows faster than edf. The signal is edf_xy itself flattening.
+# because k_prime grows faster than edf. The signal is edf_xy itself flattening.
 sweep[, edf_gain  := round(edf_xy - shift(edf_xy), 2), by = .(tol, margin)]
 sweep[, knot_gain := n_knots - shift(n_knots), by = .(tol, margin)]
 sweep[, edf_per_10knots := round(10 * edf_gain / knot_gain, 2)]

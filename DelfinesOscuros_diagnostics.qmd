@@ -150,14 +150,14 @@ Hay que leer ese resultado con una advertencia, porque acá aplica directamente.
 
 ```{r}
 #| label: tbl-x-lo-kcheck
-#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k'; near_ceiling marca los suavizados apoyados contra su techo; shrunk marca los que la penalización llevó a cero."
+#| tbl-cap: "Chequeo de dimensión de base. edf_frac es edf/k_prime; near_ceiling marca los suavizados apoyados contra su techo; shrunk marca los que la penalización llevó a cero."
 #| echo: false
 #| message: false
 #| warning: false
 tab(if (exists("lo.diag")) lo.diag$kcheck else rd("DSM", "LO_dsm_kcheck.csv"))
 ```
 
-**Ningún suavizado de delfines oscuros está apoyado contra su techo.** `s(x,y,year_fac)` sale en 63.0 de k' = 330 (edf_frac 0.19) y `s(depth)` en 3.66 de 9 [VERIFICAR TRAS RE-RUN]. Es decir, la penalización está haciendo el trabajo y la base no ata en ningún término, que es exactamente lo contrario de lo que pasa con delfines comunes, donde `s(clo)` sale contra su techo en todos los modelos que lo incluyen. Esa diferencia es la que hace interpretable el resultado de la otra especie, y es la razón por la cual el estudio de covariables de la sección 3 se corrió acá también: como control, no porque se esperara que cambiara algo.
+**Ningún suavizado de delfines oscuros está apoyado contra su techo.** `s(x,y,year_fac)` sale en 63.0 de k_prime = 330 (edf_frac 0.19) y `s(depth)` en 3.66 de 9 [VERIFICAR TRAS RE-RUN]. Es decir, la penalización está haciendo el trabajo y la base no ata en ningún término, que es exactamente lo contrario de lo que pasa con delfines comunes, donde `s(clo)` sale contra su techo en todos los modelos que lo incluyen. Esa diferencia es la que hace interpretable el resultado de la otra especie, y es la razón por la cual el estudio de covariables de la sección 3 se corrió acá también: como control, no porque se esperara que cambiara algo.
 
 El modelo by-year muestra otra cosa que vale la pena señalar: **la mitad de sus superficies anuales están encogidas a cero** (2006, 2008, 2010, 2013, 2015, 2017, 2018). Es lo esperable en años con pocos datos, y es el argumento estructural a favor del término `fs` sobre el by-year: el `fs` comparte información entre años en lugar de estimar cada superficie por separado.
 
@@ -199,7 +199,7 @@ img("DSM", "LO_dsm_rootogram_block.png")
      el paso 3 del runbook removio .cache_covk_lo, asi que los siete ajustes a
      k = 20 se rehacen desde cero, ~11 min cada uno). -->
 
-Todo suavizado ambiental de este proyecto se ajustó con el default k = 10 de `mgcv`, que `k.check` reporta como k' = 9 porque la restricción de centrado cuesta un grado de libertad. Una covariable cuyo suavizado se quedó sin base tendría subestimada su contribución, tanto en deviance como en AIC. Para delfines comunes ese problema resultó real. Acá el `k.check` ya salía limpio, así que la expectativa era que k = 20 no cambiara nada, pero vale confirmarlo en lugar de asumirlo: es el caso control que hace interpretable el resultado de la otra especie.
+Todo suavizado ambiental de este proyecto se ajustó con el default k = 10 de `mgcv`, que `k.check` reporta como k' = 9 -- la columna `k_prime` de las tablas de arriba -- porque la restricción de centrado cuesta un grado de libertad. Una covariable cuyo suavizado se quedó sin base tendría subestimada su contribución, tanto en deviance como en AIC. Para delfines comunes ese problema resultó real. Acá el `k.check` ya salía limpio, así que la expectativa era que k = 20 no cambiara nada, pero vale confirmarlo en lugar de asumirlo: es el caso control que hace interpretable el resultado de la otra especie.
 
 ```{r}
 #| label: tbl-x-lo-covk
@@ -265,7 +265,7 @@ tab(rd("DSM", "LO_soap_knot_sweep.csv"))
 tab(rd("DSM", "LO_soap_tuned_selection.csv"))
 ```
 
-**Grilla de nudos: la base espacial nunca ató.** `edf_frac_xy` es 0.335 en la configuración guardada (16.06 de 48), contra 0.64 en el arm de delfines comunes que sí necesitó arreglo. A lo largo del barrido completo `edf_xy` sube apenas de 15.9 a 29.3 mientras k' va de 49 a 369: la penalización está haciendo el trabajo, no el techo de la base. No hay acá un defecto que reparar. Como evidencia de apoyo, las 20 configuraciones del barrido abarcan 15.8 unidades de AIC, cuando el refinamiento de grilla de delfines comunes valía 24 él solo, y el AIC es **no monótono** en el número de nudos: 12x9 es peor que 10x8 en los tres bordes, por 3.4, 9.2 y 12.8. Una base penalizada más fina no puede ajustar genuinamente peor, así que esa dispersión es REML aterrizando distinto, y fija el piso de ruido para todo lo demás en la tabla.
+**Grilla de nudos: la base espacial nunca ató.** `edf_frac_xy` es 0.335 en la configuración guardada (16.06 de 48), contra 0.64 en el arm de delfines comunes que sí necesitó arreglo. A lo largo del barrido completo `edf_xy` sube apenas de 15.9 a 29.3 mientras k_prime va de 49 a 369: la penalización está haciendo el trabajo, no el techo de la base. No hay acá un defecto que reparar. Como evidencia de apoyo, las 20 configuraciones del barrido abarcan 15.8 unidades de AIC, cuando el refinamiento de grilla de delfines comunes valía 24 él solo, y el AIC es **no monótono** en el número de nudos: 12x9 es peor que 10x8 en los tres bordes, por 3.4, 9.2 y 12.8. Una base penalizada más fina no puede ajustar genuinamente peor, así que esa dispersión es REML aterrizando distinto, y fija el piso de ruido para todo lo demás en la tabla.
 
 **Base de las covariables: k = 10 tampoco era la restricción**, y los edf lo dicen directamente. Duplicar k a 20 mueve cada suavizado ambiental prácticamente nada: depth 3.09 a 3.15, grad 2.06 a 2.15, slope 2.23 a 2.36, VelVert 1.71 a 1.71, sst y clo 1.00 a 1.00. Las ganancias aparentes dentro del arm a k = 20, depth +4.25 y grad +2.69, no son la base: depth se mueve 6 unidades de AIC mientras su edf se mueve 0.06. Eso es ruido del tamaño que el barrido de nudos ya había medido.
 

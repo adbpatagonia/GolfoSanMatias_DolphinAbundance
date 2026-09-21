@@ -47,8 +47,8 @@
 #   That is why a no-year-term model is always included below as a positive
 #   control -- it shows what the correlation looks like before it is absorbed.
 #
-#   k.check: edf close to k' AND a low k-index with a small p-value. Either
-#   alone is weak evidence; k-index below ~1 with p below ~0.05 and edf near
+#   k.check: edf close to k_prime AND a low k_index with a small p_value. Either
+#   alone is weak evidence; k_index below ~1 with p below ~0.05 and edf near
 #   the ceiling together mean raise k and refit.
 #
 #   Rootogram: a bar foot displaced from zero by more than its band, and more
@@ -416,25 +416,25 @@ set.seed(42)   # k.check randomises; fix it so the table is reproducible
 k_tab <- rbindlist(lapply(.models, function(m)
   cbind(model = m, dsm_kcheck(get(m), n.rep = .n_rep_kcheck))))
 
-# FLAGGING. Only edf sitting near k' is evidence that the BASIS is the binding
-# constraint. A low k-index with a small p-value on its own is not: it says
+# FLAGGING. Only edf sitting near k_prime is evidence that the BASIS is the binding
+# constraint. A low k_index with a small p_value on its own is not: it says
 # residual variance is higher between neighbouring covariate values than
 # expected, and raising k is only one of the things that can cause. The
-# discriminating check is whether the k-index is depressed for this smooth
+# discriminating check is whether the k_index is depressed for this smooth
 # specifically or for every smooth in the model. Common dolphin shows
-# k-index 0.53-0.68 on ALL terms including s(Ano) at 11% of its basis -- a
+# k_index 0.53-0.68 on ALL terms including s(Ano) at 11% of its basis -- a
 # smooth using an eighth of its basis cannot be basis-limited, so that pattern
 # points at the mean-variance relationship or at spatial structure the 1-D
 # randomisation is picking up, not at k. Dusky sits at 0.70-0.84 throughout.
-# So: `refit at higher k` is driven by edf_frac, and the k-index columns are
+# So: `refit at higher k` is driven by edf_frac, and the k_index columns are
 # reported for context rather than converted into a verdict.
 k_tab[, near_ceiling := edf_frac > 0.80]
 k_tab[, shrunk       := edf < 0.5]
 k_tab[, low_k_index  := k_index < 1 & p_value < 0.05]
 k_tab[, flag := fifelse(shrunk, "shrunk to ~0",
                  fifelse(near_ceiling, "at ceiling - refit at higher k",
-                  fifelse(low_k_index, "low k-index (see model-wide pattern)", "")))]
-# is the low k-index specific to a term, or model-wide?
+                  fifelse(low_k_index, "low k_index (see model-wide pattern)", "")))]
+# is the low k_index specific to a term, or model-wide?
 k_tab[, k_index_model_wide := mean(low_k_index) > 0.8, by = model]
 
 cat("\n=== basis dimension (k.check, n.rep =", .n_rep_kcheck, ") ===\n")
@@ -443,7 +443,7 @@ print(k_tab[, .(model, smooth, k_prime, edf = round(edf, 2), edf_frac,
 cat("\nsmooths at their basis ceiling (refit at higher k):",
     k_tab[near_ceiling == TRUE, .N], "\n")
 if (any(k_tab$k_index_model_wide))
-  cat("NOTE: k-index is low for essentially EVERY smooth in:",
+  cat("NOTE: k_index is low for essentially EVERY smooth in:",
       paste(unique(k_tab[k_index_model_wide == TRUE, model]), collapse = ", "),
       "\n  A model-wide depression is not per-smooth basis shortage -- look at the\n",
       " mean-variance relationship (Tweedie p, zero inflation) and at spatial\n",

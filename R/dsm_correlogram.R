@@ -162,28 +162,28 @@ dsm_seg_num <- function(sample_label) {
 #'
 #' @details
 #' \code{k.check} compares the estimated degrees of freedom of each smooth with
-#' the basis dimension \code{k'} it was given, and tests whether the residuals
+#' the basis dimension \code{k_prime} it was given, and tests whether the residuals
 #' still hold pattern at a finer scale than the basis can represent. The two
 #' columns say different things and should not be merged into one verdict:
 #'
-#' \code{edf} close to \code{k'} is evidence the basis is the binding
+#' \code{edf} close to \code{k_prime} is evidence the basis is the binding
 #' constraint -- the term is as wiggly as \code{k} allowed rather than as
 #' wiggly as the penalty wanted -- so its deviance, \code{edf} and hence its
 #' contribution to AIC reflect the ceiling. Refit at higher \code{k} and see
 #' whether \code{edf} moves.
 #'
-#' A low \code{k-index} with a small \code{p-value} says only that residual
+#' A low \code{k_index} with a small \code{p_value} says only that residual
 #' variance is higher between neighbouring covariate values than expected.
 #' Raising \code{k} is one cause among several. The discriminating question is
-#' whether the \code{k-index} is depressed for one smooth or for all of them: a
+#' whether the \code{k_index} is depressed for one smooth or for all of them: a
 #' model-wide depression, especially on a smooth using a small fraction of its
 #' basis, points at the mean-variance relationship or at structure the
 #' randomisation is picking up elsewhere, not at that smooth's \code{k}. The
-#' test is randomisation-based, so \code{p-value} moves between runs; raise
+#' test is randomisation-based, so \code{p_value} moves between runs; raise
 #' \code{n.rep} rather than reading a borderline value closely.
 #'
 #' A smooth penalised to near-zero \code{edf} is the opposite situation: the
-#' term is effectively absent from the model whatever \code{k'} it was given.
+#' term is effectively absent from the model whatever \code{k_prime} it was given.
 #'
 #' @param model A fitted \code{dsm} (or \code{gam}) object.
 #' @param n.rep Number of randomisations for the residual test. Defaults to

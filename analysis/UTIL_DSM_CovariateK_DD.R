@@ -32,7 +32,7 @@
 # deviance (Dev 0.26 vs 0.22). But within the soap block the covariate models
 # beat the reported dd.dsm.soap.season.year by a lot -- s(clo) by 47.5 AIC
 # units -- and UTIL_DSM_Diagnostics.R showed every s(clo) fit pinned at its
-# basis ceiling: edf 8.25-8.43 of k' = 9. A smooth that has run out of basis is
+# basis ceiling: edf 8.25-8.43 of k_prime = 9. A smooth that has run out of basis is
 # not "as wiggly as the data asked for", so neither its deviance nor its AIC
 # is a fair measure of what that covariate is worth. The same k = 10 default
 # applies to all seven covariates, so all seven need re-testing, not just clo.

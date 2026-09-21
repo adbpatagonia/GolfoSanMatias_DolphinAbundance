@@ -13,10 +13,10 @@ Description: Helper functions and analysis code for estimating the abundance
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = FALSE)
-RoxygenNote: 7.3.2
 Imports:
     stats
 Suggests:
     mgcv,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

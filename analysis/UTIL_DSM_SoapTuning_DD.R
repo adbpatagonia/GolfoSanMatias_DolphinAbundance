@@ -309,7 +309,7 @@ if (length(NGRIDS_EXTRA)) {
 }
 
 # PLATEAU. edf_frac is NOT the criterion -- it falls as the grid grows simply
-# because k' grows faster than edf, so it drops even while the basis is still
+# because k_prime grows faster than edf, so it drops even while the basis is still
 # binding. The signal is edf_xy itself flattening: edf_gain per 10 extra knots.
 sweep[, edf_gain := round(edf_xy - shift(edf_xy), 2), by = .(tol, margin)]
 sweep[, knot_gain := n_knots - shift(n_knots), by = .(tol, margin)]

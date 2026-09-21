@@ -55,7 +55,7 @@ source(file.path(here::here(), "R", "dsm_correlogram.R"))
 #  KNOB 3  covariate basis: the seven environmental smooths go to k = 20 (K_COV
 #     below). s(Ano) is DELIBERATELY left at the default -- it comes out at edf
 #     1.00 of 9, so raising it is meaningless. k = 20 is ample: s(sst) in the
-#     tuned fit uses edf 10.04 of k' = 19.
+#     tuned fit uses edf 10.04 of k_prime = 19.
 #
 # Reference values for the reported model count ~ s(x,y,so) + season + s(Ano):
 #     AIC 6070.35, Dev 0.258, lag-1 0.0247   (was AIC 6100.53, Dev 0.218)
