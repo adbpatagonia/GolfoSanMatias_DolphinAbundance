@@ -115,7 +115,7 @@ if (exists("p.velvert.lo")) p.velvert.lo else
      El modelo diagnosticado es el que el reporte presenta:
      lo.dsm.xy.fsyear.season = count ~ s(x, y, year_fac, bs = "fs") + season. -->
 
-Las tablas de selección ordenan los candidatos por AIC, y `mgcv` lo calcula con la corrección por incertidumbre en los parámetros de suavizado de Wood, Pya y Säfken (2016) [AGREGAR A .bib]. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente, y que la distribución ajustada produce los conteos que se observaron.
+Las tablas de selección ordenan los candidatos por AIC, y `mgcv` lo calcula con la corrección por incertidumbre en los parámetros de suavizado de @wood2016smoothing. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente, y que la distribución ajustada produce los conteos que se observaron.
 
 ## Autocorrelación residual
 
@@ -163,7 +163,7 @@ El modelo by-year muestra otra cosa que vale la pena señalar: **la mitad de sus
 
 ## Rootogramas
 
-El rootograma compara, por cada clase de conteo, el número de segmentos observados con el esperado por el modelo, en escala de raíz cuadrada (Kleiber y Zeileis 2016) [AGREGAR A .bib].
+El rootograma compara, por cada clase de conteo, el número de segmentos observados con el esperado por el modelo, en escala de raíz cuadrada (@kleiberzeileis).
 
 ```{r}
 #| label: fig-x-lo-rootograma

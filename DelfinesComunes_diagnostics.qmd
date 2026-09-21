@@ -95,7 +95,7 @@ img <- function(...) {
      `# Separar efecto del tiempo del numero de observadores` (linea 1424).
      Motivo: los diagnosticos son sobre el modelo soap que se presenta ahi. -->
 
-Las tablas de selección de modelos ordenan los candidatos por AIC, y `mgcv` calcula ese AIC con la corrección por incertidumbre en los parámetros de suavizado de Wood, Pya y Säfken (2016) [AGREGAR A .bib]. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente para expresarse, y que la distribución ajustada produce los conteos que efectivamente se observaron. Los tres se verifican acá.
+Las tablas de selección de modelos ordenan los candidatos por AIC, y `mgcv` calcula ese AIC con la corrección por incertidumbre en los parámetros de suavizado de @wood2016smoothing. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente para expresarse, y que la distribución ajustada produce los conteos que efectivamente se observaron. Los tres se verifican acá.
 
 ## Autocorrelación residual
 
@@ -145,7 +145,7 @@ Acá aparece el hallazgo que motivó todo el trabajo posterior: **`s(clo)` está
 
 ## Rootogramas
 
-Ni la autocorrelación ni la dimensión de la base preguntan si la distribución ajustada produce los conteos que se vieron. El rootograma sí: compara, por cada clase de conteo, el número de segmentos observados con el número esperado por el modelo, en escala de raíz cuadrada. Esa es la escala en la que el error estándar de $\sqrt{observado}$ es aproximadamente constante, así que un desvío de un dado tamaño significa lo mismo en la clase del cero que en la cola (Kleiber y Zeileis 2016) [AGREGAR A .bib]. Eso es lo que hace legibles los dos modos de falla de un conteo por segmento: exceso de ceros y sobredispersión.
+Ni la autocorrelación ni la dimensión de la base preguntan si la distribución ajustada produce los conteos que se vieron. El rootograma sí: compara, por cada clase de conteo, el número de segmentos observados con el número esperado por el modelo, en escala de raíz cuadrada. Esa es la escala en la que el error estándar de $\sqrt{observado}$ es aproximadamente constante, así que un desvío de un dado tamaño significa lo mismo en la clase del cero que en la cola @kleiberzeileis. Eso es lo que hace legibles los dos modos de falla de un conteo por segmento: exceso de ceros y sobredispersión.
 
 ```{r}
 #| label: fig-x-dd-rootograma

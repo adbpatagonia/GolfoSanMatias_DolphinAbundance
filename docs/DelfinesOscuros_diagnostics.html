@@ -23,7 +23,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -140,16 +160,8 @@ window.Quarto = {
 <span class="menu-text">Delfines Oscuros</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./DelfinesOscuros_diagnostics.html" aria-current="page"> 
-<span class="menu-text">Delfines Oscuros - diagnostics</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./DelfinesComunes.html"> 
 <span class="menu-text">Delfines Comunes</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./DelfinesComunes_diagnostics.html"> 
-<span class="menu-text">Delfines Comunes - diagnostics</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -289,7 +301,7 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
      `# Separar efecto del tiempo del numero de observadores` (linea 1268).
      El modelo diagnosticado es el que el reporte presenta:
      lo.dsm.xy.fsyear.season = count ~ s(x, y, year_fac, bs = "fs") + season. -->
-<p>Las tablas de selección ordenan los candidatos por AIC, y <code>mgcv</code> lo calcula con la corrección por incertidumbre en los parámetros de suavizado de Wood, Pya y Säfken (2016) [AGREGAR A .bib]. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente, y que la distribución ajustada produce los conteos que se observaron.</p>
+<p>Las tablas de selección ordenan los candidatos por AIC, y <code>mgcv</code> lo calcula con la corrección por incertidumbre en los parámetros de suavizado de <span class="citation" data-cites="wood2016smoothing">Wood et al. (<a href="#ref-wood2016smoothing" role="doc-biblioref">2016</a>)</span>. Esa corrección es la adecuada, pero no rescata tres supuestos sobre los que el ordenamiento igual descansa: que los segmentos son independientes, que cada suavizado tuvo base suficiente, y que la distribución ajustada produce los conteos que se observaron.</p>
 <section id="autocorrelación-residual" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="autocorrelación-residual"><span class="header-section-number">2.1</span> Autocorrelación residual</h2>
 <p>Un DSM asume que los residuos de los segmentos son independientes. Los segmentos son tramos contiguos de una misma trayectoria, así que no tienen por qué serlo. Si quedan correlacionados a lo largo de la trayectoria, el tamaño muestral efectivo es menor que el nominal: la abundancia no se sesga mucho, pero los errores estándar se desinflan y las diferencias de AIC se inflan.</p>
@@ -440,7 +452,7 @@ Figure&nbsp;1: Correlograma de los residuos a lo largo de la trayectoria, delfin
 <div id="tbl-x-lo-kcheck" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-x-lo-kcheck-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Chequeo de dimensión de base. edf_frac es edf/k’; near_ceiling marca los suavizados apoyados contra su techo; shrunk marca los que la penalización llevó a cero.
+Table&nbsp;2: Chequeo de dimensión de base. edf_frac es edf/k_prime; near_ceiling marca los suavizados apoyados contra su techo; shrunk marca los que la penalización llevó a cero.
 </figcaption>
 <div aria-describedby="tbl-x-lo-kcheck-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -679,12 +691,12 @@ Table&nbsp;2: Chequeo de dimensión de base. edf_frac es edf/k’; near_ceiling 
 </figure>
 </div>
 </div>
-<p><strong>Ningún suavizado de delfines oscuros está apoyado contra su techo.</strong> <code>s(x,y,year_fac)</code> sale en 63.0 de k’ = 330 (edf_frac 0.19) y <code>s(depth)</code> en 3.66 de 9 [VERIFICAR TRAS RE-RUN]. Es decir, la penalización está haciendo el trabajo y la base no ata en ningún término, que es exactamente lo contrario de lo que pasa con delfines comunes, donde <code>s(clo)</code> sale contra su techo en todos los modelos que lo incluyen. Esa diferencia es la que hace interpretable el resultado de la otra especie, y es la razón por la cual el estudio de covariables de la sección 3 se corrió acá también: como control, no porque se esperara que cambiara algo.</p>
+<p><strong>Ningún suavizado de delfines oscuros está apoyado contra su techo.</strong> <code>s(x,y,year_fac)</code> sale en 63.0 de k_prime = 330 (edf_frac 0.19) y <code>s(depth)</code> en 3.66 de 9 [VERIFICAR TRAS RE-RUN]. Es decir, la penalización está haciendo el trabajo y la base no ata en ningún término, que es exactamente lo contrario de lo que pasa con delfines comunes, donde <code>s(clo)</code> sale contra su techo en todos los modelos que lo incluyen. Esa diferencia es la que hace interpretable el resultado de la otra especie, y es la razón por la cual el estudio de covariables de la sección 3 se corrió acá también: como control, no porque se esperara que cambiara algo.</p>
 <p>El modelo by-year muestra otra cosa que vale la pena señalar: <strong>la mitad de sus superficies anuales están encogidas a cero</strong> (2006, 2008, 2010, 2013, 2015, 2017, 2018). Es lo esperable en años con pocos datos, y es el argumento estructural a favor del término <code>fs</code> sobre el by-year: el <code>fs</code> comparte información entre años en lugar de estimar cada superficie por separado.</p>
 </section>
 <section id="rootogramas" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="rootogramas"><span class="header-section-number">2.3</span> Rootogramas</h2>
-<p>El rootograma compara, por cada clase de conteo, el número de segmentos observados con el esperado por el modelo, en escala de raíz cuadrada (Kleiber y Zeileis 2016) [AGREGAR A .bib].</p>
+<p>El rootograma compara, por cada clase de conteo, el número de segmentos observados con el esperado por el modelo, en escala de raíz cuadrada (<span class="citation" data-cites="kleiberzeileis">Kleiber &amp; Zeileis (<a href="#ref-kleiberzeileis" role="doc-biblioref">2016</a>)</span>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-x-lo-rootograma" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -725,7 +737,7 @@ Figure&nbsp;3: Rootograma por bloque espacial. Los bloques son una grilla regula
      Estudio: analysis/UTIL_DSM_CovariateK_LO.R (corre en el paso 8, EN FRIO:
      el paso 3 del runbook removio .cache_covk_lo, asi que los siete ajustes a
      k = 20 se rehacen desde cero, ~11 min cada uno). -->
-<p>Todo suavizado ambiental de este proyecto se ajustó con el default k = 10 de <code>mgcv</code>, que <code>k.check</code> reporta como k’ = 9 porque la restricción de centrado cuesta un grado de libertad. Una covariable cuyo suavizado se quedó sin base tendría subestimada su contribución, tanto en deviance como en AIC. Para delfines comunes ese problema resultó real. Acá el <code>k.check</code> ya salía limpio, así que la expectativa era que k = 20 no cambiara nada, pero vale confirmarlo en lugar de asumirlo: es el caso control que hace interpretable el resultado de la otra especie.</p>
+<p>Todo suavizado ambiental de este proyecto se ajustó con el default k = 10 de <code>mgcv</code>, que <code>k.check</code> reporta como k’ = 9 – la columna <code>k_prime</code> de las tablas de arriba – porque la restricción de centrado cuesta un grado de libertad. Una covariable cuyo suavizado se quedó sin base tendría subestimada su contribución, tanto en deviance como en AIC. Para delfines comunes ese problema resultó real. Acá el <code>k.check</code> ya salía limpio, así que la expectativa era que k = 20 no cambiara nada, pero vale confirmarlo en lugar de asumirlo: es el caso control que hace interpretable el resultado de la otra especie.</p>
 <div class="cell">
 <div id="tbl-x-lo-covk" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2664,7 +2676,7 @@ Table&nbsp;7: Selección de modelos soap: arm original (el guardado) contra arm 
 </figure>
 </div>
 </div>
-<p><strong>Grilla de nudos: la base espacial nunca ató.</strong> <code>edf_frac_xy</code> es 0.335 en la configuración guardada (16.06 de 48), contra 0.64 en el arm de delfines comunes que sí necesitó arreglo. A lo largo del barrido completo <code>edf_xy</code> sube apenas de 15.9 a 29.3 mientras k’ va de 49 a 369: la penalización está haciendo el trabajo, no el techo de la base. No hay acá un defecto que reparar. Como evidencia de apoyo, las 20 configuraciones del barrido abarcan 15.8 unidades de AIC, cuando el refinamiento de grilla de delfines comunes valía 24 él solo, y el AIC es <strong>no monótono</strong> en el número de nudos: 12x9 es peor que 10x8 en los tres bordes, por 3.4, 9.2 y 12.8. Una base penalizada más fina no puede ajustar genuinamente peor, así que esa dispersión es REML aterrizando distinto, y fija el piso de ruido para todo lo demás en la tabla.</p>
+<p><strong>Grilla de nudos: la base espacial nunca ató.</strong> <code>edf_frac_xy</code> es 0.335 en la configuración guardada (16.06 de 48), contra 0.64 en el arm de delfines comunes que sí necesitó arreglo. A lo largo del barrido completo <code>edf_xy</code> sube apenas de 15.9 a 29.3 mientras k_prime va de 49 a 369: la penalización está haciendo el trabajo, no el techo de la base. No hay acá un defecto que reparar. Como evidencia de apoyo, las 20 configuraciones del barrido abarcan 15.8 unidades de AIC, cuando el refinamiento de grilla de delfines comunes valía 24 él solo, y el AIC es <strong>no monótono</strong> en el número de nudos: 12x9 es peor que 10x8 en los tres bordes, por 3.4, 9.2 y 12.8. Una base penalizada más fina no puede ajustar genuinamente peor, así que esa dispersión es REML aterrizando distinto, y fija el piso de ruido para todo lo demás en la tabla.</p>
 <p><strong>Base de las covariables: k = 10 tampoco era la restricción</strong>, y los edf lo dicen directamente. Duplicar k a 20 mueve cada suavizado ambiental prácticamente nada: depth 3.09 a 3.15, grad 2.06 a 2.15, slope 2.23 a 2.36, VelVert 1.71 a 1.71, sst y clo 1.00 a 1.00. Las ganancias aparentes dentro del arm a k = 20, depth +4.25 y grad +2.69, no son la base: depth se mueve 6 unidades de AIC mientras su edf se mueve 0.06. Eso es ruido del tamaño que el barrido de nudos ya había medido.</p>
 <p><strong>Borde: tol500/margin250 cuesta 7.32 unidades de AIC</strong> sobre el modelo presentado (1005.19 contra 1012.51). El AIC no puede realmente adjudicar esto, porque 7.32 cae adentro de la oscilación de 12.8 unidades, pero es consistentemente negativo a través de las grillas, entre 3.7 y 7.4, y el único argumento a favor es la prolijidad geométrica. Esto es lo opuesto al resultado de delfines comunes, donde el borde más ajustado valía alrededor de 6 unidades: <strong>las dos especies quedan en bordes distintos a propósito, cada una sobre su propia evidencia.</strong></p>
 <p>De modo que <code>4_DuskyDolphin_DSM_soap.R</code> conserva 3000/2000/10x8 y k = 10. El único cambio que recibió ese arm es la corrección de <code>bnd_dist()</code>, que medía la distancia de los nudos a los <strong>vértices</strong> del borde en lugar de a sus <strong>aristas</strong>. Ese error es latente a 10x8 pero se dispara apenas se refina la grilla, así que se corrigió antes de sintonizar. Vale 0.08 unidades de AIC y cambia el conteo de nudos conservados de 41 a 40.</p>
@@ -2711,12 +2723,20 @@ Table&nbsp;7: Selección de modelos soap: arm original (el guardado) contra arm 
 </ol>
 </section>
 <section id="referencias" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Referencias</h1>
+
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">8 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-kleiberzeileis" class="csl-entry" role="listitem">
+Kleiber C, Zeileis A (2016) <a href="https://doi.org/10.1080/00031305.2016.1173590">Visualizing Count Data Regressions Using Rootograms</a>. The American Statistician 70:296–303.
+</div>
+<div id="ref-wood2016smoothing" class="csl-entry" role="listitem">
+Wood SN, Pya N, Säfken B (2016) <a href="https://doi.org/10.1080/01621459.2016.1180986">Smoothing Parameter and Model Selection for General Smooth Models</a>. Journal of the American Statistical Association 111:1548–1563.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

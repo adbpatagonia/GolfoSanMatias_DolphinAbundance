@@ -61,24 +61,4 @@
   url       = {https://doi.org},
 }
 
-@Article{kleiberzeileis,
-  author    = {Christian Kleiber and Achim Zeileis},
-  title     = {Visualizing Count Data Regressions Using Rootograms},
-  journal   = {The American Statistician},
-  year      = {2016},
-  volume    = {70},
-  number    = {3},
-  pages     = {296--303},
-  doi       = {10.1080/00031305.2016.1173590},
-  eprint    = {https://doi.org/10.1080/00031305.2016.1173590},
-  publisher = {Taylor \& Francis},
-  url       = { 
-    
-        https://doi.org/10.1080/00031305.2016.1173590
-    
-    
-
-},
-}
-
 @Comment{jabref-meta: databaseType:bibtex;}

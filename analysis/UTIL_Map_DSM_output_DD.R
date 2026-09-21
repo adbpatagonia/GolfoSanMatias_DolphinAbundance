@@ -1112,7 +1112,8 @@ ggsave(
 
 
 # ===========================================================================
-# Map 12 - TUNED SOAP ARM, 4 x 2 tile: season (columns) x model (rows)
+# Maps 13-14 - TUNED SOAP ARM, 4 x 2 tile: season (columns) x model (rows)
+#          Two files: linear colour scale (13) and log10 (14).
 #          rows = base  count ~ s(x,y,so) + season + s(Ano)
 #                 +sst  count ~ s(x,y,so) + season + s(Ano) + s(sst, k = 20)
 #
