@@ -202,7 +202,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#mapas-y-abundancia-del-arm-sintonizado" id="toc-mapas-y-abundancia-del-arm-sintonizado" class="nav-link" data-scroll-target="#mapas-y-abundancia-del-arm-sintonizado"><span class="header-section-number">5</span> 5. Mapas y abundancia del arm sintonizado</a></li>
   <li><a href="#sec-x-dd-cola" id="toc-sec-x-dd-cola" class="nav-link" data-scroll-target="#sec-x-dd-cola"><span class="header-section-number">6</span> 6. La cola del rootograma es el tamaño de los grupos</a></li>
-  <li><a href="#cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones" id="toc-cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones" class="nav-link" data-scroll-target="#cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones"><span class="header-section-number">7</span> 7. Cuánto cuesta el desajuste de la cola a las estimaciones</a></li>
+  <li><a href="#cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones" id="toc-cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones" class="nav-link" data-scroll-target="#cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones"><span class="header-section-number">7</span> 7. Cuánto cuesta el desajuste de la cola a las estimaciones</a>
+  <ul class="collapse">
+  <li><a href="#sec-x-dd-sandwich" id="toc-sec-x-dd-sandwich" class="nav-link" data-scroll-target="#sec-x-dd-sandwich"><span class="header-section-number">7.1</span> Intervalos robustos: el estimador sándwich y el bootstrap</a></li>
+  </ul></li>
   <li><a href="#corrección-a-secciones-ya-publicadas-el-offset-de-los-mapas" id="toc-corrección-a-secciones-ya-publicadas-el-offset-de-los-mapas" class="nav-link" data-scroll-target="#corrección-a-secciones-ya-publicadas-el-offset-de-los-mapas"><span class="header-section-number">8</span> 8. CORRECCIÓN a secciones ya publicadas: el offset de los mapas</a></li>
   <li><a href="#qué-queda-pendiente" id="toc-qué-queda-pendiente" class="nav-link" data-scroll-target="#qué-queda-pendiente"><span class="header-section-number">9</span> 9. Qué queda pendiente</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">10</span> Referencias</a></li>
@@ -258,16 +261,34 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
            - DelfinesOscuros.qmd
            - DelfinesComunes.qmd
 
-2. LOS NUMEROS DE ESTE BORRADOR SON PRE-RE-RUN. Los pasos 5 a 8 del runbook
-   (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescriben dd_output.RData y todo
-   output/CommonDolphin/. Ademas dd_output.RData quedaba en la configuracion
-   soap ANTERIOR al retune (41 nudos, tol3000/margin2000, k=10), asi que los
-   diagnosticos van a cambiar. Por eso las cifras se leen desde los CSV con
-   `fread()` y no estan escritas en la prosa. Donde una cifra SI esta en la
-   prosa va marcada con [VERIFICAR TRAS RE-RUN].
+2. LAS CIFRAS DE LA PROSA SE VERIFICARON TRAS EL RE-RUN (2026-09-29). Los pasos
+   5 y 6 del runbook (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescribieron
+   dd_output.RData (2026-09-18) y output/CommonDolphin/ con la configuracion
+   soap sintonizada (89 nudos, tol500/margin250, K_COV=20). Las cifras de la
+   prosa de las secciones 1, 5, 6 y 7, que dependen del re-run, se cotejaron
+   contra el CSV o el workspace que las produce, y las marcas de verificacion
+   pendiente se sacaron. No se cotejaron contra output: las secciones 2 a 4
+   (registros de decision, estables por construccion), el rango mensual de sst
+   de la seccion 5 (3.62 / 4.29, sale del encabezado del script) y el
+   "conglomerado entre 150 y 450" de la seccion 6. Lo que cambio con el re-run:
+     - el mejor modelo del bloque soap por AIC es ahora + s(sst), no + s(clo),
+       y por eso cambio el conjunto diagnosticado (seccion 1);
+     - s(clo) ya no esta contra su techo en el bloque soap (seccion 1);
+     - p y phi del modelo presentado: 1.572 / 28.45 (seccion 6);
+     - la figura tuned-vs-original que el script reescribe quedo degenerada
+       (compara el arm sintonizado consigo mismo). La seccion 5 muestra en su
+       lugar el registro de decision del 2026-09-16 (ver advertencia 4).
+   La seccion 7 suma, el 2026-09-29, la subseccion del estimador sandwich
+   (analysis/UTIL_DSM_RobustCV_DD.R, cuarto script del paso 6). El CV robusto,
+   1.39 veces el reportado, reemplaza al 1.29 como la cifra a reportar, y sus
+   cifras se cotejaron contra DD_robustcv_*.csv.
+   Las tablas y figuras se siguen leyendo desde los CSV con `fread()`. Si el
+   pipeline se vuelve a correr, hay que volver a cotejar la prosa.
 
    Lo que SI es estable: los bloques RESULT de los scripts en analysis/ (estan
-   versionados) y los 16 registros de decision que restaura el paso 9.
+   versionados) y los 18 registros de decision que restaura
+   analysis/restore_dd_decision_records.ps1 (16 del paso 9, mas 2 promovidos
+   el 2026-09-29).
 
 3. DOS CITAS FALTAN EN EL .bib. references/distancesampling.bib solo tiene
    Buckland2001, Buckland2015DistanceSampling y Miller2013SpatialModels. Las
@@ -278,7 +299,9 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
 4. DEPENDENCIAS DE CADA SECCION. Las secciones 1 (diagnosticos) salen del
    workspace (dd.diag) y de output/CommonDolphin/DSM/, que el paso 5 escribe.
    Las secciones 2, 3 y 4 salen de los 16 registros de decision que restaura el
-   paso 9. Las secciones 5, 6 y 7 salen del paso 6 (9_RegenerateStudies_DD.R).
+   paso 9. Las secciones 5, 6 y 7 salen del paso 6 (9_RegenerateStudies_DD.R),
+   salvo la comparacion contra el arm original de la seccion 5, que sale de
+   los 2 registros de output/CommonDolphin/Abundance/decision_records/.
    Ninguna renderiza antes de que corran esos pasos; los helpers de abajo avisan
    en lugar de romper.
 =============================================================================
@@ -463,7 +486,7 @@ Figure&nbsp;1: Correlograma de los residuos a lo largo de la trayectoria, delfin
 </div>
 </div>
 </div>
-<p>El resultado es el que sostiene la columna <code>lag1_sig</code> de las tablas de selección: <strong>el modelo que se presenta, <code>count ~ s(x,y,bs="so") + season + s(Ano)</code>, pasa la prueba a las dos escalas, y los modelos que incluyen <code>s(clo)</code> no la pasan</strong> [VERIFICAR TRAS RE-RUN]. Esto es relevante porque <code>s(clo)</code> era, por AIC, el mejor modelo del bloque soap. Un modelo cuya independencia residual no se sostiene no puede seleccionarse por un AIC que asume esa independencia, de modo que el ordenamiento debe leerse con <code>lag1_sig</code> y no sólo con <code>deltaAIC</code>.</p>
+<p>El resultado es el que sostiene la columna <code>lag1_sig</code> de las tablas de selección: <strong>el modelo que se presenta, <code>count ~ s(x,y,bs="so") + season + s(Ano)</code>, pasa la prueba a las dos escalas, y los modelos diagnosticados que incluyen <code>s(clo)</code> no la pasan a ninguna de las dos</strong>. El margen del modelo presentado no es holgado a la escala de pata: usa el 95 % de la banda, contra el 66 % a la escala de día. Esto es relevante porque el modelo presentado no es el mejor del bloque soap por AIC. <code>s(sst)</code> le gana por 35.4 unidades y el mejor modelo con <code>s(clo)</code> por 28.9, y los dos fallan la prueba a la escala de pata (107 % y 127 % de la banda). De los 25 modelos del bloque soap, sólo el presentado y el que agrega <code>s(dist.up)</code> tienen <code>lag1_sig = FALSE</code> en la tabla de selección. Un modelo cuya independencia residual no se sostiene no puede seleccionarse por un AIC que asume esa independencia, de modo que el ordenamiento debe leerse con <code>lag1_sig</code> y no sólo con <code>deltaAIC</code>.</p>
 <p>Dos advertencias que conviene explicitar. La banda es optimista: trata a los pares de residuos como independientes cuando por construcción se solapan, así que una correlación apenas adentro de la banda es evidencia más débil de lo que parece. Y un correlograma plano significa que no hay correlación <em>no modelada</em>, no que no haya correlación: una superficie espacial flexible que varíe por año puede absorber la estructura a lo largo de la trayectoria dentro del ajuste, que es exactamente el mecanismo de sobre-ajuste que se está testeando. Por eso el conjunto diagnosticado incluye siempre un modelo sin término de año, como control positivo.</p>
 </section>
 <section id="dimensión-de-la-base-k.check" class="level2" data-number="1.2">
@@ -768,7 +791,8 @@ Table&nbsp;2: Chequeo de dimensión de base. edf_frac es edf/k_prime; near_ceili
 </figure>
 </div>
 </div>
-<p>Acá aparece el hallazgo que motivó todo el trabajo posterior: <strong><code>s(clo)</code> está apoyado contra su techo en todos los modelos que lo incluyen</strong> (edf ~8.3-8.4 sobre k_prime = 9) [VERIFICAR TRAS RE-RUN]. Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (<a href="#sec-x-dd-covk" class="quarto-xref">Section&nbsp;3</a>), y no sólo la marcada.</p>
+<p>La tabla ya no muestra el hallazgo que motivó todo el trabajo posterior, porque la configuración que hoy corre lo corrigió. Con la configuración original (41 nudos, k = 10), <strong><code>s(clo)</code> estaba apoyado contra su techo en todos los modelos que lo incluían</strong> (edf 8.35-8.43 sobre k_prime = 9). Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (<a href="#sec-x-dd-covk" class="quarto-xref">Section&nbsp;3</a>), y no sólo la marcada.</p>
+<p>Con K_COV = 20, que es lo que hoy corre en el bloque soap, <code>s(clo)</code> sale en 11.6 de k_prime = 19 (edf_frac 0.61) y <code>s(sst)</code> en 10.0 de 19 (0.53): ninguno está contra su techo. El único <code>s(clo)</code> que sigue apoyado contra su techo es el del modelo by-year (8.35 de 9), que no pertenece al bloque soap y conserva k = 10.</p>
 </section>
 <section id="rootogramas" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="rootogramas"><span class="header-section-number">1.3</span> Rootogramas</h2>
@@ -1702,7 +1726,7 @@ Table&nbsp;3: Rootograma por grilla de nudos (arm = original 10x8 contra revisad
      `table_dd_soap_modselection` (linea ~1336), porque es la que justifica
      descartar las covariables ambientales.
      Estudio: analysis/UTIL_DSM_CovariateK_DD.R (REGISTRO DE DECISION). -->
-<p>El reporte descarta las covariables ambientales porque agregan poca deviance (0.26 contra 0.22). Ese argumento tenía un problema: dentro del bloque soap las covariables le ganaban al modelo presentado por mucho (<code>s(clo)</code> por 47.5 unidades de AIC), y el <code>k.check</code> mostraba a <code>s(clo)</code> apoyado contra su techo. Un suavizado que se quedó sin base no da una medida justa de lo que la covariable vale, ni en deviance ni en AIC. Como el default k = 10 aplica a las siete covariables, había que re-testear las siete.</p>
+<p>El reporte descartaba las covariables ambientales porque agregaban poca deviance: 0.26 contra 0.22 con la configuración original, y 0.29 contra 0.26 con la sintonizada que hoy corre. Ese argumento tenía un problema: dentro del bloque soap las covariables le ganaban al modelo presentado por mucho (<code>s(clo)</code> por 47.5 unidades de AIC), y el <code>k.check</code> mostraba a <code>s(clo)</code> apoyado contra su techo. Un suavizado que se quedó sin base no da una medida justa de lo que la covariable vale, ni en deviance ni en AIC. Como el default k = 10 aplica a las siete covariables, había que re-testear las siete.</p>
 <div class="cell">
 <div id="tbl-x-dd-covk" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2347,7 +2371,7 @@ Figure&nbsp;5: Los dos defectos, separados: la grilla de nudos y la base de las 
 </div>
 </div>
 </div>
-<p>La consecuencia para el reporte es que <strong>descartar las covariables ambientales en delfines comunes no está sostenido por el AIC una vez que la base es adecuada</strong>: con la grilla y la base corregidas, <code>s(sst)</code> y <code>s(clo)</code> valen del orden de 30 a 35 unidades. La decisión de presentar el modelo sin covariables se sostiene por otros motivos, que conviene enunciar como tales: la ganancia en deviance sigue siendo marginal, y las covariables ambientales son climatologías sin dimensión anual, de modo que no pueden aportar nada a la tendencia interanual que es el objeto del trabajo.</p>
+<p>La consecuencia para el reporte es que <strong>descartar las covariables ambientales en delfines comunes no está sostenido por el AIC una vez que la base es adecuada</strong>: con la grilla y la base corregidas (la configuración que hoy corre), <code>s(sst)</code> y <code>s(clo)</code> le ganan al modelo presentado por 35.4 y 28.9 unidades, y 13 de los 25 modelos del bloque soap quedan por delante de él. La decisión de presentar el modelo sin covariables se sostiene por otros dos motivos, que conviene enunciar como tales. Primero, la ganancia en deviance es marginal: ninguno de esos 13 modelos agrega más de 3.2 puntos (0.290 contra 0.258 del modelo presentado). Segundo, 12 de los 13 no pasan la prueba de autocorrelación residual a la escala de pata, entre ellos los dos mejores (<code>s(sst)</code> usa el 107 % de la banda y <code>s(clo)</code> el 127 %, contra el 95 % del modelo presentado), y un AIC que asume segmentos independientes no puede elegir un modelo cuyos residuos no lo son. El único que pasa la prueba es el que agrega <code>s(dist.up)</code> (98 % de la banda), y ése queda descartado por el primer criterio: gana 12.6 unidades de AIC con 1.3 puntos de deviance. El margen entre el modelo presentado y el de <code>s(sst)</code> es estrecho, y por eso la decisión descansa en los dos criterios juntos y no en la prueba de autocorrelación sola. Adicionalmente, e independientemente de la selección, las covariables oceanográficas son campos de resolución mensual, una escala temporal que no coincide con la del comportamiento de agregación de los delfines, que cambia en escalas mucho más cortas.</p>
 </section>
 <section id="ajuste-fino-de-la-película-soap-borde-y-grilla-de-nudos" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> 4. Ajuste fino de la película soap: borde y grilla de nudos</h1>
@@ -5089,15 +5113,24 @@ Figure&nbsp;7: Estación por modelo: base contra base + s(sst), a la configuraci
 </div>
 </div>
 </div>
+<!-- REGISTRO DE DECISION (promovido 2026-09-29). Es la figura del 2026-09-16,
+     contra el arm original de 41 nudos, y vive en
+     output/CommonDolphin/Abundance/decision_records/ junto con el CSV del arm
+     original (2026-09-02). Sus series sintonizadas son identicas a las de hoy
+     (DD_abundance_tuned.csv, 99/99 filas). Ver el README de esa carpeta.
+     Desde el 2026-09-30 UTIL_DSM_TunedArm_MapsAbundance_DD.R lee el "original"
+     de ese CSV, y la figura que escribe en Abundance/ sale identica byte a byte
+     a este registro. Antes comparaba el arm sintonizado consigo mismo. Se deja
+     apuntando al registro porque es el archivo fechado que no se sobreescribe. -->
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-x-dd-tuned-abundancia" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-x-dd-tuned-abundancia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="output/CommonDolphin/Abundance/DD_abundance_tuned_vs_original.png" class="img-fluid figure-img" width="1950">
+<img src="output/CommonDolphin/Abundance/decision_records/DD_abundance_tuned_vs_original.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-x-dd-tuned-abundancia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Serie de abundancia del arm sintonizado, contra la del arm original.
+Figure&nbsp;8: Serie de abundancia del arm sintonizado contra la del arm original (41 nudos, tol3000/margin2000, k = 10). Registro de decisión del 2026-09-16: el pipeline ya no ajusta el arm original.
 </figcaption>
 </figure>
 </div>
@@ -6622,6 +6655,7 @@ Table&nbsp;13: Abundancia estimada por estación y año, arm sintonizado.
 </figure>
 </div>
 </div>
+<p><strong>El retune baja la serie alrededor de un 10 %.</strong> Contra el arm original (41 nudos, k = 10), la abundancia sintonizada es en mediana 0.90 veces la original, con un rango de 0.84 a 1.005 sobre las 33 combinaciones estación-año (media 4557 contra 4907, las dos sobre las 1408 celdas).</p>
 <p>Tres cosas que hay que decir en la leyenda y que no son obvias:</p>
 <ol type="1">
 <li><strong>La sst es climatológica.</strong> <code>preddata</code> lleva un valor por celda y por mes calendario, sin dimensión de año, de modo que el término <code>s(sst)</code> aporta lo mismo en todos los años por construcción. Toda la variación interanual de la serie con sst sigue viniendo de <code>s(Ano)</code>: la serie <strong>no</strong> es evidencia de un cambio dirigido por sst.</li>
@@ -6781,7 +6815,7 @@ Table&nbsp;15: Tamaño de los grupos de delfines comunes, y test explícito de s
 </figure>
 </div>
 </div>
-<p><strong>El 92.7 % de la varianza del conteo es el TAMAÑO de los grupos, no su número.</strong> El número de grupos es casi Poisson; el tamaño tiene mediana 4, un segundo conglomerado entre 150 y 450, y un máximo de 450. Una Tweedie con <span class="math inline">\(1 &lt; p &lt; 2\)</span> <em>es</em> una Poisson-gamma compuesta, así que estructuralmente es el modelo correcto, pero una sola gamma no puede concentrarse cerca de 4 y llegar a 450 al mismo tiempo. El ajuste <span class="math inline">\(p = 1.576\)</span>, <span class="math inline">\(\phi = 29.7\)</span> es un compromiso que pone demasiada masa en la cola.</p>
+<p><strong>El 92.7 % de la varianza del conteo es el TAMAÑO de los grupos, no su número.</strong> El número de grupos es casi Poisson; el tamaño tiene mediana 4, un segundo conglomerado entre 150 y 450, y un máximo de 450. Una Tweedie con <span class="math inline">\(1 &lt; p &lt; 2\)</span> <em>es</em> una Poisson-gamma compuesta, así que estructuralmente es el modelo correcto, pero una sola gamma no puede concentrarse cerca de 4 y llegar a 450 al mismo tiempo. El ajuste <span class="math inline">\(p = 1.572\)</span>, <span class="math inline">\(\phi = 28.45\)</span> es un compromiso que pone demasiada masa en la cola.</p>
 <p>La evidencia decisiva es el contraste entre especies: <strong>el grupo más grande de delfines oscuros es de 11 animales y su rootograma es limpio</strong>. Ninguna Tweedie única puede ajustar las dos situaciones.</p>
 <p>Se probaron las dos salidas, y ninguna se adoptó:</p>
 <div class="cell">
@@ -6966,14 +7000,16 @@ Figure&nbsp;9: Los tres rootogramas lado a lado: modelo actual, ruta 1 (conteo d
 </div>
 </div>
 <p><strong>La ruta 2 (twlss) empeora la cola.</strong> <strong>La ruta 1 (modelar el conteo de grupos y multiplicar por el tamaño medio) confirma el diagnóstico</strong> pero no produce un intervalo más chico: el CV del tamaño medio de grupo es un piso que entra en cuadratura con el CV espacial. Su rédito sería un modelo de conteos correctamente especificado y una atribución honesta de la varianza, no precisión.</p>
-<p>Una advertencia que conviene registrar: <strong>la función de detección es ~1, de modo que <span class="math inline">\(\hat{p}\)</span> es constante y la media de Horvitz-Thompson del tamaño de grupo es algebraicamente idéntica a la media ingenua</strong>. El ajuste actual no contiene corrección por sesgo de tamaño y no se le puede extraer ninguna. La regresión explícita de log(tamaño) sobre distancia da un efecto significativo (p &lt; 1e-4) [VERIFICAR TRAS RE-RUN], así que ese sesgo está presente y sin corregir en las estimaciones de abundancia actuales.</p>
+<p>Una advertencia que conviene registrar: <strong>la función de detección es ~1, de modo que <span class="math inline">\(\hat{p}\)</span> es constante y la media de Horvitz-Thompson del tamaño de grupo es algebraicamente idéntica a la media ingenua</strong>. El ajuste actual no contiene corrección por sesgo de tamaño y no se le puede extraer ninguna. La regresión explícita de log(tamaño) sobre distancia da un efecto significativo (p &lt; 1e-5), así que ese sesgo está presente y sin corregir en las estimaciones de abundancia actuales. Corregirlo requiere incorporar <code>size</code> como covariable de la función de detección, y en un DSM eso exige modelos bayesianos complejos. Se consultó a uno de los desarrolladores de la teoría y del paquete <code>dsm</code>, que desaconsejó hacerlo en este caso, de modo que el sesgo queda sin corregir y se trata como una limitación a declarar.</p>
 </section>
 <section id="cuánto-cuesta-el-desajuste-de-la-cola-a-las-estimaciones" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> 7. Cuánto cuesta el desajuste de la cola a las estimaciones</h1>
 <!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
-     Script: analysis/UTIL_DSM_TailMisfit_Impact_DD.R (paso 6, ULTIMO).
+     Scripts: analysis/UTIL_DSM_TailMisfit_Impact_DD.R y
+     analysis/UTIL_DSM_RobustCV_DD.R (paso 6, tercero y cuarto).
      Esta es la seccion que mas sirve para el manuscrito: da la frase que hay
-     que poner al lado de los intervalos de confianza. -->
+     que poner al lado de los intervalos de confianza. La cifra de esa frase
+     sale de la subseccion del estimador sandwich (2026-09-29), no del 1.29. -->
 <p>La pregunta que importa para el manuscrito no es si el rootograma tiene un desajuste sino cuánto cuesta. El desajuste de la cola es una mala especificación de la <strong>función de varianza</strong>, no de la media. Bajo cuasi-verosimilitud una función de varianza mal especificada deja al estimador de la media consistente y afecta su precisión, así que la predicción es que el estimador puntual sea insensible y el intervalo no lo sea. Eso es lo que miden los tests.</p>
 <div class="cell">
 <div id="tbl-x-dd-tailmisfit-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -7234,7 +7270,7 @@ Table&nbsp;20: Inflación de varianza implicada por los residuos, y la parte que
 </figure>
 </div>
 </div>
-<p><strong>El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.</strong> Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado [VERIFICAR TRAS RE-RUN].</p>
+<p><strong>El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.</strong> Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado. Ese 1.29 subestima la inflación. El estimador sándwich, que no supone la forma de la función de varianza, la lleva a 1.39 en la mediana, entre 1.22 y 1.76 según la combinación estación-año (<a href="#sec-x-dd-sandwich" class="quarto-xref">Section&nbsp;7.1</a>).</p>
 <p>Esa inflación es <strong>enteramente la cola, y es de 67 segmentos</strong>: excluyendo los segmentos con más de 20 animales, el <span class="math inline">\(\phi\)</span> de Pearson baja a 10.6 contra 28.5 de REML. Sin esos segmentos los residuos implican <em>menos</em> dispersión que la que el modelo asume, no más.</p>
 <p>Tres trampas de análisis que conviene dejar por escrito, porque las tres se cayeron en el camino y las tres son fáciles de repetir:</p>
 <ol type="1">
@@ -7544,7 +7580,754 @@ Table&nbsp;22: Comparación de orden de magnitud contra el CV basado en el dise�
 </figure>
 </div>
 </div>
-<p>Lo que no se hizo: un bootstrap no paramétrico. Es el único intervalo genuinamente libre de distribución, pero son unos 100 re-ajustes soap (~2.5 h) para una cantidad que la escalera ya acota. Si alguna vez se corre, <strong>la unidad de remuestreo tiene que ser el día de campaña (<code>traj_id</code>) y no la pata de transecta</strong>: esa es la escala a la que el correlograma encontró estructura, y remuestrear por pata rompería justamente la dependencia que se quiere preservar.</p>
+<section id="sec-x-dd-sandwich" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-x-dd-sandwich"><span class="header-section-number">7.1</span> Intervalos robustos: el estimador sándwich y el bootstrap</h2>
+<!-- Script: analysis/UTIL_DSM_RobustCV_DD.R (paso 6, cuarto). Sin re-ajustes:
+     todo sale del modelo guardado. Cifras de la prosa cotejadas contra
+     DD_robustcv_*.csv el 2026-09-29. Reemplaza el parrafo "Lo que no se hizo:
+     un bootstrap no parametrico", cuyo argumento (que la escalera ya acotaba
+     el intervalo) era incorrecto: la escalera acota el estimador puntual, no
+     el intervalo. -->
+<p>El factor de 1.29 tiene dos limitaciones. Supone que la forma de la función de varianza, <span class="math inline">\(\phi\mu^p\)</span>, es correcta salvo por un factor de escala, que es justamente lo que el desajuste de la cola pone en duda. Asimismo, es un solo número para las 33 combinaciones estación-año. Por eso se comparó, sobre el modelo ya ajustado y sin re-ajustes, la matriz de covarianza que usa <code>dsm_var_gam()</code> (<code>Vp</code>, condicional a los parámetros de suavizado) con otras tres: 1) <code>Vc</code>, que agrega la incertidumbre en los parámetros de suavizado <span class="citation" data-cites="wood2016smoothing">(<a href="#ref-wood2016smoothing" role="doc-biblioref">Wood et al. 2016</a>)</span>; 2) el estimador sándwich de <code>mgcv</code> (<code>vcov(m, sandwich = TRUE)</code>), con un término por segmento y ningún supuesto sobre la función de varianza; y 3) el mismo sándwich con los scores sumados dentro de cada día de campaña (<code>traj_id</code>), que admite cualquier dependencia dentro del día. Este último es la cantidad que estima un bootstrap no paramétrico por día de campaña, así que funciona como un anticipo barato de ese bootstrap. Los dos controles del script pasaron: el sándwich construido a mano reproduce exactamente el de <code>mgcv</code>, y la ruta por matriz lineal reproduce <code>dsm_var_gam()</code> y la tabla de abundancia en las 33 combinaciones.</p>
+<div class="cell">
+<div id="tbl-x-dd-sandwich-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-x-dd-sandwich-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;23: CV robustos contra el CV reportado: resumen sobre las 33 combinaciones estación-año. Todos los CV son totales (parte espacial y función de detección en cuadratura).
+</figcaption>
+<div aria-describedby="tbl-x-dd-sandwich-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CV ratio to reported, Vc (smoothing-parameter corrected), median (range)</td>
+<td style="text-align: left;">1.02 (1.02-1.03)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CV ratio to reported, HC sandwich, median (range)</td>
+<td style="text-align: left;">1.39 (1.22-1.76)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CV ratio to reported, day-cluster sandwich (CR1), median (range)</td>
+<td style="text-align: left;">1.47 (1.15-2.09)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">day-cluster / HC, GAM part only, median (range)</td>
+<td style="text-align: left;">0.97 (0.87-1.58)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">for comparison: Pearson/REML scalar from test A2</td>
+<td style="text-align: left;">1.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">share of HC meat owned by the segments with &gt; 20 animals, median (range)</td>
+<td style="text-align: left;">0.93 (0.87-0.96)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">combos where one traj_id owns &gt; 50% of the cluster meat</td>
+<td style="text-align: left;">Fall 2014, Fall 2015, Fall 2016, Fall 2017</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">that traj_id, and its share there (range)</td>
+<td style="text-align: left;">201704Hidro, 0.66-0.69</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">detection-function CV (added in quadrature to every CV above)</td>
+<td style="text-align: left;">0.049</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><strong>El sándwich por segmento lleva el CV a 1.39 veces el reportado en la mediana, con un rango de 1.22 a 1.76 entre combinaciones, y no a 1.29.</strong> La incertidumbre en los parámetros de suavizado agrega sólo un 2 %. La inflación tampoco es uniforme: otoño e invierno son las estaciones más afectadas (1.34 a 1.76), primavera y verano las menos (1.22 a 1.42). El origen es el mismo que en el test A2: los 67 segmentos con más de 20 animales, el 1.1 % del total, aportan una mediana del 93 % de la varianza sándwich (rango 87-96 %).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-x-dd-sandwich" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-x-dd-sandwich-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="output/CommonDolphin/DSM/TailMisfit/DD_robustcv_ratios.png" class="img-fluid figure-img" width="825">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-x-dd-sandwich-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: CV robusto sobre CV reportado, por combinación estación-año. Círculos: sándwich por segmento. Triángulos: sándwich agrupado por día de campaña; los huecos marcan las combinaciones en las que un solo día concentra más de la mitad de la varianza agrupada. La línea punteada es el factor de Pearson del test A2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Agrupar por día de campaña no cambia el resultado en el balance (cociente entre el sándwich agrupado y el por segmento de 0.97, rango 0.87-1.58), lo cual coincide con el correlograma de la sección 1. La excepción es otoño 2014-2017, donde el sándwich agrupado sube a 2.0-2.1 veces el reportado. Ese valor no es una varianza estable. En esas cuatro combinaciones un solo <code>traj_id</code>, <code>201704Hidro</code>, concentra entre el 66 y el 69 % de la varianza agrupada, y registró por sí solo el 16 % de todos los animales observados (1201 de 7333). Los cocientes de 0.87-0.90 de invierno son, por la misma razón, ruido del estimador con 82 conglomerados muy desparejos, y no evidencia de dependencia negativa. Por lo tanto, la cifra a reportar es la del sándwich por segmento.</p>
+<div class="cell">
+<div id="tbl-x-dd-sandwich-combo" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-x-dd-sandwich-combo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;24: CV e intervalos al 95 % por combinación estación-año, reportados y con el sándwich por segmento (HC). CL es el sándwich agrupado por día de campaña. CL_top_day y CL_top_day_share dicen qué traj_id concentra la varianza agrupada y en qué fracción.
+</figcaption>
+<div aria-describedby="tbl-x-dd-sandwich-combo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">season</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">days</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CV_reported</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CV_HC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CV_CL</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">r_HC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">r_CL</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N_lo95_reported</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N_hi95_reported</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N_lo95_HC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N_hi95_HC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">CL_top_day</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CL_top_day_share</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3620</td>
+<td style="text-align: right;">0.234</td>
+<td style="text-align: right;">0.332</td>
+<td style="text-align: right;">0.361</td>
+<td style="text-align: right;">1.42</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: right;">2301</td>
+<td style="text-align: right;">5693</td>
+<td style="text-align: right;">1922</td>
+<td style="text-align: right;">6817</td>
+<td style="text-align: left;">20071105</td>
+<td style="text-align: right;">0.379</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3621</td>
+<td style="text-align: right;">0.248</td>
+<td style="text-align: right;">0.417</td>
+<td style="text-align: right;">0.392</td>
+<td style="text-align: right;">1.68</td>
+<td style="text-align: right;">1.58</td>
+<td style="text-align: right;">2245</td>
+<td style="text-align: right;">5839</td>
+<td style="text-align: right;">1652</td>
+<td style="text-align: right;">7936</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.216</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1367</td>
+<td style="text-align: right;">0.271</td>
+<td style="text-align: right;">0.397</td>
+<td style="text-align: right;">0.359</td>
+<td style="text-align: right;">1.47</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">812</td>
+<td style="text-align: right;">2302</td>
+<td style="text-align: right;">646</td>
+<td style="text-align: right;">2894</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.147</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3882</td>
+<td style="text-align: right;">0.220</td>
+<td style="text-align: right;">0.307</td>
+<td style="text-align: right;">0.338</td>
+<td style="text-align: right;">1.39</td>
+<td style="text-align: right;">1.53</td>
+<td style="text-align: right;">2534</td>
+<td style="text-align: right;">5949</td>
+<td style="text-align: right;">2156</td>
+<td style="text-align: right;">6991</td>
+<td style="text-align: left;">20071105</td>
+<td style="text-align: right;">0.368</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3548</td>
+<td style="text-align: right;">0.248</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.315</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: right;">2197</td>
+<td style="text-align: right;">5728</td>
+<td style="text-align: right;">1899</td>
+<td style="text-align: right;">6626</td>
+<td style="text-align: left;">20071105</td>
+<td style="text-align: right;">0.119</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3883</td>
+<td style="text-align: right;">0.233</td>
+<td style="text-align: right;">0.390</td>
+<td style="text-align: right;">0.378</td>
+<td style="text-align: right;">1.67</td>
+<td style="text-align: right;">1.62</td>
+<td style="text-align: right;">2474</td>
+<td style="text-align: right;">6096</td>
+<td style="text-align: right;">1857</td>
+<td style="text-align: right;">8122</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.272</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1466</td>
+<td style="text-align: right;">0.257</td>
+<td style="text-align: right;">0.381</td>
+<td style="text-align: right;">0.341</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">893</td>
+<td style="text-align: right;">2408</td>
+<td style="text-align: right;">712</td>
+<td style="text-align: right;">3018</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4164</td>
+<td style="text-align: right;">0.208</td>
+<td style="text-align: right;">0.285</td>
+<td style="text-align: right;">0.316</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">2783</td>
+<td style="text-align: right;">6232</td>
+<td style="text-align: right;">2410</td>
+<td style="text-align: right;">7196</td>
+<td style="text-align: left;">20071105</td>
+<td style="text-align: right;">0.351</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3805</td>
+<td style="text-align: right;">0.235</td>
+<td style="text-align: right;">0.304</td>
+<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">1.29</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">2416</td>
+<td style="text-align: right;">5993</td>
+<td style="text-align: right;">2124</td>
+<td style="text-align: right;">6816</td>
+<td style="text-align: left;">201707Hidro</td>
+<td style="text-align: right;">0.128</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4165</td>
+<td style="text-align: right;">0.220</td>
+<td style="text-align: right;">0.365</td>
+<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">2719</td>
+<td style="text-align: right;">6380</td>
+<td style="text-align: right;">2083</td>
+<td style="text-align: right;">8328</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.334</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1573</td>
+<td style="text-align: right;">0.245</td>
+<td style="text-align: right;">0.368</td>
+<td style="text-align: right;">0.325</td>
+<td style="text-align: right;">1.50</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">979</td>
+<td style="text-align: right;">2526</td>
+<td style="text-align: right;">782</td>
+<td style="text-align: right;">3163</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.199</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4466</td>
+<td style="text-align: right;">0.197</td>
+<td style="text-align: right;">0.265</td>
+<td style="text-align: right;">0.297</td>
+<td style="text-align: right;">1.34</td>
+<td style="text-align: right;">1.51</td>
+<td style="text-align: right;">3046</td>
+<td style="text-align: right;">6549</td>
+<td style="text-align: right;">2680</td>
+<td style="text-align: right;">7442</td>
+<td style="text-align: left;">20071105</td>
+<td style="text-align: right;">0.326</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4081</td>
+<td style="text-align: right;">0.223</td>
+<td style="text-align: right;">0.284</td>
+<td style="text-align: right;">0.270</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: right;">1.21</td>
+<td style="text-align: right;">2650</td>
+<td style="text-align: right;">6286</td>
+<td style="text-align: right;">2366</td>
+<td style="text-align: right;">7040</td>
+<td style="text-align: left;">201707Hidro</td>
+<td style="text-align: right;">0.144</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1687</td>
+<td style="text-align: right;">0.235</td>
+<td style="text-align: right;">0.358</td>
+<td style="text-align: right;">0.313</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">1071</td>
+<td style="text-align: right;">2657</td>
+<td style="text-align: right;">854</td>
+<td style="text-align: right;">3331</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.227</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4377</td>
+<td style="text-align: right;">0.213</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.252</td>
+<td style="text-align: right;">1.25</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">2897</td>
+<td style="text-align: right;">6614</td>
+<td style="text-align: right;">2621</td>
+<td style="text-align: right;">7311</td>
+<td style="text-align: left;">201707Hidro</td>
+<td style="text-align: right;">0.160</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4791</td>
+<td style="text-align: right;">0.199</td>
+<td style="text-align: right;">0.320</td>
+<td style="text-align: right;">0.354</td>
+<td style="text-align: right;">1.61</td>
+<td style="text-align: right;">1.78</td>
+<td style="text-align: right;">3256</td>
+<td style="text-align: right;">7050</td>
+<td style="text-align: right;">2600</td>
+<td style="text-align: right;">8829</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.467</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1809</td>
+<td style="text-align: right;">0.226</td>
+<td style="text-align: right;">0.351</td>
+<td style="text-align: right;">0.305</td>
+<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">1168</td>
+<td style="text-align: right;">2803</td>
+<td style="text-align: right;">928</td>
+<td style="text-align: right;">3527</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.252</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5401</td>
+<td style="text-align: right;">0.195</td>
+<td style="text-align: right;">0.238</td>
+<td style="text-align: right;">0.224</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">3700</td>
+<td style="text-align: right;">7884</td>
+<td style="text-align: right;">3407</td>
+<td style="text-align: right;">8560</td>
+<td style="text-align: left;">201707Hidro</td>
+<td style="text-align: right;">0.182</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6340</td>
+<td style="text-align: right;">0.179</td>
+<td style="text-align: right;">0.230</td>
+<td style="text-align: right;">0.260</td>
+<td style="text-align: right;">1.29</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">4479</td>
+<td style="text-align: right;">8973</td>
+<td style="text-align: right;">4065</td>
+<td style="text-align: right;">9888</td>
+<td style="text-align: left;">20151129</td>
+<td style="text-align: right;">0.175</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6341</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">0.263</td>
+<td style="text-align: right;">0.370</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: right;">2.02</td>
+<td style="text-align: right;">4440</td>
+<td style="text-align: right;">9056</td>
+<td style="text-align: right;">3816</td>
+<td style="text-align: right;">10536</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.661</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2394</td>
+<td style="text-align: right;">0.212</td>
+<td style="text-align: right;">0.357</td>
+<td style="text-align: right;">0.313</td>
+<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">1.48</td>
+<td style="text-align: right;">1588</td>
+<td style="text-align: right;">3609</td>
+<td style="text-align: right;">1214</td>
+<td style="text-align: right;">4720</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.290</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6800</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">0.238</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">1.45</td>
+<td style="text-align: right;">4765</td>
+<td style="text-align: right;">9703</td>
+<td style="text-align: right;">4294</td>
+<td style="text-align: right;">10769</td>
+<td style="text-align: left;">20151129</td>
+<td style="text-align: right;">0.188</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6801</td>
+<td style="text-align: right;">0.186</td>
+<td style="text-align: right;">0.259</td>
+<td style="text-align: right;">0.382</td>
+<td style="text-align: right;">1.40</td>
+<td style="text-align: right;">2.05</td>
+<td style="text-align: right;">4739</td>
+<td style="text-align: right;">9761</td>
+<td style="text-align: right;">4124</td>
+<td style="text-align: right;">11217</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.681</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2568</td>
+<td style="text-align: right;">0.214</td>
+<td style="text-align: right;">0.367</td>
+<td style="text-align: right;">0.324</td>
+<td style="text-align: right;">1.72</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">1697</td>
+<td style="text-align: right;">3886</td>
+<td style="text-align: right;">1280</td>
+<td style="text-align: right;">5154</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.281</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7294</td>
+<td style="text-align: right;">0.190</td>
+<td style="text-align: right;">0.251</td>
+<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">5046</td>
+<td style="text-align: right;">10543</td>
+<td style="text-align: right;">4496</td>
+<td style="text-align: right;">11831</td>
+<td style="text-align: left;">20151129</td>
+<td style="text-align: right;">0.194</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6664</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">0.254</td>
+<td style="text-align: right;">0.244</td>
+<td style="text-align: right;">1.28</td>
+<td style="text-align: right;">1.23</td>
+<td style="text-align: right;">4535</td>
+<td style="text-align: right;">9794</td>
+<td style="text-align: right;">4082</td>
+<td style="text-align: right;">10880</td>
+<td style="text-align: left;">201707Hidro</td>
+<td style="text-align: right;">0.133</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">7295</td>
+<td style="text-align: right;">0.191</td>
+<td style="text-align: right;">0.260</td>
+<td style="text-align: right;">0.397</td>
+<td style="text-align: right;">1.36</td>
+<td style="text-align: right;">2.08</td>
+<td style="text-align: right;">5033</td>
+<td style="text-align: right;">10573</td>
+<td style="text-align: right;">4418</td>
+<td style="text-align: right;">12046</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.690</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2754</td>
+<td style="text-align: right;">0.218</td>
+<td style="text-align: right;">0.380</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">1.74</td>
+<td style="text-align: right;">1.56</td>
+<td style="text-align: right;">1806</td>
+<td style="text-align: right;">4202</td>
+<td style="text-align: right;">1342</td>
+<td style="text-align: right;">5655</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.267</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spring</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7823</td>
+<td style="text-align: right;">0.199</td>
+<td style="text-align: right;">0.267</td>
+<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">1.47</td>
+<td style="text-align: right;">5320</td>
+<td style="text-align: right;">11505</td>
+<td style="text-align: right;">4674</td>
+<td style="text-align: right;">13093</td>
+<td style="text-align: left;">20151129</td>
+<td style="text-align: right;">0.193</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7148</td>
+<td style="text-align: right;">0.204</td>
+<td style="text-align: right;">0.268</td>
+<td style="text-align: right;">0.260</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">1.27</td>
+<td style="text-align: right;">4808</td>
+<td style="text-align: right;">10627</td>
+<td style="text-align: right;">4263</td>
+<td style="text-align: right;">11985</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.149</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fall</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7825</td>
+<td style="text-align: right;">0.199</td>
+<td style="text-align: right;">0.265</td>
+<td style="text-align: right;">0.414</td>
+<td style="text-align: right;">1.34</td>
+<td style="text-align: right;">2.09</td>
+<td style="text-align: right;">5322</td>
+<td style="text-align: right;">11504</td>
+<td style="text-align: right;">4692</td>
+<td style="text-align: right;">13049</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.690</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Winter</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2955</td>
+<td style="text-align: right;">0.224</td>
+<td style="text-align: right;">0.395</td>
+<td style="text-align: right;">0.357</td>
+<td style="text-align: right;">1.76</td>
+<td style="text-align: right;">1.59</td>
+<td style="text-align: right;">1913</td>
+<td style="text-align: right;">4562</td>
+<td style="text-align: right;">1400</td>
+<td style="text-align: right;">6235</td>
+<td style="text-align: left;">20150904</td>
+<td style="text-align: right;">0.251</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Summer</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7668</td>
+<td style="text-align: right;">0.213</td>
+<td style="text-align: right;">0.286</td>
+<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">5078</td>
+<td style="text-align: right;">11578</td>
+<td style="text-align: right;">4424</td>
+<td style="text-align: right;">13289</td>
+<td style="text-align: left;">201704Hidro</td>
+<td style="text-align: right;">0.169</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>A la luz de esto, un bootstrap no paramétrico agregaría poco. Estima la misma cantidad que el sándwich agrupado, y lo que sumaría por encima de éste, la re-estimación de los parámetros de suavizado y de <em>p</em> en cada réplica, es chico: <code>Vc</code> vale un 2 %, y la escalera muestra que el estimador puntual se mueve un 5.7 % a lo largo de todo el rango de <em>p</em> entre 1.50 y 1.80. Asimismo, el diseño juega en contra por tres razones: 1) cada uno de los 82 días de campaña pertenece a una sola combinación estación-año y 9 de las 33 combinaciones tienen un solo día, de modo que remuestrear dentro de estación-año deja a esas 9 sin ninguna variación (remuestrear dentro de estación, con 19, 16, 17 y 30 días, lo evita); 2) en otoño las réplicas se partirían en dos grupos según salga o no <code>201704Hidro</code>, y con unos 80 conglomerados tan desparejos el intervalo percentil probablemente también quedaría corto; y 3) los cuatro <code>traj_id</code> “Hidro” están rotulados por mes, con 8 ó 9 patas y el doble de segmentos que la mediana, así que probablemente son campañas de varios días y la unidad de remuestreo no es homogénea.</p>
+<div class="cell">
+<div id="tbl-x-dd-bootdesign" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-x-dd-bootdesign-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;25: Con qué tendría que trabajar un bootstrap por día de campaña.
+</figcaption>
+<div aria-describedby="tbl-x-dd-bootdesign-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">quantity</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">survey days (traj_id)</td>
+<td style="text-align: left;">82</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">traj_id spanning more than one season-year</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">season-year combos</td>
+<td style="text-align: left;">33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">combos with 1 survey day</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">combos with 2 survey days</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">days per season stratum (Spring / Summer / Fall / Winter)</td>
+<td style="text-align: left;">19 / 16 / 17 / 30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">share of all animals seen, top traj_id</td>
+<td style="text-align: left;">16.4% (1201 of 7333)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">top traj_id</td>
+<td style="text-align: left;">201704Hidro</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">share of all animals seen, top 10 traj_id</td>
+<td style="text-align: left;">50.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hidro traj_id: segments each (median segments per traj_id)</td>
+<td style="text-align: left;">164, 142, 144, 158 (76.5)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Si igual se corre, la unidad de remuestreo sigue siendo el <code>traj_id</code> y no la pata de transecta, los estratos son las estaciones, los días repetidos necesitan un <code>Sample.Label</code> nuevo para que <code>dsm</code> no los fusione, y 100 réplicas alcanzan para un CV que entre a <code>lnorm_ci()</code> pero no para límites percentiles.</p>
+<p>Ni el bootstrap ni ningún sándwich tocan el sesgo por tamaño de grupo (<a href="#sec-x-dd-cola" class="quarto-xref">Section&nbsp;6</a>). Ese sesgo desplaza el centro del intervalo, no su ancho, y un intervalo más ancho alrededor de un estimador sesgado sigue sin cubrir. La regresión de <a href="#tbl-x-dd-groupsize" class="quarto-xref">Table&nbsp;15</a> da un orden de magnitud: los grupos en la distancia de truncamiento son 2.6 veces más grandes que sobre la línea, y el tamaño medio extrapolado a distancia cero es la mitad del ingenuo que usa el ajuste (6.0 contra 11.8). Esa cifra es una extrapolación de la regresión y no una corrección aplicable. La corrección formal quedó descartada por las razones de <a href="#sec-x-dd-cola" class="quarto-xref">Section&nbsp;6</a>, así que para la cobertura de los intervalos éste es probablemente el sesgo que más pesa, y conviene declararlo como limitación en el manuscrito.</p>
+</section>
 </section>
 <section id="corrección-a-secciones-ya-publicadas-el-offset-de-los-mapas" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> 8. CORRECCIÓN a secciones ya publicadas: el offset de los mapas</h1>
@@ -7566,10 +8349,10 @@ Table&nbsp;22: Comparación de orden de magnitud contra el CV basado en el dise�
      (linea 1229). El punto 2 de esa nota ("No prepare mapas de la varianza")
      ya esta resuelto por la seccion de mapas de CV, asi que conviene sacarlo. -->
 <ol type="1">
-<li><strong>Sesgo por tamaño de grupo, sin corregir.</strong> La regresión de log(tamaño) sobre distancia da un efecto significativo y el ajuste actual no lo corrige. Es la corrección pendiente con efecto más directo sobre el estimador puntual.</li>
-<li><strong>Los intervalos de confianza.</strong> Están reportados como los da el modelo; el análisis de la cola indica que son optimistas por un factor cercano a 1.3. Conviene decirlo en el texto del manuscrito y no dejarlo sólo en el output.</li>
+<li><strong>Sesgo por tamaño de grupo, sin corregir.</strong> La regresión de log(tamaño) sobre distancia da un efecto significativo y el ajuste actual no lo corrige. La corrección formal, con <code>size</code> como covariable de la función de detección, exige en un DSM modelos bayesianos complejos, y uno de los desarrolladores de <code>dsm</code> la desaconsejó para este caso (<a href="#sec-x-dd-cola" class="quarto-xref">Section&nbsp;6</a>). Por lo tanto, lo pendiente no es corregirlo sino declararlo en el manuscrito como limitación, junto con el orden de magnitud que da la regresión (<a href="#tbl-x-dd-groupsize" class="quarto-xref">Table&nbsp;15</a>).</li>
+<li><strong>Los intervalos de confianza.</strong> Están reportados como los da el modelo, y el estimador sándwich indica que son optimistas: el CV robusto es una mediana de 1.39 veces el reportado, entre 1.22 y 1.76 según la combinación estación-año (<a href="#sec-x-dd-sandwich" class="quarto-xref">Section&nbsp;7.1</a>). Conviene reportar en el manuscrito los CV sándwich por combinación, o al menos el factor y su rango, y no dejarlo sólo en el output.</li>
 <li><strong>La grilla de nudos no está convergida.</strong> La configuración adoptada (89 nudos) sale de una meseta de <code>edf_xy</code> frenada por el criterio de autocorrelación, no de un mínimo de AIC. Es una grilla mejor, no la correcta.</li>
-<li><strong>Las covariables ambientales</strong> vuelven a ser competitivas por AIC una vez corregida la base (<a href="#sec-x-dd-covk" class="quarto-xref">Section&nbsp;3</a>). La decisión de excluirlas se sostiene, pero por parsimonia y porque son climatologías sin dimensión anual, no por AIC.</li>
+<li><strong>Las covariables ambientales</strong> vuelven a ser competitivas por AIC una vez corregida la base (<a href="#sec-x-dd-covk" class="quarto-xref">Section&nbsp;3</a>). La decisión de excluirlas se sostiene, pero no por AIC: la ganancia en deviance es marginal (a lo sumo 3.2 puntos) y 12 de los 13 modelos que le ganan al presentado por AIC no pasan la prueba de autocorrelación residual.</li>
 </ol>
 </section>
 <section id="referencias" class="level1" data-number="10">
