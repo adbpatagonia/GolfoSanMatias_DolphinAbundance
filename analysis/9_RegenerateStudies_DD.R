@@ -66,10 +66,10 @@ if (!exists("dd.dsm.soap.season.year"))
 .t0 <- Sys.time()
 
 # ===========================================================================
-# ORDER IS LOAD-BEARING. All three scripts below consume
+# ORDER IS LOAD-BEARING. The first three scripts below consume
 # output/CommonDolphin/DSM/tuned_models/dd_tuned_base.rds, and the FIRST one
 # is the only script in the project that writes it. Reordering them breaks the
-# run.
+# run. The fourth reads a CSV the third writes (see its block).
 #
 # This was wrong until 2026-09-18. TailFix_DD ran first and read a
 # dd_tuned_base.rds that had been left on disk by a manual run of TunedArm on
@@ -113,7 +113,7 @@ source(file.path(here::here(), "analysis", "UTIL_DSM_TailFix_DD.R"))
 
 # ---------------------------------------------------------------------------
 # 3. How much the rootogram tail misfit costs the abundance estimates.
-# LAST, and it fails DIFFERENTLY from 2 if run early, which is the dangerous
+# AFTER 1 and 2, and it fails DIFFERENTLY from 2 if run early, which is the dangerous
 # case: it readRDS()es dd_tuned_base.rds (hard error, like 2), but its two
 # fread()s -- DD_abundance_tuned.csv from 1, and the pipeline's
 # DD_abundance_season_year_soap.csv -- are wrapped in tryCatch() and degrade to
@@ -122,6 +122,19 @@ source(file.path(here::here(), "analysis", "UTIL_DSM_TailFix_DD.R"))
 # ---------------------------------------------------------------------------
 message("\n=== UTIL_DSM_TailMisfit_Impact_DD.R ===")
 source(file.path(here::here(), "analysis", "UTIL_DSM_TailMisfit_Impact_DD.R"))
+
+# ---------------------------------------------------------------------------
+# 4. Robust (sandwich) CVs for the reported abundance, and what a day-level
+# bootstrap would add. No refits, about a minute.
+#
+# AFTER 3: it fread()s DD_tailmisfit_A2_inflation.csv for the Pearson reference
+# it is compared against. That read is wrapped in tryCatch(), so out of order it
+# would not stop -- it would drop the reference line from the figure and write
+# "not available" in the summary. Its model and its gate 2b read only the
+# workspace and the pipeline's DD_abundance_season_year_soap.csv.
+# ---------------------------------------------------------------------------
+message("\n=== UTIL_DSM_RobustCV_DD.R ===")
+source(file.path(here::here(), "analysis", "UTIL_DSM_RobustCV_DD.R"))
 
 message(sprintf("\n9_RegenerateStudies_DD.R finished in %.1f min",
                 as.numeric(difftime(Sys.time(), .t0, units = "mins"))))

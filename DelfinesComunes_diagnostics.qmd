@@ -36,6 +36,10 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
    diagnosticos van a cambiar. Por eso las cifras se leen desde los CSV con
    `fread()` y no estan escritas en la prosa. Donde una cifra SI esta en la
    prosa va marcada con [VERIFICAR TRAS RE-RUN].
+   La seccion 7 suma, el 2026-09-29, la subseccion del estimador sandwich
+   (analysis/UTIL_DSM_RobustCV_DD.R, cuarto script del paso 6). El CV robusto,
+   1.39 veces el reportado, reemplaza al 1.29 como la cifra a reportar, y sus
+   cifras se cotejaron contra DD_robustcv_*.csv.
 
    Lo que SI es estable: los bloques RESULT de los scripts en analysis/ (estan
    versionados) y los 16 registros de decision que restaura el paso 9.
@@ -464,9 +468,11 @@ Una advertencia que conviene registrar: **la función de detección es ~1, de mo
 # 7. Cuánto cuesta el desajuste de la cola a las estimaciones
 
 <!-- ANCLA: DelfinesComunes.qmd, despues de la seccion anterior.
-     Script: analysis/UTIL_DSM_TailMisfit_Impact_DD.R (paso 6, ULTIMO).
+     Scripts: analysis/UTIL_DSM_TailMisfit_Impact_DD.R y
+     analysis/UTIL_DSM_RobustCV_DD.R (paso 6, tercero y cuarto).
      Esta es la seccion que mas sirve para el manuscrito: da la frase que hay
-     que poner al lado de los intervalos de confianza. -->
+     que poner al lado de los intervalos de confianza. La cifra de esa frase
+     sale de la subseccion del estimador sandwich (2026-09-29), no del 1.29. -->
 
 La pregunta que importa para el manuscrito no es si el rootograma tiene un desajuste sino cuánto cuesta. El desajuste de la cola es una mala especificación de la **función de varianza**, no de la media. Bajo cuasi-verosimilitud una función de varianza mal especificada deja al estimador de la media consistente y afecta su precisión, así que la predicción es que el estimador puntual sea insensible y el intervalo no lo sea. Eso es lo que miden los tests.
 
@@ -508,7 +514,7 @@ tab(rd("DSM", "TailMisfit", "DD_tailmisfit_B_pladder.csv"))
 tab(rd("DSM", "TailMisfit", "DD_tailmisfit_A2_inflation.csv"))
 ```
 
-**El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.** Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado [VERIFICAR TRAS RE-RUN].
+**El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.** Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado [VERIFICAR TRAS RE-RUN]. Ese 1.29 subestima la inflación. El estimador sándwich, que no supone la forma de la función de varianza, la lleva a 1.39 en la mediana, entre 1.22 y 1.76 según la combinación estación-año (@sec-x-dd-sandwich).
 
 Esa inflación es **enteramente la cola, y es de 67 segmentos**: excluyendo los segmentos con más de 20 animales, el $\phi$ de Pearson baja a 10.6 contra 28.5 de REML. Sin esos segmentos los residuos implican *menos* dispersión que la que el modelo asume, no más.
 
@@ -536,7 +542,69 @@ tab(rd("DSM", "TailMisfit", "DD_tailmisfit_A_bins.csv"))
 tab(rd("DSM", "TailMisfit", "DD_tailmisfit_C_designcheck.csv"))
 ```
 
-Lo que no se hizo: un bootstrap no paramétrico. Es el único intervalo genuinamente libre de distribución, pero son unos 100 re-ajustes soap (~2.5 h) para una cantidad que la escalera ya acota. Si alguna vez se corre, **la unidad de remuestreo tiene que ser el día de campaña (`traj_id`) y no la pata de transecta**: esa es la escala a la que el correlograma encontró estructura, y remuestrear por pata rompería justamente la dependencia que se quiere preservar.
+## Intervalos robustos: el estimador sándwich y el bootstrap {#sec-x-dd-sandwich}
+
+<!-- Script: analysis/UTIL_DSM_RobustCV_DD.R (paso 6, cuarto). Sin re-ajustes:
+     todo sale del modelo guardado. Cifras de la prosa cotejadas contra
+     DD_robustcv_*.csv el 2026-09-29. Reemplaza el parrafo "Lo que no se hizo:
+     un bootstrap no parametrico", cuyo argumento (que la escalera ya acotaba
+     el intervalo) era incorrecto: la escalera acota el estimador puntual, no
+     el intervalo. -->
+
+El factor de 1.29 tiene dos limitaciones. Supone que la forma de la función de varianza, $\phi\mu^p$, es correcta salvo por un factor de escala, que es justamente lo que el desajuste de la cola pone en duda. Asimismo, es un solo número para las 33 combinaciones estación-año. Por eso se comparó, sobre el modelo ya ajustado y sin re-ajustes, la matriz de covarianza que usa `dsm_var_gam()` (`Vp`, condicional a los parámetros de suavizado) con otras tres: 1) `Vc`, que agrega la incertidumbre en los parámetros de suavizado [@wood2016smoothing]; 2) el estimador sándwich de `mgcv` (`vcov(m, sandwich = TRUE)`), con un término por segmento y ningún supuesto sobre la función de varianza; y 3) el mismo sándwich con los scores sumados dentro de cada día de campaña (`traj_id`), que admite cualquier dependencia dentro del día. Este último es la cantidad que estima un bootstrap no paramétrico por día de campaña, así que funciona como un anticipo barato de ese bootstrap. Los dos controles del script pasaron: el sándwich construido a mano reproduce exactamente el de `mgcv`, y la ruta por matriz lineal reproduce `dsm_var_gam()` y la tabla de abundancia en las 33 combinaciones.
+
+```{r}
+#| label: tbl-x-dd-sandwich-summary
+#| tbl-cap: "CV robustos contra el CV reportado: resumen sobre las 33 combinaciones estación-año. Todos los CV son totales (parte espacial y función de detección en cuadratura)."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_robustcv_summary.csv"))
+```
+
+**El sándwich por segmento lleva el CV a 1.39 veces el reportado en la mediana, con un rango de 1.22 a 1.76 entre combinaciones, y no a 1.29.** La incertidumbre en los parámetros de suavizado agrega sólo un 2 %. La inflación tampoco es uniforme: otoño e invierno son las estaciones más afectadas (1.34 a 1.76), primavera y verano las menos (1.22 a 1.42). El origen es el mismo que en el test A2: los 67 segmentos con más de 20 animales, el 1.1 % del total, aportan una mediana del 93 % de la varianza sándwich (rango 87-96 %).
+
+```{r}
+#| label: fig-x-dd-sandwich
+#| fig-cap: "CV robusto sobre CV reportado, por combinación estación-año. Círculos: sándwich por segmento. Triángulos: sándwich agrupado por día de campaña; los huecos marcan las combinaciones en las que un solo día concentra más de la mitad de la varianza agrupada. La línea punteada es el factor de Pearson del test A2."
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 4.8
+img("DSM", "TailMisfit", "DD_robustcv_ratios.png")
+```
+
+Agrupar por día de campaña no cambia el resultado en el balance (cociente entre el sándwich agrupado y el por segmento de 0.97, rango 0.87-1.58), lo cual coincide con el correlograma de la sección 1. La excepción es otoño 2014-2017, donde el sándwich agrupado sube a 2.0-2.1 veces el reportado. Ese valor no es una varianza estable. En esas cuatro combinaciones un solo `traj_id`, `201704Hidro`, concentra entre el 66 y el 69 % de la varianza agrupada, y registró por sí solo el 16 % de todos los animales observados (1201 de 7333). Los cocientes de 0.87-0.90 de invierno son, por la misma razón, ruido del estimador con 82 conglomerados muy desparejos, y no evidencia de dependencia negativa. Por lo tanto, la cifra a reportar es la del sándwich por segmento.
+
+```{r}
+#| label: tbl-x-dd-sandwich-combo
+#| tbl-cap: "CV e intervalos al 95 % por combinación estación-año, reportados y con el sándwich por segmento (HC). CL es el sándwich agrupado por día de campaña. CL_top_day y CL_top_day_share dicen qué traj_id concentra la varianza agrupada y en qué fracción."
+#| echo: false
+#| message: false
+#| warning: false
+x_sw <- rd("DSM", "TailMisfit", "DD_robustcv_by_combo.csv")
+if (!is.null(x_sw))
+  x_sw <- x_sw[, .(season, year, days, N, CV_reported, CV_HC, CV_CL, r_HC, r_CL,
+                   N_lo95_reported, N_hi95_reported, N_lo95_HC, N_hi95_HC,
+                   CL_top_day, CL_top_day_share)]
+tab(x_sw)
+```
+
+A la luz de esto, un bootstrap no paramétrico agregaría poco. Estima la misma cantidad que el sándwich agrupado, y lo que sumaría por encima de éste, la re-estimación de los parámetros de suavizado y de *p* en cada réplica, es chico: `Vc` vale un 2 %, y la escalera muestra que el estimador puntual se mueve un 5.7 % a lo largo de todo el rango de *p* entre 1.50 y 1.80. Asimismo, el diseño juega en contra por tres razones: 1) cada uno de los 82 días de campaña pertenece a una sola combinación estación-año y 9 de las 33 combinaciones tienen un solo día, de modo que remuestrear dentro de estación-año deja a esas 9 sin ninguna variación (remuestrear dentro de estación, con 19, 16, 17 y 30 días, lo evita); 2) en otoño las réplicas se partirían en dos grupos según salga o no `201704Hidro`, y con unos 80 conglomerados tan desparejos el intervalo percentil probablemente también quedaría corto; y 3) los cuatro `traj_id` "Hidro" están rotulados por mes, con 8 ó 9 patas y el doble de segmentos que la mediana, así que probablemente son campañas de varios días y la unidad de remuestreo no es homogénea.
+
+```{r}
+#| label: tbl-x-dd-bootdesign
+#| tbl-cap: "Con qué tendría que trabajar un bootstrap por día de campaña."
+#| echo: false
+#| message: false
+#| warning: false
+tab(rd("DSM", "TailMisfit", "DD_robustcv_design.csv"))
+```
+
+Si igual se corre, la unidad de remuestreo sigue siendo el `traj_id` y no la pata de transecta, los estratos son las estaciones, los días repetidos necesitan un `Sample.Label` nuevo para que `dsm` no los fusione, y 100 réplicas alcanzan para un CV que entre a `lnorm_ci()` pero no para límites percentiles.
+
+Ni el bootstrap ni ningún sándwich tocan el sesgo por tamaño de grupo (@sec-x-dd-cola). Ese sesgo desplaza el centro del intervalo, no su ancho, y un intervalo más ancho alrededor de un estimador sesgado sigue sin cubrir. Su efecto sobre la abundancia todavía no está cuantificado, porque requiere una función de detección con `size` como covariable, pero la regresión de @tbl-x-dd-groupsize indica que los grupos en la distancia de truncamiento son 2.6 veces más grandes que sobre la línea. Para la cobertura de los intervalos, ésa es probablemente la corrección pendiente que más pesa.
 
 # 8. CORRECCIÓN a secciones ya publicadas: el offset de los mapas
 
@@ -561,7 +629,7 @@ Se verificó contra la salida de abundancia del propio proyecto: predecir el mod
      ya esta resuelto por la seccion de mapas de CV, asi que conviene sacarlo. -->
 
 1. **Sesgo por tamaño de grupo, sin corregir.** La regresión de log(tamaño) sobre distancia da un efecto significativo y el ajuste actual no lo corrige. Es la corrección pendiente con efecto más directo sobre el estimador puntual.
-2. **Los intervalos de confianza.** Están reportados como los da el modelo; el análisis de la cola indica que son optimistas por un factor cercano a 1.3. Conviene decirlo en el texto del manuscrito y no dejarlo sólo en el output.
+2. **Los intervalos de confianza.** Están reportados como los da el modelo, y el estimador sándwich indica que son optimistas: el CV robusto es una mediana de 1.39 veces el reportado, entre 1.22 y 1.76 según la combinación estación-año (@sec-x-dd-sandwich). Conviene reportar en el manuscrito los CV sándwich por combinación, o al menos el factor y su rango, y no dejarlo sólo en el output.
 3. **La grilla de nudos no está convergida.** La configuración adoptada (89 nudos) sale de una meseta de `edf_xy` frenada por el criterio de autocorrelación, no de un mínimo de AIC. Es una grilla mejor, no la correcta.
 4. **Las covariables ambientales** vuelven a ser competitivas por AIC una vez corregida la base (@sec-x-dd-covk). La decisión de excluirlas se sostiene, pero por parsimonia y porque son climatologías sin dimensión anual, no por AIC.
 

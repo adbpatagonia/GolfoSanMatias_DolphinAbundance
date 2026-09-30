@@ -1,0 +1,10 @@
+quantity,value
+"CV ratio to reported, Vc (smoothing-parameter corrected), median (range)",1.02 (1.02-1.03)
+"CV ratio to reported, HC sandwich, median (range)",1.39 (1.22-1.76)
+"CV ratio to reported, day-cluster sandwich (CR1), median (range)",1.47 (1.15-2.09)
+"day-cluster / HC, GAM part only, median (range)",0.97 (0.87-1.58)
+for comparison: Pearson/REML scalar from test A2,1.29
+"share of HC meat owned by the segments with > 20 animals, median (range)",0.93 (0.87-0.96)
+combos where one traj_id owns > 50% of the cluster meat,"Fall 2014, Fall 2015, Fall 2016, Fall 2017"
+"  that traj_id, and its share there (range)","201704Hidro, 0.66-0.69"
+detection-function CV (added in quadrature to every CV above),0.049

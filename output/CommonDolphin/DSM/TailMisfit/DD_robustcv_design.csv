@@ -1,0 +1,11 @@
+quantity,value
+survey days (traj_id),82
+traj_id spanning more than one season-year,0
+season-year combos,33
+combos with 1 survey day,9
+combos with 2 survey days,10
+days per season stratum (Spring / Summer / Fall / Winter),19 / 16 / 17 / 30
+"share of all animals seen, top traj_id",16.4% (1201 of 7333)
+top traj_id,201704Hidro
+"share of all animals seen, top 10 traj_id",50.1%
+Hidro traj_id: segments each (median segments per traj_id),"164, 142, 144, 158 (76.5)"
