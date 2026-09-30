@@ -765,7 +765,7 @@ Al consultar con Len Thomas, me dijo que hay 2 maneras de solucionar este proble
 Creo que no estamos en situación de tener que implementar la primera solución (Len me dijo que él no lo haría).\
 Dado el grafico de la funcion de deteccion , creo que tenemos 2 opciones que me gustaria discutir:
 
-1.  ignorar el efecto de tamaño grupal, y entender que las estimaciones de abundancia probablemente esten sesgadas hacia abajo
+1.  ignorar el efecto de tamaño grupal, y entender que las estimaciones de abundancia probablemente estén sesgadas hacia arriba: los grupos grandes se detectan a mayor distancia que los chicos, así que el tamaño medio observado sobreestima el tamaño medio de los grupos en la población
 
 2.  intentar el ejercicio de tratar a DD como 2 clusters - quizas tengamos que hacer esto para quedarnos tranquilos nosotros, pero no estoy seguro que valga la pena
 
