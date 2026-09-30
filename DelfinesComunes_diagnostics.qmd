@@ -391,14 +391,15 @@ img("DSM", "DD_DSM_Tuned_Base_Season.png")
 img("DSM", "DD_DSM_Tuned_SeasonByModel.png")
 ```
 
-<!-- REGISTRO DE DECISION (promovido 2026-09-29). Esta figura NO es la que
-     reescribe UTIL_DSM_TunedArm_MapsAbundance_DD.R en Abundance/: esa compara el
-     arm sintonizado consigo mismo (toma el "original" del CSV soap del pipeline,
-     que desde el re-run es el sintonizado; difieren solo por la huella, 0.35 %).
-     Esta es la del 2026-09-16, contra el arm original de 41 nudos, y vive en
+<!-- REGISTRO DE DECISION (promovido 2026-09-29). Es la figura del 2026-09-16,
+     contra el arm original de 41 nudos, y vive en
      output/CommonDolphin/Abundance/decision_records/ junto con el CSV del arm
      original (2026-09-02). Sus series sintonizadas son identicas a las de hoy
-     (DD_abundance_tuned.csv, 99/99 filas). Ver el README de esa carpeta. -->
+     (DD_abundance_tuned.csv, 99/99 filas). Ver el README de esa carpeta.
+     Desde el 2026-09-30 UTIL_DSM_TunedArm_MapsAbundance_DD.R lee el "original"
+     de ese CSV, y la figura que escribe en Abundance/ sale identica byte a byte
+     a este registro. Antes comparaba el arm sintonizado consigo mismo. Se deja
+     apuntando al registro porque es el archivo fechado que no se sobreescribe. -->
 
 ```{r}
 #| label: fig-x-dd-tuned-abundancia

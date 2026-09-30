@@ -86,15 +86,14 @@
 #         output/CommonDolphin/Abundance/DD_density_tuned.png
 #         output/CommonDolphin/Abundance/DD_abundance_tuned_vs_original.png
 #
-# NOTE 2026-09-29 -- THE LAST FILE ABOVE HAS BEEN DEGENERATE SINCE THE 2026-09-18
-# RE-RUN. Its "original" series (.ab_orig, section 4) is the pipeline's
-# DD_abundance_season_year_soap.csv, and the pipeline now fits the tuned
-# configuration, so the figure compares the tuned arm with itself (they differ
-# only by footprint, ~0.35%). The real 2026-09-16 comparison, and the 41-knot
-# original-arm CSV it was drawn from, are decision records in
-#         output/CommonDolphin/Abundance/decision_records/
-# Code deliberately unchanged. Pointing .ab_orig at that CSV would make this
-# figure right again.
+# NOTE 2026-09-30 -- THE LAST FILE ABOVE WAS DEGENERATE BETWEEN THE 2026-09-18
+# RE-RUN AND THIS FIX. Its "original" series (.ab_orig, section 4) used to be the
+# pipeline's DD_abundance_season_year_soap.csv. The pipeline now fits the tuned
+# configuration, so that figure compared the tuned arm with itself; the two
+# differed only by footprint, ~0.35%. .ab_orig now reads the 41-knot
+# original-arm DECISION RECORD instead:
+#         output/CommonDolphin/Abundance/decision_records/DD_abundance_season_year_soap.csv
+# The 2026-09-16 figure beside it stays as the dated record.
 
 library(dsm)
 library(mgcv)
@@ -462,10 +461,18 @@ ab[, sy := year + seas]
 setorder(ab, model, footprint, sy)
 .write(ab, "DD_abundance_tuned.csv", dir = .ab_dir)
 
-# bridge to the stored ORIGINAL soap series
+# bridge to the stored ORIGINAL soap series. Read from the DECISION RECORD,
+# not from the pipeline's Abundance/DD_abundance_season_year_soap.csv: since
+# the 2026-09-18 re-run the pipeline fits the tuned arm, so that file would
+# compare the tuned arm with itself. A missing record now warns instead of
+# silently dropping the comparison figure.
 .ab_orig <- tryCatch(
-  fread(file.path(.ab_dir, "DD_abundance_season_year_soap.csv")),
-  error = function(e) NULL)
+  fread(file.path(.ab_dir, "decision_records", "DD_abundance_season_year_soap.csv")),
+  error = function(e) {
+    warning("original-arm decision record not found -- comparison figure skipped: ",
+            conditionMessage(e), call. = FALSE)
+    NULL
+  })
 
 # ---------------------------------------------------------------------------
 # 5. Abundance plots

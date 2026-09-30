@@ -285,9 +285,13 @@ real comparison had survived only in the quarantine. ADB promoted it:
 They go in a subfolder, not beside the live files, because live scripts still
 write files with the same names in `Abundance/`. Both copies are SHA256-identical
 to the quarantine. `restore_dd_decision_records.ps1` now carries both, and a
-README in the folder records provenance and hashes. **Commit them before step
-11**: until they are tracked, deleting the quarantine leaves them as untracked
-working-tree files only.
+README in the folder records provenance and hashes. Committed in f44cf68
+(2026-09-30), so step 11 no longer threatens them.
+
+2026-09-30: the TunedArm script now reads `.ab_orig` from the record CSV. Its
+regenerated figure is byte-identical to the record PNG. The copy in
+`Abundance/` stays tuned-vs-tuned until the next `9_RegenerateStudies_DD.R`
+run.
 
 **Time**: seconds.
 

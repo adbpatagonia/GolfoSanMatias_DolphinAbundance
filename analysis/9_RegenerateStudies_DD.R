@@ -50,9 +50,11 @@
 # UTIL_DSM_TunedArm_MapsAbundance_DD.R draws its "original" abundance series from
 # the pipeline's Abundance/DD_abundance_season_year_soap.csv. Since the pipeline
 # runs the tuned configuration, that series is the tuned arm, so the
-# DD_abundance_tuned_vs_original.png it rewrites on every run compares the tuned
-# arm with itself; only the footprint differs, by ~0.35%. The real comparison is
-# kept in output/CommonDolphin/Abundance/decision_records/:
+# DD_abundance_tuned_vs_original.png it rewrote compared the tuned arm with
+# itself; only the footprint differed, by ~0.35%. FIXED 2026-09-30: .ab_orig now
+# reads the record CSV below, and the regenerated figure is byte-identical to
+# the record PNG. The real comparison is kept in
+# output/CommonDolphin/Abundance/decision_records/:
 #     DD_abundance_season_year_soap.csv   2026-09-02, the 41-knot original arm
 #     DD_abundance_tuned_vs_original.png  2026-09-16, tuned vs that arm
 # They sit in a subfolder because live scripts still write files with the same

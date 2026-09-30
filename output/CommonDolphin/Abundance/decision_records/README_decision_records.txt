@@ -20,11 +20,12 @@ fits the tuned configuration. The pipeline's own
 Abundance/DD_abundance_season_year_soap.csv is therefore the tuned arm, and the
 original arm no longer exists anywhere except here.
 
-UTIL_DSM_TunedArm_MapsAbundance_DD.R still reads its "original" series from that
-pipeline CSV. So the ..\DD_abundance_tuned_vs_original.png it rewrites on every
-9_RegenerateStudies_DD.R run compares the tuned arm with itself. The two lines
-differ only by footprint: 1353 cells for tuned, 1408 for "original", about 0.35%.
-The PNG in THIS folder is the real comparison.
+UTIL_DSM_TunedArm_MapsAbundance_DD.R used to read its "original" series from that
+pipeline CSV, so the ..\DD_abundance_tuned_vs_original.png it rewrote compared the
+tuned arm with itself. The two lines differed only by footprint: 1353 cells for
+tuned, 1408 for "original", about 0.35%.
+FIXED 2026-09-30: the script now reads the CSV in THIS folder, and its figure
+comes out byte-identical to the PNG here (checked on a scratch run).
 
 Its tuned lines are still current: the 2026-09-16 DD_abundance_tuned.csv and the
 2026-09-18 re-run's are identical (99/99 rows). Tuned / original N is
