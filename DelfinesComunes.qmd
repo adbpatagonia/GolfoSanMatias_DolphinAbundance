@@ -506,7 +506,7 @@ plot(dd.df.hr.trun)
 >
 > \[...\] To assess model fit, as distinct from revealing rounding in the data, we would like to select cutpoints both for our histogram and for the χ^2^ goodness-of-fit test to avoid these favoured distances. Here, we use the following cutpoints: 0, 12.5, 22.5, 32.5, 42.5, 52.5, 62.5, 77.5, 95 m. Note the use of wider intervals at larger distances, where smaller numbers of birds are detected \[...\]\
 
-Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_dd`. El último bin termina en 300, porque la distancia de truncado es `r trunc.dist_dd`m.
+Aquí utilizamos una estrategia similar; elegimos puntos de corte `r cutpoints_dd`. 
 
 ```{r}
 #| echo: false
@@ -1330,7 +1330,7 @@ table_dd_soap_modselection %>%
 ```
 
 
-Similar al caso @tbl-modelselectiondd, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 26% explicada por el modelo mas parsimonioso (incluye clorofila) contra 22% explicada por el modelo que incluye solo año y estación.   
+Similar al caso @tbl-modelselectiondd, añadir covariables ambientales implica una mejora marginal en la proporcion de deviance explicada: 29% explicada por el modelo mas parsimonioso (incluye temperatura superficial del mar) contra 26% explicada por el modelo que incluye solo año y estación.   
 En lo que continua, persentare los resultados del modelo que excluye variables ambientales.   
 
 
@@ -1392,7 +1392,7 @@ dd.map.density.season.soap
 ### Estimaciones de abundancia    
 
 Los ticks menores en el eje *x* representan las estaciones, en orden: verano, otoño, invierno, primavera.   
-Se notan claramente los efectos de temporada y año. El efecto de año no parece muy grande, pero es debido a la escala del eje *y*. Haciendo zoom, se ve claramente que la abundancia promedio de delfines previo a 2012 es <5000, mientras después de 2013 es ~8000. 
+Se notan claramente los efectos de temporada y año. El efecto de año no parece muy grande, pero es debido a la escala del eje *y*. Haciendo zoom, se ve claramente que la abundancia promedio de delfines previo a 2012 es <5000, mientras después de 2013 es ~7000. 
 
 ```{r}
 #| echo: false
