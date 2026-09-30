@@ -29,20 +29,34 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
            - DelfinesOscuros.qmd
            - DelfinesComunes.qmd
 
-2. LOS NUMEROS DE ESTE BORRADOR SON PRE-RE-RUN. Los pasos 5 a 8 del runbook
-   (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescriben dd_output.RData y todo
-   output/CommonDolphin/. Ademas dd_output.RData quedaba en la configuracion
-   soap ANTERIOR al retune (41 nudos, tol3000/margin2000, k=10), asi que los
-   diagnosticos van a cambiar. Por eso las cifras se leen desde los CSV con
-   `fread()` y no estan escritas en la prosa. Donde una cifra SI esta en la
-   prosa va marcada con [VERIFICAR TRAS RE-RUN].
+2. LAS CIFRAS DE LA PROSA SE VERIFICARON TRAS EL RE-RUN (2026-09-29). Los pasos
+   5 y 6 del runbook (analysis/RUNBOOK_clean_rerun_2026-09-17.md) reescribieron
+   dd_output.RData (2026-09-18) y output/CommonDolphin/ con la configuracion
+   soap sintonizada (89 nudos, tol500/margin250, K_COV=20). Las cifras de la
+   prosa de las secciones 1, 5, 6 y 7, que dependen del re-run, se cotejaron
+   contra el CSV o el workspace que las produce, y las marcas de verificacion
+   pendiente se sacaron. No se cotejaron contra output: las secciones 2 a 4
+   (registros de decision, estables por construccion), el rango mensual de sst
+   de la seccion 5 (3.62 / 4.29, sale del encabezado del script) y el
+   "conglomerado entre 150 y 450" de la seccion 6. Lo que cambio con el re-run:
+     - el mejor modelo del bloque soap por AIC es ahora + s(sst), no + s(clo),
+       y por eso cambio el conjunto diagnosticado (seccion 1);
+     - s(clo) ya no esta contra su techo en el bloque soap (seccion 1);
+     - p y phi del modelo presentado: 1.572 / 28.45 (seccion 6);
+     - la figura tuned-vs-original que el script reescribe quedo degenerada
+       (compara el arm sintonizado consigo mismo). La seccion 5 muestra en su
+       lugar el registro de decision del 2026-09-16 (ver advertencia 4).
    La seccion 7 suma, el 2026-09-29, la subseccion del estimador sandwich
    (analysis/UTIL_DSM_RobustCV_DD.R, cuarto script del paso 6). El CV robusto,
    1.39 veces el reportado, reemplaza al 1.29 como la cifra a reportar, y sus
    cifras se cotejaron contra DD_robustcv_*.csv.
+   Las tablas y figuras se siguen leyendo desde los CSV con `fread()`. Si el
+   pipeline se vuelve a correr, hay que volver a cotejar la prosa.
 
    Lo que SI es estable: los bloques RESULT de los scripts en analysis/ (estan
-   versionados) y los 16 registros de decision que restaura el paso 9.
+   versionados) y los 18 registros de decision que restaura
+   analysis/restore_dd_decision_records.ps1 (16 del paso 9, mas 2 promovidos
+   el 2026-09-29).
 
 3. DOS CITAS FALTAN EN EL .bib. references/distancesampling.bib solo tiene
    Buckland2001, Buckland2015DistanceSampling y Miller2013SpatialModels. Las
@@ -53,7 +67,9 @@ CUATRO ADVERTENCIAS ANTES DE COPIAR NADA:
 4. DEPENDENCIAS DE CADA SECCION. Las secciones 1 (diagnosticos) salen del
    workspace (dd.diag) y de output/CommonDolphin/DSM/, que el paso 5 escribe.
    Las secciones 2, 3 y 4 salen de los 16 registros de decision que restaura el
-   paso 9. Las secciones 5, 6 y 7 salen del paso 6 (9_RegenerateStudies_DD.R).
+   paso 9. Las secciones 5, 6 y 7 salen del paso 6 (9_RegenerateStudies_DD.R),
+   salvo la comparacion contra el arm original de la seccion 5, que sale de
+   los 2 registros de output/CommonDolphin/Abundance/decision_records/.
    Ninguna renderiza antes de que corran esos pasos; los helpers de abajo avisan
    en lugar de romper.
 =============================================================================
@@ -128,7 +144,7 @@ tab(if (exists("dd.diag")) dd.diag$acf_summary else
 img("DSM", "autocorrelation", "DD_dsm_correlogram.png")
 ```
 
-El resultado es el que sostiene la columna `lag1_sig` de las tablas de selección: **el modelo que se presenta, `count ~ s(x,y,bs="so") + season + s(Ano)`, pasa la prueba a las dos escalas, y los modelos que incluyen `s(clo)` no la pasan** [VERIFICAR TRAS RE-RUN]. Esto es relevante porque `s(clo)` era, por AIC, el mejor modelo del bloque soap. Un modelo cuya independencia residual no se sostiene no puede seleccionarse por un AIC que asume esa independencia, de modo que el ordenamiento debe leerse con `lag1_sig` y no sólo con `deltaAIC`.
+El resultado es el que sostiene la columna `lag1_sig` de las tablas de selección: **el modelo que se presenta, `count ~ s(x,y,bs="so") + season + s(Ano)`, pasa la prueba a las dos escalas, y los modelos diagnosticados que incluyen `s(clo)` no la pasan a ninguna de las dos**. El margen del modelo presentado no es holgado a la escala de pata: usa el 95 % de la banda, contra el 66 % a la escala de día. Esto es relevante porque el modelo presentado no es el mejor del bloque soap por AIC. `s(sst)` le gana por 35.4 unidades y el mejor modelo con `s(clo)` por 28.9, y los dos fallan la prueba a la escala de pata (107 % y 127 % de la banda). De los 25 modelos del bloque soap, sólo el presentado y el que agrega `s(dist.up)` tienen `lag1_sig = FALSE` en la tabla de selección. Un modelo cuya independencia residual no se sostiene no puede seleccionarse por un AIC que asume esa independencia, de modo que el ordenamiento debe leerse con `lag1_sig` y no sólo con `deltaAIC`.
 
 Dos advertencias que conviene explicitar. La banda es optimista: trata a los pares de residuos como independientes cuando por construcción se solapan, así que una correlación apenas adentro de la banda es evidencia más débil de lo que parece. Y un correlograma plano significa que no hay correlación *no modelada*, no que no haya correlación: una superficie espacial flexible que varíe por año puede absorber la estructura a lo largo de la trayectoria dentro del ajuste, que es exactamente el mecanismo de sobre-ajuste que se está testeando. Por eso el conjunto diagnosticado incluye siempre un modelo sin término de año, como control positivo.
 
@@ -145,7 +161,9 @@ Cada suavizado se ajusta dentro de una base de tamaño *k*. Si el ajuste se apoy
 tab(if (exists("dd.diag")) dd.diag$kcheck else rd("DSM", "DD_dsm_kcheck.csv"))
 ```
 
-Acá aparece el hallazgo que motivó todo el trabajo posterior: **`s(clo)` está apoyado contra su techo en todos los modelos que lo incluyen** (edf ~8.3-8.4 sobre k_prime = 9) [VERIFICAR TRAS RE-RUN]. Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (@sec-x-dd-covk), y no sólo la marcada.
+La tabla ya no muestra el hallazgo que motivó todo el trabajo posterior, porque la configuración que hoy corre lo corrigió. Con la configuración original (41 nudos, k = 10), **`s(clo)` estaba apoyado contra su techo en todos los modelos que lo incluían** (edf 8.35-8.43 sobre k_prime = 9). Es decir, la clorofila ganaba 47 unidades de AIC dentro del bloque soap con una base que se había quedado corta. Ese es el motivo por el cual las siete covariables ambientales se volvieron a testear a k = 20 (@sec-x-dd-covk), y no sólo la marcada.
+
+Con K_COV = 20, que es lo que hoy corre en el bloque soap, `s(clo)` sale en 11.6 de k_prime = 19 (edf_frac 0.61) y `s(sst)` en 10.0 de 19 (0.53): ninguno está contra su techo. El único `s(clo)` que sigue apoyado contra su techo es el del modelo by-year (8.35 de 9), que no pertenece al bloque soap y conserva k = 10.
 
 ## Rootogramas
 
@@ -217,7 +235,7 @@ tab(rd("DSM", "DD_rootogram_knotgrid.csv"))
      descartar las covariables ambientales.
      Estudio: analysis/UTIL_DSM_CovariateK_DD.R (REGISTRO DE DECISION). -->
 
-El reporte descarta las covariables ambientales porque agregan poca deviance (0.26 contra 0.22). Ese argumento tenía un problema: dentro del bloque soap las covariables le ganaban al modelo presentado por mucho (`s(clo)` por 47.5 unidades de AIC), y el `k.check` mostraba a `s(clo)` apoyado contra su techo. Un suavizado que se quedó sin base no da una medida justa de lo que la covariable vale, ni en deviance ni en AIC. Como el default k = 10 aplica a las siete covariables, había que re-testear las siete.
+El reporte descartaba las covariables ambientales porque agregaban poca deviance: 0.26 contra 0.22 con la configuración original, y 0.29 contra 0.26 con la sintonizada que hoy corre. Ese argumento tenía un problema: dentro del bloque soap las covariables le ganaban al modelo presentado por mucho (`s(clo)` por 47.5 unidades de AIC), y el `k.check` mostraba a `s(clo)` apoyado contra su techo. Un suavizado que se quedó sin base no da una medida justa de lo que la covariable vale, ni en deviance ni en AIC. Como el default k = 10 aplica a las siete covariables, había que re-testear las siete.
 
 ```{r}
 #| label: tbl-x-dd-covk
@@ -373,15 +391,24 @@ img("DSM", "DD_DSM_Tuned_Base_Season.png")
 img("DSM", "DD_DSM_Tuned_SeasonByModel.png")
 ```
 
+<!-- REGISTRO DE DECISION (promovido 2026-09-29). Esta figura NO es la que
+     reescribe UTIL_DSM_TunedArm_MapsAbundance_DD.R en Abundance/: esa compara el
+     arm sintonizado consigo mismo (toma el "original" del CSV soap del pipeline,
+     que desde el re-run es el sintonizado; difieren solo por la huella, 0.35 %).
+     Esta es la del 2026-09-16, contra el arm original de 41 nudos, y vive en
+     output/CommonDolphin/Abundance/decision_records/ junto con el CSV del arm
+     original (2026-09-02). Sus series sintonizadas son identicas a las de hoy
+     (DD_abundance_tuned.csv, 99/99 filas). Ver el README de esa carpeta. -->
+
 ```{r}
 #| label: fig-x-dd-tuned-abundancia
-#| fig-cap: "Serie de abundancia del arm sintonizado, contra la del arm original."
+#| fig-cap: "Serie de abundancia del arm sintonizado contra la del arm original (41 nudos, tol3000/margin2000, k = 10). Registro de decisión del 2026-09-16: el pipeline ya no ajusta el arm original."
 #| echo: false
 #| message: false
 #| warning: false
 #| fig-width: 11
 #| fig-height: 8
-img("Abundance", "DD_abundance_tuned_vs_original.png")
+img("Abundance", "decision_records", "DD_abundance_tuned_vs_original.png")
 ```
 
 ```{r}
@@ -392,6 +419,8 @@ img("Abundance", "DD_abundance_tuned_vs_original.png")
 #| warning: false
 tab(rd("Abundance", "DD_abundance_tuned.csv"))
 ```
+
+**El retune baja la serie alrededor de un 10 %.** Contra el arm original (41 nudos, k = 10), la abundancia sintonizada es en mediana 0.90 veces la original, con un rango de 0.84 a 1.005 sobre las 33 combinaciones estación-año (media 4557 contra 4907, las dos sobre las 1408 celdas).
 
 Tres cosas que hay que decir en la leyenda y que no son obvias:
 
@@ -426,7 +455,7 @@ tab(rd("DSM", "tail", "DD_tail_variance_decomposition.csv"))
 tab(rd("DSM", "tail", "DD_tail_groupsize.csv"))
 ```
 
-**El 92.7 % de la varianza del conteo es el TAMAÑO de los grupos, no su número.** El número de grupos es casi Poisson; el tamaño tiene mediana 4, un segundo conglomerado entre 150 y 450, y un máximo de 450. Una Tweedie con $1 < p < 2$ *es* una Poisson-gamma compuesta, así que estructuralmente es el modelo correcto, pero una sola gamma no puede concentrarse cerca de 4 y llegar a 450 al mismo tiempo. El ajuste $p = 1.576$, $\phi = 29.7$ es un compromiso que pone demasiada masa en la cola.
+**El 92.7 % de la varianza del conteo es el TAMAÑO de los grupos, no su número.** El número de grupos es casi Poisson; el tamaño tiene mediana 4, un segundo conglomerado entre 150 y 450, y un máximo de 450. Una Tweedie con $1 < p < 2$ *es* una Poisson-gamma compuesta, así que estructuralmente es el modelo correcto, pero una sola gamma no puede concentrarse cerca de 4 y llegar a 450 al mismo tiempo. El ajuste $p = 1.572$, $\phi = 28.45$ es un compromiso que pone demasiada masa en la cola.
 
 La evidencia decisiva es el contraste entre especies: **el grupo más grande de delfines oscuros es de 11 animales y su rootograma es limpio**. Ninguna Tweedie única puede ajustar las dos situaciones.
 
@@ -463,7 +492,7 @@ img("DSM", "tail", "DD_tail_rootogram_compare.png")
 
 **La ruta 2 (twlss) empeora la cola.** **La ruta 1 (modelar el conteo de grupos y multiplicar por el tamaño medio) confirma el diagnóstico** pero no produce un intervalo más chico: el CV del tamaño medio de grupo es un piso que entra en cuadratura con el CV espacial. Su rédito sería un modelo de conteos correctamente especificado y una atribución honesta de la varianza, no precisión.
 
-Una advertencia que conviene registrar: **la función de detección es ~1, de modo que $\hat{p}$ es constante y la media de Horvitz-Thompson del tamaño de grupo es algebraicamente idéntica a la media ingenua**. El ajuste actual no contiene corrección por sesgo de tamaño y no se le puede extraer ninguna. La regresión explícita de log(tamaño) sobre distancia da un efecto significativo (p < 1e-4) [VERIFICAR TRAS RE-RUN], así que ese sesgo está presente y sin corregir en las estimaciones de abundancia actuales.
+Una advertencia que conviene registrar: **la función de detección es ~1, de modo que $\hat{p}$ es constante y la media de Horvitz-Thompson del tamaño de grupo es algebraicamente idéntica a la media ingenua**. El ajuste actual no contiene corrección por sesgo de tamaño y no se le puede extraer ninguna. La regresión explícita de log(tamaño) sobre distancia da un efecto significativo (p < 1e-5), así que ese sesgo está presente y sin corregir en las estimaciones de abundancia actuales.
 
 # 7. Cuánto cuesta el desajuste de la cola a las estimaciones
 
@@ -514,7 +543,7 @@ tab(rd("DSM", "TailMisfit", "DD_tailmisfit_B_pladder.csv"))
 tab(rd("DSM", "TailMisfit", "DD_tailmisfit_A2_inflation.csv"))
 ```
 
-**El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.** Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado [VERIFICAR TRAS RE-RUN]. Ese 1.29 subestima la inflación. El estimador sándwich, que no supone la forma de la función de varianza, la lleva a 1.39 en la mediana, entre 1.22 y 1.76 según la combinación estación-año (@sec-x-dd-sandwich).
+**El resultado, en una frase: reportar los estimadores puntuales de abundancia como están, y tratar los intervalos de confianza como optimistas, diciendo por cuánto.** Fijar la potencia Tweedie en cualquier punto de [1.50, 1.80] mueve la abundancia un 5.7 % (15.4 % sobre el rango más amplio [1.30, 1.80]); los residuos, en cambio, implican una dispersión 1.68 veces la estimada por REML, es decir un CV alrededor de 1.29 veces el reportado. Ese 1.29 subestima la inflación. El estimador sándwich, que no supone la forma de la función de varianza, la lleva a 1.39 en la mediana, entre 1.22 y 1.76 según la combinación estación-año (@sec-x-dd-sandwich).
 
 Esa inflación es **enteramente la cola, y es de 67 segmentos**: excluyendo los segmentos con más de 20 animales, el $\phi$ de Pearson baja a 10.6 contra 28.5 de REML. Sin esos segmentos los residuos implican *menos* dispersión que la que el modelo asume, no más.
 

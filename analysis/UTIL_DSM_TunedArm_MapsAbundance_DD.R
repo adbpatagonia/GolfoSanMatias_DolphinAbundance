@@ -85,6 +85,16 @@
 #         output/CommonDolphin/Abundance/DD_abundance_tuned.png
 #         output/CommonDolphin/Abundance/DD_density_tuned.png
 #         output/CommonDolphin/Abundance/DD_abundance_tuned_vs_original.png
+#
+# NOTE 2026-09-29 -- THE LAST FILE ABOVE HAS BEEN DEGENERATE SINCE THE 2026-09-18
+# RE-RUN. Its "original" series (.ab_orig, section 4) is the pipeline's
+# DD_abundance_season_year_soap.csv, and the pipeline now fits the tuned
+# configuration, so the figure compares the tuned arm with itself (they differ
+# only by footprint, ~0.35%). The real 2026-09-16 comparison, and the 41-knot
+# original-arm CSV it was drawn from, are decision records in
+#         output/CommonDolphin/Abundance/decision_records/
+# Code deliberately unchanged. Pointing .ab_orig at that CSV would make this
+# figure right again.
 
 library(dsm)
 library(mgcv)

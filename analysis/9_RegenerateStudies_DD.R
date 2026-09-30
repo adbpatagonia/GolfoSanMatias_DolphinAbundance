@@ -46,6 +46,18 @@
 #                                      DD_soap_knot_correlogram -- restore from
 #                                      quarantine like the three above.
 #
+# TWO MORE RECORDS, promoted 2026-09-29, from a study that IS sourced below.
+# UTIL_DSM_TunedArm_MapsAbundance_DD.R draws its "original" abundance series from
+# the pipeline's Abundance/DD_abundance_season_year_soap.csv. Since the pipeline
+# runs the tuned configuration, that series is the tuned arm, so the
+# DD_abundance_tuned_vs_original.png it rewrites on every run compares the tuned
+# arm with itself; only the footprint differs, by ~0.35%. The real comparison is
+# kept in output/CommonDolphin/Abundance/decision_records/:
+#     DD_abundance_season_year_soap.csv   2026-09-02, the 41-knot original arm
+#     DD_abundance_tuned_vs_original.png  2026-09-16, tuned vs that arm
+# They sit in a subfolder because live scripts still write files with the same
+# names one level up. 16 + 2 = 18 records in all.
+#
 # Each carries a DECISION RECORD header saying the same thing. Their CSVs under
 # output/CommonDolphin/DSM/ are dated artefacts, not regenerable output: restore
 # them from the quarantine rather than expecting this driver to rebuild them.

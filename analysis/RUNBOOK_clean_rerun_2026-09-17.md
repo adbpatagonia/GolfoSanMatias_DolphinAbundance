@@ -271,6 +271,24 @@ re-run wrote something that should not exist.
 
 All 16 verified present on disk before step 1.
 
+**Addendum 2026-09-29: two more records, 18 in all.** The re-run turned
+`Abundance/DD_abundance_tuned_vs_original.png` into a tuned-vs-tuned figure.
+`UTIL_DSM_TunedArm_MapsAbundance_DD.R` takes its "original" series from the
+pipeline's soap abundance CSV, and the pipeline now fits the tuned arm. So the
+real comparison had survived only in the quarantine. ADB promoted it:
+
+| source | file | to |
+|---|---|---|
+| `5_CommonDolphin_Abundance.R`, 2026-09-02 (41-knot original arm) | `DD_abundance_season_year_soap.csv` | `Abundance/decision_records/` |
+| `UTIL_DSM_TunedArm_MapsAbundance_DD.R`, 2026-09-16 | `DD_abundance_tuned_vs_original.png` | `Abundance/decision_records/` |
+
+They go in a subfolder, not beside the live files, because live scripts still
+write files with the same names in `Abundance/`. Both copies are SHA256-identical
+to the quarantine. `restore_dd_decision_records.ps1` now carries both, and a
+README in the folder records provenance and hashes. **Commit them before step
+11**: until they are tracked, deleting the quarantine leaves them as untracked
+working-tree files only.
+
 **Time**: seconds.
 
 ---

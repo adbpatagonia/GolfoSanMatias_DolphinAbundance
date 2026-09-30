@@ -67,38 +67,43 @@
 #
 # ===========================================================================
 # RESULT, 2026-09-16: NOTHING WAS ADOPTED. THE LO SOAP ARM NEEDS NO RETUNE.
+# (Numbers CORRECTED 2026-09-29 against the 2026-09-19 cold re-run -- see the
+#  note at the end of this block. The conclusion did not change.)
 #
 # Ran in full (20-configuration sweep, then 25 models at tol500/margin250/10x8
 # with K_COV = 20 against the 25 stored models). All three knobs came back
 # negative, for reasons that are specific and checkable rather than a shrug:
 #
 #  KNOT GRID -- the LO spatial basis was NEVER BINDING. edf_frac_xy is 0.335 at
-#     the stored configuration (16.06 of 48), against 0.64 for the DD arm that
-#     did need fixing. Across the whole sweep edf_xy climbs only 15.9 -> 29.3
-#     while k_prime goes 49 -> 369: the penalty is doing the work, not the basis
+#     the stored configuration (16.06 of 48), against 0.63 for the DD arm that
+#     did need fixing. Across the whole sweep edf_xy climbs only 15.4 -> 29.3
+#     while k_prime goes 48 -> 369: the penalty is doing the work, not the basis
 #     ceiling. There is no defect here to repair.
 #     Supporting: the entire 20-configuration sweep spans 15.8 AIC (DD's knot
 #     refinement ALONE was worth 24), and AIC is NON-MONOTONE in knots -- 12x9
 #     is worse than 10x8 in all three boundaries, by 3.4 / 9.2 / 12.8. A finer
 #     penalized basis cannot genuinely fit worse, so that spread is REML landing
 #     differently and it sets the noise floor for everything else in the table.
-#     The stored 40-knot configuration ranks 4th of 20, within 3.06 of the best.
+#     The stored 40-knot configuration ranks 5th of 20, within 3.06 of the best.
 #
 #  COVARIATE BASIS -- k = 10 was never the constraint either, and the edf say so
 #     directly. Doubling k to 20 moved every environmental smooth by essentially
 #     nothing:
 #         depth 3.09 -> 3.15   grad 2.06 -> 2.15   slope 2.23 -> 2.36
 #         VelVert 1.71 -> 1.71   sst 1.00 -> 1.00   clo 1.00 -> 1.00
-#     (DD's s(clo), by contrast, was pinned at 8.25-8.43 of 9.) The apparent
+#     (DD's s(clo), by contrast, was pinned at 8.35-8.43 of 9.) The apparent
 #     within-arm "gains" at k = 20 -- depth +4.25, grad +2.69 -- are NOT the
 #     basis: depth swings 6 AIC units while its edf moves 0.06. That is noise of
-#     the size the knot sweep already measured. At the stored configuration no
-#     covariate beats the base at all; the best is sst at +0.21.
+#     the size the knot sweep already measured. At the stored configuration only
+#     sst beats the base, by 0.34 AIC -- far inside that noise floor -- and every
+#     other covariate is worse than the base (clo +1.64 ... dist.up +18.71).
 #
-#  BOUNDARY -- tol500/margin250 costs 7.32 AIC on the reported model
-#     (1005.19 -> 1012.51). AIC cannot really adjudicate this, since 7.32 sits
-#     inside the 12.8-unit wobble, but it is consistently negative across grids
-#     (3.7-7.4), and the only argument the other way is geometric tidiness.
+#  BOUNDARY -- tol500/margin250 costs 7.40 AIC on the reported model
+#     (1005.11 -> 1012.51). AIC cannot really adjudicate this, since 7.40 sits
+#     inside the 12.8-unit wobble. But against the stored 3000/2000 boundary the
+#     tight one loses in 5 of the 6 grids both were swept on, by 2.0-7.4, and
+#     wins only at 12x9 (by 1.9), the grid where REML lands worst. The only
+#     argument the other way is geometric tidiness.
 #     Not worth paying for. NOTE this is the opposite of the DD result, where
 #     the tighter boundary was worth ~6 AIC -- so the two species' soap arms now
 #     sit at different boundaries ON PURPOSE, each on its own evidence.
@@ -108,12 +113,33 @@
 # correctness fix worth 0.08 AIC and changes the kept-knot count from 41 to 40.
 #
 # SIDE FINDING, worth more than the tuning was: EVERY model that drops `season`
-# has SIGNIFICANT residual autocorrelation (lag-1 0.030-0.081 against a band of
-# 0.026), and every model that keeps it is clean (0.010-0.026). That includes
-# the nominal AIC winner of the whole table, count ~ s(x,y,so) + s(Ano) + s(sst)
-# at 1003.92 -- which is therefore NOT a defensible model, because the residual
-# independence its AIC assumes does not hold. Season is doing real work here,
-# and the ranking must be read with lag1_sig, not on AIC alone.
+# has SIGNIFICANT residual autocorrelation -- all 18, both arms, lag-1
+# 0.037-0.081 against a band of 0.026. That includes the nominal AIC winner of
+# the whole table, count ~ s(x,y,so) + s(Ano) + s(sst) at 1003.92 -- which is
+# therefore NOT a defensible model, because the residual independence its AIC
+# assumes does not hold. Keeping season is NECESSARY BUT NOT SUFFICIENT: 28 of
+# the 32 models with season are clean (0.010-0.026). The 4 failures are
+# season + s(depth) without s(Ano) (0.034 / 0.037) and
+# season + s(Ano) + s(dist.up) (0.030 / 0.031, spatial surface collapsed to
+# ~2.3 edf). Season is doing real work here, and the ranking must be read with
+# lag1_sig, not on AIC alone.
+#
+# CORRECTION NOTE, 2026-09-29. Checked against the CSVs of the cold re-run
+# (runbook step 8, 2026-09-19). Two kinds of change:
+#   STALE -- the 2026-09-16 run built its `original` arm from lo_output.RData
+#     of 2026-09-03, which predates the bnd_dist fix (0fccbb9). The re-run
+#     rebuilt it at k_prime_xy 48 instead of 49 (runbook step 10), which moved
+#     the boundary cost 7.32 -> 7.40 (reported model 1005.19 -> 1005.11) and the
+#     sst margin over the base 0.21 -> 0.34.
+#   WRONG FROM THE START -- the CSVs these lines summarise never said so:
+#     "ranks 4th" (5th); DD 0.64 (0.63); sweep 15.9 / 49 (15.4 / 48); DD s(clo)
+#     8.25 (8.35, per the pre-retune DD_dsm_kcheck.csv); "no covariate beats the
+#     base" (sst did, by 0.21 then); "consistently negative across grids
+#     (3.7-7.4)" (not at 12x9); "every model that keeps season is clean" (4 of
+#     32 are not -- the 0.030 lower bound quoted for the season-LESS models was
+#     one of them).
+#   LO_soap_boundary_variants.csv and LO_soap_knot_sweep.csv came back
+#   byte-identical, and the tuned arm is unchanged.
 #
 # This script remains RUNNABLE, unlike the three DD decision records: its guard
 # reads simplify_tol / margin / knot_ngrid from the workspace rather than
